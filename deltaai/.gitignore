@@ -1,0 +1,4 @@
+data/
+zoology_cache/
+__pycache__/
+*.pyc

@@ -1,0 +1,1796 @@
+PyTorch 2.11.0 for DeltaAI (CUDA 13.0, Python 3.12)
+Includes: transformers, accelerate, datasets, peft, lightning,
+          timm, bitsandbytes, diffusers, mpi4py, tensorboard,
+          wandb, jupyter, scipy, scikit-learn, opencv, nvitop
+New in this build (sm_90 source builds):
+  flash-attn, transformer_engine, xformers, apex, mamba-ssm,
+  triton, torch-geometric, cupy-cuda13x, tensorrt, flashinfer
+Known: transformer_engine and cupy currently fail at import due to
+  a cu13 libcublasLt / cython ABI mismatch on this stack — use the
+  other attention paths (flash-attn, xformers) and stock torch CUDA
+  until an upstream fix lands.
+
+For documentation and examples:
+  https://docs.ncsa.illinois.edu/systems/deltaai/
+
+Run setup-kernel prior to launching OOD job.
+
+Quick start (on a compute node):
+  module load python/miniforge3_pytorch/2.11.0
+  conda activate base
+  python -c "import torch; print(torch.cuda.is_available())"
+
+CUDA extensions: CUDA_HOME, nvcc, and CMAKE_PREFIX_PATH come from the
+auto-loaded cuda/13.1.1 module.
+
+host: gh135.hsn.cm.delta.internal.ncsa.edu   started: Thu Sep  3 03:45:39 PM CDT 2026
+name, memory.total [MiB], driver_version
+NVIDIA GH200 120GB, 97871 MiB, 595.71.05
+torch 2.11.0+cu130 cuda True
+triton 3.5.1
+
+==== arm: --arm softmax   Thu Sep  3 03:45:43 PM CDT 2026 ====
+{
+ "run": "softmax_qkn",
+ "arm": "softmax",
+ "d": 1,
+ "T": 4096,
+ "layers": 4,
+ "d_model": 256,
+ "heads": 4,
+ "r": 64,
+ "learn_phi": false,
+ "qk_norm": true,
+ "chunk": 128,
+ "steps": 20000,
+ "nb": 8,
+ "lr": 0.0003,
+ "warmup": 500,
+ "wd": 0.1,
+ "clip": 1.0,
+ "eval_every": 2000,
+ "val_windows": 256,
+ "eval_nb": 8,
+ "data": "/u/archerdw/smat_attention/deltaai/data/enwik8",
+ "out": "results/lm_T4096_20k_qkn.csv",
+ "device": "cuda",
+ "no_amp": false,
+ "seed": 0
+}
+mask: {'mask_nnz': 8390656, 'mask_density': 0.5001220703125}
+params: 4,336,128
+step    50  loss 4.4038  bpc 6.353  gn 2.59  20 ms/step
+step   100  loss 3.6632  bpc 5.285  gn 1.69  14 ms/step
+step   150  loss 3.1264  bpc 4.510  gn 0.90  14 ms/step
+step   200  loss 2.8263  bpc 4.078  gn 0.60  14 ms/step
+step   250  loss 2.7256  bpc 3.932  gn 1.22  14 ms/step
+step   300  loss 2.6360  bpc 3.803  gn 0.91  14 ms/step
+step   350  loss 2.5883  bpc 3.734  gn 0.67  14 ms/step
+step   400  loss 2.7129  bpc 3.914  gn 0.55  14 ms/step
+step   450  loss 2.6507  bpc 3.824  gn 0.66  14 ms/step
+step   500  loss 2.6514  bpc 3.825  gn 0.88  14 ms/step
+step   550  loss 2.5977  bpc 3.748  gn 0.53  14 ms/step
+step   600  loss 2.6309  bpc 3.796  gn 0.59  14 ms/step
+step   650  loss 2.6208  bpc 3.781  gn 0.72  14 ms/step
+step   700  loss 2.6280  bpc 3.791  gn 0.82  15 ms/step
+step   750  loss 2.5619  bpc 3.696  gn 0.57  14 ms/step
+step   800  loss 2.5466  bpc 3.674  gn 0.49  14 ms/step
+step   850  loss 2.5429  bpc 3.669  gn 0.58  14 ms/step
+step   900  loss 2.4894  bpc 3.591  gn 0.95  14 ms/step
+step   950  loss 2.5034  bpc 3.612  gn 0.69  14 ms/step
+step  1000  loss 2.4270  bpc 3.501  gn 0.82  14 ms/step
+step  1050  loss 2.4830  bpc 3.582  gn 0.96  14 ms/step
+step  1100  loss 2.5027  bpc 3.611  gn 0.56  14 ms/step
+step  1150  loss 2.4656  bpc 3.557  gn 0.89  14 ms/step
+step  1200  loss 2.4392  bpc 3.519  gn 0.73  14 ms/step
+step  1250  loss 2.5042  bpc 3.613  gn 0.55  14 ms/step
+step  1300  loss 2.4071  bpc 3.473  gn 0.76  14 ms/step
+step  1350  loss 2.4447  bpc 3.527  gn 0.56  14 ms/step
+step  1400  loss 2.4393  bpc 3.519  gn 0.95  14 ms/step
+step  1450  loss 2.4115  bpc 3.479  gn 0.45  14 ms/step
+step  1500  loss 2.4041  bpc 3.468  gn 0.65  14 ms/step
+step  1550  loss 2.4430  bpc 3.524  gn 0.71  14 ms/step
+step  1600  loss 2.3626  bpc 3.409  gn 0.53  15 ms/step
+step  1650  loss 2.2746  bpc 3.282  gn 1.08  14 ms/step
+step  1700  loss 2.3486  bpc 3.388  gn 0.73  14 ms/step
+step  1750  loss 2.4139  bpc 3.482  gn 0.78  14 ms/step
+step  1800  loss 2.3735  bpc 3.424  gn 0.89  14 ms/step
+step  1850  loss 2.2896  bpc 3.303  gn 0.81  14 ms/step
+step  1900  loss 2.2280  bpc 3.214  gn 0.92  14 ms/step
+step  1950  loss 2.1769  bpc 3.141  gn 1.08  14 ms/step
+step  2000  loss 2.1698  bpc 3.130  gn 1.27  14 ms/step
+== eval step 2000: val_bpc 3.1827  ppl 9.080  [0:512) 3.171  [512:2048) 3.187  [2048:4096) 3.182  peak 1862 MB
+step  2050  loss 2.1066  bpc 3.039  gn 1.37  14 ms/step
+step  2100  loss 2.1704  bpc 3.131  gn 1.18  14 ms/step
+step  2150  loss 2.1175  bpc 3.055  gn 1.29  14 ms/step
+step  2200  loss 2.0969  bpc 3.025  gn 1.16  14 ms/step
+step  2250  loss 1.9934  bpc 2.876  gn 2.20  14 ms/step
+step  2300  loss 1.8456  bpc 2.663  gn 1.71  14 ms/step
+step  2350  loss 1.8928  bpc 2.731  gn 1.24  14 ms/step
+step  2400  loss 1.9341  bpc 2.790  gn 1.33  14 ms/step
+step  2450  loss 1.9056  bpc 2.749  gn 1.33  14 ms/step
+step  2500  loss 1.8296  bpc 2.640  gn 1.24  14 ms/step
+step  2550  loss 1.8205  bpc 2.626  gn 1.39  14 ms/step
+step  2600  loss 1.9810  bpc 2.858  gn 1.34  14 ms/step
+step  2650  loss 1.7433  bpc 2.515  gn 1.14  14 ms/step
+step  2700  loss 1.6851  bpc 2.431  gn 1.17  14 ms/step
+step  2750  loss 1.8719  bpc 2.701  gn 1.23  14 ms/step
+step  2800  loss 1.8536  bpc 2.674  gn 1.35  14 ms/step
+step  2850  loss 1.7112  bpc 2.469  gn 1.27  14 ms/step
+step  2900  loss 1.7307  bpc 2.497  gn 1.49  14 ms/step
+step  2950  loss 1.6307  bpc 2.353  gn 1.30  14 ms/step
+step  3000  loss 1.8165  bpc 2.621  gn 1.31  14 ms/step
+step  3050  loss 1.6124  bpc 2.326  gn 1.52  14 ms/step
+step  3100  loss 1.5795  bpc 2.279  gn 1.46  14 ms/step
+step  3150  loss 1.5322  bpc 2.211  gn 1.42  14 ms/step
+step  3200  loss 1.5533  bpc 2.241  gn 1.66  14 ms/step
+step  3250  loss 1.4539  bpc 2.098  gn 1.36  14 ms/step
+step  3300  loss 1.4166  bpc 2.044  gn 1.48  14 ms/step
+step  3350  loss 1.3161  bpc 1.899  gn 1.52  14 ms/step
+step  3400  loss 1.4688  bpc 2.119  gn 1.07  14 ms/step
+step  3450  loss 1.3723  bpc 1.980  gn 1.06  14 ms/step
+step  3500  loss 1.3515  bpc 1.950  gn 1.32  14 ms/step
+step  3550  loss 1.3832  bpc 1.996  gn 1.46  14 ms/step
+step  3600  loss 1.3747  bpc 1.983  gn 1.19  14 ms/step
+step  3650  loss 1.4263  bpc 2.058  gn 1.08  14 ms/step
+step  3700  loss 1.4221  bpc 2.052  gn 1.04  14 ms/step
+step  3750  loss 1.2426  bpc 1.793  gn 1.03  14 ms/step
+step  3800  loss 1.3511  bpc 1.949  gn 1.13  14 ms/step
+step  3850  loss 1.2866  bpc 1.856  gn 1.14  14 ms/step
+step  3900  loss 1.3536  bpc 1.953  gn 1.08  14 ms/step
+step  3950  loss 1.4043  bpc 2.026  gn 1.06  14 ms/step
+step  4000  loss 1.3114  bpc 1.892  gn 0.95  14 ms/step
+== eval step 4000: val_bpc 1.9316  ppl 3.815  [0:512) 2.066  [512:2048) 1.921  [2048:4096) 1.906  peak 1862 MB
+step  4050  loss 1.3401  bpc 1.933  gn 1.10  14 ms/step
+step  4100  loss 1.3018  bpc 1.878  gn 0.93  14 ms/step
+step  4150  loss 1.2332  bpc 1.779  gn 0.95  14 ms/step
+step  4200  loss 1.3576  bpc 1.959  gn 0.92  14 ms/step
+step  4250  loss 1.3579  bpc 1.959  gn 0.96  14 ms/step
+step  4300  loss 1.2783  bpc 1.844  gn 0.97  14 ms/step
+step  4350  loss 1.2619  bpc 1.820  gn 0.93  14 ms/step
+step  4400  loss 1.3116  bpc 1.892  gn 1.38  14 ms/step
+step  4450  loss 1.3420  bpc 1.936  gn 0.91  14 ms/step
+step  4500  loss 1.2275  bpc 1.771  gn 0.93  14 ms/step
+step  4550  loss 1.2546  bpc 1.810  gn 0.89  14 ms/step
+step  4600  loss 1.1876  bpc 1.713  gn 0.86  14 ms/step
+step  4650  loss 1.1581  bpc 1.671  gn 0.86  14 ms/step
+step  4700  loss 1.2521  bpc 1.806  gn 0.86  14 ms/step
+step  4750  loss 1.1206  bpc 1.617  gn 0.88  14 ms/step
+step  4800  loss 1.2129  bpc 1.750  gn 0.90  14 ms/step
+step  4850  loss 1.3301  bpc 1.919  gn 0.88  14 ms/step
+step  4900  loss 1.3113  bpc 1.892  gn 0.83  14 ms/step
+step  4950  loss 1.2161  bpc 1.754  gn 0.79  14 ms/step
+step  5000  loss 1.1860  bpc 1.711  gn 0.92  14 ms/step
+step  5050  loss 1.1601  bpc 1.674  gn 0.81  14 ms/step
+step  5100  loss 1.2376  bpc 1.785  gn 0.87  14 ms/step
+step  5150  loss 1.2008  bpc 1.732  gn 0.87  14 ms/step
+step  5200  loss 1.2266  bpc 1.770  gn 0.85  14 ms/step
+step  5250  loss 1.1500  bpc 1.659  gn 0.84  14 ms/step
+step  5300  loss 1.1123  bpc 1.605  gn 0.84  14 ms/step
+step  5350  loss 1.1593  bpc 1.673  gn 0.87  14 ms/step
+step  5400  loss 1.1353  bpc 1.638  gn 0.82  14 ms/step
+step  5450  loss 1.2309  bpc 1.776  gn 0.94  14 ms/step
+step  5500  loss 1.2731  bpc 1.837  gn 0.80  14 ms/step
+step  5550  loss 1.2489  bpc 1.802  gn 0.80  14 ms/step
+step  5600  loss 1.1891  bpc 1.715  gn 0.89  14 ms/step
+step  5650  loss 1.2578  bpc 1.815  gn 0.86  14 ms/step
+step  5700  loss 1.1360  bpc 1.639  gn 0.99  14 ms/step
+step  5750  loss 1.2455  bpc 1.797  gn 0.77  14 ms/step
+step  5800  loss 1.2143  bpc 1.752  gn 0.87  14 ms/step
+step  5850  loss 1.1927  bpc 1.721  gn 0.82  14 ms/step
+step  5900  loss 1.1314  bpc 1.632  gn 0.75  14 ms/step
+step  5950  loss 1.2225  bpc 1.764  gn 0.77  14 ms/step
+step  6000  loss 1.2414  bpc 1.791  gn 0.73  14 ms/step
+== eval step 6000: val_bpc 1.7403  ppl 3.341  [0:512) 1.876  [512:2048) 1.728  [2048:4096) 1.716  peak 1862 MB
+step  6050  loss 1.1646  bpc 1.680  gn 0.80  14 ms/step
+step  6100  loss 1.2350  bpc 1.782  gn 0.86  14 ms/step
+step  6150  loss 1.2890  bpc 1.860  gn 0.79  14 ms/step
+step  6200  loss 1.2624  bpc 1.821  gn 0.76  14 ms/step
+step  6250  loss 1.0858  bpc 1.566  gn 0.83  14 ms/step
+step  6300  loss 1.1257  bpc 1.624  gn 0.75  14 ms/step
+step  6350  loss 1.1667  bpc 1.683  gn 0.80  14 ms/step
+step  6400  loss 1.2346  bpc 1.781  gn 0.81  14 ms/step
+step  6450  loss 1.1723  bpc 1.691  gn 0.80  14 ms/step
+step  6500  loss 1.1107  bpc 1.602  gn 0.74  14 ms/step
+step  6550  loss 1.1908  bpc 1.718  gn 0.83  14 ms/step
+step  6600  loss 1.2077  bpc 1.742  gn 0.74  14 ms/step
+step  6650  loss 1.2094  bpc 1.745  gn 0.79  14 ms/step
+step  6700  loss 1.2191  bpc 1.759  gn 0.74  14 ms/step
+step  6750  loss 1.1815  bpc 1.705  gn 0.88  14 ms/step
+step  6800  loss 1.0907  bpc 1.574  gn 0.74  14 ms/step
+step  6850  loss 1.1743  bpc 1.694  gn 0.82  14 ms/step
+step  6900  loss 1.0914  bpc 1.575  gn 0.75  14 ms/step
+step  6950  loss 1.1447  bpc 1.651  gn 0.83  14 ms/step
+step  7000  loss 1.2155  bpc 1.754  gn 0.82  14 ms/step
+step  7050  loss 1.1929  bpc 1.721  gn 0.83  14 ms/step
+step  7100  loss 1.1926  bpc 1.721  gn 0.80  14 ms/step
+step  7150  loss 1.2029  bpc 1.735  gn 0.86  14 ms/step
+step  7200  loss 1.1713  bpc 1.690  gn 0.82  14 ms/step
+step  7250  loss 1.0565  bpc 1.524  gn 0.85  14 ms/step
+step  7300  loss 1.1423  bpc 1.648  gn 0.79  14 ms/step
+step  7350  loss 1.1777  bpc 1.699  gn 0.74  14 ms/step
+step  7400  loss 1.1995  bpc 1.731  gn 0.77  14 ms/step
+step  7450  loss 1.1382  bpc 1.642  gn 0.80  14 ms/step
+step  7500  loss 1.1268  bpc 1.626  gn 0.72  14 ms/step
+step  7550  loss 1.1836  bpc 1.708  gn 0.81  14 ms/step
+step  7600  loss 1.1287  bpc 1.628  gn 0.82  14 ms/step
+step  7650  loss 1.1491  bpc 1.658  gn 0.76  14 ms/step
+step  7700  loss 1.1313  bpc 1.632  gn 0.76  14 ms/step
+step  7750  loss 0.9820  bpc 1.417  gn 0.72  14 ms/step
+step  7800  loss 1.0856  bpc 1.566  gn 0.67  14 ms/step
+step  7850  loss 1.2316  bpc 1.777  gn 0.86  14 ms/step
+step  7900  loss 1.0692  bpc 1.543  gn 0.69  14 ms/step
+step  7950  loss 1.1541  bpc 1.665  gn 0.73  14 ms/step
+step  8000  loss 1.1427  bpc 1.649  gn 0.74  14 ms/step
+== eval step 8000: val_bpc 1.6603  ppl 3.161  [0:512) 1.784  [512:2048) 1.647  [2048:4096) 1.639  peak 1862 MB
+step  8050  loss 1.0470  bpc 1.511  gn 0.75  14 ms/step
+step  8100  loss 1.1776  bpc 1.699  gn 0.72  14 ms/step
+step  8150  loss 1.1391  bpc 1.643  gn 0.98  14 ms/step
+step  8200  loss 1.1181  bpc 1.613  gn 0.77  14 ms/step
+step  8250  loss 1.2449  bpc 1.796  gn 0.77  14 ms/step
+step  8300  loss 1.0868  bpc 1.568  gn 0.76  14 ms/step
+step  8350  loss 0.9203  bpc 1.328  gn 0.72  14 ms/step
+step  8400  loss 1.1084  bpc 1.599  gn 0.79  14 ms/step
+step  8450  loss 1.1596  bpc 1.673  gn 0.73  14 ms/step
+step  8500  loss 1.0393  bpc 1.499  gn 0.76  14 ms/step
+step  8550  loss 1.1206  bpc 1.617  gn 0.75  14 ms/step
+step  8600  loss 1.1452  bpc 1.652  gn 0.80  14 ms/step
+step  8650  loss 1.1438  bpc 1.650  gn 0.70  14 ms/step
+step  8700  loss 1.0898  bpc 1.572  gn 0.68  14 ms/step
+step  8750  loss 1.0700  bpc 1.544  gn 0.70  14 ms/step
+step  8800  loss 0.9876  bpc 1.425  gn 0.78  14 ms/step
+step  8850  loss 1.1777  bpc 1.699  gn 0.77  14 ms/step
+step  8900  loss 1.1841  bpc 1.708  gn 0.74  14 ms/step
+step  8950  loss 1.1136  bpc 1.607  gn 0.73  14 ms/step
+step  9000  loss 1.0907  bpc 1.573  gn 0.74  14 ms/step
+step  9050  loss 1.2193  bpc 1.759  gn 0.90  14 ms/step
+step  9100  loss 1.1805  bpc 1.703  gn 0.70  14 ms/step
+step  9150  loss 1.0777  bpc 1.555  gn 0.74  14 ms/step
+step  9200  loss 1.1074  bpc 1.598  gn 0.71  14 ms/step
+step  9250  loss 1.1245  bpc 1.622  gn 0.69  14 ms/step
+step  9300  loss 1.1455  bpc 1.653  gn 0.74  14 ms/step
+step  9350  loss 1.1298  bpc 1.630  gn 0.73  14 ms/step
+step  9400  loss 1.1144  bpc 1.608  gn 0.68  14 ms/step
+step  9450  loss 1.0793  bpc 1.557  gn 0.72  14 ms/step
+step  9500  loss 1.1384  bpc 1.642  gn 0.74  14 ms/step
+step  9550  loss 1.1365  bpc 1.640  gn 0.77  14 ms/step
+step  9600  loss 1.1288  bpc 1.629  gn 0.72  14 ms/step
+step  9650  loss 1.0656  bpc 1.537  gn 0.69  14 ms/step
+step  9700  loss 1.0778  bpc 1.555  gn 0.67  14 ms/step
+step  9750  loss 1.0101  bpc 1.457  gn 0.69  14 ms/step
+step  9800  loss 1.1486  bpc 1.657  gn 0.77  14 ms/step
+step  9850  loss 1.0348  bpc 1.493  gn 0.65  14 ms/step
+step  9900  loss 1.0967  bpc 1.582  gn 0.65  14 ms/step
+step  9950  loss 1.0526  bpc 1.519  gn 0.82  14 ms/step
+step 10000  loss 0.9842  bpc 1.420  gn 0.67  14 ms/step
+== eval step 10000: val_bpc 1.6195  ppl 3.073  [0:512) 1.745  [512:2048) 1.605  [2048:4096) 1.599  peak 1862 MB
+step 10050  loss 1.1289  bpc 1.629  gn 0.66  14 ms/step
+step 10100  loss 1.1803  bpc 1.703  gn 0.73  14 ms/step
+step 10150  loss 1.0134  bpc 1.462  gn 0.69  14 ms/step
+step 10200  loss 1.1764  bpc 1.697  gn 0.69  14 ms/step
+step 10250  loss 0.9458  bpc 1.365  gn 0.71  14 ms/step
+step 10300  loss 1.1132  bpc 1.606  gn 0.74  14 ms/step
+step 10350  loss 1.0583  bpc 1.527  gn 0.67  14 ms/step
+step 10400  loss 1.0924  bpc 1.576  gn 0.70  14 ms/step
+step 10450  loss 1.1307  bpc 1.631  gn 0.73  14 ms/step
+step 10500  loss 1.0295  bpc 1.485  gn 0.76  14 ms/step
+step 10550  loss 1.1361  bpc 1.639  gn 0.70  14 ms/step
+step 10600  loss 0.9538  bpc 1.376  gn 0.69  14 ms/step
+step 10650  loss 1.0340  bpc 1.492  gn 0.71  14 ms/step
+step 10700  loss 1.1030  bpc 1.591  gn 0.76  14 ms/step
+step 10750  loss 1.0738  bpc 1.549  gn 0.66  14 ms/step
+step 10800  loss 1.0712  bpc 1.545  gn 0.72  14 ms/step
+step 10850  loss 1.1420  bpc 1.648  gn 0.70  14 ms/step
+step 10900  loss 1.1157  bpc 1.610  gn 0.77  14 ms/step
+step 10950  loss 1.0873  bpc 1.569  gn 0.74  14 ms/step
+step 11000  loss 1.0417  bpc 1.503  gn 0.69  14 ms/step
+step 11050  loss 1.0387  bpc 1.499  gn 0.67  14 ms/step
+step 11100  loss 1.0387  bpc 1.499  gn 0.72  14 ms/step
+step 11150  loss 1.1009  bpc 1.588  gn 0.75  14 ms/step
+step 11200  loss 1.1399  bpc 1.644  gn 0.76  14 ms/step
+step 11250  loss 1.0800  bpc 1.558  gn 0.73  14 ms/step
+step 11300  loss 1.0649  bpc 1.536  gn 0.69  14 ms/step
+step 11350  loss 0.9876  bpc 1.425  gn 0.74  14 ms/step
+step 11400  loss 1.1808  bpc 1.704  gn 0.71  14 ms/step
+step 11450  loss 1.1051  bpc 1.594  gn 0.67  14 ms/step
+step 11500  loss 1.0239  bpc 1.477  gn 0.69  14 ms/step
+step 11550  loss 1.0681  bpc 1.541  gn 0.72  14 ms/step
+step 11600  loss 1.0126  bpc 1.461  gn 0.74  14 ms/step
+step 11650  loss 1.0153  bpc 1.465  gn 0.79  14 ms/step
+step 11700  loss 1.1620  bpc 1.676  gn 0.75  14 ms/step
+step 11750  loss 1.1256  bpc 1.624  gn 0.70  14 ms/step
+step 11800  loss 1.0704  bpc 1.544  gn 0.73  14 ms/step
+step 11850  loss 1.0971  bpc 1.583  gn 0.83  14 ms/step
+step 11900  loss 1.0983  bpc 1.585  gn 0.71  14 ms/step
+step 11950  loss 1.0514  bpc 1.517  gn 0.68  14 ms/step
+step 12000  loss 1.1279  bpc 1.627  gn 0.70  14 ms/step
+== eval step 12000: val_bpc 1.5837  ppl 2.997  [0:512) 1.709  [512:2048) 1.571  [2048:4096) 1.562  peak 1862 MB
+step 12050  loss 0.9924  bpc 1.432  gn 0.72  14 ms/step
+step 12100  loss 1.0581  bpc 1.527  gn 0.71  14 ms/step
+step 12150  loss 1.0958  bpc 1.581  gn 0.81  14 ms/step
+step 12200  loss 1.0655  bpc 1.537  gn 0.75  14 ms/step
+step 12250  loss 1.0393  bpc 1.499  gn 0.70  14 ms/step
+step 12300  loss 0.9876  bpc 1.425  gn 0.81  14 ms/step
+step 12350  loss 1.0370  bpc 1.496  gn 0.71  14 ms/step
+step 12400  loss 0.9400  bpc 1.356  gn 0.71  14 ms/step
+step 12450  loss 1.0767  bpc 1.553  gn 0.68  14 ms/step
+step 12500  loss 1.0121  bpc 1.460  gn 0.66  14 ms/step
+step 12550  loss 1.0818  bpc 1.561  gn 0.72  14 ms/step
+step 12600  loss 1.0790  bpc 1.557  gn 0.74  14 ms/step
+step 12650  loss 1.0445  bpc 1.507  gn 0.67  14 ms/step
+step 12700  loss 1.0781  bpc 1.555  gn 0.68  14 ms/step
+step 12750  loss 0.9874  bpc 1.424  gn 0.67  14 ms/step
+step 12800  loss 0.9912  bpc 1.430  gn 0.70  14 ms/step
+step 12850  loss 1.0330  bpc 1.490  gn 0.74  14 ms/step
+step 12900  loss 1.0976  bpc 1.583  gn 0.70  14 ms/step
+step 12950  loss 1.0898  bpc 1.572  gn 0.82  14 ms/step
+step 13000  loss 1.1574  bpc 1.670  gn 0.76  14 ms/step
+step 13050  loss 1.0650  bpc 1.536  gn 0.71  14 ms/step
+step 13100  loss 1.0988  bpc 1.585  gn 0.66  14 ms/step
+step 13150  loss 1.0039  bpc 1.448  gn 0.72  14 ms/step
+step 13200  loss 1.0645  bpc 1.536  gn 0.75  14 ms/step
+step 13250  loss 1.0748  bpc 1.551  gn 0.73  14 ms/step
+step 13300  loss 1.0536  bpc 1.520  gn 0.76  14 ms/step
+step 13350  loss 1.1115  bpc 1.604  gn 0.79  14 ms/step
+step 13400  loss 0.9615  bpc 1.387  gn 0.83  14 ms/step
+step 13450  loss 0.9943  bpc 1.435  gn 0.71  14 ms/step
+step 13500  loss 1.1238  bpc 1.621  gn 0.79  14 ms/step
+step 13550  loss 0.9181  bpc 1.324  gn 0.66  14 ms/step
+step 13600  loss 1.0316  bpc 1.488  gn 0.76  14 ms/step
+step 13650  loss 1.0467  bpc 1.510  gn 0.70  14 ms/step
+step 13700  loss 1.0364  bpc 1.495  gn 0.70  14 ms/step
+step 13750  loss 1.0727  bpc 1.548  gn 0.75  14 ms/step
+step 13800  loss 1.1246  bpc 1.622  gn 0.77  14 ms/step
+step 13850  loss 0.9895  bpc 1.428  gn 0.72  14 ms/step
+step 13900  loss 1.0985  bpc 1.585  gn 0.80  14 ms/step
+step 13950  loss 1.0813  bpc 1.560  gn 0.75  14 ms/step
+step 14000  loss 1.0090  bpc 1.456  gn 0.72  14 ms/step
+== eval step 14000: val_bpc 1.5607  ppl 2.950  [0:512) 1.684  [512:2048) 1.547  [2048:4096) 1.540  peak 1862 MB
+step 14050  loss 1.0761  bpc 1.553  gn 0.71  14 ms/step
+step 14100  loss 1.0850  bpc 1.565  gn 0.68  14 ms/step
+step 14150  loss 1.0171  bpc 1.467  gn 0.69  14 ms/step
+step 14200  loss 1.0568  bpc 1.525  gn 0.79  14 ms/step
+step 14250  loss 1.0603  bpc 1.530  gn 0.79  14 ms/step
+step 14300  loss 0.9982  bpc 1.440  gn 0.70  14 ms/step
+step 14350  loss 1.0170  bpc 1.467  gn 0.76  14 ms/step
+step 14400  loss 0.9803  bpc 1.414  gn 0.73  14 ms/step
+step 14450  loss 1.0400  bpc 1.500  gn 0.73  14 ms/step
+step 14500  loss 1.0077  bpc 1.454  gn 0.76  14 ms/step
+step 14550  loss 1.0006  bpc 1.444  gn 0.73  14 ms/step
+step 14600  loss 1.0704  bpc 1.544  gn 0.74  14 ms/step
+step 14650  loss 1.0089  bpc 1.455  gn 0.77  14 ms/step
+step 14700  loss 1.0827  bpc 1.562  gn 0.72  14 ms/step
+step 14750  loss 1.0750  bpc 1.551  gn 0.72  14 ms/step
+step 14800  loss 1.0909  bpc 1.574  gn 0.70  14 ms/step
+step 14850  loss 1.0252  bpc 1.479  gn 0.70  14 ms/step
+step 14900  loss 1.0127  bpc 1.461  gn 0.79  14 ms/step
+step 14950  loss 1.0680  bpc 1.541  gn 0.78  14 ms/step
+step 15000  loss 1.0818  bpc 1.561  gn 0.70  14 ms/step
+step 15050  loss 1.0829  bpc 1.562  gn 0.74  14 ms/step
+step 15100  loss 1.0434  bpc 1.505  gn 0.71  14 ms/step
+step 15150  loss 1.1443  bpc 1.651  gn 0.74  14 ms/step
+step 15200  loss 1.0110  bpc 1.459  gn 0.70  14 ms/step
+step 15250  loss 1.0673  bpc 1.540  gn 0.72  14 ms/step
+step 15300  loss 1.0035  bpc 1.448  gn 0.70  14 ms/step
+step 15350  loss 1.0080  bpc 1.454  gn 0.70  14 ms/step
+step 15400  loss 1.0907  bpc 1.574  gn 0.71  14 ms/step
+step 15450  loss 1.0520  bpc 1.518  gn 0.67  14 ms/step
+step 15500  loss 1.0650  bpc 1.536  gn 0.75  14 ms/step
+step 15550  loss 1.0356  bpc 1.494  gn 0.72  14 ms/step
+step 15600  loss 1.0345  bpc 1.492  gn 0.74  14 ms/step
+step 15650  loss 0.9856  bpc 1.422  gn 0.71  14 ms/step
+step 15700  loss 0.9833  bpc 1.419  gn 0.72  14 ms/step
+step 15750  loss 1.0236  bpc 1.477  gn 0.68  14 ms/step
+step 15800  loss 1.0460  bpc 1.509  gn 0.73  14 ms/step
+step 15850  loss 1.0912  bpc 1.574  gn 0.76  14 ms/step
+step 15900  loss 0.9653  bpc 1.393  gn 0.70  14 ms/step
+step 15950  loss 1.0452  bpc 1.508  gn 0.69  14 ms/step
+step 16000  loss 1.0565  bpc 1.524  gn 0.74  14 ms/step
+== eval step 16000: val_bpc 1.5431  ppl 2.914  [0:512) 1.666  [512:2048) 1.530  [2048:4096) 1.522  peak 1862 MB
+step 16050  loss 1.0754  bpc 1.551  gn 0.71  14 ms/step
+step 16100  loss 1.0224  bpc 1.475  gn 0.78  14 ms/step
+step 16150  loss 0.9987  bpc 1.441  gn 0.72  14 ms/step
+step 16200  loss 1.0228  bpc 1.476  gn 0.70  14 ms/step
+step 16250  loss 0.9973  bpc 1.439  gn 0.69  14 ms/step
+step 16300  loss 0.9922  bpc 1.432  gn 0.74  14 ms/step
+step 16350  loss 0.9620  bpc 1.388  gn 0.71  14 ms/step
+step 16400  loss 1.0385  bpc 1.498  gn 0.70  14 ms/step
+step 16450  loss 1.0438  bpc 1.506  gn 0.69  14 ms/step
+step 16500  loss 0.9825  bpc 1.418  gn 0.77  14 ms/step
+step 16550  loss 0.8939  bpc 1.290  gn 0.66  14 ms/step
+step 16600  loss 0.9598  bpc 1.385  gn 0.71  14 ms/step
+step 16650  loss 0.9948  bpc 1.435  gn 0.72  14 ms/step
+step 16700  loss 1.0463  bpc 1.510  gn 0.71  14 ms/step
+step 16750  loss 1.0850  bpc 1.565  gn 0.72  14 ms/step
+step 16800  loss 1.0667  bpc 1.539  gn 0.70  14 ms/step
+step 16850  loss 1.0785  bpc 1.556  gn 0.72  14 ms/step
+step 16900  loss 1.0095  bpc 1.456  gn 0.67  14 ms/step
+step 16950  loss 1.1041  bpc 1.593  gn 0.74  14 ms/step
+step 17000  loss 0.9945  bpc 1.435  gn 0.70  14 ms/step
+step 17050  loss 1.0568  bpc 1.525  gn 0.75  14 ms/step
+step 17100  loss 1.0942  bpc 1.579  gn 0.71  14 ms/step
+step 17150  loss 1.0682  bpc 1.541  gn 0.71  14 ms/step
+step 17200  loss 1.0029  bpc 1.447  gn 0.74  14 ms/step
+step 17250  loss 0.9422  bpc 1.359  gn 0.75  14 ms/step
+step 17300  loss 1.0583  bpc 1.527  gn 0.73  14 ms/step
+step 17350  loss 1.0631  bpc 1.534  gn 0.74  14 ms/step
+step 17400  loss 1.0808  bpc 1.559  gn 0.70  14 ms/step
+step 17450  loss 0.9968  bpc 1.438  gn 0.69  14 ms/step
+step 17500  loss 0.9892  bpc 1.427  gn 0.71  14 ms/step
+step 17550  loss 1.1277  bpc 1.627  gn 0.71  14 ms/step
+step 17600  loss 1.0113  bpc 1.459  gn 0.70  14 ms/step
+step 17650  loss 1.0178  bpc 1.468  gn 0.69  14 ms/step
+step 17700  loss 1.0698  bpc 1.543  gn 0.70  14 ms/step
+step 17750  loss 0.9993  bpc 1.442  gn 0.70  14 ms/step
+step 17800  loss 1.0961  bpc 1.581  gn 0.76  14 ms/step
+step 17850  loss 1.0706  bpc 1.545  gn 0.78  14 ms/step
+step 17900  loss 1.0665  bpc 1.539  gn 0.73  14 ms/step
+step 17950  loss 0.9790  bpc 1.412  gn 0.68  14 ms/step
+step 18000  loss 1.0645  bpc 1.536  gn 0.70  14 ms/step
+== eval step 18000: val_bpc 1.5319  ppl 2.892  [0:512) 1.654  [512:2048) 1.519  [2048:4096) 1.511  peak 1862 MB
+step 18050  loss 0.9756  bpc 1.408  gn 0.71  14 ms/step
+step 18100  loss 0.9374  bpc 1.352  gn 0.74  14 ms/step
+step 18150  loss 0.9790  bpc 1.412  gn 0.67  14 ms/step
+step 18200  loss 1.1208  bpc 1.617  gn 0.75  14 ms/step
+step 18250  loss 1.0950  bpc 1.580  gn 0.72  14 ms/step
+step 18300  loss 0.9970  bpc 1.438  gn 0.75  14 ms/step
+step 18350  loss 1.0798  bpc 1.558  gn 0.68  14 ms/step
+step 18400  loss 1.0234  bpc 1.476  gn 0.67  14 ms/step
+step 18450  loss 0.9613  bpc 1.387  gn 0.68  14 ms/step
+step 18500  loss 1.0835  bpc 1.563  gn 0.75  14 ms/step
+step 18550  loss 0.9470  bpc 1.366  gn 0.70  14 ms/step
+step 18600  loss 1.0506  bpc 1.516  gn 0.74  14 ms/step
+step 18650  loss 1.0335  bpc 1.491  gn 0.70  14 ms/step
+step 18700  loss 1.0586  bpc 1.527  gn 0.75  14 ms/step
+step 18750  loss 1.0762  bpc 1.553  gn 0.71  14 ms/step
+step 18800  loss 1.0269  bpc 1.482  gn 0.68  14 ms/step
+step 18850  loss 1.1041  bpc 1.593  gn 0.72  14 ms/step
+step 18900  loss 0.8175  bpc 1.179  gn 0.68  14 ms/step
+step 18950  loss 0.9905  bpc 1.429  gn 0.66  14 ms/step
+step 19000  loss 1.0275  bpc 1.482  gn 0.66  14 ms/step
+step 19050  loss 1.0788  bpc 1.556  gn 0.72  14 ms/step
+step 19100  loss 0.9857  bpc 1.422  gn 0.68  14 ms/step
+step 19150  loss 1.0685  bpc 1.542  gn 0.71  14 ms/step
+step 19200  loss 0.9394  bpc 1.355  gn 0.67  14 ms/step
+step 19250  loss 1.0513  bpc 1.517  gn 0.68  14 ms/step
+step 19300  loss 1.0618  bpc 1.532  gn 0.68  14 ms/step
+step 19350  loss 1.1131  bpc 1.606  gn 0.76  14 ms/step
+step 19400  loss 1.0488  bpc 1.513  gn 0.71  14 ms/step
+step 19450  loss 1.0054  bpc 1.450  gn 0.69  14 ms/step
+step 19500  loss 0.9796  bpc 1.413  gn 0.66  14 ms/step
+step 19550  loss 1.0505  bpc 1.516  gn 0.68  14 ms/step
+step 19600  loss 1.0005  bpc 1.443  gn 0.79  14 ms/step
+step 19650  loss 1.0074  bpc 1.453  gn 0.68  14 ms/step
+step 19700  loss 0.9355  bpc 1.350  gn 0.70  14 ms/step
+step 19750  loss 0.9946  bpc 1.435  gn 0.69  14 ms/step
+step 19800  loss 1.0007  bpc 1.444  gn 0.71  14 ms/step
+step 19850  loss 0.9766  bpc 1.409  gn 0.68  14 ms/step
+step 19900  loss 1.0086  bpc 1.455  gn 0.68  14 ms/step
+step 19950  loss 1.0510  bpc 1.516  gn 0.66  14 ms/step
+step 20000  loss 1.0051  bpc 1.450  gn 0.68  14 ms/step
+== eval step 20000: val_bpc 1.5292  ppl 2.886  [0:512) 1.651  [512:2048) 1.516  [2048:4096) 1.508  peak 1862 MB
+done: {"run": "softmax_qkn", "arm": "softmax", "d": "", "step": 20000, "train_loss": 1.0051379203796387, "train_loss_med200": 1.021180808544159, "val_bpc": 1.5292158677066154, "val_ppl": 2.8862892113632053, "val_bpc_0_512": 1.6511570125847328, "val_bpc_512_2048": 1.5162483319319262, "val_bpc_2048_4096": 1.5084562333181026, "grad_norm": 0.684050440788269, "nonfinite_steps": 0, "ms_per_step": 14.101149439811707, "peak_MB": 1861.92431640625, "params": 4336128, "elapsed_s": 284.52190470695496, "mask_nnz": 8390656, "mask_density": 0.5001220703125}
+==== arm: --arm smat --d 1   Thu Sep  3 03:50:32 PM CDT 2026 ====
+{
+ "run": "smat_d1_qkn",
+ "arm": "smat",
+ "d": 1,
+ "T": 4096,
+ "layers": 4,
+ "d_model": 256,
+ "heads": 4,
+ "r": 64,
+ "learn_phi": false,
+ "qk_norm": true,
+ "chunk": 128,
+ "steps": 20000,
+ "nb": 8,
+ "lr": 0.0003,
+ "warmup": 500,
+ "wd": 0.1,
+ "clip": 1.0,
+ "eval_every": 2000,
+ "val_windows": 256,
+ "eval_nb": 8,
+ "data": "/u/archerdw/smat_attention/deltaai/data/enwik8",
+ "out": "results/lm_T4096_20k_qkn.csv",
+ "device": "cuda",
+ "no_amp": false,
+ "seed": 0
+}
+mask: {'mask_nnz': 8390656, 'mask_density': 0.5001220703125, 'mask_n': 2048, 'mask_q': 0, 'mask_B': 1}
+params: 4,336,128
+step    50  loss 4.4231  bpc 6.381  gn 2.58  29 ms/step
+step   100  loss 3.7010  bpc 5.339  gn 1.73  24 ms/step
+step   150  loss 3.1516  bpc 4.547  gn 0.93  24 ms/step
+step   200  loss 2.8380  bpc 4.094  gn 0.58  24 ms/step
+step   250  loss 2.7216  bpc 3.926  gn 0.79  24 ms/step
+step   300  loss 2.6393  bpc 3.808  gn 0.67  24 ms/step
+step   350  loss 2.5894  bpc 3.736  gn 0.54  24 ms/step
+step   400  loss 2.7351  bpc 3.946  gn 0.67  24 ms/step
+step   450  loss 2.6736  bpc 3.857  gn 0.73  24 ms/step
+step   500  loss 2.6443  bpc 3.815  gn 0.74  24 ms/step
+step   550  loss 2.6062  bpc 3.760  gn 0.46  24 ms/step
+step   600  loss 2.6585  bpc 3.835  gn 0.50  24 ms/step
+step   650  loss 2.6678  bpc 3.849  gn 0.81  24 ms/step
+step   700  loss 2.6396  bpc 3.808  gn 0.69  24 ms/step
+step   750  loss 2.5861  bpc 3.731  gn 0.58  24 ms/step
+step   800  loss 2.5688  bpc 3.706  gn 0.59  24 ms/step
+step   850  loss 2.5506  bpc 3.680  gn 0.48  24 ms/step
+step   900  loss 2.5089  bpc 3.620  gn 1.24  24 ms/step
+step   950  loss 2.5495  bpc 3.678  gn 1.17  24 ms/step
+step  1000  loss 2.4738  bpc 3.569  gn 0.90  23 ms/step
+step  1050  loss 2.5451  bpc 3.672  gn 0.90  24 ms/step
+step  1100  loss 2.5389  bpc 3.663  gn 0.71  24 ms/step
+step  1150  loss 2.5402  bpc 3.665  gn 2.12  24 ms/step
+step  1200  loss 2.4817  bpc 3.580  gn 0.81  23 ms/step
+step  1250  loss 2.5579  bpc 3.690  gn 0.62  24 ms/step
+step  1300  loss 2.4748  bpc 3.570  gn 0.75  24 ms/step
+step  1350  loss 2.5006  bpc 3.608  gn 0.69  24 ms/step
+step  1400  loss 2.4909  bpc 3.594  gn 0.64  24 ms/step
+step  1450  loss 2.5014  bpc 3.609  gn 0.42  24 ms/step
+step  1500  loss 2.4813  bpc 3.580  gn 0.68  23 ms/step
+step  1550  loss 2.5354  bpc 3.658  gn 0.67  23 ms/step
+step  1600  loss 2.4428  bpc 3.524  gn 0.45  23 ms/step
+step  1650  loss 2.4143  bpc 3.483  gn 1.17  24 ms/step
+step  1700  loss 2.4689  bpc 3.562  gn 0.51  25 ms/step
+step  1750  loss 2.5592  bpc 3.692  gn 0.82  24 ms/step
+step  1800  loss 2.5350  bpc 3.657  gn 0.87  24 ms/step
+step  1850  loss 2.4781  bpc 3.575  gn 0.70  24 ms/step
+step  1900  loss 2.4449  bpc 3.527  gn 1.01  24 ms/step
+step  1950  loss 2.4248  bpc 3.498  gn 0.81  24 ms/step
+step  2000  loss 2.4366  bpc 3.515  gn 0.80  24 ms/step
+== eval step 2000: val_bpc 3.5469  ppl 11.687  [0:512) 3.521  [512:2048) 3.539  [2048:4096) 3.560  peak 2635 MB
+step  2050  loss 2.3751  bpc 3.427  gn 1.11  23 ms/step
+step  2100  loss 2.4687  bpc 3.562  gn 0.59  24 ms/step
+step  2150  loss 2.4769  bpc 3.573  gn 0.83  23 ms/step
+step  2200  loss 2.4982  bpc 3.604  gn 0.62  24 ms/step
+step  2250  loss 2.4261  bpc 3.500  gn 0.73  24 ms/step
+step  2300  loss 2.3103  bpc 3.333  gn 1.05  24 ms/step
+step  2350  loss 2.3923  bpc 3.451  gn 0.54  24 ms/step
+step  2400  loss 2.4376  bpc 3.517  gn 0.54  24 ms/step
+step  2450  loss 2.4382  bpc 3.518  gn 0.64  24 ms/step
+step  2500  loss 2.4157  bpc 3.485  gn 0.52  24 ms/step
+step  2550  loss 2.4014  bpc 3.464  gn 0.61  24 ms/step
+step  2600  loss 2.5453  bpc 3.672  gn 0.59  24 ms/step
+step  2650  loss 2.3678  bpc 3.416  gn 0.43  24 ms/step
+step  2700  loss 2.3328  bpc 3.366  gn 0.50  24 ms/step
+step  2750  loss 2.4544  bpc 3.541  gn 0.64  24 ms/step
+step  2800  loss 2.4085  bpc 3.475  gn 0.51  24 ms/step
+step  2850  loss 2.3982  bpc 3.460  gn 0.73  24 ms/step
+step  2900  loss 2.3902  bpc 3.448  gn 0.90  25 ms/step
+step  2950  loss 2.3625  bpc 3.408  gn 0.75  24 ms/step
+step  3000  loss 2.5061  bpc 3.616  gn 0.48  24 ms/step
+step  3050  loss 2.4433  bpc 3.525  gn 0.61  24 ms/step
+step  3100  loss 2.4194  bpc 3.490  gn 0.59  24 ms/step
+step  3150  loss 2.3578  bpc 3.402  gn 0.48  24 ms/step
+step  3200  loss 2.4094  bpc 3.476  gn 0.48  23 ms/step
+step  3250  loss 2.3885  bpc 3.446  gn 0.56  24 ms/step
+step  3300  loss 2.3714  bpc 3.421  gn 1.05  24 ms/step
+step  3350  loss 2.3379  bpc 3.373  gn 0.76  24 ms/step
+step  3400  loss 2.4107  bpc 3.478  gn 0.42  24 ms/step
+step  3450  loss 2.2901  bpc 3.304  gn 0.62  24 ms/step
+step  3500  loss 2.3651  bpc 3.412  gn 0.59  23 ms/step
+step  3550  loss 2.3834  bpc 3.439  gn 0.55  24 ms/step
+step  3600  loss 2.3908  bpc 3.449  gn 0.60  24 ms/step
+step  3650  loss 2.3982  bpc 3.460  gn 0.82  24 ms/step
+step  3700  loss 2.4273  bpc 3.502  gn 0.89  24 ms/step
+step  3750  loss 2.2754  bpc 3.283  gn 0.64  24 ms/step
+step  3800  loss 2.3775  bpc 3.430  gn 0.53  24 ms/step
+step  3850  loss 2.3166  bpc 3.342  gn 0.70  24 ms/step
+step  3900  loss 2.3689  bpc 3.418  gn 0.74  24 ms/step
+step  3950  loss 2.4396  bpc 3.520  gn 0.62  24 ms/step
+step  4000  loss 2.3781  bpc 3.431  gn 0.56  24 ms/step
+== eval step 4000: val_bpc 3.4368  ppl 10.829  [0:512) 3.388  [512:2048) 3.435  [2048:4096) 3.450  peak 2635 MB
+step  4050  loss 2.3597  bpc 3.404  gn 0.56  24 ms/step
+step  4100  loss 2.3538  bpc 3.396  gn 0.70  24 ms/step
+step  4150  loss 2.2963  bpc 3.313  gn 0.58  23 ms/step
+step  4200  loss 2.3240  bpc 3.353  gn 0.68  24 ms/step
+step  4250  loss 2.4217  bpc 3.494  gn 0.41  24 ms/step
+step  4300  loss 2.3851  bpc 3.441  gn 0.57  24 ms/step
+step  4350  loss 2.2919  bpc 3.307  gn 0.83  24 ms/step
+step  4400  loss 2.3978  bpc 3.459  gn 0.64  24 ms/step
+step  4450  loss 2.3692  bpc 3.418  gn 0.53  24 ms/step
+step  4500  loss 2.2812  bpc 3.291  gn 0.54  24 ms/step
+step  4550  loss 2.3817  bpc 3.436  gn 0.49  24 ms/step
+step  4600  loss 2.3117  bpc 3.335  gn 0.60  24 ms/step
+step  4650  loss 2.2295  bpc 3.217  gn 0.64  24 ms/step
+step  4700  loss 2.3407  bpc 3.377  gn 0.46  24 ms/step
+step  4750  loss 2.3453  bpc 3.384  gn 0.66  24 ms/step
+step  4800  loss 2.3575  bpc 3.401  gn 0.70  23 ms/step
+step  4850  loss 2.4011  bpc 3.464  gn 0.48  24 ms/step
+step  4900  loss 2.3842  bpc 3.440  gn 0.59  24 ms/step
+step  4950  loss 2.3006  bpc 3.319  gn 0.53  24 ms/step
+step  5000  loss 2.3375  bpc 3.372  gn 0.61  24 ms/step
+step  5050  loss 2.2497  bpc 3.246  gn 0.72  24 ms/step
+step  5100  loss 2.3724  bpc 3.423  gn 0.48  23 ms/step
+step  5150  loss 2.2616  bpc 3.263  gn 0.56  24 ms/step
+step  5200  loss 2.3401  bpc 3.376  gn 0.49  24 ms/step
+step  5250  loss 2.2562  bpc 3.255  gn 0.64  24 ms/step
+step  5300  loss 2.2225  bpc 3.206  gn 0.74  23 ms/step
+step  5350  loss 2.2743  bpc 3.281  gn 0.59  24 ms/step
+step  5400  loss 2.2946  bpc 3.310  gn 0.59  24 ms/step
+step  5450  loss 2.3790  bpc 3.432  gn 0.71  24 ms/step
+step  5500  loss 2.3915  bpc 3.450  gn 0.47  24 ms/step
+step  5550  loss 2.3614  bpc 3.407  gn 0.55  24 ms/step
+step  5600  loss 2.3366  bpc 3.371  gn 0.65  24 ms/step
+step  5650  loss 2.3787  bpc 3.432  gn 0.46  24 ms/step
+step  5700  loss 2.2312  bpc 3.219  gn 0.68  24 ms/step
+step  5750  loss 2.3388  bpc 3.374  gn 0.62  24 ms/step
+step  5800  loss 2.3464  bpc 3.385  gn 0.65  24 ms/step
+step  5850  loss 2.3042  bpc 3.324  gn 0.57  24 ms/step
+step  5900  loss 2.2863  bpc 3.298  gn 0.69  24 ms/step
+step  5950  loss 2.3204  bpc 3.348  gn 0.47  24 ms/step
+step  6000  loss 2.3393  bpc 3.375  gn 0.53  24 ms/step
+== eval step 6000: val_bpc 3.3554  ppl 10.235  [0:512) 3.294  [512:2048) 3.354  [2048:4096) 3.372  peak 2635 MB
+step  6050  loss 2.2590  bpc 3.259  gn 0.72  24 ms/step
+step  6100  loss 2.4158  bpc 3.485  gn 0.49  23 ms/step
+step  6150  loss 2.3565  bpc 3.400  gn 0.55  24 ms/step
+step  6200  loss 2.3524  bpc 3.394  gn 0.44  23 ms/step
+step  6250  loss 2.1904  bpc 3.160  gn 0.89  24 ms/step
+step  6300  loss 2.2510  bpc 3.247  gn 0.85  23 ms/step
+step  6350  loss 2.2730  bpc 3.279  gn 0.59  24 ms/step
+step  6400  loss 2.3215  bpc 3.349  gn 0.78  24 ms/step
+step  6450  loss 2.2810  bpc 3.291  gn 0.79  24 ms/step
+step  6500  loss 2.2240  bpc 3.208  gn 0.80  23 ms/step
+step  6550  loss 2.3527  bpc 3.394  gn 0.51  24 ms/step
+step  6600  loss 2.3371  bpc 3.372  gn 0.66  24 ms/step
+step  6650  loss 2.2757  bpc 3.283  gn 0.67  24 ms/step
+step  6700  loss 2.2745  bpc 3.281  gn 0.51  23 ms/step
+step  6750  loss 2.3189  bpc 3.346  gn 0.63  24 ms/step
+step  6800  loss 2.1911  bpc 3.161  gn 0.54  24 ms/step
+step  6850  loss 2.2327  bpc 3.221  gn 0.61  25 ms/step
+step  6900  loss 2.1679  bpc 3.128  gn 0.51  24 ms/step
+step  6950  loss 2.2477  bpc 3.243  gn 0.59  24 ms/step
+step  7000  loss 2.3360  bpc 3.370  gn 0.55  24 ms/step
+step  7050  loss 2.2878  bpc 3.301  gn 0.79  25 ms/step
+step  7100  loss 2.3001  bpc 3.318  gn 0.58  24 ms/step
+step  7150  loss 2.2954  bpc 3.312  gn 0.55  25 ms/step
+step  7200  loss 2.3596  bpc 3.404  gn 0.54  24 ms/step
+step  7250  loss 2.2958  bpc 3.312  gn 0.83  24 ms/step
+step  7300  loss 2.3108  bpc 3.334  gn 0.65  24 ms/step
+step  7350  loss 2.2780  bpc 3.286  gn 0.78  24 ms/step
+step  7400  loss 2.2978  bpc 3.315  gn 0.46  24 ms/step
+step  7450  loss 2.2326  bpc 3.221  gn 0.71  24 ms/step
+step  7500  loss 2.2005  bpc 3.175  gn 0.64  24 ms/step
+step  7550  loss 2.3340  bpc 3.367  gn 0.60  23 ms/step
+step  7600  loss 2.2730  bpc 3.279  gn 0.78  24 ms/step
+step  7650  loss 2.2935  bpc 3.309  gn 0.68  24 ms/step
+step  7700  loss 2.2015  bpc 3.176  gn 0.61  24 ms/step
+step  7750  loss 1.9950  bpc 2.878  gn 0.69  24 ms/step
+step  7800  loss 2.0940  bpc 3.021  gn 0.67  24 ms/step
+step  7850  loss 2.2829  bpc 3.294  gn 0.62  24 ms/step
+step  7900  loss 2.1395  bpc 3.087  gn 0.78  24 ms/step
+step  7950  loss 2.3081  bpc 3.330  gn 0.58  23 ms/step
+step  8000  loss 2.2347  bpc 3.224  gn 0.54  24 ms/step
+== eval step 8000: val_bpc 3.2726  ppl 9.664  [0:512) 3.187  [512:2048) 3.275  [2048:4096) 3.292  peak 2635 MB
+step  8050  loss 2.1574  bpc 3.112  gn 0.83  23 ms/step
+step  8100  loss 2.2932  bpc 3.308  gn 0.51  23 ms/step
+step  8150  loss 2.2702  bpc 3.275  gn 0.81  24 ms/step
+step  8200  loss 2.2675  bpc 3.271  gn 0.56  24 ms/step
+step  8250  loss 2.3670  bpc 3.415  gn 0.63  23 ms/step
+step  8300  loss 2.2054  bpc 3.182  gn 0.81  24 ms/step
+step  8350  loss 2.0072  bpc 2.896  gn 1.03  24 ms/step
+step  8400  loss 2.2041  bpc 3.180  gn 0.69  24 ms/step
+step  8450  loss 2.3252  bpc 3.355  gn 0.61  24 ms/step
+step  8500  loss 2.1823  bpc 3.148  gn 1.52  24 ms/step
+step  8550  loss 2.1468  bpc 3.097  gn 0.74  24 ms/step
+step  8600  loss 2.1867  bpc 3.155  gn 0.69  23 ms/step
+step  8650  loss 2.1939  bpc 3.165  gn 0.57  24 ms/step
+step  8700  loss 2.1743  bpc 3.137  gn 0.60  23 ms/step
+step  8750  loss 2.1559  bpc 3.110  gn 0.91  24 ms/step
+step  8800  loss 2.0046  bpc 2.892  gn 0.72  23 ms/step
+step  8850  loss 2.2177  bpc 3.200  gn 0.71  23 ms/step
+step  8900  loss 2.3295  bpc 3.361  gn 0.66  24 ms/step
+step  8950  loss 2.1998  bpc 3.174  gn 0.65  24 ms/step
+step  9000  loss 2.2319  bpc 3.220  gn 0.65  23 ms/step
+step  9050  loss 2.2070  bpc 3.184  gn 0.66  24 ms/step
+step  9100  loss 2.2122  bpc 3.191  gn 0.51  23 ms/step
+step  9150  loss 2.2137  bpc 3.194  gn 0.67  24 ms/step
+step  9200  loss 2.1789  bpc 3.143  gn 0.61  24 ms/step
+step  9250  loss 2.2912  bpc 3.306  gn 0.84  23 ms/step
+step  9300  loss 2.2289  bpc 3.216  gn 0.69  24 ms/step
+step  9350  loss 2.2644  bpc 3.267  gn 0.84  24 ms/step
+step  9400  loss 2.1848  bpc 3.152  gn 0.79  24 ms/step
+step  9450  loss 2.1875  bpc 3.156  gn 0.74  24 ms/step
+step  9500  loss 2.1649  bpc 3.123  gn 0.77  24 ms/step
+step  9550  loss 2.2507  bpc 3.247  gn 0.67  24 ms/step
+step  9600  loss 2.1860  bpc 3.154  gn 0.58  24 ms/step
+step  9650  loss 2.1342  bpc 3.079  gn 0.68  24 ms/step
+step  9700  loss 2.1948  bpc 3.166  gn 0.80  23 ms/step
+step  9750  loss 2.1148  bpc 3.051  gn 0.70  23 ms/step
+step  9800  loss 2.2406  bpc 3.233  gn 0.68  23 ms/step
+step  9850  loss 2.0944  bpc 3.022  gn 0.66  23 ms/step
+step  9900  loss 2.1965  bpc 3.169  gn 0.68  23 ms/step
+step  9950  loss 2.1575  bpc 3.113  gn 1.14  24 ms/step
+step 10000  loss 2.0713  bpc 2.988  gn 0.79  23 ms/step
+== eval step 10000: val_bpc 3.1941  ppl 9.152  [0:512) 3.089  [512:2048) 3.190  [2048:4096) 3.224  peak 2635 MB
+step 10050  loss 2.1972  bpc 3.170  gn 0.72  24 ms/step
+step 10100  loss 2.2598  bpc 3.260  gn 0.72  24 ms/step
+step 10150  loss 2.0326  bpc 2.932  gn 0.74  24 ms/step
+step 10200  loss 2.2280  bpc 3.214  gn 0.62  24 ms/step
+step 10250  loss 2.0873  bpc 3.011  gn 1.24  24 ms/step
+step 10300  loss 2.1562  bpc 3.111  gn 0.67  23 ms/step
+step 10350  loss 2.0939  bpc 3.021  gn 0.73  23 ms/step
+step 10400  loss 2.2085  bpc 3.186  gn 0.80  23 ms/step
+step 10450  loss 2.1876  bpc 3.156  gn 0.72  24 ms/step
+step 10500  loss 2.0944  bpc 3.022  gn 0.75  23 ms/step
+step 10550  loss 2.2116  bpc 3.191  gn 0.79  24 ms/step
+step 10600  loss 2.0684  bpc 2.984  gn 0.87  23 ms/step
+step 10650  loss 2.0909  bpc 3.017  gn 0.78  24 ms/step
+step 10700  loss 2.2514  bpc 3.248  gn 0.80  24 ms/step
+step 10750  loss 2.1542  bpc 3.108  gn 0.71  24 ms/step
+step 10800  loss 2.1832  bpc 3.150  gn 0.70  24 ms/step
+step 10850  loss 2.2397  bpc 3.231  gn 0.66  24 ms/step
+step 10900  loss 2.1626  bpc 3.120  gn 0.81  24 ms/step
+step 10950  loss 2.0548  bpc 2.964  gn 0.95  24 ms/step
+step 11000  loss 2.0523  bpc 2.961  gn 0.67  24 ms/step
+step 11050  loss 2.0099  bpc 2.900  gn 0.62  23 ms/step
+step 11100  loss 2.1042  bpc 3.036  gn 0.73  24 ms/step
+step 11150  loss 2.2154  bpc 3.196  gn 0.81  24 ms/step
+step 11200  loss 2.2330  bpc 3.222  gn 0.91  24 ms/step
+step 11250  loss 2.1656  bpc 3.124  gn 0.90  24 ms/step
+step 11300  loss 2.0690  bpc 2.985  gn 0.91  24 ms/step
+step 11350  loss 2.0670  bpc 2.982  gn 0.90  24 ms/step
+step 11400  loss 2.2483  bpc 3.244  gn 0.69  24 ms/step
+step 11450  loss 2.1726  bpc 3.134  gn 0.75  24 ms/step
+step 11500  loss 2.1458  bpc 3.096  gn 0.70  24 ms/step
+step 11550  loss 2.1401  bpc 3.088  gn 0.98  24 ms/step
+step 11600  loss 2.0746  bpc 2.993  gn 0.94  24 ms/step
+step 11650  loss 2.0538  bpc 2.963  gn 0.92  24 ms/step
+step 11700  loss 2.2478  bpc 3.243  gn 0.83  24 ms/step
+step 11750  loss 2.2756  bpc 3.283  gn 0.95  24 ms/step
+step 11800  loss 2.1524  bpc 3.105  gn 0.74  24 ms/step
+step 11850  loss 2.2293  bpc 3.216  gn 1.09  24 ms/step
+step 11900  loss 2.1712  bpc 3.132  gn 0.79  24 ms/step
+step 11950  loss 2.1280  bpc 3.070  gn 0.85  24 ms/step
+step 12000  loss 2.1383  bpc 3.085  gn 0.78  24 ms/step
+== eval step 12000: val_bpc 3.1186  ppl 8.685  [0:512) 2.988  [512:2048) 3.108  [2048:4096) 3.159  peak 2635 MB
+step 12050  loss 2.1399  bpc 3.087  gn 0.92  24 ms/step
+step 12100  loss 2.1176  bpc 3.055  gn 0.81  23 ms/step
+step 12150  loss 2.1809  bpc 3.146  gn 1.02  24 ms/step
+step 12200  loss 2.1011  bpc 3.031  gn 0.78  24 ms/step
+step 12250  loss 2.0711  bpc 2.988  gn 1.02  24 ms/step
+step 12300  loss 2.0156  bpc 2.908  gn 0.89  23 ms/step
+step 12350  loss 2.1455  bpc 3.095  gn 1.02  23 ms/step
+step 12400  loss 2.0290  bpc 2.927  gn 1.11  24 ms/step
+step 12450  loss 2.1244  bpc 3.065  gn 0.90  24 ms/step
+step 12500  loss 2.0367  bpc 2.938  gn 0.86  24 ms/step
+step 12550  loss 2.1331  bpc 3.077  gn 0.81  24 ms/step
+step 12600  loss 2.0795  bpc 3.000  gn 1.11  24 ms/step
+step 12650  loss 2.1468  bpc 3.097  gn 0.85  24 ms/step
+step 12700  loss 2.1241  bpc 3.064  gn 0.83  24 ms/step
+step 12750  loss 2.0197  bpc 2.914  gn 0.82  24 ms/step
+step 12800  loss 2.0005  bpc 2.886  gn 0.87  24 ms/step
+step 12850  loss 2.1005  bpc 3.030  gn 0.98  24 ms/step
+step 12900  loss 2.1920  bpc 3.162  gn 0.93  24 ms/step
+step 12950  loss 2.0917  bpc 3.018  gn 0.97  24 ms/step
+step 13000  loss 2.2315  bpc 3.219  gn 0.99  24 ms/step
+step 13050  loss 2.0985  bpc 3.027  gn 0.94  24 ms/step
+step 13100  loss 2.1415  bpc 3.089  gn 0.86  24 ms/step
+step 13150  loss 2.0578  bpc 2.969  gn 0.93  24 ms/step
+step 13200  loss 2.1240  bpc 3.064  gn 1.01  24 ms/step
+step 13250  loss 2.0940  bpc 3.021  gn 1.13  23 ms/step
+step 13300  loss 2.1443  bpc 3.094  gn 1.06  24 ms/step
+step 13350  loss 2.1821  bpc 3.148  gn 1.04  24 ms/step
+step 13400  loss 2.0223  bpc 2.918  gn 1.18  24 ms/step
+step 13450  loss 2.0495  bpc 2.957  gn 1.00  24 ms/step
+step 13500  loss 2.1607  bpc 3.117  gn 0.96  24 ms/step
+step 13550  loss 1.9344  bpc 2.791  gn 0.96  24 ms/step
+step 13600  loss 2.1183  bpc 3.056  gn 1.20  23 ms/step
+step 13650  loss 2.0615  bpc 2.974  gn 0.89  24 ms/step
+step 13700  loss 1.9985  bpc 2.883  gn 1.08  24 ms/step
+step 13750  loss 2.1583  bpc 3.114  gn 1.07  24 ms/step
+step 13800  loss 2.2109  bpc 3.190  gn 1.21  24 ms/step
+step 13850  loss 1.9657  bpc 2.836  gn 0.94  24 ms/step
+step 13900  loss 2.0643  bpc 2.978  gn 0.89  24 ms/step
+step 13950  loss 2.1549  bpc 3.109  gn 1.04  24 ms/step
+step 14000  loss 2.0243  bpc 2.921  gn 0.97  24 ms/step
+== eval step 14000: val_bpc 3.0577  ppl 8.326  [0:512) 2.916  [512:2048) 3.043  [2048:4096) 3.104  peak 2635 MB
+step 14050  loss 2.0729  bpc 2.991  gn 0.97  24 ms/step
+step 14100  loss 2.1054  bpc 3.038  gn 0.98  24 ms/step
+step 14150  loss 2.0605  bpc 2.973  gn 0.90  24 ms/step
+step 14200  loss 2.0138  bpc 2.905  gn 0.95  24 ms/step
+step 14250  loss 2.1221  bpc 3.062  gn 1.05  23 ms/step
+step 14300  loss 1.9650  bpc 2.835  gn 0.92  24 ms/step
+step 14350  loss 2.0072  bpc 2.896  gn 1.24  24 ms/step
+step 14400  loss 2.1113  bpc 3.046  gn 1.11  24 ms/step
+step 14450  loss 2.0517  bpc 2.960  gn 1.14  23 ms/step
+step 14500  loss 1.9814  bpc 2.859  gn 0.99  24 ms/step
+step 14550  loss 2.0633  bpc 2.977  gn 1.19  24 ms/step
+step 14600  loss 2.1296  bpc 3.072  gn 1.07  24 ms/step
+step 14650  loss 2.0570  bpc 2.968  gn 1.17  24 ms/step
+step 14700  loss 2.1611  bpc 3.118  gn 0.97  24 ms/step
+step 14750  loss 2.1367  bpc 3.083  gn 0.92  23 ms/step
+step 14800  loss 2.1567  bpc 3.111  gn 0.99  24 ms/step
+step 14850  loss 2.0357  bpc 2.937  gn 1.05  23 ms/step
+step 14900  loss 2.0397  bpc 2.943  gn 1.06  24 ms/step
+step 14950  loss 2.1135  bpc 3.049  gn 1.04  24 ms/step
+step 15000  loss 2.1038  bpc 3.035  gn 0.94  24 ms/step
+step 15050  loss 2.0957  bpc 3.023  gn 1.06  24 ms/step
+step 15100  loss 2.0484  bpc 2.955  gn 1.00  24 ms/step
+step 15150  loss 2.2257  bpc 3.211  gn 1.11  24 ms/step
+step 15200  loss 2.0288  bpc 2.927  gn 1.17  24 ms/step
+step 15250  loss 2.0927  bpc 3.019  gn 1.24  24 ms/step
+step 15300  loss 1.9805  bpc 2.857  gn 1.05  23 ms/step
+step 15350  loss 1.9726  bpc 2.846  gn 1.09  24 ms/step
+step 15400  loss 2.1303  bpc 3.073  gn 1.06  24 ms/step
+step 15450  loss 2.0339  bpc 2.934  gn 1.12  24 ms/step
+step 15500  loss 2.1302  bpc 3.073  gn 1.03  23 ms/step
+step 15550  loss 2.0300  bpc 2.929  gn 1.18  24 ms/step
+step 15600  loss 2.0443  bpc 2.949  gn 1.22  23 ms/step
+step 15650  loss 2.0086  bpc 2.898  gn 1.21  24 ms/step
+step 15700  loss 1.8673  bpc 2.694  gn 0.99  24 ms/step
+step 15750  loss 2.0859  bpc 3.009  gn 1.31  24 ms/step
+step 15800  loss 2.0744  bpc 2.993  gn 1.28  24 ms/step
+step 15850  loss 2.0436  bpc 2.948  gn 1.13  24 ms/step
+step 15900  loss 1.9680  bpc 2.839  gn 1.23  24 ms/step
+step 15950  loss 2.0327  bpc 2.933  gn 1.17  23 ms/step
+step 16000  loss 2.0470  bpc 2.953  gn 1.05  24 ms/step
+== eval step 16000: val_bpc 3.0088  ppl 8.049  [0:512) 2.864  [512:2048) 2.991  [2048:4096) 3.058  peak 2635 MB
+step 16050  loss 2.0866  bpc 3.010  gn 1.05  24 ms/step
+step 16100  loss 1.9287  bpc 2.783  gn 1.33  24 ms/step
+step 16150  loss 1.9982  bpc 2.883  gn 1.13  24 ms/step
+step 16200  loss 1.9661  bpc 2.836  gn 1.18  24 ms/step
+step 16250  loss 2.0155  bpc 2.908  gn 1.15  24 ms/step
+step 16300  loss 1.9933  bpc 2.876  gn 1.42  24 ms/step
+step 16350  loss 1.9375  bpc 2.795  gn 1.34  23 ms/step
+step 16400  loss 2.0596  bpc 2.971  gn 1.11  24 ms/step
+step 16450  loss 2.0565  bpc 2.967  gn 1.16  24 ms/step
+step 16500  loss 2.0272  bpc 2.925  gn 1.12  24 ms/step
+step 16550  loss 1.7320  bpc 2.499  gn 1.07  24 ms/step
+step 16600  loss 1.9878  bpc 2.868  gn 1.25  24 ms/step
+step 16650  loss 2.0082  bpc 2.897  gn 1.17  24 ms/step
+step 16700  loss 2.0469  bpc 2.953  gn 1.17  24 ms/step
+step 16750  loss 2.1274  bpc 3.069  gn 1.11  24 ms/step
+step 16800  loss 2.0635  bpc 2.977  gn 1.05  24 ms/step
+step 16850  loss 2.1480  bpc 3.099  gn 0.94  23 ms/step
+step 16900  loss 1.9928  bpc 2.875  gn 1.13  24 ms/step
+step 16950  loss 2.1654  bpc 3.124  gn 1.10  24 ms/step
+step 17000  loss 1.9528  bpc 2.817  gn 1.17  24 ms/step
+step 17050  loss 2.0814  bpc 3.003  gn 1.12  24 ms/step
+step 17100  loss 2.0973  bpc 3.026  gn 1.25  24 ms/step
+step 17150  loss 2.0765  bpc 2.996  gn 1.14  24 ms/step
+step 17200  loss 2.0213  bpc 2.916  gn 1.41  23 ms/step
+step 17250  loss 1.9551  bpc 2.821  gn 1.44  24 ms/step
+step 17300  loss 2.0591  bpc 2.971  gn 1.11  24 ms/step
+step 17350  loss 2.0537  bpc 2.963  gn 1.48  24 ms/step
+step 17400  loss 2.1250  bpc 3.066  gn 1.23  24 ms/step
+step 17450  loss 1.9709  bpc 2.843  gn 1.08  24 ms/step
+step 17500  loss 1.9976  bpc 2.882  gn 1.12  24 ms/step
+step 17550  loss 2.1575  bpc 3.113  gn 1.19  24 ms/step
+step 17600  loss 2.0036  bpc 2.891  gn 1.19  24 ms/step
+step 17650  loss 2.0702  bpc 2.987  gn 1.47  24 ms/step
+step 17700  loss 2.1181  bpc 3.056  gn 1.04  24 ms/step
+step 17750  loss 1.9732  bpc 2.847  gn 1.09  23 ms/step
+step 17800  loss 2.1037  bpc 3.035  gn 1.09  24 ms/step
+step 17850  loss 2.0359  bpc 2.937  gn 1.25  24 ms/step
+step 17900  loss 2.0724  bpc 2.990  gn 1.04  24 ms/step
+step 17950  loss 1.9455  bpc 2.807  gn 1.07  24 ms/step
+step 18000  loss 2.1280  bpc 3.070  gn 1.21  24 ms/step
+== eval step 18000: val_bpc 2.9851  ppl 7.918  [0:512) 2.841  [512:2048) 2.967  [2048:4096) 3.035  peak 2635 MB
+step 18050  loss 1.9644  bpc 2.834  gn 1.11  24 ms/step
+step 18100  loss 1.8227  bpc 2.630  gn 1.26  24 ms/step
+step 18150  loss 1.9720  bpc 2.845  gn 1.26  24 ms/step
+step 18200  loss 2.1127  bpc 3.048  gn 1.28  24 ms/step
+step 18250  loss 2.1194  bpc 3.058  gn 1.23  24 ms/step
+step 18300  loss 2.0969  bpc 3.025  gn 1.37  24 ms/step
+step 18350  loss 2.0580  bpc 2.969  gn 1.07  24 ms/step
+step 18400  loss 1.9733  bpc 2.847  gn 1.07  24 ms/step
+step 18450  loss 1.9327  bpc 2.788  gn 1.16  24 ms/step
+step 18500  loss 2.0871  bpc 3.011  gn 1.38  24 ms/step
+step 18550  loss 1.8975  bpc 2.738  gn 1.41  24 ms/step
+step 18600  loss 2.0369  bpc 2.939  gn 1.29  24 ms/step
+step 18650  loss 1.9777  bpc 2.853  gn 1.12  24 ms/step
+step 18700  loss 2.0503  bpc 2.958  gn 1.24  24 ms/step
+step 18750  loss 2.0568  bpc 2.967  gn 1.14  24 ms/step
+step 18800  loss 2.0543  bpc 2.964  gn 1.36  24 ms/step
+step 18850  loss 2.1160  bpc 3.053  gn 1.14  24 ms/step
+step 18900  loss 1.7133  bpc 2.472  gn 1.20  24 ms/step
+step 18950  loss 2.0188  bpc 2.912  gn 1.18  24 ms/step
+step 19000  loss 2.0543  bpc 2.964  gn 1.24  24 ms/step
+step 19050  loss 2.0892  bpc 3.014  gn 1.26  24 ms/step
+step 19100  loss 2.0296  bpc 2.928  gn 1.12  23 ms/step
+step 19150  loss 2.1113  bpc 3.046  gn 1.09  23 ms/step
+step 19200  loss 1.9425  bpc 2.802  gn 1.18  24 ms/step
+step 19250  loss 2.0814  bpc 3.003  gn 1.07  24 ms/step
+step 19300  loss 2.0225  bpc 2.918  gn 1.13  24 ms/step
+step 19350  loss 2.1044  bpc 3.036  gn 1.09  23 ms/step
+step 19400  loss 2.0834  bpc 3.006  gn 1.20  23 ms/step
+step 19450  loss 2.0056  bpc 2.894  gn 1.21  24 ms/step
+step 19500  loss 1.9271  bpc 2.780  gn 1.14  24 ms/step
+step 19550  loss 2.0085  bpc 2.898  gn 1.34  24 ms/step
+step 19600  loss 2.0185  bpc 2.912  gn 1.30  24 ms/step
+step 19650  loss 1.9596  bpc 2.827  gn 1.16  24 ms/step
+step 19700  loss 1.9333  bpc 2.789  gn 1.13  23 ms/step
+step 19750  loss 1.9260  bpc 2.779  gn 1.12  24 ms/step
+step 19800  loss 1.9458  bpc 2.807  gn 1.13  24 ms/step
+step 19850  loss 1.9380  bpc 2.796  gn 1.05  24 ms/step
+step 19900  loss 2.0266  bpc 2.924  gn 1.17  24 ms/step
+step 19950  loss 2.0295  bpc 2.928  gn 1.12  24 ms/step
+step 20000  loss 2.0825  bpc 3.004  gn 1.09  24 ms/step
+== eval step 20000: val_bpc 2.9799  ppl 7.889  [0:512) 2.836  [512:2048) 2.961  [2048:4096) 3.030  peak 2635 MB
+done: {"run": "smat_d1_qkn", "arm": "smat", "d": 1, "step": 20000, "train_loss": 2.0825390815734863, "train_loss_med200": 2.0261123180389404, "val_bpc": 2.979852159997871, "val_ppl": 7.889053164742089, "val_bpc_0_512": 2.836461355693171, "val_bpc_512_2048": 2.9612555451704345, "val_bpc_2048_4096": 3.0296473221946223, "grad_norm": 1.0943903923034668, "nonfinite_steps": 0, "ms_per_step": 23.746976256370544, "peak_MB": 2635.26513671875, "params": 4336128, "elapsed_s": 478.71641206741333, "mask_nnz": 8390656, "mask_density": 0.5001220703125, "mask_n": 2048, "mask_q": 0, "mask_B": 1}
+==== arm: --arm smat --d 2   Thu Sep  3 03:58:35 PM CDT 2026 ====
+{
+ "run": "smat_d2_qkn",
+ "arm": "smat",
+ "d": 2,
+ "T": 4096,
+ "layers": 4,
+ "d_model": 256,
+ "heads": 4,
+ "r": 64,
+ "learn_phi": false,
+ "qk_norm": true,
+ "chunk": 128,
+ "steps": 20000,
+ "nb": 8,
+ "lr": 0.0003,
+ "warmup": 500,
+ "wd": 0.1,
+ "clip": 1.0,
+ "eval_every": 2000,
+ "val_windows": 256,
+ "eval_nb": 8,
+ "data": "/u/archerdw/smat_attention/deltaai/data/enwik8",
+ "out": "results/lm_T4096_20k_qkn.csv",
+ "device": "cuda",
+ "no_amp": false,
+ "seed": 0
+}
+mask: {'mask_nnz': 4285604, 'mask_density': 0.25544190406799316, 'mask_n': 2048, 'mask_q': 47, 'mask_B': 47}
+params: 4,336,128
+step    50  loss 4.4232  bpc 6.381  gn 2.58  32 ms/step
+step   100  loss 3.6986  bpc 5.336  gn 1.72  28 ms/step
+step   150  loss 3.1455  bpc 4.538  gn 0.95  27 ms/step
+step   200  loss 2.8308  bpc 4.084  gn 0.57  27 ms/step
+step   250  loss 2.7102  bpc 3.910  gn 0.72  27 ms/step
+step   300  loss 2.6237  bpc 3.785  gn 0.77  29 ms/step
+step   350  loss 2.5712  bpc 3.709  gn 0.53  27 ms/step
+step   400  loss 2.7026  bpc 3.899  gn 0.52  27 ms/step
+step   450  loss 2.6359  bpc 3.803  gn 0.69  27 ms/step
+step   500  loss 2.6143  bpc 3.772  gn 0.65  27 ms/step
+step   550  loss 2.5995  bpc 3.750  gn 0.46  27 ms/step
+step   600  loss 2.6257  bpc 3.788  gn 0.50  27 ms/step
+step   650  loss 2.6126  bpc 3.769  gn 0.64  27 ms/step
+step   700  loss 2.5991  bpc 3.750  gn 0.55  27 ms/step
+step   750  loss 2.5618  bpc 3.696  gn 0.47  27 ms/step
+step   800  loss 2.5427  bpc 3.668  gn 0.45  27 ms/step
+step   850  loss 2.5376  bpc 3.661  gn 0.42  27 ms/step
+step   900  loss 2.5001  bpc 3.607  gn 0.57  27 ms/step
+step   950  loss 2.5345  bpc 3.656  gn 0.52  27 ms/step
+step  1000  loss 2.4580  bpc 3.546  gn 0.41  27 ms/step
+step  1050  loss 2.5300  bpc 3.650  gn 0.78  27 ms/step
+step  1100  loss 2.5465  bpc 3.674  gn 0.41  27 ms/step
+step  1150  loss 2.5418  bpc 3.667  gn 1.06  28 ms/step
+step  1200  loss 2.5000  bpc 3.607  gn 0.59  27 ms/step
+step  1250  loss 2.5591  bpc 3.692  gn 0.49  27 ms/step
+step  1300  loss 2.4806  bpc 3.579  gn 0.53  27 ms/step
+step  1350  loss 2.5199  bpc 3.635  gn 0.73  27 ms/step
+step  1400  loss 2.4963  bpc 3.601  gn 0.55  27 ms/step
+step  1450  loss 2.4999  bpc 3.607  gn 0.54  27 ms/step
+step  1500  loss 2.4829  bpc 3.582  gn 0.59  28 ms/step
+step  1550  loss 2.5209  bpc 3.637  gn 0.57  27 ms/step
+step  1600  loss 2.4500  bpc 3.535  gn 0.40  27 ms/step
+step  1650  loss 2.4005  bpc 3.463  gn 0.45  27 ms/step
+step  1700  loss 2.4734  bpc 3.568  gn 0.45  27 ms/step
+step  1750  loss 2.5562  bpc 3.688  gn 0.59  27 ms/step
+step  1800  loss 2.5243  bpc 3.642  gn 0.68  27 ms/step
+step  1850  loss 2.4631  bpc 3.553  gn 0.45  27 ms/step
+step  1900  loss 2.4355  bpc 3.514  gn 0.44  27 ms/step
+step  1950  loss 2.4197  bpc 3.491  gn 0.57  27 ms/step
+step  2000  loss 2.4329  bpc 3.510  gn 0.68  27 ms/step
+== eval step 2000: val_bpc 3.5451  ppl 11.673  [0:512) 3.478  [512:2048) 3.518  [2048:4096) 3.582  peak 2977 MB
+step  2050  loss 2.3855  bpc 3.442  gn 1.07  27 ms/step
+step  2100  loss 2.4765  bpc 3.573  gn 0.89  27 ms/step
+step  2150  loss 2.4685  bpc 3.561  gn 0.77  28 ms/step
+step  2200  loss 2.4754  bpc 3.571  gn 0.59  27 ms/step
+step  2250  loss 2.4116  bpc 3.479  gn 0.54  27 ms/step
+step  2300  loss 2.2846  bpc 3.296  gn 0.70  28 ms/step
+step  2350  loss 2.3788  bpc 3.432  gn 0.52  28 ms/step
+step  2400  loss 2.4291  bpc 3.505  gn 0.67  27 ms/step
+step  2450  loss 2.4198  bpc 3.491  gn 0.64  27 ms/step
+step  2500  loss 2.3907  bpc 3.449  gn 0.66  27 ms/step
+step  2550  loss 2.3774  bpc 3.430  gn 0.77  27 ms/step
+step  2600  loss 2.5192  bpc 3.634  gn 0.56  27 ms/step
+step  2650  loss 2.3411  bpc 3.377  gn 0.76  27 ms/step
+step  2700  loss 2.2982  bpc 3.316  gn 0.71  27 ms/step
+step  2750  loss 2.4282  bpc 3.503  gn 0.68  27 ms/step
+step  2800  loss 2.3805  bpc 3.434  gn 0.73  27 ms/step
+step  2850  loss 2.3680  bpc 3.416  gn 0.62  27 ms/step
+step  2900  loss 2.3656  bpc 3.413  gn 0.78  27 ms/step
+step  2950  loss 2.3269  bpc 3.357  gn 0.62  27 ms/step
+step  3000  loss 2.4847  bpc 3.585  gn 0.83  27 ms/step
+step  3050  loss 2.4064  bpc 3.472  gn 0.77  27 ms/step
+step  3100  loss 2.3687  bpc 3.417  gn 0.85  27 ms/step
+step  3150  loss 2.3129  bpc 3.337  gn 0.57  27 ms/step
+step  3200  loss 2.3810  bpc 3.435  gn 0.57  27 ms/step
+step  3250  loss 2.3427  bpc 3.380  gn 0.71  28 ms/step
+step  3300  loss 2.3154  bpc 3.340  gn 0.95  27 ms/step
+step  3350  loss 2.2998  bpc 3.318  gn 0.93  27 ms/step
+step  3400  loss 2.3723  bpc 3.423  gn 0.46  27 ms/step
+step  3450  loss 2.2318  bpc 3.220  gn 0.79  27 ms/step
+step  3500  loss 2.3093  bpc 3.332  gn 0.93  27 ms/step
+step  3550  loss 2.3268  bpc 3.357  gn 0.65  27 ms/step
+step  3600  loss 2.3387  bpc 3.374  gn 0.64  27 ms/step
+step  3650  loss 2.3380  bpc 3.373  gn 0.72  27 ms/step
+step  3700  loss 2.3800  bpc 3.434  gn 0.79  27 ms/step
+step  3750  loss 2.1925  bpc 3.163  gn 0.73  27 ms/step
+step  3800  loss 2.3389  bpc 3.374  gn 0.74  28 ms/step
+step  3850  loss 2.2548  bpc 3.253  gn 0.78  27 ms/step
+step  3900  loss 2.2954  bpc 3.312  gn 0.71  27 ms/step
+step  3950  loss 2.4004  bpc 3.463  gn 0.61  27 ms/step
+step  4000  loss 2.3229  bpc 3.351  gn 0.71  27 ms/step
+== eval step 4000: val_bpc 3.3619  ppl 10.281  [0:512) 3.305  [512:2048) 3.374  [2048:4096) 3.367  peak 2977 MB
+step  4050  loss 2.3162  bpc 3.342  gn 0.81  27 ms/step
+step  4100  loss 2.2848  bpc 3.296  gn 0.63  27 ms/step
+step  4150  loss 2.2298  bpc 3.217  gn 0.66  27 ms/step
+step  4200  loss 2.2734  bpc 3.280  gn 0.66  27 ms/step
+step  4250  loss 2.3760  bpc 3.428  gn 0.60  27 ms/step
+step  4300  loss 2.3320  bpc 3.364  gn 0.74  28 ms/step
+step  4350  loss 2.2351  bpc 3.225  gn 1.00  27 ms/step
+step  4400  loss 2.3195  bpc 3.346  gn 0.62  28 ms/step
+step  4450  loss 2.3165  bpc 3.342  gn 0.73  27 ms/step
+step  4500  loss 2.2034  bpc 3.179  gn 0.58  27 ms/step
+step  4550  loss 2.3104  bpc 3.333  gn 0.59  27 ms/step
+step  4600  loss 2.2384  bpc 3.229  gn 0.74  28 ms/step
+step  4650  loss 2.1465  bpc 3.097  gn 0.69  27 ms/step
+step  4700  loss 2.2766  bpc 3.284  gn 0.61  27 ms/step
+step  4750  loss 2.2652  bpc 3.268  gn 0.68  28 ms/step
+step  4800  loss 2.2669  bpc 3.270  gn 0.73  28 ms/step
+step  4850  loss 2.3355  bpc 3.369  gn 0.65  28 ms/step
+step  4900  loss 2.3091  bpc 3.331  gn 0.92  28 ms/step
+step  4950  loss 2.2371  bpc 3.228  gn 0.76  27 ms/step
+step  5000  loss 2.2576  bpc 3.257  gn 0.72  27 ms/step
+step  5050  loss 2.1516  bpc 3.104  gn 0.64  27 ms/step
+step  5100  loss 2.2945  bpc 3.310  gn 0.65  27 ms/step
+step  5150  loss 2.1861  bpc 3.154  gn 0.64  27 ms/step
+step  5200  loss 2.2728  bpc 3.279  gn 0.69  27 ms/step
+step  5250  loss 2.1708  bpc 3.132  gn 0.90  27 ms/step
+step  5300  loss 2.1448  bpc 3.094  gn 0.72  27 ms/step
+step  5350  loss 2.1787  bpc 3.143  gn 0.60  27 ms/step
+step  5400  loss 2.2110  bpc 3.190  gn 0.92  27 ms/step
+step  5450  loss 2.3010  bpc 3.320  gn 0.70  28 ms/step
+step  5500  loss 2.3095  bpc 3.332  gn 0.55  27 ms/step
+step  5550  loss 2.2707  bpc 3.276  gn 0.66  27 ms/step
+step  5600  loss 2.2420  bpc 3.235  gn 0.82  27 ms/step
+step  5650  loss 2.3010  bpc 3.320  gn 0.59  27 ms/step
+step  5700  loss 2.1378  bpc 3.084  gn 0.69  27 ms/step
+step  5750  loss 2.2469  bpc 3.242  gn 0.67  27 ms/step
+step  5800  loss 2.2514  bpc 3.248  gn 0.68  27 ms/step
+step  5850  loss 2.2086  bpc 3.186  gn 0.71  27 ms/step
+step  5900  loss 2.1729  bpc 3.135  gn 0.64  27 ms/step
+step  5950  loss 2.2310  bpc 3.219  gn 0.68  27 ms/step
+step  6000  loss 2.2527  bpc 3.250  gn 0.85  27 ms/step
+== eval step 6000: val_bpc 3.2180  ppl 9.305  [0:512) 3.128  [512:2048) 3.242  [2048:4096) 3.223  peak 2977 MB
+step  6050  loss 2.1603  bpc 3.117  gn 0.91  27 ms/step
+step  6100  loss 2.3444  bpc 3.382  gn 0.71  27 ms/step
+step  6150  loss 2.2764  bpc 3.284  gn 0.64  28 ms/step
+step  6200  loss 2.2640  bpc 3.266  gn 0.57  27 ms/step
+step  6250  loss 2.0748  bpc 2.993  gn 0.81  27 ms/step
+step  6300  loss 2.1381  bpc 3.085  gn 0.67  27 ms/step
+step  6350  loss 2.1563  bpc 3.111  gn 0.64  27 ms/step
+step  6400  loss 2.2053  bpc 3.182  gn 0.72  27 ms/step
+step  6450  loss 2.1774  bpc 3.141  gn 0.89  27 ms/step
+step  6500  loss 2.1019  bpc 3.032  gn 0.78  27 ms/step
+step  6550  loss 2.2512  bpc 3.248  gn 0.74  27 ms/step
+step  6600  loss 2.2388  bpc 3.230  gn 0.69  27 ms/step
+step  6650  loss 2.1698  bpc 3.130  gn 1.07  27 ms/step
+step  6700  loss 2.1663  bpc 3.125  gn 0.72  27 ms/step
+step  6750  loss 2.2022  bpc 3.177  gn 0.87  27 ms/step
+step  6800  loss 2.0777  bpc 2.998  gn 0.72  27 ms/step
+step  6850  loss 2.1098  bpc 3.044  gn 0.70  27 ms/step
+step  6900  loss 2.0438  bpc 2.949  gn 0.71  28 ms/step
+step  6950  loss 2.1287  bpc 3.071  gn 0.73  27 ms/step
+step  7000  loss 2.2284  bpc 3.215  gn 0.89  27 ms/step
+step  7050  loss 2.1626  bpc 3.120  gn 0.88  27 ms/step
+step  7100  loss 2.1964  bpc 3.169  gn 0.78  27 ms/step
+step  7150  loss 2.1805  bpc 3.146  gn 0.70  27 ms/step
+step  7200  loss 2.2442  bpc 3.238  gn 0.76  27 ms/step
+step  7250  loss 2.1577  bpc 3.113  gn 0.86  27 ms/step
+step  7300  loss 2.1946  bpc 3.166  gn 1.10  27 ms/step
+step  7350  loss 2.1349  bpc 3.080  gn 0.87  27 ms/step
+step  7400  loss 2.1589  bpc 3.115  gn 0.83  27 ms/step
+step  7450  loss 2.1021  bpc 3.033  gn 0.99  28 ms/step
+step  7500  loss 2.0645  bpc 2.979  gn 0.72  27 ms/step
+step  7550  loss 2.1964  bpc 3.169  gn 0.78  27 ms/step
+step  7600  loss 2.1391  bpc 3.086  gn 0.90  28 ms/step
+step  7650  loss 2.1608  bpc 3.117  gn 0.92  27 ms/step
+step  7700  loss 2.0610  bpc 2.973  gn 0.69  27 ms/step
+step  7750  loss 1.8537  bpc 2.674  gn 0.81  27 ms/step
+step  7800  loss 1.9559  bpc 2.822  gn 0.82  27 ms/step
+step  7850  loss 2.1602  bpc 3.116  gn 0.91  27 ms/step
+step  7900  loss 1.9969  bpc 2.881  gn 0.94  27 ms/step
+step  7950  loss 2.1683  bpc 3.128  gn 0.97  28 ms/step
+step  8000  loss 2.0887  bpc 3.013  gn 0.73  27 ms/step
+== eval step 8000: val_bpc 3.0562  ppl 8.318  [0:512) 2.943  [512:2048) 3.077  [2048:4096) 3.069  peak 2977 MB
+step  8050  loss 2.0084  bpc 2.897  gn 1.06  27 ms/step
+step  8100  loss 2.1328  bpc 3.077  gn 0.82  27 ms/step
+step  8150  loss 2.1283  bpc 3.070  gn 0.96  27 ms/step
+step  8200  loss 2.1179  bpc 3.055  gn 0.79  27 ms/step
+step  8250  loss 2.2117  bpc 3.191  gn 0.88  28 ms/step
+step  8300  loss 2.0481  bpc 2.955  gn 0.93  27 ms/step
+step  8350  loss 1.8377  bpc 2.651  gn 1.10  28 ms/step
+step  8400  loss 2.0428  bpc 2.947  gn 0.92  27 ms/step
+step  8450  loss 2.1524  bpc 3.105  gn 0.97  28 ms/step
+step  8500  loss 1.9951  bpc 2.878  gn 0.93  27 ms/step
+step  8550  loss 1.9883  bpc 2.868  gn 0.88  27 ms/step
+step  8600  loss 2.0436  bpc 2.948  gn 0.95  27 ms/step
+step  8650  loss 2.0326  bpc 2.932  gn 0.75  27 ms/step
+step  8700  loss 1.9985  bpc 2.883  gn 0.84  27 ms/step
+step  8750  loss 1.9893  bpc 2.870  gn 0.93  27 ms/step
+step  8800  loss 1.8402  bpc 2.655  gn 1.11  27 ms/step
+step  8850  loss 2.0602  bpc 2.972  gn 1.03  27 ms/step
+step  8900  loss 2.1594  bpc 3.115  gn 0.91  27 ms/step
+step  8950  loss 2.0328  bpc 2.933  gn 0.82  27 ms/step
+step  9000  loss 2.0508  bpc 2.959  gn 0.99  27 ms/step
+step  9050  loss 2.0432  bpc 2.948  gn 1.17  28 ms/step
+step  9100  loss 2.0375  bpc 2.940  gn 0.71  28 ms/step
+step  9150  loss 2.0169  bpc 2.910  gn 0.94  27 ms/step
+step  9200  loss 1.9803  bpc 2.857  gn 0.92  27 ms/step
+step  9250  loss 2.0915  bpc 3.017  gn 0.84  27 ms/step
+step  9300  loss 2.0513  bpc 2.959  gn 0.97  27 ms/step
+step  9350  loss 2.0771  bpc 2.997  gn 1.03  27 ms/step
+step  9400  loss 1.9954  bpc 2.879  gn 1.09  27 ms/step
+step  9450  loss 1.9778  bpc 2.853  gn 0.99  27 ms/step
+step  9500  loss 1.9742  bpc 2.848  gn 0.91  27 ms/step
+step  9550  loss 2.0396  bpc 2.942  gn 1.08  27 ms/step
+step  9600  loss 1.9808  bpc 2.858  gn 0.88  27 ms/step
+step  9650  loss 1.9485  bpc 2.811  gn 0.87  27 ms/step
+step  9700  loss 1.9917  bpc 2.873  gn 1.13  28 ms/step
+step  9750  loss 1.8753  bpc 2.706  gn 0.98  27 ms/step
+step  9800  loss 2.0174  bpc 2.911  gn 1.02  27 ms/step
+step  9850  loss 1.8917  bpc 2.729  gn 1.04  28 ms/step
+step  9900  loss 1.9717  bpc 2.845  gn 1.13  27 ms/step
+step  9950  loss 1.9366  bpc 2.794  gn 1.25  27 ms/step
+step 10000  loss 1.8402  bpc 2.655  gn 0.93  27 ms/step
+== eval step 10000: val_bpc 2.8746  ppl 7.334  [0:512) 2.739  [512:2048) 2.894  [2048:4096) 2.894  peak 2977 MB
+step 10050  loss 1.9750  bpc 2.849  gn 0.96  27 ms/step
+step 10100  loss 2.0397  bpc 2.943  gn 1.02  27 ms/step
+step 10150  loss 1.8276  bpc 2.637  gn 0.94  27 ms/step
+step 10200  loss 2.0006  bpc 2.886  gn 1.05  27 ms/step
+step 10250  loss 1.8520  bpc 2.672  gn 1.27  27 ms/step
+step 10300  loss 1.9455  bpc 2.807  gn 1.06  27 ms/step
+step 10350  loss 1.8581  bpc 2.681  gn 1.00  28 ms/step
+step 10400  loss 1.9812  bpc 2.858  gn 1.14  27 ms/step
+step 10450  loss 1.9568  bpc 2.823  gn 0.94  28 ms/step
+step 10500  loss 1.8759  bpc 2.706  gn 0.99  27 ms/step
+step 10550  loss 1.9744  bpc 2.848  gn 1.16  27 ms/step
+step 10600  loss 1.8312  bpc 2.642  gn 1.20  27 ms/step
+step 10650  loss 1.8564  bpc 2.678  gn 1.16  27 ms/step
+step 10700  loss 1.9967  bpc 2.881  gn 1.24  27 ms/step
+step 10750  loss 1.8945  bpc 2.733  gn 1.18  27 ms/step
+step 10800  loss 1.9220  bpc 2.773  gn 1.11  27 ms/step
+step 10850  loss 1.9967  bpc 2.881  gn 1.60  28 ms/step
+step 10900  loss 1.9297  bpc 2.784  gn 1.11  27 ms/step
+step 10950  loss 1.8261  bpc 2.635  gn 1.14  27 ms/step
+step 11000  loss 1.8049  bpc 2.604  gn 1.05  27 ms/step
+step 11050  loss 1.7836  bpc 2.573  gn 1.05  28 ms/step
+step 11100  loss 1.8692  bpc 2.697  gn 1.07  27 ms/step
+step 11150  loss 1.9578  bpc 2.825  gn 1.19  27 ms/step
+step 11200  loss 1.9781  bpc 2.854  gn 1.36  27 ms/step
+step 11250  loss 1.8877  bpc 2.723  gn 1.20  27 ms/step
+step 11300  loss 1.8106  bpc 2.612  gn 1.19  27 ms/step
+step 11350  loss 1.7948  bpc 2.589  gn 1.28  28 ms/step
+step 11400  loss 1.9791  bpc 2.855  gn 1.04  27 ms/step
+step 11450  loss 1.9058  bpc 2.749  gn 1.20  27 ms/step
+step 11500  loss 1.8570  bpc 2.679  gn 1.33  27 ms/step
+step 11550  loss 1.8511  bpc 2.671  gn 1.22  27 ms/step
+step 11600  loss 1.8247  bpc 2.632  gn 1.29  27 ms/step
+step 11650  loss 1.8190  bpc 2.624  gn 1.28  27 ms/step
+step 11700  loss 1.9626  bpc 2.831  gn 1.39  27 ms/step
+step 11750  loss 1.9745  bpc 2.849  gn 1.26  27 ms/step
+step 11800  loss 1.8581  bpc 2.681  gn 1.39  27 ms/step
+step 11850  loss 1.9651  bpc 2.835  gn 1.62  27 ms/step
+step 11900  loss 1.8709  bpc 2.699  gn 1.26  27 ms/step
+step 11950  loss 1.8539  bpc 2.675  gn 1.30  27 ms/step
+step 12000  loss 1.8627  bpc 2.687  gn 1.21  27 ms/step
+== eval step 12000: val_bpc 2.7009  ppl 6.502  [0:512) 2.576  [512:2048) 2.712  [2048:4096) 2.724  peak 2977 MB
+step 12050  loss 1.8413  bpc 2.656  gn 1.55  27 ms/step
+step 12100  loss 1.8236  bpc 2.631  gn 1.31  27 ms/step
+step 12150  loss 1.8981  bpc 2.738  gn 1.51  27 ms/step
+step 12200  loss 1.8417  bpc 2.657  gn 1.39  27 ms/step
+step 12250  loss 1.7668  bpc 2.549  gn 1.27  27 ms/step
+step 12300  loss 1.7270  bpc 2.491  gn 1.28  27 ms/step
+step 12350  loss 1.8597  bpc 2.683  gn 1.61  27 ms/step
+step 12400  loss 1.7130  bpc 2.471  gn 1.48  27 ms/step
+step 12450  loss 1.8216  bpc 2.628  gn 1.42  27 ms/step
+step 12500  loss 1.7680  bpc 2.551  gn 1.24  27 ms/step
+step 12550  loss 1.8284  bpc 2.638  gn 1.44  27 ms/step
+step 12600  loss 1.7840  bpc 2.574  gn 1.38  27 ms/step
+step 12650  loss 1.8499  bpc 2.669  gn 1.62  28 ms/step
+step 12700  loss 1.8297  bpc 2.640  gn 1.87  27 ms/step
+step 12750  loss 1.7281  bpc 2.493  gn 1.37  27 ms/step
+step 12800  loss 1.7093  bpc 2.466  gn 1.37  27 ms/step
+step 12850  loss 1.7753  bpc 2.561  gn 1.49  27 ms/step
+step 12900  loss 1.8501  bpc 2.669  gn 1.41  28 ms/step
+step 12950  loss 1.8213  bpc 2.628  gn 1.58  27 ms/step
+step 13000  loss 1.9211  bpc 2.772  gn 1.50  27 ms/step
+step 13050  loss 1.7662  bpc 2.548  gn 1.39  28 ms/step
+step 13100  loss 1.8329  bpc 2.644  gn 1.25  27 ms/step
+step 13150  loss 1.7750  bpc 2.561  gn 1.49  28 ms/step
+step 13200  loss 1.8360  bpc 2.649  gn 1.69  27 ms/step
+step 13250  loss 1.7744  bpc 2.560  gn 1.37  27 ms/step
+step 13300  loss 1.8428  bpc 2.659  gn 1.46  28 ms/step
+step 13350  loss 1.8693  bpc 2.697  gn 1.52  27 ms/step
+step 13400  loss 1.7521  bpc 2.528  gn 1.73  27 ms/step
+step 13450  loss 1.7320  bpc 2.499  gn 1.42  27 ms/step
+step 13500  loss 1.8612  bpc 2.685  gn 1.42  27 ms/step
+step 13550  loss 1.6005  bpc 2.309  gn 1.55  27 ms/step
+step 13600  loss 1.7751  bpc 2.561  gn 1.51  28 ms/step
+step 13650  loss 1.7341  bpc 2.502  gn 1.35  27 ms/step
+step 13700  loss 1.7118  bpc 2.470  gn 1.35  27 ms/step
+step 13750  loss 1.8062  bpc 2.606  gn 1.53  27 ms/step
+step 13800  loss 1.8886  bpc 2.725  gn 1.58  27 ms/step
+step 13850  loss 1.6740  bpc 2.415  gn 1.36  27 ms/step
+step 13900  loss 1.7752  bpc 2.561  gn 1.44  27 ms/step
+step 13950  loss 1.8317  bpc 2.643  gn 1.50  27 ms/step
+step 14000  loss 1.6911  bpc 2.440  gn 1.52  27 ms/step
+== eval step 14000: val_bpc 2.5726  ppl 5.949  [0:512) 2.465  [512:2048) 2.577  [2048:4096) 2.596  peak 2977 MB
+step 14050  loss 1.7549  bpc 2.532  gn 1.50  27 ms/step
+step 14100  loss 1.7731  bpc 2.558  gn 1.44  27 ms/step
+step 14150  loss 1.7114  bpc 2.469  gn 1.52  27 ms/step
+step 14200  loss 1.7339  bpc 2.501  gn 1.51  27 ms/step
+step 14250  loss 1.7565  bpc 2.534  gn 1.69  27 ms/step
+step 14300  loss 1.6617  bpc 2.397  gn 1.58  27 ms/step
+step 14350  loss 1.6947  bpc 2.445  gn 1.54  27 ms/step
+step 14400  loss 1.7877  bpc 2.579  gn 1.67  27 ms/step
+step 14450  loss 1.7168  bpc 2.477  gn 1.71  27 ms/step
+step 14500  loss 1.7026  bpc 2.456  gn 1.56  27 ms/step
+step 14550  loss 1.7028  bpc 2.457  gn 1.76  27 ms/step
+step 14600  loss 1.7821  bpc 2.571  gn 1.65  27 ms/step
+step 14650  loss 1.7275  bpc 2.492  gn 1.59  27 ms/step
+step 14700  loss 1.8097  bpc 2.611  gn 1.61  27 ms/step
+step 14750  loss 1.7877  bpc 2.579  gn 1.44  27 ms/step
+step 14800  loss 1.7938  bpc 2.588  gn 1.57  27 ms/step
+step 14850  loss 1.6934  bpc 2.443  gn 1.60  27 ms/step
+step 14900  loss 1.7377  bpc 2.507  gn 1.59  27 ms/step
+step 14950  loss 1.7892  bpc 2.581  gn 1.51  28 ms/step
+step 15000  loss 1.7302  bpc 2.496  gn 1.68  27 ms/step
+step 15050  loss 1.7437  bpc 2.516  gn 1.46  28 ms/step
+step 15100  loss 1.7310  bpc 2.497  gn 1.52  27 ms/step
+step 15150  loss 1.8574  bpc 2.680  gn 2.01  27 ms/step
+step 15200  loss 1.7013  bpc 2.454  gn 1.63  27 ms/step
+step 15250  loss 1.7453  bpc 2.518  gn 1.64  27 ms/step
+step 15300  loss 1.6531  bpc 2.385  gn 1.60  27 ms/step
+step 15350  loss 1.6656  bpc 2.403  gn 1.53  27 ms/step
+step 15400  loss 1.7839  bpc 2.574  gn 1.79  27 ms/step
+step 15450  loss 1.6832  bpc 2.428  gn 1.54  27 ms/step
+step 15500  loss 1.7725  bpc 2.557  gn 1.54  27 ms/step
+step 15550  loss 1.6985  bpc 2.450  gn 1.61  27 ms/step
+step 15600  loss 1.7047  bpc 2.459  gn 1.58  27 ms/step
+step 15650  loss 1.6777  bpc 2.420  gn 1.65  27 ms/step
+step 15700  loss 1.5638  bpc 2.256  gn 1.51  27 ms/step
+step 15750  loss 1.7059  bpc 2.461  gn 1.95  27 ms/step
+step 15800  loss 1.7087  bpc 2.465  gn 1.68  27 ms/step
+step 15850  loss 1.7119  bpc 2.470  gn 1.64  27 ms/step
+step 15900  loss 1.6542  bpc 2.387  gn 1.59  27 ms/step
+step 15950  loss 1.6708  bpc 2.410  gn 1.63  27 ms/step
+step 16000  loss 1.7032  bpc 2.457  gn 1.68  27 ms/step
+== eval step 16000: val_bpc 2.4902  ppl 5.619  [0:512) 2.400  [512:2048) 2.494  [2048:4096) 2.510  peak 2977 MB
+step 16050  loss 1.7417  bpc 2.513  gn 1.70  27 ms/step
+step 16100  loss 1.6175  bpc 2.334  gn 1.77  27 ms/step
+step 16150  loss 1.6558  bpc 2.389  gn 1.68  27 ms/step
+step 16200  loss 1.6174  bpc 2.333  gn 1.67  27 ms/step
+step 16250  loss 1.6630  bpc 2.399  gn 1.87  27 ms/step
+step 16300  loss 1.6260  bpc 2.346  gn 1.80  27 ms/step
+step 16350  loss 1.6345  bpc 2.358  gn 1.58  27 ms/step
+step 16400  loss 1.7110  bpc 2.468  gn 1.58  27 ms/step
+step 16450  loss 1.6762  bpc 2.418  gn 1.54  28 ms/step
+step 16500  loss 1.6972  bpc 2.448  gn 1.51  27 ms/step
+step 16550  loss 1.4457  bpc 2.086  gn 1.77  28 ms/step
+step 16600  loss 1.6391  bpc 2.365  gn 1.77  27 ms/step
+step 16650  loss 1.6694  bpc 2.408  gn 1.82  27 ms/step
+step 16700  loss 1.6847  bpc 2.431  gn 1.75  27 ms/step
+step 16750  loss 1.7494  bpc 2.524  gn 1.59  27 ms/step
+step 16800  loss 1.6835  bpc 2.429  gn 1.86  27 ms/step
+step 16850  loss 1.7666  bpc 2.549  gn 1.84  27 ms/step
+step 16900  loss 1.6112  bpc 2.324  gn 1.58  27 ms/step
+step 16950  loss 1.7720  bpc 2.556  gn 1.67  27 ms/step
+step 17000  loss 1.5959  bpc 2.302  gn 1.39  27 ms/step
+step 17050  loss 1.7159  bpc 2.476  gn 1.73  27 ms/step
+step 17100  loss 1.7522  bpc 2.528  gn 1.77  27 ms/step
+step 17150  loss 1.7442  bpc 2.516  gn 1.49  27 ms/step
+step 17200  loss 1.6747  bpc 2.416  gn 1.76  28 ms/step
+step 17250  loss 1.5747  bpc 2.272  gn 1.97  27 ms/step
+step 17300  loss 1.6758  bpc 2.418  gn 1.69  27 ms/step
+step 17350  loss 1.7111  bpc 2.469  gn 1.72  27 ms/step
+step 17400  loss 1.7136  bpc 2.472  gn 1.68  27 ms/step
+step 17450  loss 1.6128  bpc 2.327  gn 1.64  27 ms/step
+step 17500  loss 1.6491  bpc 2.379  gn 1.80  27 ms/step
+step 17550  loss 1.7892  bpc 2.581  gn 1.61  27 ms/step
+step 17600  loss 1.6372  bpc 2.362  gn 1.71  27 ms/step
+step 17650  loss 1.6694  bpc 2.408  gn 1.58  27 ms/step
+step 17700  loss 1.7013  bpc 2.455  gn 1.75  27 ms/step
+step 17750  loss 1.6173  bpc 2.333  gn 1.52  27 ms/step
+step 17800  loss 1.7131  bpc 2.471  gn 1.65  27 ms/step
+step 17850  loss 1.6998  bpc 2.452  gn 1.73  27 ms/step
+step 17900  loss 1.7218  bpc 2.484  gn 1.64  27 ms/step
+step 17950  loss 1.5890  bpc 2.292  gn 1.58  27 ms/step
+step 18000  loss 1.7629  bpc 2.543  gn 1.60  27 ms/step
+== eval step 18000: val_bpc 2.4477  ppl 5.456  [0:512) 2.366  [512:2048) 2.449  [2048:4096) 2.467  peak 2977 MB
+step 18050  loss 1.6332  bpc 2.356  gn 1.63  27 ms/step
+step 18100  loss 1.5194  bpc 2.192  gn 1.49  27 ms/step
+step 18150  loss 1.5850  bpc 2.287  gn 1.70  27 ms/step
+step 18200  loss 1.7532  bpc 2.529  gn 1.72  27 ms/step
+step 18250  loss 1.7521  bpc 2.528  gn 1.73  28 ms/step
+step 18300  loss 1.7208  bpc 2.483  gn 1.77  27 ms/step
+step 18350  loss 1.6937  bpc 2.443  gn 1.68  27 ms/step
+step 18400  loss 1.6385  bpc 2.364  gn 1.47  28 ms/step
+step 18450  loss 1.5612  bpc 2.252  gn 1.76  28 ms/step
+step 18500  loss 1.7216  bpc 2.484  gn 1.49  27 ms/step
+step 18550  loss 1.5738  bpc 2.271  gn 1.88  27 ms/step
+step 18600  loss 1.6672  bpc 2.405  gn 1.60  27 ms/step
+step 18650  loss 1.6488  bpc 2.379  gn 1.54  28 ms/step
+step 18700  loss 1.7071  bpc 2.463  gn 1.53  27 ms/step
+step 18750  loss 1.6808  bpc 2.425  gn 1.64  27 ms/step
+step 18800  loss 1.6653  bpc 2.402  gn 1.59  28 ms/step
+step 18850  loss 1.7675  bpc 2.550  gn 1.56  27 ms/step
+step 18900  loss 1.3638  bpc 1.968  gn 1.61  27 ms/step
+step 18950  loss 1.5928  bpc 2.298  gn 1.70  27 ms/step
+step 19000  loss 1.6407  bpc 2.367  gn 1.52  27 ms/step
+step 19050  loss 1.7337  bpc 2.501  gn 1.56  27 ms/step
+step 19100  loss 1.6570  bpc 2.391  gn 1.65  27 ms/step
+step 19150  loss 1.7085  bpc 2.465  gn 1.66  28 ms/step
+step 19200  loss 1.5753  bpc 2.273  gn 1.65  27 ms/step
+step 19250  loss 1.7129  bpc 2.471  gn 1.42  28 ms/step
+step 19300  loss 1.6690  bpc 2.408  gn 1.52  27 ms/step
+step 19350  loss 1.7422  bpc 2.513  gn 1.56  28 ms/step
+step 19400  loss 1.7156  bpc 2.475  gn 1.63  27 ms/step
+step 19450  loss 1.6355  bpc 2.359  gn 1.48  28 ms/step
+step 19500  loss 1.5886  bpc 2.292  gn 1.56  27 ms/step
+step 19550  loss 1.6629  bpc 2.399  gn 1.66  27 ms/step
+step 19600  loss 1.6814  bpc 2.426  gn 1.71  27 ms/step
+step 19650  loss 1.6245  bpc 2.344  gn 1.42  27 ms/step
+step 19700  loss 1.5838  bpc 2.285  gn 1.49  27 ms/step
+step 19750  loss 1.6032  bpc 2.313  gn 1.53  27 ms/step
+step 19800  loss 1.5975  bpc 2.305  gn 1.63  27 ms/step
+step 19850  loss 1.5912  bpc 2.296  gn 1.53  27 ms/step
+step 19900  loss 1.6438  bpc 2.372  gn 1.46  28 ms/step
+step 19950  loss 1.6367  bpc 2.361  gn 1.56  29 ms/step
+step 20000  loss 1.6460  bpc 2.375  gn 1.70  27 ms/step
+== eval step 20000: val_bpc 2.4397  ppl 5.425  [0:512) 2.360  [512:2048) 2.440  [2048:4096) 2.459  peak 2977 MB
+done: {"run": "smat_d2_qkn", "arm": "smat", "d": 2, "step": 20000, "train_loss": 1.645970344543457, "train_loss_med200": 1.6605257391929626, "val_bpc": 2.439662923044366, "val_ppl": 5.425149608363733, "val_bpc_0_512": 2.3597159573275026, "val_bpc_512_2048": 2.4401390296002323, "val_bpc_2048_4096": 2.4592925845566813, "grad_norm": 1.7035503387451172, "nonfinite_steps": 0, "ms_per_step": 27.24091112613678, "peak_MB": 2976.80615234375, "params": 4336128, "elapsed_s": 546.7570908069611, "mask_nnz": 4285604, "mask_density": 0.25544190406799316, "mask_n": 2048, "mask_q": 47, "mask_B": 47}
+==== arm: --arm smat --d 3   Thu Sep  3 04:07:47 PM CDT 2026 ====
+{
+ "run": "smat_d3_qkn",
+ "arm": "smat",
+ "d": 3,
+ "T": 4096,
+ "layers": 4,
+ "d_model": 256,
+ "heads": 4,
+ "r": 64,
+ "learn_phi": false,
+ "qk_norm": true,
+ "chunk": 128,
+ "steps": 20000,
+ "nb": 8,
+ "lr": 0.0003,
+ "warmup": 500,
+ "wd": 0.1,
+ "clip": 1.0,
+ "eval_every": 2000,
+ "val_windows": 256,
+ "eval_nb": 8,
+ "data": "/u/archerdw/smat_attention/deltaai/data/enwik8",
+ "out": "results/lm_T4096_20k_qkn.csv",
+ "device": "cuda",
+ "no_amp": false,
+ "seed": 0
+}
+mask: {'mask_nnz': 4518991, 'mask_density': 0.26935285329818726, 'mask_n': 2048, 'mask_q': 13, 'mask_B': 182}
+params: 4,336,128
+step    50  loss 4.4229  bpc 6.381  gn 2.58  46 ms/step
+step   100  loss 3.6986  bpc 5.336  gn 1.72  41 ms/step
+step   150  loss 3.1459  bpc 4.539  gn 0.91  41 ms/step
+step   200  loss 2.8314  bpc 4.085  gn 0.56  41 ms/step
+step   250  loss 2.7111  bpc 3.911  gn 0.70  41 ms/step
+step   300  loss 2.6234  bpc 3.785  gn 0.72  41 ms/step
+step   350  loss 2.5721  bpc 3.711  gn 0.54  41 ms/step
+step   400  loss 2.7065  bpc 3.905  gn 0.56  41 ms/step
+step   450  loss 2.6439  bpc 3.814  gn 0.69  41 ms/step
+step   500  loss 2.6175  bpc 3.776  gn 0.62  41 ms/step
+step   550  loss 2.6001  bpc 3.751  gn 0.45  41 ms/step
+step   600  loss 2.6306  bpc 3.795  gn 0.50  41 ms/step
+step   650  loss 2.6172  bpc 3.776  gn 0.63  41 ms/step
+step   700  loss 2.6105  bpc 3.766  gn 0.57  41 ms/step
+step   750  loss 2.5701  bpc 3.708  gn 0.50  41 ms/step
+step   800  loss 2.5565  bpc 3.688  gn 0.43  41 ms/step
+step   850  loss 2.5516  bpc 3.681  gn 0.38  41 ms/step
+step   900  loss 2.5191  bpc 3.634  gn 0.49  41 ms/step
+step   950  loss 2.5576  bpc 3.690  gn 0.51  41 ms/step
+step  1000  loss 2.4781  bpc 3.575  gn 0.36  41 ms/step
+step  1050  loss 2.5506  bpc 3.680  gn 0.60  41 ms/step
+step  1100  loss 2.5623  bpc 3.697  gn 0.37  41 ms/step
+step  1150  loss 2.5564  bpc 3.688  gn 0.60  41 ms/step
+step  1200  loss 2.5143  bpc 3.627  gn 0.82  41 ms/step
+step  1250  loss 2.5772  bpc 3.718  gn 0.59  41 ms/step
+step  1300  loss 2.4975  bpc 3.603  gn 0.60  41 ms/step
+step  1350  loss 2.5299  bpc 3.650  gn 0.55  41 ms/step
+step  1400  loss 2.5110  bpc 3.623  gn 0.49  41 ms/step
+step  1450  loss 2.5175  bpc 3.632  gn 0.43  41 ms/step
+step  1500  loss 2.4937  bpc 3.598  gn 0.46  41 ms/step
+step  1550  loss 2.5366  bpc 3.659  gn 0.59  41 ms/step
+step  1600  loss 2.4648  bpc 3.556  gn 0.39  41 ms/step
+step  1650  loss 2.4224  bpc 3.495  gn 0.53  41 ms/step
+step  1700  loss 2.4821  bpc 3.581  gn 0.39  41 ms/step
+step  1750  loss 2.5662  bpc 3.702  gn 0.55  41 ms/step
+step  1800  loss 2.5392  bpc 3.663  gn 0.86  41 ms/step
+step  1850  loss 2.4838  bpc 3.583  gn 0.44  41 ms/step
+step  1900  loss 2.4482  bpc 3.532  gn 0.44  41 ms/step
+step  1950  loss 2.4286  bpc 3.504  gn 0.55  41 ms/step
+step  2000  loss 2.4361  bpc 3.515  gn 0.70  41 ms/step
+== eval step 2000: val_bpc 3.5526  ppl 11.734  [0:512) 3.494  [512:2048) 3.528  [2048:4096) 3.586  peak 4124 MB
+step  2050  loss 2.3874  bpc 3.444  gn 1.38  41 ms/step
+step  2100  loss 2.4689  bpc 3.562  gn 0.52  41 ms/step
+step  2150  loss 2.4665  bpc 3.558  gn 0.79  41 ms/step
+step  2200  loss 2.4751  bpc 3.571  gn 0.71  41 ms/step
+step  2250  loss 2.4158  bpc 3.485  gn 1.19  41 ms/step
+step  2300  loss 2.2868  bpc 3.299  gn 1.02  41 ms/step
+step  2350  loss 2.3771  bpc 3.429  gn 0.54  41 ms/step
+step  2400  loss 2.4230  bpc 3.496  gn 0.72  41 ms/step
+step  2450  loss 2.4217  bpc 3.494  gn 0.63  41 ms/step
+step  2500  loss 2.3957  bpc 3.456  gn 0.46  41 ms/step
+step  2550  loss 2.3799  bpc 3.433  gn 0.64  41 ms/step
+step  2600  loss 2.5247  bpc 3.642  gn 0.63  41 ms/step
+step  2650  loss 2.3456  bpc 3.384  gn 0.49  41 ms/step
+step  2700  loss 2.3043  bpc 3.324  gn 0.69  41 ms/step
+step  2750  loss 2.4374  bpc 3.516  gn 0.62  41 ms/step
+step  2800  loss 2.3921  bpc 3.451  gn 0.62  41 ms/step
+step  2850  loss 2.3842  bpc 3.440  gn 0.67  41 ms/step
+step  2900  loss 2.3738  bpc 3.425  gn 0.63  41 ms/step
+step  2950  loss 2.3396  bpc 3.375  gn 0.63  41 ms/step
+step  3000  loss 2.4952  bpc 3.600  gn 0.69  41 ms/step
+step  3050  loss 2.4240  bpc 3.497  gn 0.83  41 ms/step
+step  3100  loss 2.3833  bpc 3.438  gn 0.66  41 ms/step
+step  3150  loss 2.3278  bpc 3.358  gn 0.59  41 ms/step
+step  3200  loss 2.3968  bpc 3.458  gn 0.55  41 ms/step
+step  3250  loss 2.3561  bpc 3.399  gn 0.62  41 ms/step
+step  3300  loss 2.3205  bpc 3.348  gn 0.67  41 ms/step
+step  3350  loss 2.3196  bpc 3.346  gn 1.00  41 ms/step
+step  3400  loss 2.3868  bpc 3.443  gn 0.48  41 ms/step
+step  3450  loss 2.2539  bpc 3.252  gn 0.94  41 ms/step
+step  3500  loss 2.3296  bpc 3.361  gn 0.66  41 ms/step
+step  3550  loss 2.3500  bpc 3.390  gn 0.65  41 ms/step
+step  3600  loss 2.3591  bpc 3.403  gn 0.73  41 ms/step
+step  3650  loss 2.3579  bpc 3.402  gn 0.77  41 ms/step
+step  3700  loss 2.3939  bpc 3.454  gn 0.83  41 ms/step
+step  3750  loss 2.2160  bpc 3.197  gn 0.61  41 ms/step
+step  3800  loss 2.3544  bpc 3.397  gn 0.66  41 ms/step
+step  3850  loss 2.2774  bpc 3.286  gn 0.82  41 ms/step
+step  3900  loss 2.3254  bpc 3.355  gn 0.73  41 ms/step
+step  3950  loss 2.4136  bpc 3.482  gn 0.58  41 ms/step
+step  4000  loss 2.3456  bpc 3.384  gn 0.64  41 ms/step
+== eval step 4000: val_bpc 3.3895  ppl 10.479  [0:512) 3.334  [512:2048) 3.398  [2048:4096) 3.397  peak 4124 MB
+step  4050  loss 2.3337  bpc 3.367  gn 0.55  41 ms/step
+step  4100  loss 2.3085  bpc 3.330  gn 0.70  41 ms/step
+step  4150  loss 2.2481  bpc 3.243  gn 0.61  41 ms/step
+step  4200  loss 2.2923  bpc 3.307  gn 0.65  41 ms/step
+step  4250  loss 2.3909  bpc 3.449  gn 0.61  41 ms/step
+step  4300  loss 2.3571  bpc 3.401  gn 0.80  41 ms/step
+step  4350  loss 2.2490  bpc 3.245  gn 0.70  41 ms/step
+step  4400  loss 2.3521  bpc 3.393  gn 0.72  41 ms/step
+step  4450  loss 2.3286  bpc 3.359  gn 0.55  41 ms/step
+step  4500  loss 2.2319  bpc 3.220  gn 0.60  41 ms/step
+step  4550  loss 2.3356  bpc 3.370  gn 0.60  41 ms/step
+step  4600  loss 2.2620  bpc 3.263  gn 0.63  41 ms/step
+step  4650  loss 2.1716  bpc 3.133  gn 0.70  41 ms/step
+step  4700  loss 2.2963  bpc 3.313  gn 0.56  41 ms/step
+step  4750  loss 2.2940  bpc 3.310  gn 0.68  41 ms/step
+step  4800  loss 2.2922  bpc 3.307  gn 0.66  41 ms/step
+step  4850  loss 2.3608  bpc 3.406  gn 0.67  41 ms/step
+step  4900  loss 2.3389  bpc 3.374  gn 0.63  41 ms/step
+step  4950  loss 2.2558  bpc 3.254  gn 0.60  41 ms/step
+step  5000  loss 2.2814  bpc 3.291  gn 0.65  41 ms/step
+step  5050  loss 2.1861  bpc 3.154  gn 0.69  41 ms/step
+step  5100  loss 2.3264  bpc 3.356  gn 0.57  41 ms/step
+step  5150  loss 2.2145  bpc 3.195  gn 0.74  41 ms/step
+step  5200  loss 2.3015  bpc 3.320  gn 0.72  41 ms/step
+step  5250  loss 2.1916  bpc 3.162  gn 0.66  41 ms/step
+step  5300  loss 2.1691  bpc 3.129  gn 0.65  41 ms/step
+step  5350  loss 2.2097  bpc 3.188  gn 0.88  41 ms/step
+step  5400  loss 2.2457  bpc 3.240  gn 0.91  41 ms/step
+step  5450  loss 2.3294  bpc 3.361  gn 0.65  41 ms/step
+step  5500  loss 2.3389  bpc 3.374  gn 0.56  41 ms/step
+step  5550  loss 2.3038  bpc 3.324  gn 0.61  41 ms/step
+step  5600  loss 2.2719  bpc 3.278  gn 0.90  41 ms/step
+step  5650  loss 2.3333  bpc 3.366  gn 0.67  41 ms/step
+step  5700  loss 2.1672  bpc 3.127  gn 0.66  41 ms/step
+step  5750  loss 2.2785  bpc 3.287  gn 0.61  41 ms/step
+step  5800  loss 2.2838  bpc 3.295  gn 0.65  41 ms/step
+step  5850  loss 2.2386  bpc 3.230  gn 0.67  41 ms/step
+step  5900  loss 2.2029  bpc 3.178  gn 0.61  41 ms/step
+step  5950  loss 2.2634  bpc 3.265  gn 0.65  41 ms/step
+step  6000  loss 2.2826  bpc 3.293  gn 0.79  41 ms/step
+== eval step 6000: val_bpc 3.2642  ppl 9.608  [0:512) 3.179  [512:2048) 3.279  [2048:4096) 3.274  peak 4124 MB
+step  6050  loss 2.1912  bpc 3.161  gn 0.59  41 ms/step
+step  6100  loss 2.3755  bpc 3.427  gn 0.76  41 ms/step
+step  6150  loss 2.3043  bpc 3.324  gn 0.54  41 ms/step
+step  6200  loss 2.2956  bpc 3.312  gn 0.52  41 ms/step
+step  6250  loss 2.1045  bpc 3.036  gn 0.78  41 ms/step
+step  6300  loss 2.1726  bpc 3.134  gn 0.75  41 ms/step
+step  6350  loss 2.1980  bpc 3.171  gn 0.72  41 ms/step
+step  6400  loss 2.2418  bpc 3.234  gn 0.77  41 ms/step
+step  6450  loss 2.2146  bpc 3.195  gn 0.89  41 ms/step
+step  6500  loss 2.1461  bpc 3.096  gn 0.80  41 ms/step
+step  6550  loss 2.2888  bpc 3.302  gn 0.64  41 ms/step
+step  6600  loss 2.2716  bpc 3.277  gn 0.65  41 ms/step
+step  6650  loss 2.2014  bpc 3.176  gn 0.77  41 ms/step
+step  6700  loss 2.1999  bpc 3.174  gn 0.58  41 ms/step
+step  6750  loss 2.2407  bpc 3.233  gn 0.79  41 ms/step
+step  6800  loss 2.1157  bpc 3.052  gn 0.63  41 ms/step
+step  6850  loss 2.1534  bpc 3.107  gn 0.81  41 ms/step
+step  6900  loss 2.0806  bpc 3.002  gn 0.65  41 ms/step
+step  6950  loss 2.1637  bpc 3.121  gn 0.64  41 ms/step
+step  7000  loss 2.2647  bpc 3.267  gn 0.75  41 ms/step
+step  7050  loss 2.1971  bpc 3.170  gn 0.87  41 ms/step
+step  7100  loss 2.2289  bpc 3.216  gn 0.84  41 ms/step
+step  7150  loss 2.2208  bpc 3.204  gn 0.62  41 ms/step
+step  7200  loss 2.2815  bpc 3.292  gn 0.70  41 ms/step
+step  7250  loss 2.1993  bpc 3.173  gn 0.78  41 ms/step
+step  7300  loss 2.2287  bpc 3.215  gn 0.91  41 ms/step
+step  7350  loss 2.1809  bpc 3.146  gn 0.71  41 ms/step
+step  7400  loss 2.2038  bpc 3.179  gn 0.67  41 ms/step
+step  7450  loss 2.1447  bpc 3.094  gn 0.79  41 ms/step
+step  7500  loss 2.1102  bpc 3.044  gn 0.67  41 ms/step
+step  7550  loss 2.2450  bpc 3.239  gn 0.72  41 ms/step
+step  7600  loss 2.1825  bpc 3.149  gn 0.91  41 ms/step
+step  7650  loss 2.2058  bpc 3.182  gn 0.87  41 ms/step
+step  7700  loss 2.1066  bpc 3.039  gn 0.63  41 ms/step
+step  7750  loss 1.8937  bpc 2.732  gn 0.94  41 ms/step
+step  7800  loss 1.9996  bpc 2.885  gn 0.76  41 ms/step
+step  7850  loss 2.1980  bpc 3.171  gn 0.83  41 ms/step
+step  7900  loss 2.0429  bpc 2.947  gn 0.98  41 ms/step
+step  7950  loss 2.2173  bpc 3.199  gn 0.86  41 ms/step
+step  8000  loss 2.1383  bpc 3.085  gn 0.75  41 ms/step
+== eval step 8000: val_bpc 3.1228  ppl 8.711  [0:512) 3.009  [512:2048) 3.141  [2048:4096) 3.138  peak 4124 MB
+step  8050  loss 2.0621  bpc 2.975  gn 1.00  41 ms/step
+step  8100  loss 2.1872  bpc 3.155  gn 0.78  41 ms/step
+step  8150  loss 2.1680  bpc 3.128  gn 0.83  41 ms/step
+step  8200  loss 2.1618  bpc 3.119  gn 0.75  41 ms/step
+step  8250  loss 2.2579  bpc 3.257  gn 0.76  41 ms/step
+step  8300  loss 2.0990  bpc 3.028  gn 0.86  41 ms/step
+step  8350  loss 1.8837  bpc 2.718  gn 1.25  41 ms/step
+step  8400  loss 2.0947  bpc 3.022  gn 0.84  41 ms/step
+step  8450  loss 2.2075  bpc 3.185  gn 0.75  41 ms/step
+step  8500  loss 2.0459  bpc 2.952  gn 0.94  41 ms/step
+step  8550  loss 2.0314  bpc 2.931  gn 0.79  41 ms/step
+step  8600  loss 2.0851  bpc 3.008  gn 0.78  41 ms/step
+step  8650  loss 2.0843  bpc 3.007  gn 0.88  41 ms/step
+step  8700  loss 2.0533  bpc 2.962  gn 0.71  41 ms/step
+step  8750  loss 2.0411  bpc 2.945  gn 0.96  41 ms/step
+step  8800  loss 1.8869  bpc 2.722  gn 0.93  41 ms/step
+step  8850  loss 2.1064  bpc 3.039  gn 0.93  41 ms/step
+step  8900  loss 2.2130  bpc 3.193  gn 0.92  41 ms/step
+step  8950  loss 2.0837  bpc 3.006  gn 0.82  41 ms/step
+step  9000  loss 2.1106  bpc 3.045  gn 1.01  41 ms/step
+step  9050  loss 2.0881  bpc 3.012  gn 0.84  41 ms/step
+step  9100  loss 2.0934  bpc 3.020  gn 0.73  41 ms/step
+step  9150  loss 2.0721  bpc 2.989  gn 0.85  41 ms/step
+step  9200  loss 2.0371  bpc 2.939  gn 0.86  41 ms/step
+step  9250  loss 2.1466  bpc 3.097  gn 0.82  41 ms/step
+step  9300  loss 2.1053  bpc 3.037  gn 0.88  41 ms/step
+step  9350  loss 2.1247  bpc 3.065  gn 0.89  41 ms/step
+step  9400  loss 2.0493  bpc 2.957  gn 0.87  41 ms/step
+step  9450  loss 2.0493  bpc 2.957  gn 0.94  41 ms/step
+step  9500  loss 2.0187  bpc 2.912  gn 0.81  41 ms/step
+step  9550  loss 2.1020  bpc 3.033  gn 0.89  41 ms/step
+step  9600  loss 2.0394  bpc 2.942  gn 0.86  41 ms/step
+step  9650  loss 2.0014  bpc 2.887  gn 0.85  41 ms/step
+step  9700  loss 2.0542  bpc 2.964  gn 0.97  41 ms/step
+step  9750  loss 1.9454  bpc 2.807  gn 0.89  41 ms/step
+step  9800  loss 2.0822  bpc 3.004  gn 0.96  41 ms/step
+step  9850  loss 1.9444  bpc 2.805  gn 0.86  41 ms/step
+step  9900  loss 2.0348  bpc 2.936  gn 0.93  41 ms/step
+step  9950  loss 1.9984  bpc 2.883  gn 1.25  41 ms/step
+step 10000  loss 1.9098  bpc 2.755  gn 0.87  41 ms/step
+== eval step 10000: val_bpc 2.9670  ppl 7.819  [0:512) 2.834  [512:2048) 2.987  [2048:4096) 2.985  peak 4124 MB
+step 10050  loss 2.0363  bpc 2.938  gn 0.74  41 ms/step
+step 10100  loss 2.1013  bpc 3.032  gn 0.99  41 ms/step
+step 10150  loss 1.8842  bpc 2.718  gn 0.90  41 ms/step
+step 10200  loss 2.0654  bpc 2.980  gn 0.94  41 ms/step
+step 10250  loss 1.9170  bpc 2.766  gn 1.09  41 ms/step
+step 10300  loss 2.0132  bpc 2.904  gn 1.03  41 ms/step
+step 10350  loss 1.9251  bpc 2.777  gn 1.01  41 ms/step
+step 10400  loss 2.0469  bpc 2.953  gn 1.00  41 ms/step
+step 10450  loss 2.0217  bpc 2.917  gn 1.05  41 ms/step
+step 10500  loss 1.9326  bpc 2.788  gn 1.01  41 ms/step
+step 10550  loss 2.0386  bpc 2.941  gn 1.07  41 ms/step
+step 10600  loss 1.8939  bpc 2.732  gn 1.42  41 ms/step
+step 10650  loss 1.9162  bpc 2.764  gn 1.14  41 ms/step
+step 10700  loss 2.0638  bpc 2.977  gn 1.17  41 ms/step
+step 10750  loss 1.9614  bpc 2.830  gn 1.07  41 ms/step
+step 10800  loss 1.9889  bpc 2.869  gn 1.05  41 ms/step
+step 10850  loss 2.0623  bpc 2.975  gn 1.02  41 ms/step
+step 10900  loss 1.9919  bpc 2.874  gn 1.12  41 ms/step
+step 10950  loss 1.8799  bpc 2.712  gn 1.03  41 ms/step
+step 11000  loss 1.8676  bpc 2.694  gn 1.14  41 ms/step
+step 11050  loss 1.8454  bpc 2.662  gn 0.95  41 ms/step
+step 11100  loss 1.9268  bpc 2.780  gn 1.06  41 ms/step
+step 11150  loss 2.0174  bpc 2.910  gn 1.12  41 ms/step
+step 11200  loss 2.0411  bpc 2.945  gn 1.14  41 ms/step
+step 11250  loss 1.9570  bpc 2.823  gn 1.16  41 ms/step
+step 11300  loss 1.8666  bpc 2.693  gn 1.11  41 ms/step
+step 11350  loss 1.8676  bpc 2.694  gn 1.43  41 ms/step
+step 11400  loss 2.0510  bpc 2.959  gn 1.07  41 ms/step
+step 11450  loss 1.9739  bpc 2.848  gn 1.16  41 ms/step
+step 11500  loss 1.9320  bpc 2.787  gn 1.16  41 ms/step
+step 11550  loss 1.9252  bpc 2.777  gn 1.11  41 ms/step
+step 11600  loss 1.8838  bpc 2.718  gn 1.22  41 ms/step
+step 11650  loss 1.8743  bpc 2.704  gn 1.32  41 ms/step
+step 11700  loss 2.0355  bpc 2.937  gn 1.52  41 ms/step
+step 11750  loss 2.0540  bpc 2.963  gn 1.34  41 ms/step
+step 11800  loss 1.9338  bpc 2.790  gn 1.48  41 ms/step
+step 11850  loss 2.0261  bpc 2.923  gn 1.37  41 ms/step
+step 11900  loss 1.9516  bpc 2.816  gn 1.20  41 ms/step
+step 11950  loss 1.9193  bpc 2.769  gn 1.15  41 ms/step
+step 12000  loss 1.9267  bpc 2.780  gn 1.19  41 ms/step
+== eval step 12000: val_bpc 2.8035  ppl 6.981  [0:512) 2.671  [512:2048) 2.818  [2048:4096) 2.826  peak 4124 MB
+step 12050  loss 1.9115  bpc 2.758  gn 1.27  41 ms/step
+step 12100  loss 1.8857  bpc 2.720  gn 1.07  41 ms/step
+step 12150  loss 1.9640  bpc 2.834  gn 1.58  41 ms/step
+step 12200  loss 1.9028  bpc 2.745  gn 1.10  41 ms/step
+step 12250  loss 1.8435  bpc 2.660  gn 1.34  41 ms/step
+step 12300  loss 1.8025  bpc 2.600  gn 1.37  41 ms/step
+step 12350  loss 1.9242  bpc 2.776  gn 1.50  41 ms/step
+step 12400  loss 1.7954  bpc 2.590  gn 1.43  41 ms/step
+step 12450  loss 1.8870  bpc 2.722  gn 1.48  41 ms/step
+step 12500  loss 1.8288  bpc 2.638  gn 1.30  41 ms/step
+step 12550  loss 1.8986  bpc 2.739  gn 1.24  41 ms/step
+step 12600  loss 1.8464  bpc 2.664  gn 1.37  41 ms/step
+step 12650  loss 1.9170  bpc 2.766  gn 1.49  41 ms/step
+step 12700  loss 1.8953  bpc 2.734  gn 1.34  41 ms/step
+step 12750  loss 1.7916  bpc 2.585  gn 1.29  41 ms/step
+step 12800  loss 1.7797  bpc 2.568  gn 1.23  41 ms/step
+step 12850  loss 1.8461  bpc 2.663  gn 1.36  41 ms/step
+step 12900  loss 1.9243  bpc 2.776  gn 1.35  41 ms/step
+step 12950  loss 1.8787  bpc 2.710  gn 1.48  41 ms/step
+step 13000  loss 1.9900  bpc 2.871  gn 1.50  41 ms/step
+step 13050  loss 1.8416  bpc 2.657  gn 1.29  41 ms/step
+step 13100  loss 1.8996  bpc 2.741  gn 1.22  41 ms/step
+step 13150  loss 1.8359  bpc 2.649  gn 1.45  41 ms/step
+step 13200  loss 1.9025  bpc 2.745  gn 1.56  41 ms/step
+step 13250  loss 1.8453  bpc 2.662  gn 1.37  41 ms/step
+step 13300  loss 1.9050  bpc 2.748  gn 1.33  41 ms/step
+step 13350  loss 1.9412  bpc 2.801  gn 1.59  41 ms/step
+step 13400  loss 1.8163  bpc 2.620  gn 1.66  41 ms/step
+step 13450  loss 1.7998  bpc 2.597  gn 1.44  41 ms/step
+step 13500  loss 1.9231  bpc 2.774  gn 1.53  41 ms/step
+step 13550  loss 1.6641  bpc 2.401  gn 1.40  41 ms/step
+step 13600  loss 1.8475  bpc 2.665  gn 1.58  41 ms/step
+step 13650  loss 1.8033  bpc 2.602  gn 1.37  41 ms/step
+step 13700  loss 1.7666  bpc 2.549  gn 1.35  41 ms/step
+step 13750  loss 1.8850  bpc 2.720  gn 1.55  41 ms/step
+step 13800  loss 1.9567  bpc 2.823  gn 1.53  41 ms/step
+step 13850  loss 1.7341  bpc 2.502  gn 1.37  41 ms/step
+step 13900  loss 1.8381  bpc 2.652  gn 1.48  41 ms/step
+step 13950  loss 1.8943  bpc 2.733  gn 1.56  41 ms/step
+step 14000  loss 1.7550  bpc 2.532  gn 1.46  41 ms/step
+== eval step 14000: val_bpc 2.6720  ppl 6.373  [0:512) 2.556  [512:2048) 2.681  [2048:4096) 2.694  peak 4124 MB
+step 14050  loss 1.8205  bpc 2.626  gn 1.40  41 ms/step
+step 14100  loss 1.8384  bpc 2.652  gn 1.40  41 ms/step
+step 14150  loss 1.7821  bpc 2.571  gn 1.46  41 ms/step
+step 14200  loss 1.7897  bpc 2.582  gn 1.45  41 ms/step
+step 14250  loss 1.8367  bpc 2.650  gn 1.69  41 ms/step
+step 14300  loss 1.7277  bpc 2.493  gn 1.53  41 ms/step
+step 14350  loss 1.7584  bpc 2.537  gn 1.75  41 ms/step
+step 14400  loss 1.8562  bpc 2.678  gn 1.52  41 ms/step
+step 14450  loss 1.7823  bpc 2.571  gn 1.64  41 ms/step
+step 14500  loss 1.7608  bpc 2.540  gn 1.44  41 ms/step
+step 14550  loss 1.7823  bpc 2.571  gn 1.83  41 ms/step
+step 14600  loss 1.8579  bpc 2.680  gn 1.63  41 ms/step
+step 14650  loss 1.7917  bpc 2.585  gn 1.58  41 ms/step
+step 14700  loss 1.8809  bpc 2.714  gn 1.66  41 ms/step
+step 14750  loss 1.8588  bpc 2.682  gn 1.67  41 ms/step
+step 14800  loss 1.8646  bpc 2.690  gn 1.80  41 ms/step
+step 14850  loss 1.7543  bpc 2.531  gn 1.53  41 ms/step
+step 14900  loss 1.7948  bpc 2.589  gn 1.45  41 ms/step
+step 14950  loss 1.8579  bpc 2.680  gn 1.62  41 ms/step
+step 15000  loss 1.8068  bpc 2.607  gn 1.54  41 ms/step
+step 15050  loss 1.8143  bpc 2.617  gn 1.45  41 ms/step
+step 15100  loss 1.7904  bpc 2.583  gn 1.54  41 ms/step
+step 15150  loss 1.9256  bpc 2.778  gn 1.84  41 ms/step
+step 15200  loss 1.7618  bpc 2.542  gn 1.59  41 ms/step
+step 15250  loss 1.8137  bpc 2.617  gn 1.70  41 ms/step
+step 15300  loss 1.7175  bpc 2.478  gn 1.60  41 ms/step
+step 15350  loss 1.7253  bpc 2.489  gn 1.54  41 ms/step
+step 15400  loss 1.8527  bpc 2.673  gn 1.72  41 ms/step
+step 15450  loss 1.7493  bpc 2.524  gn 1.48  41 ms/step
+step 15500  loss 1.8409  bpc 2.656  gn 1.50  41 ms/step
+step 15550  loss 1.7624  bpc 2.543  gn 1.54  41 ms/step
+step 15600  loss 1.7732  bpc 2.558  gn 1.68  41 ms/step
+step 15650  loss 1.7393  bpc 2.509  gn 1.79  41 ms/step
+step 15700  loss 1.6215  bpc 2.339  gn 1.61  41 ms/step
+step 15750  loss 1.7756  bpc 2.562  gn 1.84  41 ms/step
+step 15800  loss 1.7771  bpc 2.564  gn 1.67  41 ms/step
+step 15850  loss 1.7691  bpc 2.552  gn 1.72  41 ms/step
+step 15900  loss 1.7077  bpc 2.464  gn 1.77  41 ms/step
+step 15950  loss 1.7349  bpc 2.503  gn 1.73  41 ms/step
+step 16000  loss 1.7671  bpc 2.549  gn 1.60  41 ms/step
+== eval step 16000: val_bpc 2.5858  ppl 6.003  [0:512) 2.486  [512:2048) 2.594  [2048:4096) 2.605  peak 4124 MB
+step 16050  loss 1.8126  bpc 2.615  gn 1.62  41 ms/step
+step 16100  loss 1.6791  bpc 2.422  gn 1.86  41 ms/step
+step 16150  loss 1.7174  bpc 2.478  gn 1.59  41 ms/step
+step 16200  loss 1.6903  bpc 2.439  gn 1.58  41 ms/step
+step 16250  loss 1.7267  bpc 2.491  gn 1.89  41 ms/step
+step 16300  loss 1.6913  bpc 2.440  gn 1.93  41 ms/step
+step 16350  loss 1.6922  bpc 2.441  gn 1.64  41 ms/step
+step 16400  loss 1.7704  bpc 2.554  gn 1.63  41 ms/step
+step 16450  loss 1.7447  bpc 2.517  gn 1.53  41 ms/step
+step 16500  loss 1.7632  bpc 2.544  gn 1.82  41 ms/step
+step 16550  loss 1.4937  bpc 2.155  gn 1.75  41 ms/step
+step 16600  loss 1.7086  bpc 2.465  gn 1.72  41 ms/step
+step 16650  loss 1.7411  bpc 2.512  gn 1.73  41 ms/step
+step 16700  loss 1.7485  bpc 2.523  gn 1.62  41 ms/step
+step 16750  loss 1.8214  bpc 2.628  gn 1.67  41 ms/step
+step 16800  loss 1.7537  bpc 2.530  gn 1.76  41 ms/step
+step 16850  loss 1.8333  bpc 2.645  gn 1.74  41 ms/step
+step 16900  loss 1.6819  bpc 2.426  gn 1.62  41 ms/step
+step 16950  loss 1.8391  bpc 2.653  gn 1.82  41 ms/step
+step 17000  loss 1.6570  bpc 2.390  gn 1.57  41 ms/step
+step 17050  loss 1.7755  bpc 2.562  gn 1.67  41 ms/step
+step 17100  loss 1.8179  bpc 2.623  gn 1.57  41 ms/step
+step 17150  loss 1.8081  bpc 2.609  gn 1.64  41 ms/step
+step 17200  loss 1.7387  bpc 2.508  gn 1.80  41 ms/step
+step 17250  loss 1.6435  bpc 2.371  gn 1.98  41 ms/step
+step 17300  loss 1.7428  bpc 2.514  gn 1.65  41 ms/step
+step 17350  loss 1.7752  bpc 2.561  gn 2.01  41 ms/step
+step 17400  loss 1.7864  bpc 2.577  gn 1.83  41 ms/step
+step 17450  loss 1.6733  bpc 2.414  gn 1.65  41 ms/step
+step 17500  loss 1.7119  bpc 2.470  gn 1.70  41 ms/step
+step 17550  loss 1.8550  bpc 2.676  gn 1.90  41 ms/step
+step 17600  loss 1.7081  bpc 2.464  gn 1.59  41 ms/step
+step 17650  loss 1.7481  bpc 2.522  gn 1.77  41 ms/step
+step 17700  loss 1.7788  bpc 2.566  gn 1.79  41 ms/step
+step 17750  loss 1.6815  bpc 2.426  gn 1.52  41 ms/step
+step 17800  loss 1.7806  bpc 2.569  gn 1.63  41 ms/step
+step 17850  loss 1.7613  bpc 2.541  gn 1.73  41 ms/step
+step 17900  loss 1.7865  bpc 2.577  gn 1.84  41 ms/step
+step 17950  loss 1.6505  bpc 2.381  gn 1.70  41 ms/step
+step 18000  loss 1.8265  bpc 2.635  gn 1.61  41 ms/step
+== eval step 18000: val_bpc 2.5405  ppl 5.818  [0:512) 2.449  [512:2048) 2.545  [2048:4096) 2.560  peak 4124 MB
+step 18050  loss 1.6848  bpc 2.431  gn 1.61  41 ms/step
+step 18100  loss 1.5730  bpc 2.269  gn 1.58  41 ms/step
+step 18150  loss 1.6549  bpc 2.388  gn 1.63  41 ms/step
+step 18200  loss 1.8161  bpc 2.620  gn 1.85  41 ms/step
+step 18250  loss 1.8152  bpc 2.619  gn 1.87  41 ms/step
+step 18300  loss 1.7896  bpc 2.582  gn 1.91  54 ms/step
+step 18350  loss 1.7568  bpc 2.535  gn 1.68  58 ms/step
+step 18400  loss 1.6971  bpc 2.448  gn 1.53  41 ms/step
+step 18450  loss 1.6284  bpc 2.349  gn 1.86  41 ms/step
+step 18500  loss 1.7852  bpc 2.576  gn 1.69  41 ms/step
+step 18550  loss 1.6301  bpc 2.352  gn 2.14  41 ms/step
+step 18600  loss 1.7294  bpc 2.495  gn 1.68  41 ms/step
+step 18650  loss 1.7008  bpc 2.454  gn 1.66  41 ms/step
+step 18700  loss 1.7719  bpc 2.556  gn 1.74  41 ms/step
+step 18750  loss 1.7513  bpc 2.527  gn 1.65  41 ms/step
+step 18800  loss 1.7312  bpc 2.498  gn 1.62  41 ms/step
+step 18850  loss 1.8326  bpc 2.644  gn 1.77  41 ms/step
+step 18900  loss 1.4148  bpc 2.041  gn 1.69  41 ms/step
+step 18950  loss 1.6694  bpc 2.408  gn 1.76  42 ms/step
+step 19000  loss 1.7153  bpc 2.475  gn 1.57  41 ms/step
+step 19050  loss 1.8005  bpc 2.598  gn 1.65  41 ms/step
+step 19100  loss 1.7204  bpc 2.482  gn 1.63  41 ms/step
+step 19150  loss 1.7854  bpc 2.576  gn 1.89  41 ms/step
+step 19200  loss 1.6420  bpc 2.369  gn 1.64  41 ms/step
+step 19250  loss 1.7706  bpc 2.554  gn 1.60  41 ms/step
+step 19300  loss 1.7311  bpc 2.498  gn 1.62  41 ms/step
+step 19350  loss 1.8125  bpc 2.615  gn 1.76  42 ms/step
+step 19400  loss 1.7808  bpc 2.569  gn 1.70  41 ms/step
+step 19450  loss 1.6960  bpc 2.447  gn 1.51  62 ms/step
+step 19500  loss 1.6434  bpc 2.371  gn 1.73  44 ms/step
+step 19550  loss 1.7241  bpc 2.487  gn 1.67  41 ms/step
+step 19600  loss 1.7408  bpc 2.511  gn 1.87  41 ms/step
+step 19650  loss 1.6896  bpc 2.438  gn 1.63  41 ms/step
+step 19700  loss 1.6441  bpc 2.372  gn 1.76  41 ms/step
+step 19750  loss 1.6576  bpc 2.391  gn 1.69  41 ms/step
+step 19800  loss 1.6521  bpc 2.383  gn 1.72  41 ms/step
+step 19850  loss 1.6472  bpc 2.376  gn 1.57  41 ms/step
+step 19900  loss 1.7073  bpc 2.463  gn 1.77  41 ms/step
+step 19950  loss 1.7101  bpc 2.467  gn 1.69  41 ms/step
+step 20000  loss 1.7252  bpc 2.489  gn 1.72  41 ms/step
+== eval step 20000: val_bpc 2.5316  ppl 5.782  [0:512) 2.443  [512:2048) 2.536  [2048:4096) 2.551  peak 4124 MB
+done: {"run": "smat_d3_qkn", "arm": "smat", "d": 3, "step": 20000, "train_loss": 1.7251791954040527, "train_loss_med200": 1.725564956665039, "val_bpc": 2.5316090327755423, "val_ppl": 5.782162012489144, "val_bpc_0_512": 2.4426577979370303, "val_bpc_512_2048": 2.5360303100259696, "val_bpc_2048_4096": 2.55053088354735, "grad_norm": 1.7232433557510376, "nonfinite_steps": 0, "ms_per_step": 42.44364023208618, "peak_MB": 4123.53173828125, "params": 4336128, "elapsed_s": 830.388815164566, "mask_nnz": 4518991, "mask_density": 0.26935285329818726, "mask_n": 2048, "mask_q": 13, "mask_B": 182}
+done: Thu Sep  3 04:21:43 PM CDT 2026

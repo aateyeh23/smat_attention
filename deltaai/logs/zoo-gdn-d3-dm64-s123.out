@@ -1,0 +1,17 @@
+    early_stopping_metric='valid/accuracy',
+    early_stopping_threshold=0.99,
+    run_id='smatgdn_d3_hd16_sig_cread_m2blk-dm64-lr1.0e-02'
+valid/loss=8.23, valid/accuracy=0.00113, valid/num_kv_pairs/accuracy-4=0.0025, valid/num_kv_pairs/accuracy-8=0.00125, valid/num_kv_pairs/accuracy-16=0.00075, valid/num_kv_pairs/accuracy-32=0.000687, valid/num_kv_pairs/accuracy-64=0.000453
+valid/loss=7.97, valid/accuracy=0.00474, valid/num_kv_pairs/accuracy-4=0.005, valid/num_kv_pairs/accuracy-8=0.00613, valid/num_kv_pairs/accuracy-16=0.007, valid/num_kv_pairs/accuracy-32=0.00325, valid/num_kv_pairs/accuracy-64=0.00231
+valid/loss=7.54, valid/accuracy=0.03, valid/num_kv_pairs/accuracy-4=0.0915, valid/num_kv_pairs/accuracy-8=0.0326, valid/num_kv_pairs/accuracy-16=0.0146, valid/num_kv_pairs/accuracy-32=0.00769, valid/num_kv_pairs/accuracy-64=0.00356
+valid/loss=2.11, valid/accuracy=0.687, valid/num_kv_pairs/accuracy-4=0.67, valid/num_kv_pairs/accuracy-8=0.581, valid/num_kv_pairs/accuracy-16=0.789, valid/num_kv_pairs/accuracy-32=0.796, valid/num_kv_pairs/accuracy-64=0.598
+valid/loss=0.3, valid/accuracy=0.947, valid/num_kv_pairs/accuracy-4=0.988, valid/num_kv_pairs/accuracy-8=0.939, valid/num_kv_pairs/accuracy-16=0.948, valid/num_kv_pairs/accuracy-32=0.963, valid/num_kv_pairs/accuracy-64=0.896
+valid/loss=0.223, valid/accuracy=0.958, valid/num_kv_pairs/accuracy-4=0.966, valid/num_kv_pairs/accuracy-8=0.904, valid/num_kv_pairs/accuracy-16=0.976, valid/num_kv_pairs/accuracy-32=0.989, valid/num_kv_pairs/accuracy-64=0.956
+valid/loss=0.596, valid/accuracy=0.894, valid/num_kv_pairs/accuracy-4=0.817, valid/num_kv_pairs/accuracy-8=0.725, valid/num_kv_pairs/accuracy-16=0.972, valid/num_kv_pairs/accuracy-32=0.988, valid/num_kv_pairs/accuracy-64=0.966
+valid/loss=2.75, valid/accuracy=0.773, valid/num_kv_pairs/accuracy-4=0.445, valid/num_kv_pairs/accuracy-8=0.473, valid/num_kv_pairs/accuracy-16=0.979, valid/num_kv_pairs/accuracy-32=0.992, valid/num_kv_pairs/accuracy-64=0.978
+valid/loss=0.198, valid/accuracy=0.962, valid/num_kv_pairs/accuracy-4=0.965, valid/num_kv_pairs/accuracy-8=0.881, valid/num_kv_pairs/accuracy-16=0.987, valid/num_kv_pairs/accuracy-32=0.995, valid/num_kv_pairs/accuracy-64=0.98
+valid/loss=2.44, valid/accuracy=0.807, valid/num_kv_pairs/accuracy-4=0.56, valid/num_kv_pairs/accuracy-8=0.51, valid/num_kv_pairs/accuracy-16=0.985, valid/num_kv_pairs/accuracy-32=0.994, valid/num_kv_pairs/accuracy-64=0.984
+valid/loss=2.53, valid/accuracy=0.79, valid/num_kv_pairs/accuracy-4=0.502, valid/num_kv_pairs/accuracy-8=0.479, valid/num_kv_pairs/accuracy-16=0.988, valid/num_kv_pairs/accuracy-32=0.996, valid/num_kv_pairs/accuracy-64=0.986
+valid/loss=1.44, valid/accuracy=0.853, valid/num_kv_pairs/accuracy-4=0.684, valid/num_kv_pairs/accuracy-8=0.616, valid/num_kv_pairs/accuracy-16=0.984, valid/num_kv_pairs/accuracy-32=0.995, valid/num_kv_pairs/accuracy-64=0.986
+valid/loss=0.656, valid/accuracy=0.915, valid/num_kv_pairs/accuracy-4=0.831, valid/num_kv_pairs/accuracy-8=0.774, valid/num_kv_pairs/accuracy-16=0.987, valid/num_kv_pairs/accuracy-32=0.995, valid/num_kv_pairs/accuracy-64=0.987
+valid/loss=0.0378, valid/accuracy=0.992, valid/num_kv_pairs/accuracy-4=1, valid/num_kv_pairs/accuracy-8=0.998, valid/num_kv_pairs/accuracy-16=0.987, valid/num_kv_pairs/accuracy-32=0.995, valid/num_kv_pairs/accuracy-64=0.983

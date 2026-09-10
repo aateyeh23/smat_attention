@@ -1,0 +1,46 @@
+PyTorch 2.11.0 for DeltaAI (CUDA 13.0, Python 3.12)
+Includes: transformers, accelerate, datasets, peft, lightning,
+          timm, bitsandbytes, diffusers, mpi4py, tensorboard,
+          wandb, jupyter, scipy, scikit-learn, opencv, nvitop
+New in this build (sm_90 source builds):
+  flash-attn, transformer_engine, xformers, apex, mamba-ssm,
+  triton, torch-geometric, cupy-cuda13x, tensorrt, flashinfer
+Known: transformer_engine and cupy currently fail at import due to
+  a cu13 libcublasLt / cython ABI mismatch on this stack — use the
+  other attention paths (flash-attn, xformers) and stock torch CUDA
+  until an upstream fix lands.
+
+For documentation and examples:
+  https://docs.ncsa.illinois.edu/systems/deltaai/
+
+Run setup-kernel prior to launching OOD job.
+
+Quick start (on a compute node):
+  module load python/miniforge3_pytorch/2.11.0
+  conda activate base
+  python -c "import torch; print(torch.cuda.is_available())"
+
+CUDA extensions: CUDA_HOME, nvcc, and CMAKE_PREFIX_PATH come from the
+auto-loaded cuda/13.1.1 module.
+
+A conda environment has been detected
+CONDA_PREFIX=/sw/user/python/miniforge3-pytorch-2.5.0 
+Consider running 'conda deactivate' before loading this module.
+CUDA Toolkit 13.1.1 loaded
+Includes GPUDirect Storage (GDS) libraries
+Requires NVIDIA driver 590+
+Using gcc-native/14 (default in Cray PE 25.09)
+host: gh060.hsn.cm.delta.internal.ncsa.edu   started: Wed Sep  9 12:35:43 AM CDT 2026
+name, memory.total [MiB], driver_version
+NVIDIA GH200 120GB, 97871 MiB, 595.71.05
+torch 2.11.0+cu130 cuda True
+triton 3.5.1
+
+==== smoke ====
+smat_d2_mr3_hd16_ds16_sig_delta_m2blk pool delta heads 2 d_state 16
+T=64 finite True beta_w.grad True
+T=128 finite True beta_w.grad True
+T=256 finite True beta_w.grad True
+lambda->0 equals Mamba-2: 1.2516975402832031e-06
+SMOKE OK
+[2026-09-09T00:47:20.139] error: *** JOB 3116975 ON gh060 CANCELLED AT 2026-09-09T00:47:20 DUE to SIGNAL Terminated ***

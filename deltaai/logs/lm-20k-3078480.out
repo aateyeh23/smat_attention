@@ -1,0 +1,195 @@
+PyTorch 2.11.0 for DeltaAI (CUDA 13.0, Python 3.12)
+Includes: transformers, accelerate, datasets, peft, lightning,
+          timm, bitsandbytes, diffusers, mpi4py, tensorboard,
+          wandb, jupyter, scipy, scikit-learn, opencv, nvitop
+New in this build (sm_90 source builds):
+  flash-attn, transformer_engine, xformers, apex, mamba-ssm,
+  triton, torch-geometric, cupy-cuda13x, tensorrt, flashinfer
+Known: transformer_engine and cupy currently fail at import due to
+  a cu13 libcublasLt / cython ABI mismatch on this stack — use the
+  other attention paths (flash-attn, xformers) and stock torch CUDA
+  until an upstream fix lands.
+
+For documentation and examples:
+  https://docs.ncsa.illinois.edu/systems/deltaai/
+
+Run setup-kernel prior to launching OOD job.
+
+Quick start (on a compute node):
+  module load python/miniforge3_pytorch/2.11.0
+  conda activate base
+  python -c "import torch; print(torch.cuda.is_available())"
+
+CUDA extensions: CUDA_HOME, nvcc, and CMAKE_PREFIX_PATH come from the
+auto-loaded cuda/13.1.1 module.
+
+A conda environment has been detected
+CONDA_PREFIX=/sw/user/python/miniforge3-pytorch-2.5.0 
+Consider running 'conda deactivate' before loading this module.
+CUDA Toolkit 13.1.1 loaded
+Includes GPUDirect Storage (GDS) libraries
+Requires NVIDIA driver 590+
+Using gcc-native/14 (default in Cray PE 25.09)
+host: gh047.hsn.cm.delta.internal.ncsa.edu   started: Thu Sep  3 03:39:11 PM CDT 2026
+name, memory.total [MiB], driver_version
+NVIDIA GH200 120GB, 97871 MiB, 595.71.05
+torch 2.11.0+cu130 cuda True
+triton 3.5.1
+
+==== arm: --arm softmax   Thu Sep  3 03:39:18 PM CDT 2026 ====
+{
+ "run": "softmax",
+ "arm": "softmax",
+ "d": 1,
+ "T": 4096,
+ "layers": 4,
+ "d_model": 256,
+ "heads": 4,
+ "r": 64,
+ "learn_phi": false,
+ "chunk": 128,
+ "steps": 20000,
+ "nb": 8,
+ "lr": 0.001,
+ "warmup": 200,
+ "wd": 0.1,
+ "clip": 1.0,
+ "eval_every": 2000,
+ "val_windows": 256,
+ "eval_nb": 8,
+ "data": "/u/archerdw/smat_attention/deltaai/data/enwik8",
+ "out": "results/lm_T4096_20k.csv",
+ "device": "cuda",
+ "no_amp": false,
+ "seed": 0
+}
+mask: {'mask_nnz': 8390656, 'mask_density': 0.5001220703125}
+params: 4,335,104
+step    50  loss 3.3072  bpc 4.771  gn 1.16  31 ms/step
+step   100  loss 2.7931  bpc 4.030  gn 0.70  11 ms/step
+step   150  loss 2.7269  bpc 3.934  gn 0.49  11 ms/step
+step   200  loss 2.6470  bpc 3.819  gn 0.58  11 ms/step
+step   250  loss 2.6299  bpc 3.794  gn 0.47  11 ms/step
+step   300  loss 2.5550  bpc 3.686  gn 0.43  11 ms/step
+step   350  loss 2.5462  bpc 3.673  gn 0.39  11 ms/step
+step   400  loss 2.6632  bpc 3.842  gn 0.37  11 ms/step
+step   450  loss 2.5886  bpc 3.735  gn 0.46  11 ms/step
+step   500  loss 2.5632  bpc 3.698  gn 0.33  11 ms/step
+step   550  loss 2.5721  bpc 3.711  gn 0.34  11 ms/step
+step   600  loss 2.5642  bpc 3.699  gn 0.29  11 ms/step
+step   650  loss 2.5751  bpc 3.715  gn 0.50  11 ms/step
+step   700  loss 2.5491  bpc 3.678  gn 0.40  11 ms/step
+step   750  loss 2.4877  bpc 3.589  gn 0.42  11 ms/step
+step   800  loss 2.4621  bpc 3.552  gn 0.99  11 ms/step
+step   850  loss 2.4434  bpc 3.525  gn 0.35  11 ms/step
+step   900  loss 2.3929  bpc 3.452  gn 0.37  11 ms/step
+step   950  loss 2.4177  bpc 3.488  gn 0.43  11 ms/step
+step  1000  loss 2.3484  bpc 3.388  gn 0.39  11 ms/step
+step  1050  loss 2.3475  bpc 3.387  gn 0.60  11 ms/step
+step  1100  loss 2.4272  bpc 3.502  gn 0.57  11 ms/step
+step  1150  loss 2.3063  bpc 3.327  gn 0.74  11 ms/step
+step  1200  loss 2.2633  bpc 3.265  gn 1.28  11 ms/step
+step  1250  loss 2.2833  bpc 3.294  gn 1.15  11 ms/step
+step  1300  loss 2.1083  bpc 3.042  gn 1.01  11 ms/step
+step  1350  loss 2.1378  bpc 3.084  gn 0.95  11 ms/step
+step  1400  loss 2.1189  bpc 3.057  gn 1.24  11 ms/step
+step  1450  loss 2.0446  bpc 2.950  gn 0.85  11 ms/step
+step  1500  loss 1.9990  bpc 2.884  gn 0.98  11 ms/step
+step  1550  loss 2.0386  bpc 2.941  gn 1.10  11 ms/step
+step  1600  loss 1.9029  bpc 2.745  gn 1.16  11 ms/step
+step  1650  loss 1.8318  bpc 2.643  gn 1.70  11 ms/step
+step  1700  loss 1.8851  bpc 2.720  gn 1.10  11 ms/step
+step  1750  loss 1.9514  bpc 2.815  gn 1.02  11 ms/step
+step  1800  loss 1.9683  bpc 2.840  gn 1.04  11 ms/step
+step  1850  loss 1.8622  bpc 2.687  gn 1.46  11 ms/step
+step  1900  loss 1.8031  bpc 2.601  gn 1.84  11 ms/step
+step  1950  loss 1.7936  bpc 2.588  gn 1.92  11 ms/step
+step  2000  loss 1.8413  bpc 2.656  gn 2.27  11 ms/step
+== eval step 2000: val_bpc 2.7121  ppl 6.553  [0:512) 2.717  [512:2048) 2.693  [2048:4096) 2.726  peak 1470 MB
+step  2050  loss 1.8695  bpc 2.697  gn 5.34  11 ms/step
+step  2100  loss 2.1119  bpc 3.047  gn 9.61  11 ms/step
+step  2150  loss 2.1496  bpc 3.101  gn 7.13  11 ms/step
+step  2200  loss 2.2244  bpc 3.209  gn 11.97  11 ms/step
+step  2250  loss 2.1734  bpc 3.136  gn 6.52  11 ms/step
+step  2300  loss 1.9959  bpc 2.880  gn 8.69  11 ms/step
+step  2350  loss 2.0467  bpc 2.953  gn 11.10  11 ms/step
+step  2400  loss 2.0767  bpc 2.996  gn 7.27  11 ms/step
+step  2450  loss 2.1270  bpc 3.069  gn 6.60  11 ms/step
+step  2500  loss 2.0356  bpc 2.937  gn 5.52  11 ms/step
+step  2550  loss 2.0868  bpc 3.011  gn 20.36  11 ms/step
+step  2600  loss 2.2247  bpc 3.210  gn 6.90  11 ms/step
+step  2650  loss 2.1324  bpc 3.076  gn 8.11  11 ms/step
+step  2700  loss 2.2046  bpc 3.181  gn 10.40  11 ms/step
+step  2750  loss 2.2322  bpc 3.220  gn 17.48  11 ms/step
+step  2800  loss 2.2457  bpc 3.240  gn 11.76  11 ms/step
+step  2850  loss 2.1685  bpc 3.128  gn 46.12  11 ms/step
+step  2900  loss 2.2901  bpc 3.304  gn 9.82  11 ms/step
+step  2950  loss 2.6119  bpc 3.768  gn 33.76  11 ms/step
+step  3000  loss 2.5563  bpc 3.688  gn 20.46  11 ms/step
+step  3050  loss 2.4656  bpc 3.557  gn 8.96  11 ms/step
+step  3100  loss 2.6040  bpc 3.757  gn 7.97  11 ms/step
+step  3150  loss 2.4919  bpc 3.595  gn 7.01  11 ms/step
+step  3200  loss 2.5300  bpc 3.650  gn 16.15  11 ms/step
+step  3250  loss 2.4165  bpc 3.486  gn 21.09  11 ms/step
+step  3300  loss 2.4192  bpc 3.490  gn 9.23  11 ms/step
+step  3350  loss 2.8280  bpc 4.080  gn 54.84  11 ms/step
+step  3400  loss 2.7033  bpc 3.900  gn 69.28  11 ms/step
+step  3450  loss 2.9508  bpc 4.257  gn 61.85  11 ms/step
+step  3500  loss 3.0139  bpc 4.348  gn 112.19  11 ms/step
+step  3550  loss 2.9976  bpc 4.325  gn 52.26  11 ms/step
+step  3600  loss 2.7161  bpc 3.919  gn 42.55  11 ms/step
+step  3650  loss 2.7307  bpc 3.940  gn 217.52  11 ms/step
+step  3700  loss 2.9753  bpc 4.293  gn 64.81  11 ms/step
+step  3750  loss 2.7161  bpc 3.918  gn 10.85  11 ms/step
+step  3800  loss 2.6479  bpc 3.820  gn 49.17  11 ms/step
+step  3850  loss 2.7643  bpc 3.988  gn 23.54  11 ms/step
+step  3900  loss 2.8624  bpc 4.130  gn 12.32  11 ms/step
+step  3950  loss 2.6806  bpc 3.867  gn 4.07  11 ms/step
+step  4000  loss 2.6488  bpc 3.821  gn 1.45  11 ms/step
+== eval step 4000: val_bpc 3.7952  ppl 13.883  [0:512) 3.784  [512:2048) 3.790  [2048:4096) 3.802  peak 1470 MB
+step  4050  loss 2.6243  bpc 3.786  gn 1.98  11 ms/step
+step  4100  loss 2.5922  bpc 3.740  gn 0.52  11 ms/step
+step  4150  loss 2.5241  bpc 3.642  gn 2.41  11 ms/step
+step  4200  loss 2.4938  bpc 3.598  gn 1.22  11 ms/step
+step  4250  loss 2.5495  bpc 3.678  gn 1.74  11 ms/step
+step  4300  loss 2.4608  bpc 3.550  gn 0.57  11 ms/step
+step  4350  loss 2.6781  bpc 3.864  gn 6.56  11 ms/step
+step  4400  loss 2.6067  bpc 3.761  gn 4.33  11 ms/step
+step  4450  loss 2.5067  bpc 3.616  gn 1.25  11 ms/step
+step  4500  loss 2.3362  bpc 3.370  gn 4.59  11 ms/step
+step  4550  loss 2.5581  bpc 3.691  gn 12.42  11 ms/step
+step  4600  loss 2.5358  bpc 3.658  gn 59.04  11 ms/step
+step  4650  loss 2.5182  bpc 3.633  gn 25.94  11 ms/step
+step  4700  loss 2.5226  bpc 3.639  gn 42.41  11 ms/step
+step  4750  loss 2.6665  bpc 3.847  gn 25.99  11 ms/step
+step  4800  loss 2.8183  bpc 4.066  gn 156.69  11 ms/step
+step  4850  loss 2.5810  bpc 3.724  gn 25.19  11 ms/step
+step  4900  loss 2.6639  bpc 3.843  gn 13.21  11 ms/step
+step  4950  loss 2.5161  bpc 3.630  gn 13.97  11 ms/step
+step  5000  loss 2.5476  bpc 3.675  gn 31.20  11 ms/step
+step  5050  loss 2.5618  bpc 3.696  gn 30.75  11 ms/step
+step  5100  loss 2.5071  bpc 3.617  gn 8.80  11 ms/step
+step  5150  loss 2.4241  bpc 3.497  gn 32.71  11 ms/step
+step  5200  loss 2.4909  bpc 3.594  gn 54.55  11 ms/step
+step  5250  loss 2.5383  bpc 3.662  gn 25.61  11 ms/step
+step  5300  loss 2.4624  bpc 3.552  gn 27.71  11 ms/step
+step  5350  loss 2.3686  bpc 3.417  gn 27.85  11 ms/step
+step  5400  loss 2.5204  bpc 3.636  gn 16.17  11 ms/step
+step  5450  loss 2.6061  bpc 3.760  gn 18.12  11 ms/step
+step  5500  loss 2.4863  bpc 3.587  gn 26.06  11 ms/step
+step  5550  loss 2.5350  bpc 3.657  gn 45.96  11 ms/step
+step  5600  loss 2.5238  bpc 3.641  gn 82.61  11 ms/step
+step  5650  loss 2.4525  bpc 3.538  gn 19.96  11 ms/step
+step  5700  loss 2.3336  bpc 3.367  gn 29.26  11 ms/step
+step  5750  loss 2.4689  bpc 3.562  gn 53.68  11 ms/step
+step  5800  loss 2.8051  bpc 4.047  gn 45.43  11 ms/step
+step  5850  loss 3.0129  bpc 4.347  gn 486.89  11 ms/step
+step  5900  loss 2.7159  bpc 3.918  gn 25.16  11 ms/step
+step  5950  loss 2.8367  bpc 4.093  gn 445.48  11 ms/step
+step  6000  loss 2.7534  bpc 3.972  gn 1701.94  11 ms/step
+== eval step 6000: val_bpc 4.0401  ppl 16.452  [0:512) 4.059  [512:2048) 4.016  [2048:4096) 4.054  peak 1470 MB
+step  6050  loss 2.7074  bpc 3.906  gn 15.65  11 ms/step
+step  6100  loss 2.8001  bpc 4.040  gn 4.11  11 ms/step
+step  6150  loss 2.6403  bpc 3.809  gn 21.17  11 ms/step
+step  6200  loss 2.5785  bpc 3.720  gn 10.81  11 ms/step
+[2026-09-03T15:40:32.352] error: *** JOB 3078480 ON gh047 CANCELLED AT 2026-09-03T15:40:32 DUE to SIGNAL Terminated ***

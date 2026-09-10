@@ -1,0 +1,8 @@
+    early_stopping_metric='valid/accuracy',
+    early_stopping_threshold=0.99,
+    run_id='smat_d3-dm16-lr1.0e-03'
+valid/loss=8.21, valid/accuracy=0.00295, valid/num_kv_pairs/accuracy-4=0.007, valid/num_kv_pairs/accuracy-8=0.00413, valid/num_kv_pairs/accuracy-16=0.00162, valid/num_kv_pairs/accuracy-32=0.00134, valid/num_kv_pairs/accuracy-64=0.000656
+valid/loss=8.02, valid/accuracy=0.00485, valid/num_kv_pairs/accuracy-4=0.0147, valid/num_kv_pairs/accuracy-8=0.00575, valid/num_kv_pairs/accuracy-16=0.002, valid/num_kv_pairs/accuracy-32=0.00116, valid/num_kv_pairs/accuracy-64=0.000578
+valid/loss=7.96, valid/accuracy=0.00687, valid/num_kv_pairs/accuracy-4=0.0238, valid/num_kv_pairs/accuracy-8=0.00613, valid/num_kv_pairs/accuracy-16=0.0025, valid/num_kv_pairs/accuracy-32=0.00137, valid/num_kv_pairs/accuracy-64=0.000578
+valid/loss=7.95, valid/accuracy=0.00781, valid/num_kv_pairs/accuracy-4=0.0283, valid/num_kv_pairs/accuracy-8=0.00588, valid/num_kv_pairs/accuracy-16=0.0025, valid/num_kv_pairs/accuracy-32=0.00153, valid/num_kv_pairs/accuracy-64=0.000875
+valid/loss=7.93, valid/accuracy=0.00886, valid/num_kv_pairs/accuracy-4=0.0312, valid/num_kv_pairs/accuracy-8=0.0075, valid/num_kv_pairs/accuracy-16=0.003, valid/num_kv_pairs/accuracy-32=0.00169, valid/num_kv_pairs/accuracy-64=0.000859

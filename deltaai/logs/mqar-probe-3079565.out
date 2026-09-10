@@ -1,0 +1,168 @@
+PyTorch 2.11.0 for DeltaAI (CUDA 13.0, Python 3.12)
+Includes: transformers, accelerate, datasets, peft, lightning,
+          timm, bitsandbytes, diffusers, mpi4py, tensorboard,
+          wandb, jupyter, scipy, scikit-learn, opencv, nvitop
+New in this build (sm_90 source builds):
+  flash-attn, transformer_engine, xformers, apex, mamba-ssm,
+  triton, torch-geometric, cupy-cuda13x, tensorrt, flashinfer
+Known: transformer_engine and cupy currently fail at import due to
+  a cu13 libcublasLt / cython ABI mismatch on this stack — use the
+  other attention paths (flash-attn, xformers) and stock torch CUDA
+  until an upstream fix lands.
+
+For documentation and examples:
+  https://docs.ncsa.illinois.edu/systems/deltaai/
+
+Run setup-kernel prior to launching OOD job.
+
+Quick start (on a compute node):
+  module load python/miniforge3_pytorch/2.11.0
+  conda activate base
+  python -c "import torch; print(torch.cuda.is_available())"
+
+CUDA extensions: CUDA_HOME, nvcc, and CMAKE_PREFIX_PATH come from the
+auto-loaded cuda/13.1.1 module.
+
+host: gh045.hsn.cm.delta.internal.ncsa.edu   started: Thu Sep  3 06:55:42 PM CDT 2026
+name, memory.total [MiB], driver_version
+NVIDIA GH200 120GB, 97871 MiB, 595.71.05
+torch 2.11.0+cu130 cuda True
+triton 3.5.1
+
+==== arm: --arm smat --d 1 --phi elu1   Thu Sep  3 06:55:48 PM CDT 2026 ====
+{"run": "smat_d1_p16", "arm": "smat", "d": 1, "T": 512, "n_pairs": 16, "n_queries": 16, "n_keys": 128, "ctx_start": 0, "layers": 4, "d_model": 256, "heads": 4, "r": 64, "chunk": 128, "steps": 2500, "nb": 32, "lr": 0.001, "warmup": 200, "eval_every": 500, "eval_n": 256, "qk_norm": true, "short_conv": 3, "triton_bwd": false, "no_amp": false, "phi": "elu1", "oracle_keep": false, "taylor_dim": 16, "pad_noise": false, "out": "results/mqar_T512_probe.csv", "device": "cuda", "seed": 0}
+mask n=256: pairs occupy [0,32), queries in [256,512)
+step   100  loss 4.9082  30 ms/step
+step   200  loss 4.9300  24 ms/step
+step   300  loss 4.8671  24 ms/step
+step   400  loss 4.9004  24 ms/step
+step   500  loss 4.8581  24 ms/step
+== eval step 500: acc 0.009  nll 4.872  noise share of normaliser per layer [0.883 0.887 0.889 0.890]
+step   600  loss 4.8612  23 ms/step
+step   700  loss 4.8695  23 ms/step
+step   800  loss 4.8336  23 ms/step
+step   900  loss 4.8215  23 ms/step
+step  1000  loss 4.8494  23 ms/step
+== eval step 1000: acc 0.010  nll 4.837  noise share of normaliser per layer [0.840 0.738 0.858 0.853]
+step  1100  loss 4.8381  23 ms/step
+step  1200  loss 4.8341  23 ms/step
+step  1300  loss 4.8100  23 ms/step
+step  1400  loss 4.8413  23 ms/step
+step  1500  loss 4.7963  23 ms/step
+== eval step 1500: acc 0.007  nll 4.822  noise share of normaliser per layer [0.846 0.789 0.887 0.893]
+step  1600  loss 4.8534  23 ms/step
+step  1700  loss 4.7929  23 ms/step
+step  1800  loss 4.8059  23 ms/step
+step  1900  loss 4.8048  23 ms/step
+step  2000  loss 4.8089  23 ms/step
+== eval step 2000: acc 0.016  nll 4.800  noise share of normaliser per layer [0.836 0.792 0.877 0.888]
+step  2100  loss 4.8008  23 ms/step
+step  2200  loss 4.7990  23 ms/step
+step  2300  loss 4.8060  23 ms/step
+step  2400  loss 4.7617  23 ms/step
+step  2500  loss 4.8112  23 ms/step
+== eval step 2500: acc 0.014  nll 4.793  noise share of normaliser per layer [0.836 0.812 0.882 0.891]
+done: {"run": "smat_d1_p16", "arm": "smat", "d": 1, "n_pairs": 16, "n_queries": 16, "n_keys": 128, "step": 2500, "train_loss": 4.811203956604004, "acc": 0.013671875, "nll": 4.7926362454891205, "noise_share": "0.836 0.812 0.882 0.891", "ms_per_step": 22.97501277923584, "elapsed_s": 59.2591438293457}
+==== arm: --arm smat --d 1 --phi elu1 --oracle-keep   Thu Sep  3 06:56:51 PM CDT 2026 ====
+{"run": "smat_d1_p16_oracle", "arm": "smat", "d": 1, "T": 512, "n_pairs": 16, "n_queries": 16, "n_keys": 128, "ctx_start": 0, "layers": 4, "d_model": 256, "heads": 4, "r": 64, "chunk": 128, "steps": 2500, "nb": 32, "lr": 0.001, "warmup": 200, "eval_every": 500, "eval_n": 256, "qk_norm": true, "short_conv": 3, "triton_bwd": false, "no_amp": false, "phi": "elu1", "oracle_keep": true, "taylor_dim": 16, "pad_noise": false, "out": "results/mqar_T512_probe.csv", "device": "cuda", "seed": 0}
+mask n=256: pairs occupy [0,32), queries in [256,512)
+step   100  loss 4.8920  25 ms/step
+step   200  loss 4.5562  23 ms/step
+step   300  loss 4.0425  22 ms/step
+step   400  loss 1.1882  22 ms/step
+step   500  loss 0.1785  22 ms/step
+== eval step 500: acc 0.965  nll 0.144  noise share of normaliser per layer [0.000 0.000 0.000 0.000]
+step   600  loss 0.0435  22 ms/step
+step   700  loss 0.0208  22 ms/step
+step   800  loss 0.0147  22 ms/step
+step   900  loss 0.0128  22 ms/step
+step  1000  loss 0.0117  22 ms/step
+== eval step 1000: acc 0.997  nll 0.009  noise share of normaliser per layer [0.000 0.000 0.000 0.000]
+step  1100  loss 0.0050  22 ms/step
+step  1200  loss 0.0022  23 ms/step
+step  1300  loss 0.0041  23 ms/step
+step  1400  loss 0.0007  23 ms/step
+step  1500  loss 0.0004  23 ms/step
+== eval step 1500: acc 1.000  nll 0.001  noise share of normaliser per layer [0.000 0.000 0.000 0.000]
+step  1600  loss 0.0018  23 ms/step
+step  1700  loss 0.0003  23 ms/step
+step  1800  loss 0.0001  23 ms/step
+step  1900  loss 0.0002  22 ms/step
+step  2000  loss 0.0001  22 ms/step
+== eval step 2000: acc 1.000  nll 0.000  noise share of normaliser per layer [0.000 0.000 0.000 0.000]
+step  2100  loss 0.0001  23 ms/step
+step  2200  loss 0.0000  23 ms/step
+step  2300  loss 0.0000  22 ms/step
+step  2400  loss 0.0000  23 ms/step
+step  2500  loss 0.0000  22 ms/step
+== eval step 2500: acc 1.000  nll 0.000  noise share of normaliser per layer [0.000 0.000 0.000 0.000]
+done: {"run": "smat_d1_p16_oracle", "arm": "smat", "d": 1, "n_pairs": 16, "n_queries": 16, "n_keys": 128, "step": 2500, "train_loss": 1.5595627701259218e-05, "acc": 1.0, "nll": 5.99296419068196e-05, "noise_share": "0.000 0.000 0.000 0.000", "ms_per_step": 22.527885913848877, "elapsed_s": 57.11270070075989}
+==== arm: --arm smat --d 1 --phi taylor --taylor-dim 16   Thu Sep  3 06:57:53 PM CDT 2026 ====
+{"run": "smat_d1_p16_taylor16", "arm": "smat", "d": 1, "T": 512, "n_pairs": 16, "n_queries": 16, "n_keys": 128, "ctx_start": 0, "layers": 4, "d_model": 256, "heads": 4, "r": 64, "chunk": 128, "steps": 2500, "nb": 32, "lr": 0.001, "warmup": 200, "eval_every": 500, "eval_n": 256, "qk_norm": true, "short_conv": 3, "triton_bwd": false, "no_amp": false, "phi": "taylor", "oracle_keep": false, "taylor_dim": 16, "pad_noise": false, "out": "results/mqar_T512_probe.csv", "device": "cuda", "seed": 0}
+mask n=256: pairs occupy [0,32), queries in [256,512)
+step   100  loss 4.9142  32 ms/step
+step   200  loss 4.9242  30 ms/step
+step   300  loss 4.8611  30 ms/step
+step   400  loss 4.8820  30 ms/step
+step   500  loss 4.7963  30 ms/step
+== eval step 500: acc 0.013  nll 4.825  noise share of normaliser per layer [0.802 0.894 0.874 0.901]
+step   600  loss 4.8192  30 ms/step
+step   700  loss 4.8288  30 ms/step
+step   800  loss 4.8129  30 ms/step
+step   900  loss 4.8300  30 ms/step
+step  1000  loss 4.8206  30 ms/step
+== eval step 1000: acc 0.008  nll 4.804  noise share of normaliser per layer [0.807 0.883 0.863 0.881]
+step  1100  loss 4.8005  30 ms/step
+step  1200  loss 4.8341  30 ms/step
+step  1300  loss 4.8013  30 ms/step
+step  1400  loss 4.8188  30 ms/step
+step  1500  loss 4.7724  30 ms/step
+== eval step 1500: acc 0.011  nll 4.798  noise share of normaliser per layer [0.795 0.890 0.852 0.877]
+step  1600  loss 4.8145  30 ms/step
+step  1700  loss 4.8070  30 ms/step
+step  1800  loss 4.7751  30 ms/step
+step  1900  loss 4.8101  30 ms/step
+step  2000  loss 4.8218  30 ms/step
+== eval step 2000: acc 0.015  nll 4.800  noise share of normaliser per layer [0.780 0.890 0.883 0.896]
+step  2100  loss 4.7751  30 ms/step
+step  2200  loss 4.8333  30 ms/step
+step  2300  loss 4.7876  30 ms/step
+step  2400  loss 4.7751  30 ms/step
+step  2500  loss 4.7687  30 ms/step
+== eval step 2500: acc 0.010  nll 4.796  noise share of normaliser per layer [0.785 0.890 0.867 0.893]
+done: {"run": "smat_d1_p16_taylor16", "arm": "smat", "d": 1, "n_pairs": 16, "n_queries": 16, "n_keys": 128, "step": 2500, "train_loss": 4.768651962280273, "acc": 0.009765625, "nll": 4.795621603727341, "noise_share": "0.785 0.890 0.867 0.893", "ms_per_step": 29.901552200317383, "elapsed_s": 75.75761318206787}
+==== arm: --arm smat --d 1 --phi taylor --taylor-dim 16 --oracle-keep   Thu Sep  3 06:59:15 PM CDT 2026 ====
+{"run": "smat_d1_p16_taylor16_oracle", "arm": "smat", "d": 1, "T": 512, "n_pairs": 16, "n_queries": 16, "n_keys": 128, "ctx_start": 0, "layers": 4, "d_model": 256, "heads": 4, "r": 64, "chunk": 128, "steps": 2500, "nb": 32, "lr": 0.001, "warmup": 200, "eval_every": 500, "eval_n": 256, "qk_norm": true, "short_conv": 3, "triton_bwd": false, "no_amp": false, "phi": "taylor", "oracle_keep": true, "taylor_dim": 16, "pad_noise": false, "out": "results/mqar_T512_probe.csv", "device": "cuda", "seed": 0}
+mask n=256: pairs occupy [0,32), queries in [256,512)
+step   100  loss 4.8912  34 ms/step
+step   200  loss 3.8381  31 ms/step
+step   300  loss 0.0039  31 ms/step
+step   400  loss 0.0121  31 ms/step
+step   500  loss 0.0051  31 ms/step
+== eval step 500: acc 0.998  nll 0.010  noise share of normaliser per layer [0.000 0.000 0.000 0.000]
+step   600  loss 0.0016  31 ms/step
+step   700  loss 0.0031  31 ms/step
+step   800  loss 0.0188  31 ms/step
+step   900  loss 0.0011  31 ms/step
+step  1000  loss 0.0045  31 ms/step
+== eval step 1000: acc 1.000  nll 0.001  noise share of normaliser per layer [0.000 0.000 0.000 0.000]
+step  1100  loss 0.0010  31 ms/step
+step  1200  loss 0.0007  31 ms/step
+step  1300  loss 0.0012  31 ms/step
+step  1400  loss 0.0001  31 ms/step
+step  1500  loss 0.0000  31 ms/step
+== eval step 1500: acc 1.000  nll 0.000  noise share of normaliser per layer [0.000 0.000 0.000 0.000]
+step  1600  loss 0.0000  31 ms/step
+step  1700  loss 0.0001  31 ms/step
+step  1800  loss 0.0000  31 ms/step
+step  1900  loss 0.0000  31 ms/step
+step  2000  loss 0.0000  31 ms/step
+== eval step 2000: acc 1.000  nll 0.000  noise share of normaliser per layer [0.000 0.000 0.000 0.000]
+step  2100  loss 0.0000  31 ms/step
+step  2200  loss 0.0000  31 ms/step
+step  2300  loss 0.0000  31 ms/step
+step  2400  loss 0.0000  31 ms/step
+step  2500  loss 0.0000  31 ms/step
+== eval step 2500: acc 1.000  nll 0.000  noise share of normaliser per layer [0.000 0.000 0.000 0.000]
+done: {"run": "smat_d1_p16_taylor16_oracle", "arm": "smat", "d": 1, "n_pairs": 16, "n_queries": 16, "n_keys": 128, "step": 2500, "train_loss": 3.760173399314226e-07, "acc": 1.0, "nll": 5.065686008443038e-07, "noise_share": "0.000 0.000 0.000 0.000", "ms_per_step": 31.247724056243896, "elapsed_s": 79.18583989143372}
+done: Thu Sep  3 07:00:39 PM CDT 2026

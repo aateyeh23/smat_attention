@@ -1,0 +1,6 @@
+smatgdn_d3_hd16_h2_sig_cread_m2blk heads 2 r 16 p 16 params total 546864 mixer 11160 gdn-only 10900
+T=64 finite True tau.grad True
+T=128 finite True tau.grad True
+T=256 finite True tau.grad True
+lambda->0 equals fla GDN forward: 0.0
+SMOKE OK

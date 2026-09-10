@@ -1,0 +1,8 @@
+smat_d2_mr3_hd16_ds16_sig_delta_cread_m2blk pool delta heads 2 d_state 16
+Traceback (most recent call last):
+  File "/u/archerdw/smat_attention/deltaai/logs/smoke_cread.py", line 9, in <module>
+    print(f"T={T} finite {torch.isfinite(y).all().item()} tau.grad {mx.mx.tau.grad is not None and torch.isfinite(mx.tau.grad).all().item()}")
+                                                                    ^^^^^
+  File "/sw/user/python/miniforge3-pytorch-2.11.0/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1968, in __getattr__
+    raise AttributeError(
+AttributeError: 'SmatMamba2MR' object has no attribute 'mx'

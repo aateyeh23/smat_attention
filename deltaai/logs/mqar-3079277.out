@@ -1,0 +1,66 @@
+PyTorch 2.11.0 for DeltaAI (CUDA 13.0, Python 3.12)
+Includes: transformers, accelerate, datasets, peft, lightning,
+          timm, bitsandbytes, diffusers, mpi4py, tensorboard,
+          wandb, jupyter, scipy, scikit-learn, opencv, nvitop
+New in this build (sm_90 source builds):
+  flash-attn, transformer_engine, xformers, apex, mamba-ssm,
+  triton, torch-geometric, cupy-cuda13x, tensorrt, flashinfer
+Known: transformer_engine and cupy currently fail at import due to
+  a cu13 libcublasLt / cython ABI mismatch on this stack — use the
+  other attention paths (flash-attn, xformers) and stock torch CUDA
+  until an upstream fix lands.
+
+For documentation and examples:
+  https://docs.ncsa.illinois.edu/systems/deltaai/
+
+Run setup-kernel prior to launching OOD job.
+
+Quick start (on a compute node):
+  module load python/miniforge3_pytorch/2.11.0
+  conda activate base
+  python -c "import torch; print(torch.cuda.is_available())"
+
+CUDA extensions: CUDA_HOME, nvcc, and CMAKE_PREFIX_PATH come from the
+auto-loaded cuda/13.1.1 module.
+
+A conda environment has been detected
+CONDA_PREFIX=/sw/user/python/miniforge3-pytorch-2.5.0 
+Consider running 'conda deactivate' before loading this module.
+CUDA Toolkit 13.1.1 loaded
+Includes GPUDirect Storage (GDS) libraries
+Requires NVIDIA driver 590+
+Using gcc-native/14 (default in Cray PE 25.09)
+host: gh007.hsn.cm.delta.internal.ncsa.edu   started: Thu Sep  3 05:47:44 PM CDT 2026
+name, memory.total [MiB], driver_version
+NVIDIA GH200 120GB, 97871 MiB, 595.71.05
+torch 2.11.0+cu130 cuda True
+triton 3.5.1
+
+==== arm: --arm softmax   Thu Sep  3 05:47:53 PM CDT 2026 ====
+{"run": "softmax_p256", "arm": "softmax", "d": 1, "T": 4096, "n_pairs": 256, "n_queries": 64, "n_keys": 2048, "ctx_start": 0, "layers": 4, "d_model": 256, "heads": 4, "r": 64, "chunk": 128, "steps": 3000, "nb": 16, "lr": 0.0003, "warmup": 200, "eval_every": 500, "eval_n": 256, "qk_norm": true, "triton_bwd": true, "out": "results/mqar_T4096.csv", "device": "cuda", "seed": 0}
+step   100  loss 7.8551  41 ms/step
+step   200  loss 7.6661  30 ms/step
+step   300  loss 7.6673  30 ms/step
+step   400  loss 7.6528  30 ms/step
+step   500  loss 7.6379  30 ms/step
+== eval step 500: acc 0.001  nll 7.642
+step   600  loss 7.6438  30 ms/step
+step   700  loss 7.6283  30 ms/step
+step   800  loss 7.6312  30 ms/step
+step   900  loss 7.6317  30 ms/step
+step  1000  loss 7.6233  30 ms/step
+== eval step 1000: acc 0.001  nll 7.631
+step  1100  loss 7.6385  30 ms/step
+step  1200  loss 7.6283  30 ms/step
+step  1300  loss 7.6350  30 ms/step
+step  1400  loss 7.6215  30 ms/step
+step  1500  loss 7.6330  30 ms/step
+== eval step 1500: acc 0.000  nll 7.630
+step  1600  loss 7.6237  30 ms/step
+step  1700  loss 7.6217  30 ms/step
+step  1800  loss 7.6269  30 ms/step
+step  1900  loss 7.6271  30 ms/step
+step  2000  loss 7.6315  30 ms/step
+== eval step 2000: acc 0.000  nll 7.628
+step  2100  loss 7.6277  30 ms/step
+[2026-09-03T17:49:06.244] error: *** JOB 3079277 ON gh007 CANCELLED AT 2026-09-03T17:49:06 DUE to SIGNAL Terminated ***

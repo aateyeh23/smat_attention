@@ -1,0 +1,262 @@
+PyTorch 2.11.0 for DeltaAI (CUDA 13.0, Python 3.12)
+Includes: transformers, accelerate, datasets, peft, lightning,
+          timm, bitsandbytes, diffusers, mpi4py, tensorboard,
+          wandb, jupyter, scipy, scikit-learn, opencv, nvitop
+New in this build (sm_90 source builds):
+  flash-attn, transformer_engine, xformers, apex, mamba-ssm,
+  triton, torch-geometric, cupy-cuda13x, tensorrt, flashinfer
+Known: transformer_engine and cupy currently fail at import due to
+  a cu13 libcublasLt / cython ABI mismatch on this stack — use the
+  other attention paths (flash-attn, xformers) and stock torch CUDA
+  until an upstream fix lands.
+
+For documentation and examples:
+  https://docs.ncsa.illinois.edu/systems/deltaai/
+
+Run setup-kernel prior to launching OOD job.
+
+Quick start (on a compute node):
+  module load python/miniforge3_pytorch/2.11.0
+  conda activate base
+  python -c "import torch; print(torch.cuda.is_available())"
+
+CUDA extensions: CUDA_HOME, nvcc, and CMAKE_PREFIX_PATH come from the
+auto-loaded cuda/13.1.1 module.
+
+host: gh038.hsn.cm.delta.internal.ncsa.edu   started: Thu Sep  3 06:24:38 PM CDT 2026
+name, memory.total [MiB], driver_version
+NVIDIA GH200 120GB, 97871 MiB, 595.71.05
+torch 2.11.0+cu130 cuda True
+triton 3.5.1
+
+==== task d_ref=2 k=2   arm: --arm softmax   Thu Sep  3 06:24:41 PM CDT 2026 ====
+{"run": "softmax_ref2_k2", "arm": "softmax", "d": 1, "d_ref": 2, "k": 2, "T": 4096, "layers": 4, "d_model": 256, "heads": 4, "r": 64, "chunk": 128, "steps": 3000, "nb": 16, "lr": 0.001, "warmup": 200, "eval_every": 500, "eval_n": 512, "qk_norm": true, "triton_bwd": true, "data": "/u/archerdw/smat_attention/deltaai/data/enwik8", "out": "results/needle_T4096.csv", "device": "cuda", "seed": 0}
+needles at [1304, 1741], query rows [2600, 2661]
+step   100  loss 2.6459  29 ms/step
+step   200  loss 0.0022  25 ms/step
+step   300  loss 0.0002  25 ms/step
+step   400  loss 0.0000  25 ms/step
+step   500  loss 0.0000  25 ms/step
+== eval step 500: acc 1.000  nll 0.000  per-needle 1.00 1.00
+step   600  loss 0.0000  25 ms/step
+step   700  loss 0.0000  25 ms/step
+step   800  loss 0.0000  25 ms/step
+step   900  loss 0.0000  25 ms/step
+step  1000  loss 0.0000  25 ms/step
+== eval step 1000: acc 1.000  nll 0.000  per-needle 1.00 1.00
+step  1100  loss 0.0000  25 ms/step
+step  1200  loss 0.0000  25 ms/step
+step  1300  loss 0.0000  25 ms/step
+step  1400  loss 0.0000  25 ms/step
+step  1500  loss 0.0000  25 ms/step
+== eval step 1500: acc 1.000  nll 0.000  per-needle 1.00 1.00
+step  1600  loss 0.0000  25 ms/step
+step  1700  loss 0.0000  25 ms/step
+step  1800  loss 0.0000  25 ms/step
+step  1900  loss 0.0000  25 ms/step
+step  2000  loss 0.0000  25 ms/step
+== eval step 2000: acc 1.000  nll 0.000  per-needle 1.00 1.00
+step  2100  loss 0.0000  25 ms/step
+step  2200  loss 0.0000  25 ms/step
+step  2300  loss 0.0000  25 ms/step
+step  2400  loss 0.0000  25 ms/step
+step  2500  loss 0.0000  25 ms/step
+== eval step 2500: acc 1.000  nll 0.000  per-needle 1.00 1.00
+step  2600  loss 0.0000  25 ms/step
+step  2700  loss 0.0000  25 ms/step
+step  2800  loss 0.0000  25 ms/step
+step  2900  loss 0.0000  25 ms/step
+step  3000  loss 0.0000  25 ms/step
+== eval step 3000: acc 1.000  nll 0.000  per-needle 1.00 1.00
+done: {"run": "softmax_ref2_k2", "arm": "softmax", "d": "", "d_ref": 2, "k": 2, "step": 3000, "train_loss": 2.9802320611338473e-08, "acc": 1.0, "nll": 2.5611368928424305e-08, "acc_m0": 1.0, "acc_m1": 1.0, "ms_per_step": 24.594730377197266, "elapsed_s": 76.18828988075256, "cols": "1304 1741", "rows": "2600 2661"}
+==== task d_ref=2 k=2   arm: --arm smat --d 1   Thu Sep  3 06:26:02 PM CDT 2026 ====
+{"run": "smat_d1_ref2_k2", "arm": "smat", "d": 1, "d_ref": 2, "k": 2, "T": 4096, "layers": 4, "d_model": 256, "heads": 4, "r": 64, "chunk": 128, "steps": 3000, "nb": 16, "lr": 0.001, "warmup": 200, "eval_every": 500, "eval_n": 512, "qk_norm": true, "triton_bwd": true, "data": "/u/archerdw/smat_attention/deltaai/data/enwik8", "out": "results/needle_T4096.csv", "device": "cuda", "seed": 0}
+needles at [1304, 1741], query rows [2600, 2661]
+step   100  loss 2.9337  45 ms/step
+step   200  loss 2.8481  38 ms/step
+step   300  loss 2.6825  38 ms/step
+step   400  loss 2.8804  38 ms/step
+step   500  loss 2.7683  38 ms/step
+== eval step 500: acc 0.061  nll 2.803  per-needle 0.04 0.08
+step   600  loss 2.7178  38 ms/step
+step   700  loss 2.7399  38 ms/step
+step   800  loss 2.7420  38 ms/step
+step   900  loss 2.7819  38 ms/step
+step  1000  loss 2.8060  38 ms/step
+== eval step 1000: acc 0.084  nll 2.770  per-needle 0.07 0.10
+step  1100  loss 2.7292  38 ms/step
+step  1200  loss 2.7930  38 ms/step
+step  1300  loss 2.7843  38 ms/step
+step  1400  loss 2.8108  38 ms/step
+step  1500  loss 2.8209  38 ms/step
+== eval step 1500: acc 0.059  nll 2.787  per-needle 0.06 0.06
+step  1600  loss 2.8165  38 ms/step
+step  1700  loss 2.7091  38 ms/step
+step  1800  loss 2.7452  38 ms/step
+step  1900  loss 2.7954  38 ms/step
+step  2000  loss 2.7735  38 ms/step
+== eval step 2000: acc 0.074  nll 2.782  per-needle 0.08 0.07
+step  2100  loss 2.8060  38 ms/step
+step  2200  loss 2.7708  38 ms/step
+step  2300  loss 2.7919  38 ms/step
+step  2400  loss 2.7840  38 ms/step
+step  2500  loss 2.7916  38 ms/step
+== eval step 2500: acc 0.041  nll 2.773  per-needle 0.05 0.03
+step  2600  loss 2.7610  38 ms/step
+step  2700  loss 2.7821  38 ms/step
+step  2800  loss 2.7612  38 ms/step
+step  2900  loss 2.7723  38 ms/step
+step  3000  loss 2.7805  38 ms/step
+== eval step 3000: acc 0.041  nll 2.774  per-needle 0.04 0.04
+done: {"run": "smat_d1_ref2_k2", "arm": "smat", "d": 1, "d_ref": 2, "k": 2, "step": 3000, "train_loss": 2.780454158782959, "acc": 0.041015625, "nll": 2.7742452546954155, "acc_m0": 0.03787878900766373, "acc_m1": 0.04435483738780022, "ms_per_step": 37.97762155532837, "elapsed_s": 117.29039692878723, "cols": "1304 1741", "rows": "2600 2661"}
+==== task d_ref=2 k=2   arm: --arm smat --d 2   Thu Sep  3 06:28:05 PM CDT 2026 ====
+{"run": "smat_d2_ref2_k2", "arm": "smat", "d": 2, "d_ref": 2, "k": 2, "T": 4096, "layers": 4, "d_model": 256, "heads": 4, "r": 64, "chunk": 128, "steps": 3000, "nb": 16, "lr": 0.001, "warmup": 200, "eval_every": 500, "eval_n": 512, "qk_norm": true, "triton_bwd": true, "data": "/u/archerdw/smat_attention/deltaai/data/enwik8", "out": "results/needle_T4096.csv", "device": "cuda", "seed": 0}
+needles at [1304, 1741], query rows [2600, 2661]
+step   100  loss 2.9398  50 ms/step
+step   200  loss 2.8468  44 ms/step
+step   300  loss 2.6861  44 ms/step
+step   400  loss 2.8763  44 ms/step
+step   500  loss 2.7664  44 ms/step
+== eval step 500: acc 0.061  nll 2.802  per-needle 0.04 0.08
+step   600  loss 2.7183  44 ms/step
+step   700  loss 2.7397  44 ms/step
+step   800  loss 2.7578  44 ms/step
+step   900  loss 2.7830  44 ms/step
+step  1000  loss 2.7950  44 ms/step
+== eval step 1000: acc 0.084  nll 2.771  per-needle 0.07 0.10
+step  1100  loss 2.7347  44 ms/step
+step  1200  loss 2.7892  44 ms/step
+step  1300  loss 2.7846  44 ms/step
+step  1400  loss 2.8119  44 ms/step
+step  1500  loss 2.8210  44 ms/step
+== eval step 1500: acc 0.055  nll 2.785  per-needle 0.05 0.06
+step  1600  loss 2.8162  44 ms/step
+step  1700  loss 2.7072  44 ms/step
+step  1800  loss 2.7085  44 ms/step
+step  1900  loss 2.3389  44 ms/step
+step  2000  loss 2.1658  44 ms/step
+== eval step 2000: acc 0.135  nll 2.118  per-needle 0.13 0.14
+step  2100  loss 1.9858  44 ms/step
+step  2200  loss 1.6453  44 ms/step
+step  2300  loss 1.3642  44 ms/step
+step  2400  loss 1.1435  44 ms/step
+step  2500  loss 1.2002  44 ms/step
+== eval step 2500: acc 0.570  nll 1.185  per-needle 0.52 0.62
+step  2600  loss 0.8973  44 ms/step
+step  2700  loss 1.1936  44 ms/step
+step  2800  loss 1.0750  44 ms/step
+step  2900  loss 0.8320  44 ms/step
+step  3000  loss 1.1273  44 ms/step
+== eval step 3000: acc 0.609  nll 1.039  per-needle 0.61 0.61
+done: {"run": "smat_d2_ref2_k2", "arm": "smat", "d": 2, "d_ref": 2, "k": 2, "step": 3000, "train_loss": 1.1272953748703003, "acc": 0.609375, "nll": 1.038981283083558, "acc_m0": 0.6098484992980957, "acc_m1": 0.6088709831237793, "ms_per_step": 43.800621032714844, "elapsed_s": 134.9849123954773, "cols": "1304 1741", "rows": "2600 2661"}
+==== task d_ref=3 k=3   arm: --arm softmax   Thu Sep  3 06:30:25 PM CDT 2026 ====
+{"run": "softmax_ref3_k3", "arm": "softmax", "d": 1, "d_ref": 3, "k": 3, "T": 4096, "layers": 4, "d_model": 256, "heads": 4, "r": 64, "chunk": 128, "steps": 3000, "nb": 16, "lr": 0.001, "warmup": 200, "eval_every": 500, "eval_n": 512, "qk_norm": true, "pad_haystack": false, "triton_bwd": true, "data": "/u/archerdw/smat_attention/deltaai/data/enwik8", "out": "results/needle_T4096.csv", "device": "cuda", "seed": 0}
+needles at [1046, 1303, 1740], query rows [2113, 2191, 2066]
+step   100  loss 2.7436  28 ms/step
+step   200  loss 0.0026  25 ms/step
+step   300  loss 0.0002  25 ms/step
+step   400  loss 0.0000  25 ms/step
+step   500  loss 0.0000  25 ms/step
+== eval step 500: acc 1.000  nll 0.000  per-needle 1.00 1.00 1.00
+step   600  loss 0.0000  25 ms/step
+step   700  loss 0.0000  25 ms/step
+step   800  loss 0.0000  25 ms/step
+step   900  loss 0.0000  25 ms/step
+step  1000  loss 0.0000  25 ms/step
+== eval step 1000: acc 1.000  nll 0.000  per-needle 1.00 1.00 1.00
+step  1100  loss 0.0000  25 ms/step
+step  1200  loss 0.0000  25 ms/step
+step  1300  loss 0.0000  25 ms/step
+step  1400  loss 0.0000  25 ms/step
+step  1500  loss 0.0000  25 ms/step
+== eval step 1500: acc 1.000  nll 0.000  per-needle 1.00 1.00 1.00
+step  1600  loss 0.0000  25 ms/step
+step  1700  loss 0.0000  25 ms/step
+step  1800  loss 0.0000  25 ms/step
+step  1900  loss 0.0000  25 ms/step
+step  2000  loss 0.0000  25 ms/step
+== eval step 2000: acc 1.000  nll 0.000  per-needle 1.00 1.00 1.00
+step  2100  loss 0.0000  25 ms/step
+step  2200  loss 0.0000  25 ms/step
+step  2300  loss 0.0000  25 ms/step
+step  2400  loss 0.0000  25 ms/step
+step  2500  loss 0.0000  25 ms/step
+== eval step 2500: acc 1.000  nll 0.000  per-needle 1.00 1.00 1.00
+step  2600  loss 0.0000  25 ms/step
+step  2700  loss 0.0000  25 ms/step
+step  2800  loss 0.0000  25 ms/step
+step  2900  loss 0.0000  25 ms/step
+step  3000  loss 0.0000  25 ms/step
+== eval step 3000: acc 1.000  nll 0.000  per-needle 1.00 1.00 1.00
+done: {"run": "softmax_ref3_k3", "arm": "softmax", "d": "", "d_ref": 3, "k": 3, "step": 3000, "train_loss": 0.0, "acc": 1.0, "nll": 1.9790603281166774e-08, "acc_m0": 1.0, "acc_m1": 1.0, "acc_m2": 1.0, "ms_per_step": 24.883038997650146, "elapsed_s": 76.81759905815125, "cols": "1046 1303 1740", "rows": "2113 2191 2066"}
+==== task d_ref=3 k=3   arm: --arm smat --d 1   Thu Sep  3 06:31:48 PM CDT 2026 ====
+{"run": "smat_d1_ref3_k3", "arm": "smat", "d": 1, "d_ref": 3, "k": 3, "T": 4096, "layers": 4, "d_model": 256, "heads": 4, "r": 64, "chunk": 128, "steps": 3000, "nb": 16, "lr": 0.001, "warmup": 200, "eval_every": 500, "eval_n": 512, "qk_norm": true, "pad_haystack": false, "triton_bwd": true, "data": "/u/archerdw/smat_attention/deltaai/data/enwik8", "out": "results/needle_T4096.csv", "device": "cuda", "seed": 0}
+needles at [1046, 1303, 1740], query rows [2113, 2191, 2066]
+step   100  loss 2.8386  45 ms/step
+step   200  loss 2.8047  38 ms/step
+step   300  loss 2.9086  38 ms/step
+step   400  loss 2.8282  38 ms/step
+step   500  loss 2.8128  38 ms/step
+== eval step 500: acc 0.076  nll 2.793  per-needle 0.08 0.07 0.08
+step   600  loss 2.7514  38 ms/step
+step   700  loss 2.7570  38 ms/step
+step   800  loss 2.7042  38 ms/step
+step   900  loss 2.7796  38 ms/step
+step  1000  loss 2.7971  38 ms/step
+== eval step 1000: acc 0.078  nll 2.779  per-needle 0.08 0.07 0.08
+step  1100  loss 2.8861  38 ms/step
+step  1200  loss 2.7422  38 ms/step
+step  1300  loss 2.7474  38 ms/step
+step  1400  loss 2.7508  38 ms/step
+step  1500  loss 2.7845  38 ms/step
+== eval step 1500: acc 0.049  nll 2.789  per-needle 0.06 0.03 0.05
+step  1600  loss 2.7831  38 ms/step
+step  1700  loss 2.7602  38 ms/step
+step  1800  loss 2.7981  38 ms/step
+step  1900  loss 2.7509  38 ms/step
+step  2000  loss 2.8025  38 ms/step
+== eval step 2000: acc 0.074  nll 2.775  per-needle 0.06 0.07 0.09
+step  2100  loss 2.7873  38 ms/step
+step  2200  loss 2.7829  38 ms/step
+step  2300  loss 2.7631  38 ms/step
+step  2400  loss 2.7770  38 ms/step
+step  2500  loss 2.7533  38 ms/step
+== eval step 2500: acc 0.062  nll 2.773  per-needle 0.05 0.05 0.09
+step  2600  loss 2.7591  38 ms/step
+step  2700  loss 2.7932  38 ms/step
+step  2800  loss 2.7732  38 ms/step
+step  2900  loss 2.7716  38 ms/step
+step  3000  loss 2.7729  38 ms/step
+== eval step 3000: acc 0.053  nll 2.773  per-needle 0.04 0.07 0.04
+done: {"run": "smat_d1_ref3_k3", "arm": "smat", "d": 1, "d_ref": 3, "k": 3, "step": 3000, "train_loss": 2.7728512287139893, "acc": 0.052734375, "nll": 2.7728391885757446, "acc_m0": 0.043478261679410934, "acc_m1": 0.071856290102005, "acc_m2": 0.043478261679410934, "ms_per_step": 38.12979984283447, "elapsed_s": 117.66338181495667, "cols": "1046 1303 1740", "rows": "2113 2191 2066"}
+==== task d_ref=3 k=3   arm: --arm smat --d 3   Thu Sep  3 06:33:50 PM CDT 2026 ====
+{"run": "smat_d3_ref3_k3", "arm": "smat", "d": 3, "d_ref": 3, "k": 3, "T": 4096, "layers": 4, "d_model": 256, "heads": 4, "r": 64, "chunk": 128, "steps": 3000, "nb": 16, "lr": 0.001, "warmup": 200, "eval_every": 500, "eval_n": 512, "qk_norm": true, "pad_haystack": false, "triton_bwd": true, "data": "/u/archerdw/smat_attention/deltaai/data/enwik8", "out": "results/needle_T4096.csv", "device": "cuda", "seed": 0}
+needles at [1046, 1303, 1740], query rows [2113, 2191, 2066]
+step   100  loss 2.8393  58 ms/step
+step   200  loss 2.7984  51 ms/step
+step   300  loss 2.8729  51 ms/step
+step   400  loss 1.0119  51 ms/step
+step   500  loss 0.0588  51 ms/step
+== eval step 500: acc 0.988  nll 0.067  per-needle 0.96 1.00 1.00
+step   600  loss 0.0040  51 ms/step
+step   700  loss 0.0065  51 ms/step
+step   800  loss 0.0002  51 ms/step
+step   900  loss 0.0152  51 ms/step
+step  1000  loss 0.0001  51 ms/step
+== eval step 1000: acc 1.000  nll 0.000  per-needle 1.00 1.00 1.00
+step  1100  loss 0.0000  51 ms/step
+step  1200  loss 0.0001  51 ms/step
+step  1300  loss 0.0001  51 ms/step
+step  1400  loss 0.0000  51 ms/step
+step  1500  loss 0.0000  51 ms/step
+== eval step 1500: acc 0.998  nll 0.001  per-needle 0.99 1.00 1.00
+step  1600  loss 0.0000  51 ms/step
+step  1700  loss 0.0000  51 ms/step
+step  1800  loss 0.0000  51 ms/step
+step  1900  loss 0.0000  51 ms/step
+step  2000  loss 0.0000  51 ms/step
+== eval step 2000: acc 1.000  nll 0.000  per-needle 1.00 1.00 1.00
+step  2100  loss 0.0000  51 ms/step
+step  2200  loss 0.0000  51 ms/step
+step  2300  loss 0.0000  51 ms/step
+[2026-09-03T18:35:59.567] error: *** JOB 3079432 ON gh038 CANCELLED AT 2026-09-03T18:35:59 DUE to SIGNAL Terminated ***

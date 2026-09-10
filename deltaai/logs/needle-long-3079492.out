@@ -1,0 +1,120 @@
+PyTorch 2.11.0 for DeltaAI (CUDA 13.0, Python 3.12)
+Includes: transformers, accelerate, datasets, peft, lightning,
+          timm, bitsandbytes, diffusers, mpi4py, tensorboard,
+          wandb, jupyter, scipy, scikit-learn, opencv, nvitop
+New in this build (sm_90 source builds):
+  flash-attn, transformer_engine, xformers, apex, mamba-ssm,
+  triton, torch-geometric, cupy-cuda13x, tensorrt, flashinfer
+Known: transformer_engine and cupy currently fail at import due to
+  a cu13 libcublasLt / cython ABI mismatch on this stack — use the
+  other attention paths (flash-attn, xformers) and stock torch CUDA
+  until an upstream fix lands.
+
+For documentation and examples:
+  https://docs.ncsa.illinois.edu/systems/deltaai/
+
+Run setup-kernel prior to launching OOD job.
+
+Quick start (on a compute node):
+  module load python/miniforge3_pytorch/2.11.0
+  conda activate base
+  python -c "import torch; print(torch.cuda.is_available())"
+
+CUDA extensions: CUDA_HOME, nvcc, and CMAKE_PREFIX_PATH come from the
+auto-loaded cuda/13.1.1 module.
+
+A conda environment has been detected
+CONDA_PREFIX=/sw/user/python/miniforge3-pytorch-2.5.0 
+Consider running 'conda deactivate' before loading this module.
+CUDA Toolkit 13.1.1 loaded
+Includes GPUDirect Storage (GDS) libraries
+Requires NVIDIA driver 590+
+Using gcc-native/14 (default in Cray PE 25.09)
+host: gh038.hsn.cm.delta.internal.ncsa.edu   started: Thu Sep  3 06:36:18 PM CDT 2026
+name, memory.total [MiB], driver_version
+NVIDIA GH200 120GB, 97871 MiB, 595.71.05
+torch 2.11.0+cu130 cuda True
+triton 3.5.1
+
+==== task d_ref=2 k=2   arm: --arm smat --d 1   steps=8000   Thu Sep  3 06:36:21 PM CDT 2026 ====
+{"run": "smat_d1_ref2_k2", "arm": "smat", "d": 1, "d_ref": 2, "k": 2, "T": 4096, "layers": 4, "d_model": 256, "heads": 4, "r": 64, "chunk": 128, "steps": 8000, "nb": 16, "lr": 0.001, "warmup": 400, "eval_every": 1000, "eval_n": 512, "qk_norm": true, "pad_haystack": false, "triton_bwd": true, "data": "/u/archerdw/smat_attention/deltaai/data/enwik8", "out": "results/needle_T4096_long.csv", "device": "cuda", "seed": 0}
+needles at [1304, 1741], query rows [2600, 2661]
+step   100  loss 2.9998  45 ms/step
+step   200  loss 2.7986  38 ms/step
+step   300  loss 2.6812  38 ms/step
+step   400  loss 2.9041  38 ms/step
+step   500  loss 2.7852  38 ms/step
+step   600  loss 2.7943  38 ms/step
+step   700  loss 2.7540  38 ms/step
+step   800  loss 2.8287  38 ms/step
+step   900  loss 2.8613  38 ms/step
+step  1000  loss 2.7569  38 ms/step
+== eval step 1000: acc 0.047  nll 2.787  per-needle 0.05 0.05
+step  1100  loss 2.7543  38 ms/step
+step  1200  loss 2.7329  38 ms/step
+step  1300  loss 2.7943  38 ms/step
+step  1400  loss 2.7793  38 ms/step
+step  1500  loss 2.7883  38 ms/step
+step  1600  loss 2.8384  38 ms/step
+step  1700  loss 2.7465  38 ms/step
+step  1800  loss 2.7637  38 ms/step
+step  1900  loss 2.8060  38 ms/step
+step  2000  loss 2.7387  38 ms/step
+== eval step 2000: acc 0.064  nll 2.776  per-needle 0.05 0.08
+step  2100  loss 2.7839  38 ms/step
+step  2200  loss 2.8111  38 ms/step
+step  2300  loss 2.8080  38 ms/step
+step  2400  loss 2.8128  38 ms/step
+step  2500  loss 2.7512  38 ms/step
+step  2600  loss 2.7602  38 ms/step
+step  2700  loss 2.7518  38 ms/step
+step  2800  loss 2.8018  38 ms/step
+step  2900  loss 2.7651  38 ms/step
+step  3000  loss 2.7593  38 ms/step
+== eval step 3000: acc 0.062  nll 2.775  per-needle 0.06 0.07
+step  3100  loss 2.7706  38 ms/step
+step  3200  loss 2.7555  38 ms/step
+step  3300  loss 2.7970  38 ms/step
+step  3400  loss 2.7588  38 ms/step
+step  3500  loss 2.7719  38 ms/step
+step  3600  loss 2.7785  38 ms/step
+step  3700  loss 2.7807  38 ms/step
+step  3800  loss 2.7721  38 ms/step
+step  3900  loss 2.7841  38 ms/step
+step  4000  loss 2.7786  38 ms/step
+== eval step 4000: acc 0.082  nll 2.773  per-needle 0.08 0.09
+step  4100  loss 2.7800  38 ms/step
+step  4200  loss 2.7663  38 ms/step
+step  4300  loss 2.7701  38 ms/step
+step  4400  loss 2.7848  38 ms/step
+step  4500  loss 2.7846  38 ms/step
+step  4600  loss 2.7766  38 ms/step
+step  4700  loss 2.7699  38 ms/step
+step  4800  loss 2.7695  38 ms/step
+step  4900  loss 2.7813  38 ms/step
+step  5000  loss 2.7600  38 ms/step
+== eval step 5000: acc 0.059  nll 2.776  per-needle 0.06 0.06
+step  5100  loss 2.7606  38 ms/step
+step  5200  loss 2.7831  38 ms/step
+step  5300  loss 2.7726  38 ms/step
+step  5400  loss 2.7799  38 ms/step
+step  5500  loss 2.7677  38 ms/step
+step  5600  loss 2.7766  38 ms/step
+step  5700  loss 2.7733  38 ms/step
+step  5800  loss 2.7885  38 ms/step
+step  5900  loss 2.7728  38 ms/step
+step  6000  loss 2.7630  38 ms/step
+== eval step 6000: acc 0.053  nll 2.773  per-needle 0.08 0.03
+step  6100  loss 2.7750  38 ms/step
+step  6200  loss 2.7612  38 ms/step
+step  6300  loss 2.7682  38 ms/step
+step  6400  loss 2.7621  38 ms/step
+step  6500  loss 2.7791  38 ms/step
+step  6600  loss 2.7822  38 ms/step
+step  6700  loss 2.7771  38 ms/step
+step  6800  loss 2.7770  38 ms/step
+step  6900  loss 2.7731  38 ms/step
+step  7000  loss 2.7717  38 ms/step
+== eval step 7000: acc 0.068  nll 2.772  per-needle 0.05 0.09
+step  7100  loss 2.7744  38 ms/step
+[2026-09-03T18:41:02.068] error: *** JOB 3079492 ON gh038 CANCELLED AT 2026-09-03T18:41:02 DUE to SIGNAL Terminated ***

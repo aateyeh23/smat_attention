@@ -1,0 +1,58 @@
+PyTorch 2.11.0 for DeltaAI (CUDA 13.0, Python 3.12)
+Includes: transformers, accelerate, datasets, peft, lightning,
+          timm, bitsandbytes, diffusers, mpi4py, tensorboard,
+          wandb, jupyter, scipy, scikit-learn, opencv, nvitop
+New in this build (sm_90 source builds):
+  flash-attn, transformer_engine, xformers, apex, mamba-ssm,
+  triton, torch-geometric, cupy-cuda13x, tensorrt, flashinfer
+Known: transformer_engine and cupy currently fail at import due to
+  a cu13 libcublasLt / cython ABI mismatch on this stack — use the
+  other attention paths (flash-attn, xformers) and stock torch CUDA
+  until an upstream fix lands.
+
+For documentation and examples:
+  https://docs.ncsa.illinois.edu/systems/deltaai/
+
+Run setup-kernel prior to launching OOD job.
+
+Quick start (on a compute node):
+  module load python/miniforge3_pytorch/2.11.0
+  conda activate base
+  python -c "import torch; print(torch.cuda.is_available())"
+
+CUDA extensions: CUDA_HOME, nvcc, and CMAKE_PREFIX_PATH come from the
+auto-loaded cuda/13.1.1 module.
+
+A conda environment has been detected
+CONDA_PREFIX=/sw/user/python/miniforge3-pytorch-2.5.0 
+Consider running 'conda deactivate' before loading this module.
+CUDA Toolkit 13.1.1 loaded
+Includes GPUDirect Storage (GDS) libraries
+Requires NVIDIA driver 590+
+Using gcc-native/14 (default in Cray PE 25.09)
+host: gh011.hsn.cm.delta.internal.ncsa.edu   started: Thu Sep  3 07:08:10 PM CDT 2026
+name, memory.total [MiB], driver_version
+NVIDIA GH200 120GB, 97871 MiB, 595.71.05
+torch 2.11.0+cu130 cuda True
+triton 3.5.1
+
+==== arm: --arm smat --d 1 --decay mamba2   Thu Sep  3 07:08:13 PM CDT 2026 ====
+{"run": "smat_d1_p16_decaymamba2", "arm": "smat", "d": 1, "T": 512, "n_pairs": 16, "n_queries": 16, "n_keys": 128, "ctx_start": 0, "layers": 4, "d_model": 256, "heads": 4, "r": 64, "chunk": 128, "steps": 2500, "nb": 32, "lr": 0.001, "warmup": 200, "eval_every": 500, "eval_n": 256, "qk_norm": true, "short_conv": 3, "triton_bwd": false, "no_amp": false, "phi": "elu1", "decay": "mamba2", "oracle_keep": false, "taylor_dim": 16, "pad_noise": false, "out": "results/mqar_T512_mamba2.csv", "device": "cuda", "seed": 0}
+mask n=256: pairs occupy [0,32), queries in [256,512)
+step   100  loss nan  34 ms/step
+step   200  loss nan  32 ms/step
+step   300  loss nan  32 ms/step
+step   400  loss nan  32 ms/step
+step   500  loss nan  32 ms/step
+== eval step 500: acc 0.000  nll nan  noise share of normaliser per layer [0.890 0.891 nan nan]
+step   600  loss nan  32 ms/step
+step   700  loss nan  32 ms/step
+step   800  loss nan  32 ms/step
+step   900  loss nan  32 ms/step
+step  1000  loss nan  32 ms/step
+== eval step 1000: acc 0.000  nll nan  noise share of normaliser per layer [0.893 0.894 nan nan]
+step  1100  loss nan  32 ms/step
+step  1200  loss nan  32 ms/step
+step  1300  loss nan  32 ms/step
+step  1400  loss nan  32 ms/step
+[2026-09-03T19:09:03.759] error: *** JOB 3079612 ON gh011 CANCELLED AT 2026-09-03T19:09:03 DUE to SIGNAL Terminated ***

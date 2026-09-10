@@ -1,0 +1,25 @@
+    early_stopping_metric='valid/accuracy',
+    early_stopping_threshold=0.99,
+    run_id='smat_d2_shared_hybrid-dm16-lr3.2e-03'
+valid/loss=8.71, valid/accuracy=0.0015, valid/num_kv_pairs/accuracy-4=0.0025, valid/num_kv_pairs/accuracy-8=0.00213, valid/num_kv_pairs/accuracy-16=0.001, valid/num_kv_pairs/accuracy-32=0.00128, valid/num_kv_pairs/accuracy-64=0.000609
+valid/loss=6.37, valid/accuracy=0.158, valid/num_kv_pairs/accuracy-4=0.445, valid/num_kv_pairs/accuracy-8=0.234, valid/num_kv_pairs/accuracy-16=0.0833, valid/num_kv_pairs/accuracy-32=0.0209, valid/num_kv_pairs/accuracy-64=0.006
+valid/loss=5.32, valid/accuracy=0.312, valid/num_kv_pairs/accuracy-4=0.699, valid/num_kv_pairs/accuracy-8=0.523, valid/num_kv_pairs/accuracy-16=0.255, valid/num_kv_pairs/accuracy-32=0.0654, valid/num_kv_pairs/accuracy-64=0.0173
+valid/loss=5.09, valid/accuracy=0.359, valid/num_kv_pairs/accuracy-4=0.811, valid/num_kv_pairs/accuracy-8=0.579, valid/num_kv_pairs/accuracy-16=0.296, valid/num_kv_pairs/accuracy-32=0.0851, valid/num_kv_pairs/accuracy-64=0.0224
+valid/loss=5.16, valid/accuracy=0.337, valid/num_kv_pairs/accuracy-4=0.74, valid/num_kv_pairs/accuracy-8=0.552, valid/num_kv_pairs/accuracy-16=0.288, valid/num_kv_pairs/accuracy-32=0.0847, valid/num_kv_pairs/accuracy-64=0.0226
+valid/loss=4.67, valid/accuracy=0.377, valid/num_kv_pairs/accuracy-4=0.772, valid/num_kv_pairs/accuracy-8=0.605, valid/num_kv_pairs/accuracy-16=0.354, valid/num_kv_pairs/accuracy-32=0.125, valid/num_kv_pairs/accuracy-64=0.0296
+valid/loss=4.39, valid/accuracy=0.376, valid/num_kv_pairs/accuracy-4=0.754, valid/num_kv_pairs/accuracy-8=0.587, valid/num_kv_pairs/accuracy-16=0.369, valid/num_kv_pairs/accuracy-32=0.134, valid/num_kv_pairs/accuracy-64=0.0338
+valid/loss=4.17, valid/accuracy=0.427, valid/num_kv_pairs/accuracy-4=0.84, valid/num_kv_pairs/accuracy-8=0.684, valid/num_kv_pairs/accuracy-16=0.426, valid/num_kv_pairs/accuracy-32=0.147, valid/num_kv_pairs/accuracy-64=0.0356
+valid/loss=4.14, valid/accuracy=0.433, valid/num_kv_pairs/accuracy-4=0.834, valid/num_kv_pairs/accuracy-8=0.697, valid/num_kv_pairs/accuracy-16=0.443, valid/num_kv_pairs/accuracy-32=0.156, valid/num_kv_pairs/accuracy-64=0.0373
+valid/loss=4.05, valid/accuracy=0.455, valid/num_kv_pairs/accuracy-4=0.866, valid/num_kv_pairs/accuracy-8=0.731, valid/num_kv_pairs/accuracy-16=0.474, valid/num_kv_pairs/accuracy-32=0.164, valid/num_kv_pairs/accuracy-64=0.0409
+valid/loss=4.07, valid/accuracy=0.464, valid/num_kv_pairs/accuracy-4=0.87, valid/num_kv_pairs/accuracy-8=0.753, valid/num_kv_pairs/accuracy-16=0.49, valid/num_kv_pairs/accuracy-32=0.165, valid/num_kv_pairs/accuracy-64=0.0422
+valid/loss=4.09, valid/accuracy=0.47, valid/num_kv_pairs/accuracy-4=0.874, valid/num_kv_pairs/accuracy-8=0.766, valid/num_kv_pairs/accuracy-16=0.495, valid/num_kv_pairs/accuracy-32=0.173, valid/num_kv_pairs/accuracy-64=0.0434
+valid/loss=4.09, valid/accuracy=0.47, valid/num_kv_pairs/accuracy-4=0.872, valid/num_kv_pairs/accuracy-8=0.764, valid/num_kv_pairs/accuracy-16=0.498, valid/num_kv_pairs/accuracy-32=0.172, valid/num_kv_pairs/accuracy-64=0.0439
+valid/loss=4.21, valid/accuracy=0.441, valid/num_kv_pairs/accuracy-4=0.757, valid/num_kv_pairs/accuracy-8=0.702, valid/num_kv_pairs/accuracy-16=0.507, valid/num_kv_pairs/accuracy-32=0.191, valid/num_kv_pairs/accuracy-64=0.0461
+valid/loss=4.22, valid/accuracy=0.429, valid/num_kv_pairs/accuracy-4=0.702, valid/num_kv_pairs/accuracy-8=0.671, valid/num_kv_pairs/accuracy-16=0.508, valid/num_kv_pairs/accuracy-32=0.209, valid/num_kv_pairs/accuracy-64=0.0546
+valid/loss=4.14, valid/accuracy=0.446, valid/num_kv_pairs/accuracy-4=0.739, valid/num_kv_pairs/accuracy-8=0.691, valid/num_kv_pairs/accuracy-16=0.525, valid/num_kv_pairs/accuracy-32=0.217, valid/num_kv_pairs/accuracy-64=0.0584
+valid/loss=4.01, valid/accuracy=0.465, valid/num_kv_pairs/accuracy-4=0.776, valid/num_kv_pairs/accuracy-8=0.72, valid/num_kv_pairs/accuracy-16=0.542, valid/num_kv_pairs/accuracy-32=0.226, valid/num_kv_pairs/accuracy-64=0.0618
+valid/loss=3.93, valid/accuracy=0.486, valid/num_kv_pairs/accuracy-4=0.817, valid/num_kv_pairs/accuracy-8=0.759, valid/num_kv_pairs/accuracy-16=0.562, valid/num_kv_pairs/accuracy-32=0.229, valid/num_kv_pairs/accuracy-64=0.0645
+valid/loss=3.88, valid/accuracy=0.493, valid/num_kv_pairs/accuracy-4=0.842, valid/num_kv_pairs/accuracy-8=0.765, valid/num_kv_pairs/accuracy-16=0.56, valid/num_kv_pairs/accuracy-32=0.23, valid/num_kv_pairs/accuracy-64=0.0661
+[2026-09-08T17:12:52.183] error: *** STEP 3114919.2 ON gh064 CANCELLED AT 2026-09-08T17:12:52 DUE to SIGNAL Killed ***
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: error: gh064: task 0: Killed
