@@ -181,7 +181,32 @@ class ContentAssign(nn.Module):
         return out
 
     # ------------------------------------------------------------- the branch
-    def forward(self, u, Phi, Psi, Vb, n, emb=None):
+    def cells_of(self, v):
+        """(.., d_model) -> cell index in F_q^{dim}, for one head at a time.
+        Used by the oracle: the requested keys' cells decide which hyperplane a
+        query would have to take, and the frozen hash makes them computable."""
+        Wn = self.W / self.W.norm(dim=-1, keepdim=True).clamp_min(1e-6)
+        z = torch.einsum("...m,hkm->...hk", self.ln(v), Wn) * self.gamma + self.b
+        dig = (torch.special.ndtr(z) * self.q).clamp(0.0, self.q - 1e-4).floor().long()
+        place = torch.tensor([self.q ** (self.dim - 1 - k) for k in range(self.dim)],
+                             device=v.device)
+        return (dig * place).sum(-1)                                  # (..., h)
+
+    def oracle_dir(self, cells):
+        """cells: (B, L, k) cell indices the query must cover.  Returns (B, L) the
+        index of a direction on which all k cells share an offset, or 0 if none
+        exists -- which is the case exactly when the k points are not contained
+        in a common hyperplane, i.e. generically when k > d-1."""
+        pts = self.M.new_tensor([[(x // self.q ** (self.dim - 1 - j)) % self.q
+                                  for j in range(self.dim)] for x in range(self.N0)])
+        dirs = self.M.new_tensor(_grouped_planes(self.q, self.dim)[0])  # (D, dim)
+        inner = (pts @ dirs.T).long() % self.q                          # (N0, D)
+        vals = inner[cells]                                             # (B, L, k, D)
+        agree = (vals == vals[..., :1, :]).all(-2)                      # (B, L, D)
+        first = agree.float().argmax(-1)
+        return torch.where(agree.any(-1), first, torch.zeros_like(first))
+
+    def forward(self, u, Phi, Psi, Vb, n, emb=None, dir_override=None):
         """u: (nb, T, d_model) layer input.  emb: (nb, T, d_model) token embeddings,
         used instead of u when src == "embed".  Phi, Psi: (nb*h, T, r).
         Vb: (nb*h, T, p).  n: landmark/recent boundary."""
@@ -224,7 +249,11 @@ class ContentAssign(nn.Module):
         nb = u.shape[0]
         dl = torch.einsum("blm,hem->bhle", u[:, n:], self.Wd).reshape(Phi_r.shape[0], -1, self.D)
         pe = torch.softmax(dl, dim=-1)
-        we = torch.zeros_like(pe).scatter_(-1, pe.argmax(-1, keepdim=True), 1.0) + (pe - pe.detach())
+        dir_override = dir_override if dir_override is not None else getattr(self, "dir_ovr", None)
+        if dir_override is not None:      # oracle: the direction is given, not learned
+            we = torch.zeros_like(pe).scatter_(-1, dir_override.unsqueeze(-1), 1.0)
+        else:
+            we = torch.zeros_like(pe).scatter_(-1, pe.argmax(-1, keepdim=True), 1.0) + (pe - pe.detach())
         po = torch.einsum("bix,eox->bieo", Wq, self.M)              # offset marginal per direction
         wo = torch.zeros_like(po).scatter_(-1, po.argmax(-1, keepdim=True), 1.0) + (po - po.detach())
         return torch.einsum("bie,bieo,bieop->bip", we, wo, Z)
