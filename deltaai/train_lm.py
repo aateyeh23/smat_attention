@@ -29,6 +29,8 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."
 from smat_mask import build_mask, d_max_geometric, materialise  # noqa: E402
 from smat_attn import (featurise, make_phi, smat_attention, to_device, segmented_causal_scan,  # noqa: E402
                        pool_profiles, apply_incidence, query_by_type)
+from content_addr import ContentAssign                          # noqa: E402
+import dataclasses                                                # noqa: E402
 
 BUCKETS = [(0, 512), (512, 2048), (2048, 4096)]
 
@@ -108,7 +110,9 @@ class Attention(nn.Module):
     def __init__(self, d_model, n_heads, arm, *, spec=None, r=64, learn_phi=False,
                  chunk=128, device=None, seed=0, qk_norm=False, triton_bwd=False,
                  no_lr=False, gate=False, phi_kind="elu1", taylor_dim=16, decay=False,
-                 dt_init=(1e-3, 1e-1), A_init=(1.0, 16.0), type_offsets=None, scan_kernel="phi"):
+                 dt_init=(1e-3, 1e-1), A_init=(1.0, 16.0), type_offsets=None, scan_kernel="phi",
+                 assign="positional", read_mode="point", pos_read="plane", hash_src="hidden",
+                 hash_freeze=False, hash_shift=0):
         super().__init__()
         self.h, self.dh = n_heads, d_model // n_heads
         self.arm, self.spec, self.chunk = arm, spec, chunk
@@ -122,6 +126,23 @@ class Attention(nn.Module):
         #   signed     raw q, k (SSD-style), no normaliser -- Mamba-2's recurrence
         # The landmark block G always uses the positive phi kernel (the routing theory needs it).
         self.scan_kernel = scan_kernel
+        # content-addressed assignment (Sec 3.2): prof/type become hashes of token
+        # content instead of position.  None = the published positional maps.
+        # positional assignment with point types: type(i) = i mod N0 reads one
+        # profile state directly, so C is the identity and the hyperplane pass is
+        # skipped.  This is the fourth cell of the (assignment x type family) grid
+        # and the only one with no experiment behind it.
+        # NB: opt-in via pos_read, never via read_mode, whose default is "point"
+        # and which belongs to the content-addressed arm.
+        self.pos_point = (arm == "smat" and assign == "positional" and pos_read == "point"
+                          and spec is not None and getattr(spec, "kind", "") == "geometric"
+                          and spec.d >= 2)
+        self.spec_pt = dataclasses.replace(spec, B=spec.N0) if self.pos_point else None
+        self.ca = None
+        if (arm == "smat" and assign == "content" and spec is not None
+                and getattr(spec, "kind", "") == "geometric" and spec.d >= 2):
+            self.ca = ContentAssign(n_heads, d_model, spec, mode=read_mode,
+                                    src=hash_src, freeze=hash_freeze, shift=hash_shift)
         if scan_kernel == "signed":
             # SSD's B and C: learned linear maps of q, k up to the state dimension r
             # (d_state), signed, no nonlinearity.  State per head is r x d_head.
@@ -182,7 +203,7 @@ class Attention(nn.Module):
         outer = (z.unsqueeze(-1) * z.unsqueeze(-2)).flatten(-2) / math.sqrt(2.0)
         return torch.cat([torch.ones_like(z[..., :1]), z, outer], dim=-1)
 
-    def forward(self, x):
+    def forward(self, x, emb=None):
         nb, T, C = x.shape
         q, k, v = self.qkv(x).view(nb, T, 3, self.h, self.dh).unbind(2)
         q, k = self.qn(q), self.kn(k)
@@ -233,12 +254,17 @@ class Attention(nn.Module):
                 elif self.decay:
                     n = self.spec.n
                     H = self._scan(Phi, Psi, Vb, x, nb, T)
-                    if n < T:
+                    if n < T and self.ca is not None:
+                        Ylr = self.ca(x.float(), Phi, Psi, Vb, n,
+                                      emb=None if emb is None else emb.float())
+                        H = torch.cat([H[:, :n], H[:, n:] + Ylr], dim=1)
+                    elif n < T:
+                        sp = self.spec_pt if self.pos_point else self.spec
                         if self.spec.n_X > 0:
                             Fp = pool_profiles(Psi, Vb, self.spec, acc_dtype=torch.float32, backend=self.backend)
-                            U = apply_incidence(Fp, self.spec, backend=self.backend)
+                            U = Fp if self.pos_point else apply_incidence(Fp, self.spec, backend=self.backend)
                         else:                                   # every landmark is global: no profiled block
-                            U = torch.zeros(nb * self.h, self.spec.B, Phi.shape[-1], Vb.shape[-1],
+                            U = torch.zeros(nb * self.h, sp.B, Phi.shape[-1], Vb.shape[-1],
                                             device=Phi.device, dtype=torch.float32)
                         if self.spec.n_P:                       # Remark 3.4: the global channel, one shared state
                             nP = self.spec.n_P
@@ -250,7 +276,7 @@ class Attention(nn.Module):
                             Uh = torch.stack([torch.roll(Uh[:, i], shifts=-int(self.type_offsets[i]) % B, dims=1)
                                               for i in range(self.h)], dim=1)
                             U = Uh.reshape(nb * self.h, B, U.shape[-2], U.shape[-1])
-                        Ylr = query_by_type(Phi[:, n:], U, self.spec)
+                        Ylr = query_by_type(Phi[:, n:], U, sp)
                         H = torch.cat([H[:, :n], H[:, n:] + Ylr], dim=1)
                     o = H[..., :-1] / H[..., -1:].clamp_min(1e-6)   # guard: a fully-decayed row has ~0 mass
                 elif self.gate:
@@ -269,6 +295,18 @@ class Attention(nn.Module):
                         g = hg[:, :n]
                         self.gate_stats = (g.mean().item(), (g < 0.1).float().mean().item(),
                                            (g > 0.9).float().mean().item())
+                elif self.ca is not None:
+                    # ungated control: the same content-addressed long-range branch
+                    # on top of the plain segmented scan, so the gate can be ablated
+                    # without changing anything else about the layer.
+                    n = self.spec.n
+                    H = segmented_causal_scan(Phi, Psi, Vb, n=n, chunk=self.chunk,
+                                              acc_dtype=torch.float32, backend=self.backend)
+                    if n < T:
+                        Ylr = self.ca(x.float(), Phi, Psi, Vb, n,
+                                      emb=None if emb is None else emb.float())
+                        H = torch.cat([H[:, :n], H[:, n:] + Ylr], dim=1)
+                    o = H[..., :-1] / H[..., -1:].clamp_min(1e-6)
                 else:
                     o = smat_attention(Phi, Psi, Vb, self.spec, chunk=self.chunk,
                                        acc_dtype=torch.float32,
@@ -402,11 +440,12 @@ class Block(nn.Module):
                      if short_conv else None)
         self.ln0 = nn.LayerNorm(d_model) if short_conv else None
 
-    def forward(self, x):
+    def forward(self, x, emb=None):
         if self.conv is not None:
             T = x.shape[1]
             x = x + self.conv(self.ln0(x).transpose(1, 2))[..., :T].transpose(1, 2)
-        x = x + self.attn(self.ln1(x))
+        x = x + (self.attn(self.ln1(x), emb=emb) if isinstance(self.attn, Attention)
+                 else self.attn(self.ln1(x)))
         return x + self.mlp(self.ln2(x))
 
 
@@ -444,9 +483,10 @@ class LM(nn.Module):
 
     def forward(self, idx):
         T = idx.shape[1]
-        x = self.tok(idx) + self.pos(torch.arange(T, device=idx.device))
+        emb = self.tok(idx)
+        x = emb + self.pos(torch.arange(T, device=idx.device))
         for b in self.blocks:
-            x = b(x)
+            x = b(x, emb=emb)
         return self.head(self.ln_f(x))
 
 

@@ -23,3 +23,7 @@ __pycache__/
 .idea/
 *.swp
 .DS_Store
+
+# DeltaAI/SCF job logs: verbose per-step output, regenerable; the CSVs in
+# deltaai/results are the record.
+deltaai/logs/*.out
