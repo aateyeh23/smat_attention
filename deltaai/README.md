@@ -572,3 +572,130 @@ convention) -- head_dim 16 with 2 heads is starved at width 64.  A faithful reru
 (2) SMAT still adds +33 / +11..15 / +24..18 mean, but with 1-2 heads the lambda gate fails to open on 4 of 30 SMAT
 runs (those seeds land at or below the control); last night's 4-8-head versions had 1 failure in 30.  Gate init /
 warmup fix is now required before the width-16/32 columns are quotable.
+
+### Paper mask M^(d) with Mamba-2 weights and boundary reset (`ZOO_RESET_MR=1 ZOO_GDECAY=1 ZOO_LAMACT=one ZOO_READ=type`), hd16/ds16, width 16, seed 123, lr 1e-2, 2026-09-10
+
+Exact implementation of the block mask: Mamba-2 recurrence restarted at n = T/2 (smoke: first half == Mamba-2 on the first
+half, 4e-7; G off -> second half == Mamba-2 restarted, 2e-7), G = decayed pooled read through C with the mask bank, added
+directly (per-head scale init 1).  d=1 reproduces Mamba-2 (42 @ ep17 vs 42; 77 vs 78 at width 32).
+
+| arm | final | cells | note |
+|---|---|---|---|
+| d=1 (== Mamba-2) | 46.9 | 91/74/49/17/3 | reference |
+| d=2 both layers, strict 0/1 G | 0.3 @ ep8 | chance | killed; 2 heads x 2 layers cover 4/13 row types |
+| layer 0 d=1, layer 1 d=2 strict | 26 @ ep13 | 66/44/14/7/2 | stopped; worse than two Mamba-2 layers |
+| d=2, G zeros -> 1/q (`ZOO_GFLOOR=q`) | 1 @ ep3 | chance | cancelled |
+| d=2, G = 1+1/q on C, 1-1/q off C (`ZOO_GFLOOR=pm`) | 46.0 | 90/76/46/15/3 | == Mamba-2 |
+| d=2, G = 1 on C, 1-1/q off C (`ZOO_GFLOOR=m`) | 41.7 | 82/65/40/17/4 | ~Mamba-2 (ahead early: 38 @ ep4 vs 33, then level) |
+
+Reading: a fixed-weight read of the landmark half is worth exactly one merged table (Mamba-2's capacity) regardless of the
+positional tilt; the strict sparse mask is worse than that because it hides 9/13 of the pairs.  Consistent with the
+whole positional-read series.
+
+### Content-hashed SMAT (Abdullah's `content_addr.ContentAssign`) in the Zoology pipeline, 2026-09-11 (job 3132062, `run_zoo_chash.sbatch`)
+
+Paper mask C, pooling and decode unchanged; profile = hash(key-side input), row type = hash(query input), learned hash
+annealed soft->hard over 2500 steps, balance 0.01 via Zoology's `get_auxiliary_loss`; Mamba-2 weights, boundary reset,
+G added with a per-head scale (init 1).  Width 16, hd16/ds16, lr 1e-2, seed 123, 32 epochs.  `hconv` = learned depthwise
+causal conv (width 4, init uniform over lags) on the key-side hash input instead of Abdullah's fixed shift of 1.
+Reference rows at this setting: Mamba-2 46.9; positional d=2 with the same weights: chance; content-read bank 72.8 / 80.3.
+
+| arm | final | best | cells 4/8/16/32/64 |
+|---|---|---|---|
+| d=2 point, learned conv | **86.1** | 86.5 | 88/81/88/90/84 |
+| d=2 point, fixed shift 1 | 37.8 | 37.9 | 79/60/35/12/2 (hash never engaged) |
+| d=3 plane, learned conv | 67.6 | 74.8 | 84/77/80/63/35 |
+| d=3 plane, fixed shift 1 | 72.1 | 79.3 | 90/78/70/58/66 |
+
+Reading: the paper's own architecture -- sparse C, pooled profiles, Theta(1) decode -- reaches 86 at the hard end
+(64 pairs, 16x16 state) once the assignment is by content, +39 over Mamba-2 and above the content-read bank's d=2
+(72.8).  The learned conv on the hash input is the more robust key-side source at d=2 (the fixed-shift run stayed at
+Mamba-2 level: a hash-engagement failure, the same one-seed failure mode seen before).  d=3 (49 cells of ~3) is worse
+than d=2 (13 cells of ~10) here, the opposite of the content-read bank: with hashing, more cells means more hash
+misses (hash_hit falls), and the plane read at d=3 sums q cells.  Curves are jumpy at lr 1e-2 (d=3 sh1: 79 -> 50 -> 79).
+Single seed; the 5-seed repeat and the width-32 column are next.
+
+### Affine-subspace family under content hashing (codimension-c reads), width 16, hd16/ds16, seed 123, learned hash + key-side conv, anneal 2500, balance 0.01 (job 3132250, `run_zoo_codim.sbatch`), 2026-09-11
+
+`ContentAssign(codim=c)`: read the codim-c flat through the query's cell (c=1 hyperplane ... c=dim point);
+`_grouped_flats` enumerates all full-rank coset partitions.  The hashed path bypasses the recent-block type-cycle
+cap on d (only q^{d-1} <= n binds), so d=4 (q=5, 125 cells) is buildable at T=256.
+
+| d (q, cells at T=256) | c=1 | c=2 | c=3 |
+|---|---|---|---|
+| 2 (13, 13) | **86.1** (point; done earlier) | | |
+| 3 (7, 49) | 67.6 final / 79.3 peak (earlier) | 72.0 final (85/72/61/66/74), collapsed to 32 mid-run | |
+| 4 (5, 125) | 58 @ ep20, best 65 (killed) | **84.2 @ ep14, 83 @ ep16, still rising, no spikes (killed)** | 42 @ ep21, best 68 then collapsed to 10 (killed) |
+
+Reading: (1) at d=4 the intermediate codimension is far ahead of both endpoints (84 vs 65 / 68), and level with
+d=2 -- so performance need not fall with d if c is chosen (c ~ (d-1)/2); the family is real; (2) d=3, which has no
+intermediate c, lands at 68-72 with both reads; both d=3 runs and the d=4 endpoints show anneal-time spikes /
+collapses, the d=4 line read never did; (3) the d=3 point read's cells are inverted (64-pair 74-82, 16-pair 36-61):
+keys are hashed correctly, filler contaminates the cells -- a hash-recipe symptom, not a geometry one.  Killed the
+d=4 runs at epochs 16-21 on request.  Next (queued, job 3132379): frozen embedding hash for the two point reads, and
+d=4 with heads split c=[1,2].
+
+### Content-hashed SMAT (Abdullah's `content_addr.ContentAssign`) in the Zoology pipeline, width 16, hd16 / ds16, seed 123, 2026-09-11 (job 3132062, `run_zoo_chash.sbatch`)
+
+Paper mask C + pooling unchanged; profile = hash(key-side input), row type = hash(query input); Mamba-2 weights
+(identity kernel, dt writes, decay folded into G), recurrence reset at the boundary, G added directly (per-head scale
+init 1); learned hash annealed soft->hard over 2500 steps, balance penalty 0.01 via Zoology's get_auxiliary_loss.
+Key-side source: fixed shift 1 (his recipe) or a learned depthwise causal conv (width 4, init uniform over lags).
+Hash adds 628 params/layer.
+
+| arm | mean | 4 / 8 / 16 / 32 / 64 |
+|---|---|---|
+| Mamba-2 (d=1), same setting | 46.9 | 91/74/49/17/3 |
+| positional d=2, paper mask | 0.3 (chance) | |
+| content-read bank (not SMAT), d=2 / d=3 | 72.8 / 80.3 | |
+| **chash d=2 point, conv** | **86.1** | 88/81/88/90/84 |
+| chash d=3 plane, shift 1 | 72.1 | 90/78/70/58/66 |
+| chash d=3 plane, conv | 67.6 | 84/77/80/63/35 |
+| chash d=2 point, shift 1 | 37.8 (hash never engaged; long cells at Mamba-2 level) | 79/60/35/12/2 |
+
+Reading: content addressing makes the paper's own architecture recall at the hard end (64 pairs in a 16x16 state):
+d=2 point + learned conv reaches 86.1, +39 over Mamba-2 and above the content-read bank, with sublinear memory and
+Theta(1) decode intact.  The learned conv on the key-side hash input is the more robust choice: the fixed shift-1
+run at d=2 never engaged (one more instance of the engagement failure), while conv engaged immediately (68 at epoch 1
+under the soft read) and held after the hard transition.  d=3 plane is behind d=2 point here (2 heads); training at
+lr 1e-2 is spiky (d3-sh1 dipped 76 -> 50 -> 74).  Single seed: seeds + width 32 next, then the d=3 point mode.
+
+### Frozen embedding hash for the point reads, and the learned head split (job 3132379, `run_zoo_split.sbatch`), width 16, seed 123, 2026-09-11
+
+`hash_src=embed, freeze` = Abdullah's frozen recipe: a fixed random projection of the token EMBEDDING (context-free),
+quantised; identical tokens share a cell by construction, nothing to learn, no anneal, no balance penalty.
+
+| read | learned contextual hash (earlier) | frozen embedding hash |
+|---|---|---|
+| d=3 point (49 cells) | 72.0, collapsed to 32 mid-run | **94.8** (98/94/93/94/95) |
+| d=4 point (125 cells) | 42, collapsed to 10 at ep4 | **88.4** (89/80/91/88/95) |
+| d=4 heads split c=[1,2], learned hash | | 36 @ ep10, no long recall (killed) |
+
+Reading: the d=3 dip and the fine-c collapses were the learned hash's training (STE quantiser, anneal-time boundary
+churn, balance penalty spreading filler), not the geometry: with the frozen hash the point read is the best read at
+every d and d=3 reaches 94.8, within 3 of full attention (98) and +48 over Mamba-2 (46.9), in the paper's own
+architecture (sparse C, pooled profiles, Theta(1) decode).  The affine family's middle codimension was a workaround
+for a bad hash.  Caveat: the frozen embedding hash is exact-token hashing -- right for MQAR (query token == key token),
+not for language, where the learned contextual hash is needed and its training is the open problem (fixes to try:
+freeze after anneal, gate-weighted balance, learned projection of the embedding, 10x lower hash lr / longer anneal).
+
+### enwik8 proof of concept: content-hashed SMAT vs Mamba-2 on text (2026-09-11, `lm/train_lm2.py`, `lm/eval_pos_loss.py`, `run_lm_poc*.sbatch`)
+
+Bytes, 90M/5M/5M split, vocab 256.  6 layers, d_model 384, headdim 64, d_state 64 (~5.8M non-emb params), T 4096,
+batch 8, 1500 steps = 49M bytes, lr 6e-4 cosine.  SMAT arms: paper mask with reset at 2048, content hash (learned,
+contextual, 16-byte key-side conv), v10 recipe (gated balance 0.01, anneal 500), point read.  Per-position loss on the
+5M test bytes (1220 sequences), window 501.  Fixes needed on the way: Abdullah's point read / pooling materialised
+(b h, T_R, N0, p) -- rewritten as bmm (exact, test passes); G branch checkpointed (45 GB -> 19 GB); eval must run a
+dummy forward before load_state_dict (lazy per-length hash modules).
+
+| arm | train nll @1500 | val nll | test bpb | nll 0-512 | 512-2048 | 2048-3072 (G on) | 3072-4096 | ktok/s |
+|---|---|---|---|---|---|---|---|---|
+| Mamba-2 | 1.215 | 1.244 | **1.757** | 1.239 | 1.216 | 1.212 | 1.216 | 607 |
+| SMAT d=2 | 1.224 | 1.248 | 1.767 | 1.241 | 1.222 | 1.226 | 1.221 | 94 |
+| SMAT d=3 | 1.223 | 1.252 | 1.767 | 1.240 | 1.222 | 1.226 | 1.221 | 59 |
+
+Reading: at this budget the content-hashed G is neutral-to-slightly-negative (+0.01 bpb), with no step at the
+boundary where it switches on; Mamba-2's own per-position curve is flat after ~500 bytes, i.e. the model is not yet
+using context at all, so there is nothing for G to add.  The test of long-context use needs a trained model:
+full budget (4000 steps, d_model 768) or the PG-19 / 16K-token setup.  The G branch costs 6-10x throughput as
+implemented (python-level pooling + recompute); a fused kernel is needed before any scaled run.

@@ -207,6 +207,17 @@ class SmatMamba2Block(_ZooMamba2Block):
 # Exactly Mamba-2 at init (alpha bias -> lambda ~ 3e-4).
 # ---------------------------------------------------------------------------
 import torch.nn.functional as F_
+_EMB = {}                      # token embeddings of the current batch, stashed by the patched TokenEmbeddings (hash_src="embed")
+
+
+def patch_token_embeddings():
+    import zoology.model as zm
+    if getattr(zm.TokenEmbeddings, "_smat_patched", False):
+        return
+    orig = zm.TokenEmbeddings.forward
+    def fwd(self, *a, **k):
+        out = orig(self, *a, **k); _EMB["x"] = out.detach(); return out
+    zm.TokenEmbeddings.forward = fwd; zm.TokenEmbeddings._smat_patched = True
 
 
 def delta_pool_profiles(Psi, Vb, beta, spec, eps=1e-6):
@@ -255,9 +266,28 @@ def profile_keys(Psi, spec, eps=1e-6):
 
 class SmatMamba2MR(nn.Module):
     def __init__(self, d_model, layer_idx=0, d=2, d_state=128, headdim=None, mask_bank=True, n_P=0,
-                 lam_bias=-8.0, detach_g=False, write_gate=True, g_decay=False, kernel="id", r=64, lam_act="softplus", pool="sum", read="type", **_):
+                 lam_bias=-8.0, detach_g=False, write_gate=True, g_decay=False, kernel="id", r=64, lam_act="softplus", pool="sum", read="type", reset=False, d_layers=None, g_floor=None,
+                 hash_mode="point", hash_shift=1, hash_conv=False, hash_freeze=False, anneal_steps=0, balance_coef=0.01, hash_codim=None, hash_src="hidden", hash_freeze_after=0, hash_lr_scale=1.0, balance_gated=False, hash_conv_width=4, hash_ckpt=False, sparse_ops=False, g_bf16=False, **_):
         super().__init__()
-        self.lam_act, self.pool, self.read = lam_act, pool, read   # read: "type" (positional incidence) or "content" (softmax over ALL profiles by key match; option 2)   # pool: "sum" (additive profile states) or "delta" (per-profile delta rule)                              # "softplus" (unbounded) or "sigmoid" (lambda <= 1)
+        # read == "chash": Abdullah's content-addressed assignment (content_addr.ContentAssign): profile = hash(key-side
+        # source), row type = hash(query input), same C / pooling / decode as the paper.  hash_conv replaces the fixed
+        # key-side shift by a learned depthwise causal conv (width 4) on u; anneal_steps anneals soft->hard read;
+        # balance_coef * load-balance KL is returned through Zoology's get_auxiliary_loss hook.
+        self.hash_mode, self.hash_shift, self.hash_conv, self.hash_freeze = hash_mode, hash_shift, hash_conv, hash_freeze
+        self.hash_codim, self.hash_src = hash_codim, hash_src
+        self.hash_freeze_after, self.hash_lr_scale, self.balance_gated = hash_freeze_after, hash_lr_scale, balance_gated
+        self.anneal_steps, self.balance_coef, self._steps = anneal_steps, balance_coef, 0
+        self.ca = nn.ModuleDict()
+        self.d_model_ = d_model
+        self.hash_conv_width, self.hash_ckpt = int(hash_conv_width), bool(hash_ckpt)   # hash_ckpt: recompute G in backward (activation checkpointing)
+        self.sparse_ops, self.g_bf16 = bool(sparse_ops), bool(g_bf16)   # segmented pool/read (no N0 factor); run the G branch in bf16
+        if read == "chash" and hash_conv:
+            self.kconv = nn.Conv1d(d_model, d_model, self.hash_conv_width, groups=d_model, bias=False)
+            nn.init.constant_(self.kconv.weight, 1.0 / self.hash_conv_width)   # uniform over lags; the model learns the lag(s)
+        self.g_floor = g_floor                          # soft G: zeros of the incidence get weight g_floor ("q" -> 1/q) instead of 0
+        if d_layers is not None:                       # per-layer d, e.g. [1, 2]: layer 0 plain Mamba-2, layer 1 SMAT d=2
+            d = int(d_layers[layer_idx])
+        self.lam_act, self.pool, self.read, self.reset = lam_act, pool, read, reset   # reset: run the recurrence separately on each half (paper mask: G is the only cross path)   # read: "type" (positional incidence) or "content" (softmax over ALL profiles by key match; option 2)   # pool: "sum" (additive profile states) or "delta" (per-profile delta rule)                              # "softplus" (unbounded) or "sigmoid" (lambda <= 1)
         d_inner = 2 * d_model
         headdim = headdim or min(64, d_inner)
         self.mixer = Mamba2(d_model=d_model, d_state=d_state, d_conv=4, expand=2,
@@ -269,11 +299,13 @@ class SmatMamba2MR(nn.Module):
         self.h, self.p, self.N = m.nheads, m.headdim, m.d_state
         self.offsets = [layer_idx * self.h + i for i in range(self.h)] if mask_bank else None
         self.specs, self.phi = {}, None
-        self.max_B = 64                                     # alpha table width (B <= 64 for T <= 4096 here)
+        self.max_B = 65536                                  # alpha table width (row types; d=4 at T=16K has B~8400)
         if d >= 2:
             self.lam_w = nn.Linear(d_model, self.h)
             nn.init.zeros_(self.lam_w.weight); nn.init.zeros_(self.lam_w.bias)
             self.alpha = nn.Parameter(torch.full((self.h, self.max_B), float(lam_bias)))
+            if lam_act == "one":
+                self.gscale = nn.Parameter(torch.ones(self.h))     # G added directly, learned per-head scale from 1
             if read == "content":
                 self.tau = nn.Parameter(torch.zeros(self.h))          # per-head log-temperature of the profile softmax
             if pool == "delta":
@@ -283,17 +315,74 @@ class SmatMamba2MR(nn.Module):
     def _spec(self, T, device):
         if T not in self.specs:
             chunk = max(16, T // 4)
-            d_eff = min(self.d, d_max_geometric(T, chunk=chunk))
-            self.specs[T] = to_device(build_mask(T, d_eff, chunk=chunk, n_P=self.n_P), device) if d_eff >= 2 else None
+            if self.read == "chash":
+                # the hashed path needs no recent-block type cycle, so only the ambient-space bound
+                # (q^{d-1} <= n) limits d: take the largest feasible d <= self.d
+                import warnings
+                spec, d_eff = None, self.d
+                while d_eff >= 2 and spec is None:
+                    try:
+                        with warnings.catch_warnings():
+                            warnings.simplefilter("ignore")
+                            spec = build_mask(T, d_eff, chunk=chunk, n_P=self.n_P)
+                    except ValueError:
+                        d_eff -= 1
+                self.specs[T] = to_device(spec, device) if spec is not None else None
+            else:
+                d_eff = min(self.d, d_max_geometric(T, chunk=chunk))
+                self.specs[T] = to_device(build_mask(T, d_eff, chunk=chunk, n_P=self.n_P), device) if d_eff >= 2 else None
+            if self.specs[T] is not None and self.read == "chash" and str(T) not in self.ca:
+                from content_addr import ContentAssign
+                dim = int(self.specs[T].dim)
+                cods = self.hash_codim if isinstance(self.hash_codim, (list, tuple)) else [self.hash_codim] * self.h
+                cods = [None if c is None else min(int(c), dim) for c in cods]
+                groups = {}                                            # codim -> head indices
+                for hi, c in enumerate(cods): groups.setdefault(c, []).append(hi)
+                mods = nn.ModuleDict()
+                for c, heads in groups.items():
+                    mods[str(c)] = ContentAssign(len(heads), self.d_model_, self.specs[T], mode=self.hash_mode, src=self.hash_src,
+                                                 freeze=self.hash_freeze, shift=0 if self.hash_conv else self.hash_shift,
+                                                 codim=c).to(device)
+                    mods[str(c)].heads = heads
+                    mods[str(c)].sparse_ops = self.sparse_ops
+                    if self.hash_lr_scale != 1.0:
+                        for prm in mods[str(c)].parameters():
+                            if prm.requires_grad:
+                                prm.register_hook(lambda g, sc=float(self.hash_lr_scale): g * sc)
+                self.ca[str(T)] = mods
         return self.specs[T]
+
+    def get_auxiliary_loss(self):
+        if self.read != "chash" or not self.balance_coef:
+            return 0.0
+        cas = [c for mods in self.ca.values() for c in mods.values()]
+        aux = [c.aux for c in cas if getattr(c, "aux", None) is not None]
+        out = self.balance_coef * torch.stack(aux).sum() if aux else 0.0
+        for c in cas: c.aux = None
+        return out
 
     def forward(self, u, **_):
         m = self.mixer
         b, l, _ = u.shape
         spec = self._spec(l, u.device) if self.d >= 2 else None
+        if self.read == "chash" and self.training and spec is not None:
+            self._steps += 1
+            if self.anneal_steps:
+                for mods in self.ca.values():
+                    for c in mods.values(): c.anneal = min(1.0, self._steps / float(self.anneal_steps))
+            if self.hash_freeze_after and self._steps >= self.hash_freeze_after:
+                for mods in self.ca.values():
+                    for c in mods.values():
+                        if not c.freeze:
+                            for prm in c.parameters(): prm.requires_grad_(False)
+                            c.freeze = True                                  # also drops the balance term
         zxbcdt = m.in_proj(u)
         A = -torch.exp(m.A_log.float())
         z, xBC, dt = torch.split(zxbcdt, [m.d_ssm, m.d_ssm + 2 * m.ngroups * m.d_state, m.nheads], dim=-1)
+        fold = self.reset and spec is not None
+        if fold:                                                   # paper mask: conv + recurrence restart at the boundary (n = l/2)
+            assert 2 * spec.n == l
+            xBC, dt = xBC.reshape(b * 2, l // 2, -1), dt.reshape(b * 2, l // 2, -1)
         xBC = causal_conv1d_fn(xBC.contiguous().transpose(1, 2), rearrange(m.conv1d.weight, "d 1 w -> d w"),
                                bias=m.conv1d.bias, activation=m.activation).transpose(1, 2)
         x, B, C = torch.split(xBC, [m.d_ssm, m.ngroups * m.d_state, m.ngroups * m.d_state], dim=-1)
@@ -302,6 +391,9 @@ class SmatMamba2MR(nn.Module):
             rearrange(x, "b l (h p) -> b l h p", p=m.headdim), dt, A,
             rearrange(B, "b l (g n) -> b l g n", g=m.ngroups), rearrange(C, "b l (g n) -> b l g n", g=m.ngroups),
             chunk_size=m.chunk_size, D=m.D, z=None, dt_bias=m.dt_bias, dt_softplus=True, **dt_limit_kwargs)  # (b, l, h, p)
+        if fold:
+            x, B, C, dt = (t.reshape(b, l, -1) for t in (x, B, C, dt))
+            y = y.reshape(b, l, m.nheads, m.headdim)
         if spec is not None:
             n, Bn = spec.n, spec.B
             assert Bn <= self.max_B
@@ -333,17 +425,54 @@ class SmatMamba2MR(nn.Module):
                 Vb = rearrange(xv, "b l h p -> (b h) l p")
                 if self.kernel != "id":
                     Vb = torch.cat([Vb, torch.ones_like(Vb[..., :1])], dim=-1)
-                if spec.n_X > 0:
+                if self.read == "chash":
+                    U = None
+                elif spec.n_X > 0:
                     if self.pool == "delta":
                         beta = torch.sigmoid(self.beta_w(u.float())).permute(0, 2, 1).reshape(b * self.h, l)   # (b h, l)
                         Fp = delta_pool_profiles(Psi, Vb, beta, spec)
                     else:
                         Fp = pool_profiles(Psi, Vb, spec, acc_dtype=torch.float32, backend="torch")
                     U = None if self.read == "content" else apply_incidence(Fp, spec, backend="torch")
+                    if U is not None and self.g_floor:
+                        # soft G: incident profiles get weight hi, the rest lo.  U[rho] = lo*F_total + (hi-lo)*U_C[rho]
+                        if self.g_floor == "q":      hi, lo = 1.0, 1.0 / spec.q
+                        elif self.g_floor == "pm":   hi, lo = 1.0 + 1.0 / spec.q, 1.0 - 1.0 / spec.q
+                        elif self.g_floor == "m":    hi, lo = 1.0, 1.0 - 1.0 / spec.q
+                        else:                        hi, lo = 1.0, float(self.g_floor)
+                        U = lo * Fp.sum(1, keepdim=True) + (hi - lo) * U
                 else:
                     Fp = torch.zeros(b * self.h, spec.N0, rk, Vb.shape[-1], device=u.device)
                     U = None if self.read == "content" else torch.zeros(b * self.h, Bn, rk, Vb.shape[-1], device=u.device)
-                if self.read == "content":
+                if self.read == "chash":
+                    ksrc = None
+                    hsrc = _EMB.get("x").float() if self.hash_src == "embed" else u.float()
+                    if self.g_bf16:
+                        Phi, Psi, Vb = Phi.to(torch.bfloat16), Psi.to(torch.bfloat16), Vb.to(torch.bfloat16)
+                    if self.hash_conv:
+                        ksrc = self.kconv(F_.pad(hsrc.transpose(1, 2), (self.hash_conv_width - 1, 0))).transpose(1, 2)   # causal, (b, l, C)
+                    mods = self.ca[str(l)]
+                    emb = _EMB.get("x").float() if self.hash_src == "embed" else None
+                    kw_all = dts.permute(0, 2, 1).reshape(b * self.h, l)[:, :n] if self.balance_gated else None   # write gate per landmark token
+                    if len(mods) == 1:
+                        camod = next(iter(mods.values()))
+                        if self.hash_ckpt and torch.is_grad_enabled():
+                            from torch.utils.checkpoint import checkpoint
+                            Ylr = checkpoint(lambda U_, Ph_, Ps_, Vb_, E_, K_, W_: camod(U_, Ph_, Ps_, Vb_, n, emb=E_, key_src=K_, key_w=W_),
+                                             u.float(), Phi, Psi, Vb, emb, ksrc, kw_all, use_reentrant=False)
+                        else:
+                            Ylr = camod(u.float(), Phi, Psi, Vb, n, emb=emb, key_src=ksrc, key_w=kw_all)   # (b h, l-n, p)
+                    else:                                              # per-head codimension: run each head group's module
+                        Ph, Ps, Vh = (t.view(b, self.h, l, -1) for t in (Phi, Psi, Vb))
+                        Ylr = Vb.new_zeros(b, self.h, l - n, Vb.shape[-1])
+                        for c in mods.values():
+                            hs = c.heads
+                            out = c(u.float(), Ph[:, hs].reshape(b * len(hs), l, -1), Ps[:, hs].reshape(b * len(hs), l, -1),
+                                    Vh[:, hs].reshape(b * len(hs), l, -1), n, emb=emb, key_src=ksrc,
+                                    key_w=None if kw_all is None else kw_all.view(b, self.h, n)[:, hs].reshape(b * len(hs), n))
+                            Ylr[:, hs] = out.view(b, len(hs), l - n, -1)
+                        Ylr = Ylr.reshape(b * self.h, l - n, -1)
+                elif self.read == "content":
                     # option 2: content-addressed read over ALL profiles (incidence not applied) --
                     # score profile summary keys, softmax, weighted read of the profile states.
                     kap = profile_keys(Psi, spec)                                            # (b h, N0, r)
@@ -367,7 +496,10 @@ class SmatMamba2MR(nn.Module):
                     Ylr = Ylr * qry_w.unsqueeze(-1)
                 rho = (torch.arange(l - n, device=u.device) % Bn)                            # row type of each recent query
                 pre = self.alpha[:, rho].t().unsqueeze(0) + self.lam_w(u.float())[:, n:]                # (b, l-n, h)
-                lam = torch.sigmoid(pre) if self.lam_act == "sigmoid" else F_.softplus(pre)
+                if self.lam_act == "one":
+                    lam = self.gscale.view(1, 1, -1).expand(b, l - n, self.h)
+                else:
+                    lam = torch.sigmoid(pre) if self.lam_act == "sigmoid" else F_.softplus(pre)
                 y = torch.cat([y[:, :n], y[:, n:] + (lam.unsqueeze(-1) * Ylr).to(y.dtype)], dim=1)
         y = rearrange(y, "b l h p -> b l (h p)")
         y = m.norm(y, z)

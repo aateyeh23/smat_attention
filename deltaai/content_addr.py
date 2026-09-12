@@ -60,6 +60,36 @@ def _grouped_planes(q: int, dim: int):
     return dirs, grouped
 
 
+def _grouped_flats(q: int, dim: int, codim: int):
+    """All distinct partitions of F_q^dim (arithmetic mod q) into the q^codim cosets of a
+    codimension-``codim`` subspace: for each canonical ``codim x dim`` matrix A of full rank
+    (distinct induced partitions only), coset of x = A x mod q.  Returns
+    ``grouped``: (D_c, q^codim, q^(dim-codim)) point indices.  codim=1 reproduces the
+    hyperplanes of ``_grouped_planes`` (same partitions, possibly different order)."""
+    import itertools
+    N0 = q ** dim
+    idx = np.arange(N0, dtype=np.int64)
+    pts = np.stack([(idx // q ** (dim - 1 - k)) % q for k in range(dim)], axis=1)   # (N0, dim)
+    seen, grouped = set(), []
+    deg = q ** (dim - codim)
+    for rows in itertools.product(range(q), repeat=codim * dim):
+        A = np.asarray(rows, dtype=np.int64).reshape(codim, dim)
+        cid = (pts @ A.T) % q                                       # (N0, codim)
+        key = (cid * (q ** np.arange(codim))[None, :]).sum(1)      # coset id per point
+        _, first = np.unique(key, return_index=True)
+        relabel = {key[i]: r for r, i in enumerate(sorted(first))}
+        canon = tuple(relabel[k] for k in key)
+        if len(relabel) != q ** codim or canon in seen:
+            continue                                                # degenerate A, or same partition
+        counts = np.bincount(np.asarray(canon), minlength=q ** codim)
+        if (counts != deg).any():
+            continue
+        seen.add(canon)
+        g = np.stack([np.flatnonzero(np.asarray(canon) == o) for o in range(q ** codim)])
+        grouped.append(g)
+    return np.stack(grouped)                                        # (D_c, q^codim, deg)
+
+
 class ContentAssign(nn.Module):
     """Hashes tokens to profiles and queries to types, and runs the whole
     long-range branch (pool by profile, apply C, contract by type).
@@ -70,8 +100,14 @@ class ContentAssign(nn.Module):
     """
 
     def __init__(self, n_heads, d_model, spec, mode="point", plant=True,
-                 src="hidden", freeze=False, shift=0):
+                 src="hidden", freeze=False, shift=0, codim=None):
         super().__init__()
+        # codim: read from the codimension-c affine subspace through the query's own cell;
+        # c=1 is the hyperplane ("plane"), c=dim is the single cell ("point").
+        self.codim = None if codim is None else int(codim)
+        if self.codim is not None:
+            assert 1 <= self.codim <= int(spec.dim), (self.codim, spec.dim)
+            mode = "point" if self.codim == int(spec.dim) else "plane"
         assert spec.kind == "geometric" and spec.dim >= 1
         self.h = n_heads
         self.q, self.dim, self.N0 = int(spec.q), int(spec.dim), int(spec.N0)
@@ -102,13 +138,16 @@ class ContentAssign(nn.Module):
         self.gamma = nn.Parameter(torch.ones(n_heads, self.dim), requires_grad=not freeze)
         self.b = nn.Parameter(torch.zeros(n_heads, self.dim), requires_grad=not freeze)
         if self.mode == "plane":
-            dirs, grouped = _grouped_planes(self.q, self.dim)
-            self.D = int(dirs.shape[0])
+            if self.codim is None or self.codim == 1:
+                dirs, grouped = _grouped_planes(self.q, self.dim)
+            else:
+                grouped = _grouped_flats(self.q, self.dim, self.codim)
+            self.D, self.n_cosets = int(grouped.shape[0]), int(grouped.shape[1])
             self.Wd = nn.Parameter(torch.randn(n_heads, self.D, d_model) * d_model ** -0.5,
                                    requires_grad=not freeze)
-            M = np.zeros((self.D, self.q, self.N0), dtype=np.float32)
+            M = np.zeros((self.D, self.n_cosets, self.N0), dtype=np.float32)
             for e in range(self.D):
-                for o in range(self.q):
+                for o in range(self.n_cosets):
                     M[e, o, grouped[e, o]] = 1.0
             self.register_buffer("M", torch.from_numpy(M))
         cols = spec.planted_cols if spec.planted_cols is not None else np.zeros(0, dtype=np.int64)
@@ -130,7 +169,7 @@ class ContentAssign(nn.Module):
         self.aux = None           # load-balancing penalty of the last forward
 
     # ------------------------------------------------------------------ hash
-    def _cells(self, u, plant_at=False):
+    def _cells(self, u, plant_at=False, tok_w=None):
         """u: (nb, L, d_model) layer input -> (nb*h, L, N0) cell weights whose
         forward value is the one-hot of ``floor(q sigma(W u))`` and whose
         backward path is the two-bin interpolation."""
@@ -160,12 +199,20 @@ class ContentAssign(nn.Module):
             idx = torch.cat([idx + lo[..., k:k + 1] * place, idx + hi[..., k:k + 1] * place], dim=-1)
             w = torch.cat([w * w_lo, w * w_hi], dim=-1)
             ws = torch.cat([ws * s_lo, ws * s_hi], dim=-1)
-        zer = torch.zeros(B, L, self.N0, device=s.device, dtype=s.dtype)
-        out = zer.scatter_add(-1, idx, w)
-        self._soft = zer.scatter_add(-1, idx, ws)                    # pure soft, for the agreement term
+        self._sparse = (idx, w)                                      # K = 2^dim (cell, weight) pairs per token
+        if getattr(self, "sparse_ops", False):
+            out = None                                              # dense (B, L, N0) never formed
+            self._soft = None
+        else:
+            zer = torch.zeros(B, L, self.N0, device=s.device, dtype=s.dtype)
+            out = zer.scatter_add(-1, idx, w)
+            self._soft = zer.scatter_add(-1, idx, ws)                # pure soft, for the agreement term
         # load balance: KL(mean bin occupancy || uniform), per head and coordinate.
         # Costs O(L) scatters plus O(q) on the mean, so no T*q term enters the cost.
         soft_lo, soft_hi = 1.0 - frac, frac
+        if tok_w is not None:                                        # gate-weighted occupancy: filler does not count
+            tw = tok_w.reshape(B, L, 1).to(s.dtype)
+            soft_lo, soft_hi = soft_lo * tw, soft_hi * tw
         occ = torch.zeros(B, self.dim, self.q, device=s.device, dtype=s.dtype)
         occ = occ.scatter_add(-1, lo.transpose(1, 2), soft_lo.transpose(1, 2))
         occ = occ.scatter_add(-1, hi.transpose(1, 2), soft_hi.transpose(1, 2))
@@ -174,28 +221,45 @@ class ContentAssign(nn.Module):
         if plant_at and self.plant and self.plant_cols.numel():
             cols = self.plant_cols[self.plant_cols < L]
             if cols.numel():
-                one = torch.zeros(cols.numel(), self.N0, device=out.device, dtype=out.dtype)
-                one[torch.arange(cols.numel(), device=out.device), self.plant_cells[: cols.numel()]] = 1.0
-                out = out.clone()
-                out[:, cols] = one            # a fixed, input-independent profile
+                if out is None:                                     # sparse path: overwrite the (idx, w) pairs
+                    idx2, w2 = idx.clone(), w.clone()
+                    idx2[:, cols, :] = self.plant_cells[: cols.numel()].view(1, -1, 1)
+                    w2[:, cols, :] = 0.0; w2[:, cols, 0] = 1.0
+                    self._sparse = (idx2, w2)
+                else:
+                    one = torch.zeros(cols.numel(), self.N0, device=out.device, dtype=out.dtype)
+                    one[torch.arange(cols.numel(), device=out.device), self.plant_cells[: cols.numel()]] = 1.0
+                    out = out.clone()
+                    out[:, cols] = one            # a fixed, input-independent profile
         return out
 
     # ------------------------------------------------------------- the branch
-    def forward(self, u, Phi, Psi, Vb, n, emb=None):
+    def forward(self, u, Phi, Psi, Vb, n, emb=None, key_src=None, key_w=None):
         """u: (nb, T, d_model) layer input.  emb: (nb, T, d_model) token embeddings,
         used instead of u when src == "embed".  Phi, Psi: (nb*h, T, r).
-        Vb: (nb*h, T, p).  n: landmark/recent boundary."""
+        Vb: (nb*h, T, p).  n: landmark/recent boundary.
+        key_src: optional (nb, T, d_model) source for the KEY-side hash (e.g. a learned
+        causal conv of u, replacing the fixed shift); queries always hash h."""
         h = u if (self.src == "hidden" or emb is None) else emb
-        hk = h
+        hk = h if key_src is None else key_src
         if self.shift:                                              # prof(j) = hash(h_{j-shift})
             hk = torch.cat([h.new_zeros(h.shape[0], self.shift, h.shape[2]),
                             h[:, :-self.shift]], dim=1)
-        Wk = self._cells(hk[:, :n], plant_at=True)                  # (b, n, N0)
+        Wk = self._cells(hk[:, :n], plant_at=True, tok_w=key_w)     # (b, n, N0)  [None on the sparse path]
         aux_k = self.aux
-        self.last_hard_k = Wk.argmax(-1).detach()
+        sk = self._sparse
+        self.last_hard_k = (Wk.argmax(-1) if Wk is not None else sk[0][..., 0]).detach()
         Wq = self._cells(h[:, n:])                                  # (b, T_R, N0)
+        sq = self._sparse
         self.last_soft_q = self._soft
         self.aux = None if self.freeze else aux_k + self.aux
+        if getattr(self, "sparse_ops", False):
+            assert self.mode == "point", "sparse ops implement the point read"
+            from smat_pool_ops import pool_sorted, read_sorted
+            P, V, Phi_r = Psi[:, :n], Vb[:, :n], Phi[:, n:]
+            dt = P.dtype
+            F = pool_sorted(P, V, sk[0], sk[1].to(dt), self.N0)              # (b, N0, r, p)  one bmm
+            return read_sorted(Phi_r, sq[0], sq[1].to(dt), F)                # (b, T_R, p)    one bmm
         if self.probe:
             kc, qc = Wk.argmax(-1).detach(), Wq.argmax(-1).detach()
             self.last = (kc, qc)
@@ -213,12 +277,15 @@ class ContentAssign(nn.Module):
             # irrelevant tokens into their own cell, and only this separates them.
             self.last_dens = pr.gather(1, qc).mean().item()
         P, V = Psi[:, :n], Vb[:, :n]
-        F = torch.stack([(P * Wk[:, :, x:x + 1]).transpose(-1, -2) @ V
-                         for x in range(self.N0)], dim=1)           # (b, N0, r, p)
+        Bsz, r, p = P.shape[0], P.shape[-1], V.shape[-1]
+        # pool by cell as ONE batched matmul: F[x] = sum_j Wk[j,x] (Psi_j v_j^T)   -- (b, N0, r, p), no N0 loop
+        PV = torch.einsum("bnr,bnp->bnrp", P, V).reshape(Bsz, n, r * p)
+        F = torch.bmm(Wk.transpose(1, 2), PV).view(Bsz, self.N0, r, p)
         Phi_r = Phi[:, n:]
         if self.mode == "point":
-            Z = torch.einsum("bir,bxrp->bixp", Phi_r, F)            # (b, T_R, N0, p)
-            return torch.einsum("bix,bixp->bip", Wq, Z)
+            # the query's cell state U_i = sum_x Wq[i,x] F[x] as a bmm -- (b, T_R, r, p); never (b, T_R, N0, p)
+            Uq = torch.bmm(Wq, F.reshape(Bsz, self.N0, r * p)).view(Bsz, -1, r, p)
+            return torch.einsum("bir,birp->bip", Phi_r, Uq)
         U = torch.einsum("eox,bxrp->beorp", self.M, F)              # (b, D, q, r, p)
         Z = torch.einsum("bir,beorp->bieop", Phi_r, U)              # (b, T_R, D, q, p)
         nb = u.shape[0]
