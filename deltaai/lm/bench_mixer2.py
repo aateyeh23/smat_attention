@@ -16,10 +16,11 @@ def bench(mod, name, steps=4):
         print(f"{name:40s} OOM", flush=True)
     del mod, x; torch.cuda.empty_cache()
 common = dict(d_state=64, headdim=64, lam_act="one", reset=True, g_decay=True, read="chash", hash_mode="point",
-              hash_conv=True, hash_conv_width=16, anneal_steps=1000, balance_coef=0.01, balance_gated=True)
+              hash_conv=True, hash_conv_width=16, anneal_steps=0, balance_coef=0.01, balance_gated=True)
 bench(z.SmatMamba2MR(dm, layer_idx=0, d=1, d_state=64, headdim=64, lam_act="one"), "mamba2 (d=1)")
-for d in (2, 3, 4):
-    c = d - 1
-    pass
-    bench(z.SmatMamba2MR(dm, layer_idx=0, d=d, hash_codim=c, sparse_ops=True, **common), f"smat d={d} sorted-bmm fp32")
-    bench(z.SmatMamba2MR(dm, layer_idx=0, d=d, hash_codim=c, sparse_ops=True, g_bf16=True, **common), f"smat d={d} sorted-bmm bf16")
+import os
+pairs = [tuple(int(v) for v in it.split(":")) for it in os.environ.get("PAIRS", "2:1 3:2 3:1 4:3 4:2 4:1").split()]   # d:codim
+for d, c in pairs:
+    geo = "point" if c == d - 1 else ("hyperplane" if c == 1 else f"codim{c}")
+    bench(z.SmatMamba2MR(dm, layer_idx=0, d=d, hash_codim=c, sparse_ops=True, g_bf16=True, **common), f"smat d={d} {geo} bf16")
+print("BENCH DONE", flush=True)

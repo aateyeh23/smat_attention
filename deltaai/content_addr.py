@@ -150,6 +150,7 @@ class ContentAssign(nn.Module):
                 for o in range(self.n_cosets):
                     M[e, o, grouped[e, o]] = 1.0
             self.register_buffer("M", torch.from_numpy(M))
+            self.register_buffer("coset_of", torch.from_numpy(M.argmax(1)))   # (D, N0): coset id of each cell per direction
         cols = spec.planted_cols if spec.planted_cols is not None else np.zeros(0, dtype=np.int64)
         self.register_buffer("plant_cols", torch.as_tensor(np.asarray(cols), dtype=torch.long))
         self.register_buffer("plant_cells",
@@ -199,7 +200,16 @@ class ContentAssign(nn.Module):
             idx = torch.cat([idx + lo[..., k:k + 1] * place, idx + hi[..., k:k + 1] * place], dim=-1)
             w = torch.cat([w * w_lo, w * w_hi], dim=-1)
             ws = torch.cat([ws * s_lo, ws * s_hi], dim=-1)
-        self._sparse = (idx, w)                                      # K = 2^dim (cell, weight) pairs per token
+        if a >= 1.0 and getattr(self, "hard_k1", True):
+            # hard mask: keep only the chosen cell (forward weight 1); its STE gradient still reaches W through
+            # the chosen bin's interpolation weight.  4x less pooling / gather work than carrying all 2^dim pairs.
+            idx1 = torch.zeros(B, L, 1, dtype=torch.long, device=u.device); w1 = torch.ones(B, L, 1, device=s.device, dtype=s.dtype)
+            for k in range(self.dim):
+                place = self.q ** (self.dim - 1 - k); f = frac[..., k:k + 1]
+                idx1 = idx1 + lo[..., k:k + 1] * place; w1 = w1 * (1.0 + ((1.0 - f) - (1.0 - f).detach()))
+            self._sparse = (idx1, w1)
+        else:
+            self._sparse = (idx, w)                                  # K = 2^dim (cell, weight) pairs per token
         if getattr(self, "sparse_ops", False):
             out = None                                              # dense (B, L, N0) never formed
             self._soft = None
@@ -254,12 +264,29 @@ class ContentAssign(nn.Module):
         self.last_soft_q = self._soft
         self.aux = None if self.freeze else aux_k + self.aux
         if getattr(self, "sparse_ops", False):
-            assert self.mode == "point", "sparse ops implement the point read"
             from smat_pool_ops import pool_sorted, read_sorted
             P, V, Phi_r = Psi[:, :n], Vb[:, :n], Phi[:, n:]
             dt = P.dtype
             F = pool_sorted(P, V, sk[0], sk[1].to(dt), self.N0)              # (b, N0, r, p)  one bmm
-            return read_sorted(Phi_r, sq[0], sq[1].to(dt), F)                # (b, T_R, p)    one bmm
+            if self.mode == "point":
+                return read_sorted(Phi_r, sq[0], sq[1].to(dt), F)            # (b, T_R, p)    one bmm
+            # affine-subspace read (codimension c; c=1 is the paper's hyperplane incidence): the query sums the
+            # q^(dim-c) pooled cells of the coset through its own cell along a chosen direction.  Aggregate the
+            # N0 cells to the D * q^c cosets once (an N0-sized index sum, no per-token work), then the query does
+            # a point read into that table at (direction, coset of its cell).  The direction is chosen hard with a
+            # one-sided straight-through factor on its softmax probability (gradient to the chosen direction's
+            # logit only; the dense path scores all D directions).
+            Bsz, r, p = F.shape[0], F.shape[2], F.shape[3]
+            Fc = torch.einsum("eox,bxrp->beorp", self.M.to(F.dtype), F).reshape(Bsz, self.D * self.n_cosets, r, p)
+            dl = torch.einsum("blm,hem->bhle", u[:, n:], self.Wd.to(u.dtype)).reshape(Phi_r.shape[0], -1, self.D)
+            pe = torch.softmax(dl.float(), dim=-1)
+            e_star = pe.argmax(-1, keepdim=True)                                                # (B, T_R, 1)
+            pmax = pe.gather(-1, e_star)                                                        # (B, T_R, 1)
+            ste = 1.0 + (pmax - pmax.detach())
+            idx, w = sq
+            coset = self.coset_of[e_star.expand_as(idx), idx]                                   # (B, T_R, K)
+            y = read_sorted(Phi_r, e_star * self.n_cosets + coset, w.to(dt), Fc)
+            return y * ste.to(y.dtype)
         if self.probe:
             kc, qc = Wk.argmax(-1).detach(), Wq.argmax(-1).detach()
             self.last = (kc, qc)

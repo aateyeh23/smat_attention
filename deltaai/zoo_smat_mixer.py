@@ -281,9 +281,6 @@ class SmatMamba2MR(nn.Module):
         self.d_model_ = d_model
         self.hash_conv_width, self.hash_ckpt = int(hash_conv_width), bool(hash_ckpt)   # hash_ckpt: recompute G in backward (activation checkpointing)
         self.sparse_ops, self.g_bf16 = bool(sparse_ops), bool(g_bf16)   # segmented pool/read (no N0 factor); run the G branch in bf16
-        if read == "chash" and hash_conv:
-            self.kconv = nn.Conv1d(d_model, d_model, self.hash_conv_width, groups=d_model, bias=False)
-            nn.init.constant_(self.kconv.weight, 1.0 / self.hash_conv_width)   # uniform over lags; the model learns the lag(s)
         self.g_floor = g_floor                          # soft G: zeros of the incidence get weight g_floor ("q" -> 1/q) instead of 0
         if d_layers is not None:                       # per-layer d, e.g. [1, 2]: layer 0 plain Mamba-2, layer 1 SMAT d=2
             d = int(d_layers[layer_idx])
@@ -297,6 +294,12 @@ class SmatMamba2MR(nn.Module):
         self.d, self.n_P = d, n_P
         self.detach_g, self.write_gate, self.g_decay, self.kernel, self.r = detach_g, write_gate, g_decay, kernel, r
         self.h, self.p, self.N = m.nheads, m.headdim, m.d_state
+        # hash_src "ssm": hash the SSM output y_t (contextual: carries the recurrent state, e.g. counts) instead of the
+        # layer input u_t; width h*p.  Keys and queries both hash y, so the alignment can use context in every layer.
+        self.hash_dim = (self.h * self.p) if hash_src == "ssm" else d_model
+        if read == "chash" and hash_conv:
+            self.kconv = nn.Conv1d(self.hash_dim, self.hash_dim, self.hash_conv_width, groups=self.hash_dim, bias=False)
+            nn.init.constant_(self.kconv.weight, 1.0 / self.hash_conv_width)   # uniform over lags; the model learns the lag(s)
         self.offsets = [layer_idx * self.h + i for i in range(self.h)] if mask_bank else None
         self.specs, self.phi = {}, None
         self.max_B = 65536                                  # alpha table width (row types; d=4 at T=16K has B~8400)
@@ -340,7 +343,7 @@ class SmatMamba2MR(nn.Module):
                 for hi, c in enumerate(cods): groups.setdefault(c, []).append(hi)
                 mods = nn.ModuleDict()
                 for c, heads in groups.items():
-                    mods[str(c)] = ContentAssign(len(heads), self.d_model_, self.specs[T], mode=self.hash_mode, src=self.hash_src,
+                    mods[str(c)] = ContentAssign(len(heads), self.hash_dim, self.specs[T], mode=self.hash_mode, src="hidden" if self.hash_src == "ssm" else self.hash_src,
                                                  freeze=self.hash_freeze, shift=0 if self.hash_conv else self.hash_shift,
                                                  codim=c).to(device)
                     mods[str(c)].heads = heads
@@ -417,11 +420,12 @@ class SmatMamba2MR(nn.Module):
                 if self.write_gate:
                     xv = xv * dts.unsqueeze(-1)
                 if self.g_decay:
-                    la = torch.cumsum(A.view(1, 1, -1) * dts, dim=1)                        # (b, l, h), <= 0, nonincreasing
-                    key_w = torch.exp(la[:, n - 1:n] - la[:, :n])                            # decay from key j to the boundary
-                    qry_w = torch.exp(la[:, n:] - la[:, n - 1:n])                            # decay from the boundary to query t
-                    Ph = Psi.view(b, self.h, l, rk)
-                    Psi = torch.cat([Ph[:, :, :n] * key_w.permute(0, 2, 1).unsqueeze(-1), Ph[:, :, n:]], dim=2).reshape(b * self.h, l, rk)
+                    la = torch.cumsum((A.view(1, -1, 1) * dts.permute(0, 2, 1)).contiguous(), dim=-1)   # (b, h, l), contiguous scan
+                    key_w = torch.exp(la[:, :, n - 1:n] - la[:, :, :n])                      # (b, h, n): decay from key j to the boundary
+                    qry_w = torch.exp(la[:, :, n:] - la[:, :, n - 1:n]).permute(0, 2, 1)     # (b, l-n, h): boundary -> query t
+                    wfull = torch.ones(b, self.h, l, device=u.device, dtype=Psi.dtype)
+                    wfull[:, :, :n] = key_w.to(Psi.dtype)
+                    Psi = (Psi.view(b, self.h, l, rk) * wfull.unsqueeze(-1)).reshape(b * self.h, l, rk)   # one multiply, no cat/clone
                 Vb = rearrange(xv, "b l h p -> (b h) l p")
                 if self.kernel != "id":
                     Vb = torch.cat([Vb, torch.ones_like(Vb[..., :1])], dim=-1)
@@ -446,7 +450,7 @@ class SmatMamba2MR(nn.Module):
                     U = None if self.read == "content" else torch.zeros(b * self.h, Bn, rk, Vb.shape[-1], device=u.device)
                 if self.read == "chash":
                     ksrc = None
-                    hsrc = _EMB.get("x").float() if self.hash_src == "embed" else u.float()
+                    hsrc = _EMB.get("x").float() if self.hash_src == "embed" else (y.reshape(b, l, -1).float() if self.hash_src == "ssm" else u.float())
                     if self.g_bf16:
                         Phi, Psi, Vb = Phi.to(torch.bfloat16), Psi.to(torch.bfloat16), Vb.to(torch.bfloat16)
                     if self.hash_conv:
@@ -459,15 +463,15 @@ class SmatMamba2MR(nn.Module):
                         if self.hash_ckpt and torch.is_grad_enabled():
                             from torch.utils.checkpoint import checkpoint
                             Ylr = checkpoint(lambda U_, Ph_, Ps_, Vb_, E_, K_, W_: camod(U_, Ph_, Ps_, Vb_, n, emb=E_, key_src=K_, key_w=W_),
-                                             u.float(), Phi, Psi, Vb, emb, ksrc, kw_all, use_reentrant=False)
+                                             hsrc, Phi, Psi, Vb, emb, ksrc, kw_all, use_reentrant=False)
                         else:
-                            Ylr = camod(u.float(), Phi, Psi, Vb, n, emb=emb, key_src=ksrc, key_w=kw_all)   # (b h, l-n, p)
+                            Ylr = camod(hsrc, Phi, Psi, Vb, n, emb=emb, key_src=ksrc, key_w=kw_all)   # (b h, l-n, p)
                     else:                                              # per-head codimension: run each head group's module
                         Ph, Ps, Vh = (t.view(b, self.h, l, -1) for t in (Phi, Psi, Vb))
                         Ylr = Vb.new_zeros(b, self.h, l - n, Vb.shape[-1])
                         for c in mods.values():
                             hs = c.heads
-                            out = c(u.float(), Ph[:, hs].reshape(b * len(hs), l, -1), Ps[:, hs].reshape(b * len(hs), l, -1),
+                            out = c(hsrc, Ph[:, hs].reshape(b * len(hs), l, -1), Ps[:, hs].reshape(b * len(hs), l, -1),
                                     Vh[:, hs].reshape(b * len(hs), l, -1), n, emb=emb, key_src=ksrc,
                                     key_w=None if kw_all is None else kw_all.view(b, self.h, n)[:, hs].reshape(b * len(hs), n))
                             Ylr[:, hs] = out.view(b, len(hs), l - n, -1)

@@ -699,3 +699,214 @@ boundary where it switches on; Mamba-2's own per-position curve is flat after ~5
 using context at all, so there is nothing for G to add.  The test of long-context use needs a trained model:
 full budget (4000 steps, d_model 768) or the PG-19 / 16K-token setup.  The G branch costs 6-10x throughput as
 implemented (python-level pooling + recompute); a fused kernel is needed before any scaled run.
+
+### Read geometry used by the LM runs (2026-09-11)
+Every LM run before this date (enwik8 POC d=2/3/4, the selective-copying script, the first LDC launcher draft) used the
+**point read** (`hash_codim = d-1`: each query reads the single pooled cell its own hash lands in).  That was a
+side-effect of the OOM fix: the memory-bounded sparse ops (`smat_pool_ops.py`) only implemented the point read.  At d=2
+the point and hyperplane reads coincide (hyperplanes of F_q^1 are points), so the d=2 numbers are the paper's mask;
+the d=3 and d=4 enwik8 numbers are NOT (they are a hashed cell memory with N0 cells, one cell per query).
+`content_addr.py` now runs the affine-subspace read on the sparse path too: pool cells (one bmm), aggregate to the
+D * q^c cosets with the incidence M (one index sum over N0 cells, no per-token work), then a point read at
+(direction, coset of own cell).  Exact vs the dense plane read in float64 (fwd ~2e-14, grads Phi/Psi/Vb ~1e-14); the
+direction logits get a one-sided straight-through gradient (chosen direction only).  Defaults flipped to
+`hash_codim = 1` (paper's hyperplane incidence) in `lm/train_lm2.py`, `lm/sc_train.py`, `run_ldc.sbatch` (`arm:d:codim`).
+Hard-phase (anneal done) layer cost at width 512 / T 16K / batch 4, single GH200, point read:
+mamba2 5.8 ms, d=2 bf16 26.3 ms / 4.5 GB, d=3 bf16 34.5 ms / 7.8 GB, d=4 bf16 58.7 ms / 19.3 GB.
+
+### enwik8 POC rerun: d=3 with the HYPERPLANE read (job 3134208, `run_poc_d3c1_1gpu.sbatch`, 2026-09-11)
+Same settings as the d=3 point-read arm (v10, anneal 500, 16-byte key conv, 1500 steps / 49M bytes), read = codim 1
+on the exact sparse path (fp32 G branch).  Train loss at step 1500: 1.2228 (point read 1.2233).  Test per-position
+loss, 5M bytes, window 501:
+
+| arm | bpb | nll @512 / 1024 / 2048 / 4096 |
+|---|---|---|
+| mamba2 | 1.7568 | 1.219 / 1.218 / 1.214 / 1.216 |
+| smat d=2 (point = plane) | 1.7674 | 1.224 / 1.223 / 1.238 / 1.222 |
+| smat d=3 point | 1.7669 | 1.224 / 1.223 / 1.237 / 1.221 |
+| **smat d=3 hyperplane** | **1.7647** | 1.222 / 1.221 / 1.235 / 1.219 |
+| smat d=4 point | 1.7625 | 1.220 / 1.219 / 1.234 / 1.219 |
+| **smat d=4 hyperplane** (job 3134375) | **1.7633** | 1.221 / 1.220 / 1.233 / 1.219 |
+
+Reading: hyperplane vs point is a 0.002 bpb difference at d=3 and 0.001 at d=4, i.e. nothing; every SMAT arm is flat in position and
+~0.01 bpb behind Mamba-2, with the same bump at 2048 (the boundary reset).  At this size / budget (10.5M params, 49M
+bytes) the model does not use long context, so the read geometry cannot matter yet.  Training throughput on the sparse
+path: 187 ktok/s vs 59 ktok/s for the earlier dense point read (3.2x) on one GH200.
+
+### Pooling / read ops: capped sub-row layout (2026-09-12, `smat_pool_ops.py`)
+The d=4 hyperplane enwik8 run OOMed (7.4 GB padded tensor) and then crawled at 8-12 ktok/s on the segmented fallback:
+real bytes hash with heavy skew (one cell took >1400 of 16K key pairs early on), so the sorted-and-padded layout was
+O(B*N0*Lmax) and the segmented index_add serialised on the hot cells' atomics (bf16 -> fp32 accumulation did not
+help: 353-489 ms per layer step).  Replaced both by a capped layout: pairs sorted by cell, each cell split into
+ceil(count/64) sub-rows of 64 slots, one bmm over sub-rows, one small index_add of the per-sub-row partial sums.
+Memory O(pairs + B*N0*64), no per-token atomics, exact (float64 test at caps 64/3/1).  d=4 hyperplane layer at
+width 384 / T 4096 / batch 8 in the soft phase (K=8 pairs): 83.7 ms, 5.1 GB (padded 92 ms / 7.7 GB when it fit,
+segmented 353 ms).  Training rate at step 50: 46.5 ktok/s vs 11.9 before.
+
+### enwik8 POC at 16K context (job 3134595, `run_poc_len.sbatch` SEQ=16384, 2026-09-12)
+Same model / recipe / 49M-byte budget as the 4K arms, batch 2 x 16384 (32K tokens per step), SMAT with the
+hyperplane read (c=1), reset at 8192.  Test per-position loss over the 5M test bytes (305 sequences), mean nll by
+position segment:
+
+| arm | bpb | pos 0-1k | 1k-4k | 4k-8k | 8k-12k | 12k-16k |
+|---|---|---|---|---|---|---|
+| mamba2 | 1.7940 | 1.250 | 1.234 | 1.243 | 1.253 | 1.241 |
+| smat d=2 c=1 | 1.7974 | 1.251 | 1.235 | 1.244 | 1.257 | 1.244 |
+| smat d=3 c=1 | 1.8005 | 1.254 | 1.237 | 1.246 | 1.259 | 1.245 |
+| smat d=4 c=1 | 1.7967 | 1.251 | 1.235 | 1.243 | 1.256 | 1.243 |
+
+Reading: all arms within 0.007 bpb, ordering mamba2 < d=4 < d=2 < d=3 (single seed, noise-level).  Loss does NOT fall
+with position for any arm: 12k-16k is no better than 1k-4k, i.e. the model uses ~1k of context at this size/budget, so
+16K vs 4K only costs (1.79 vs 1.76 bpb, fewer independent sequences per step).  Per-arm training time: mamba2 3 min at
+~300 ktok/s, SMAT 5-8 min at 90-150 ktok/s.
+
+### enwik8 POC at 32K context (job 3134596, `run_poc_len.sbatch` SEQ=32768, 2026-09-12)
+Batch 1 x 32768, otherwise as the 16K sweep; reset at 16384; test eval over 152 sequences.
+
+| arm | bpb | pos 0-1k | 1k-4k | 4k-8k | 8k-16k | 16k-24k | 24k-32k |
+|---|---|---|---|---|---|---|---|
+| mamba2-d1 | 1.8162 | 1.268 | 1.248 | 1.254 | 1.256 | 1.255 | 1.271 |
+| smat-d2 | 1.8188 | 1.267 | 1.248 | 1.255 | 1.257 | 1.257 | 1.274 |
+| smat-d3 | 1.8153 | 1.267 | 1.247 | 1.253 | 1.254 | 1.256 | 1.271 |
+| smat-d4 | 1.8172 | 1.269 | 1.248 | 1.255 | 1.255 | 1.257 | 1.272 |
+
+Reading: all within 0.004 bpb (d=3 hyperplane nominally best, 1.8153 vs mamba2 1.8162): noise.  Loss RISES over the
+second half of every sequence (24k-32k worst), for Mamba-2 as much as SMAT: with batch 1 the 49M-byte budget is 1500
+single-sequence steps, so this is under-training plus enwik8's non-stationarity within a 32K window, not a mixer effect.
+4K -> 16K -> 32K costs 1.76 -> 1.79 -> 1.82 bpb for every arm alike.  Conclusion of the whole enwik8 series: at 10.5M
+params / 49M bytes nothing separates Mamba-2 from SMAT at any d, read geometry or context length; a real test of the
+long-range read needs the PG-19 300M-token setup.
+
+### PG-19 long-context sweep: setup (2026-09-12, `run_pg19.sbatch`, `lm/prep_pg19.py`)
+Found: the earlier PG-19 tokenisation had been killed after 5.4M train tokens, leaving a 320M-slot memmap of zeros --
+no run had used it.  Re-tokenised: 320M train tokens (book order), val = PG-19 validation split whole (50 books,
+4.6M), test = test split whole (100 books, 10.6M), files truncated to their real length.
+Model: 8 layers, d_model 384, GPT-2 vocab (19.3M tied embedding).  Non-embedding params: mamba2 7.6M, gdn (fla
+GatedDeltaNet, expand_v 2, hd 64, 6 heads) 9.5M, transformer (RoPE attn + 4x GELU MLP) 14.2M, smat d=2/3/4 13.9M
+(of which ~3M is the never-used tail of the per-head alpha tables, max_B 65536).  Budget 300M tokens per arm = 9155
+steps x 32K tokens, SEQ 16384 (batch 2) and 32768 (batch 1); cosine lr 6e-4, warmup 300; SMAT: hyperplane read, v10
+recipe (gated balance 0.01, anneal 1000 steps), 4-token key conv, reset at SEQ/2.
+Smoke, each arm alone at 32K (40 synthetic steps, rate includes warm-up so it under-reads): mamba2 64 ktok/s /
+27 GB, gdn 14 ktok/s (triton compile dominated) / 29 GB, transformer 178 ktok/s / 29 GB, smat d=2 49 / 32 GB,
+d=3 45 / 32 GB, d=4 35 / 32 GB.  Peak is dominated by the 32K x 50257 logits, so arms share a GPU 2 at a time at 32K
+and 4 at 16K; the job checkpoints every 250 steps and resubmits itself (one running job per user on the interactive
+partition).
+
+### BUG (found 2026-09-12 09:50): the learned content hash was never trained
+`SmatMamba2MR` builds its `ContentAssign` modules (hash projection W, gamma, b, direction logits Wd) lazily at the first
+forward for each sequence length.  Zoology's `Trainer.fit()`, `lm/train_lm2.py` and `lm/sc_train.py` all built the
+optimizer from `model.parameters()` BEFORE any forward, so those tensors were never in the optimizer.  Verified on saved
+checkpoints: optimizer had 86 of 116 tensors (enwik8 d=3), gamma still exactly 1 and b exactly 0, W rows at their
+randn norm (sqrt(d_model)).  Consequently every "learned contextual hash" number before this date is actually a
+**frozen random projection of the hidden state** (contextual but untrained; balance penalty, anneal, hash lr,
+freeze-after had no direct effect -- only side effects through the write gate dt in the gated-balance variants and
+noise).  Affected: MQAR hash-recipe iteration v0-v11, the affine-family table, the w32/w64 hyperplane sweep below,
+enwik8 SMAT arms (all lengths), PG-19 SMAT arms (first pass), selective copying SMAT arms.  NOT affected: frozen
+embedding hash (94.8 @ d=3 point, 88.4 @ d=4), all Mamba-2 / GDN / attention baselines, and the kernel/throughput work.
+Fix: a no-grad prebuild forward before the optimizer in all three trainers, with an assertion that the optimizer covers
+every parameter tensor (prints "optimizer covers N/N (k content-hash tensors)").  Quarantined outputs in
+`lm/out/invalid_frozenhash/`, `logs/invalid_frozenhash/`, ckpt/invalid_frozenhash/.  Reruns: `run_mqar_c1.sbatch`
+(MQAR w16/32/64 x d2/3/4 hyperplane + w16 d3 point, hash trained), `run_pg19.sbatch` SMAT arms, selective-copying SMAT
+arms (running on the PG-19 job's GPU).
+
+### MQAR w32 / w64, hyperplane read, FROZEN-RANDOM contextual hash (see bug above), hd16/ds16, lr 1e-2, 32 ep, seed 123
+| width | Mamba-2 (earlier) | d=2 c=1 | d=3 c=1 | d=4 c=1 |
+|---|---|---|---|---|
+| 32 | 82.8 | **96.2** (64 pairs: 94.3) | 68.7 (15.4) | 74.8 (35.3) |
+| 64 | 81.5 | **97.8** (98.4) | 84.2 (48.6) | OOM (GPU shared), rerunning |
+
+Even with an untrained random hash, d=2 (13 cells, hyperplane = point) beats Mamba-2 by +13 / +16 at 64 pairs 94-98;
+d=3/4 with the random hash fall off at 32-64 pairs (the random projection does not separate keys well enough for the
+finer cells).  The trained-hash rerun is queued (job 3135974).
+
+### Selective copying, d_state 16 (job 3134922, `run_sc.sbatch` DS=16 GDNHD=16), L 4096, 16 tokens / vocab 16, 10k steps
+Baselines (valid): Mamba-2 hd64/ds16 **77.1%**, Gated DeltaNet (head_dim 16, same 2048-number state per layer) **96.0%**.
+SMAT arms (frozen-random hash, invalid): d=2 44.1, d=3 46.7, d=4 46.2 -- rerunning with the trained hash.  Note the
+task structure: the 16 answer-slot inputs are identical blanks, so a content hash of the *query* maps all 16 queries to
+one cell; ordered recall by position is exactly what content addressing cannot do, and with the boundary reset the first
+half of the prefix is reachable only through G.  Expect SMAT <= Mamba-2 here unless the queries' hash is contextual
+(the key-side conv gives the keys context; queries hash their own hidden state, which after the recurrence does carry
+position).
+
+### PG-19 300M-token sweep, baselines (valid; `lm/out/pg19-*.json`), nll per GPT-2 token on the PG-19 test split
+| arm | 16K nll (ppl) | 32K nll (ppl) | 16K nll @512 / 4096 / 8000 |
+|---|---|---|---|
+| Gated DeltaNet | **3.678 (39.6)** | **3.738 (42.0)** | 3.698 / 3.640 / 3.685 |
+| Mamba-2 | 3.752 (42.6) | 3.803 (44.8) | 3.763 / 3.717 / 3.764 |
+| transformer (RoPE + 4x MLP) | 3.797 (44.6) | 3.910 (49.9) | 3.818 / 3.755 / 3.806 |
+| smat d=2 / d=3 (frozen-random hash, invalid) | 3.743 / 3.747 | -- | |
+GDN leads by 0.07 nats; the transformer is last (33M params, 300M tokens: too little data for attention at 16-32K, and
+batch 1 at 32K).  Loss is flat in position for every arm beyond ~1K.  SMAT arms rerunning with the trained hash
+(job 3135970 chain).
+
+### MQAR with the hash actually trained (job 3135974, `run_mqar_c1.sbatch`), hyperplane read, v10, hd16/ds16, lr 1e-2, 32 ep, seed 123
+Accuracy overall (4 / 8 / 16 / 32 / 64 pairs).  Mamba-2 rows from the small-state sweep.  "random" = the frozen-random
+contextual hash numbers from before the fix, same config.
+
+| width | Mamba-2 | d=2 c=1 trained (random) | d=3 c=1 trained (random) | d=4 c=1 trained (random) |
+|---|---|---|---|---|
+| 16 | 46.9 | 78.9 (84/75/79/81/76) (86.1) | 58.7 (91/81/63/40/18) (67.6) | 73.5 (86/79/82/64/57) (65) |
+| 32 | 82.8 | **95.9** (99/99/94/94/94) (96.2) | **94.2** (99/98/92/94/88) (68.7) | OOM, rerun queued (74.8) |
+| 64 | 81.5 | OOM, rerun queued (97.8) | OOM, rerun queued (84.2) | 89.6, best 94.9 (100/100/93/83/72) (OOM) |
+
+Reading: training the hash is what makes d=3 work at width 32 (68.7 -> 94.2, 64-pair 15 -> 88); d=2's hash is one
+number per token so random was already enough (96 either way).  At width 16 the trained hash is *worse* than random for
+d=2/3 (79 vs 86, 59 vs 68) -- the width-16 model has 16-dim hidden states to hash from and the v10 anneal/balance was
+never actually tuned (its "tuning" happened with a frozen hash); single seed.  Four runs OOMed (10 runs + 3 selective-
+copying arms on one GPU) and are queued (job 3135994's successor).  Frozen-embedding point read (94.8 @ w16 d=3) is
+still the best width-16 number.
+
+### Selective copying, d_state 16, final (trained hash; L 4096, 16 tokens / vocab 16, 10k steps, batch 32)
+| Mamba-2 | GDN | SMAT d=2 c=1 | SMAT d=3 c=1 | SMAT d=4 c=1 |
+|---|---|---|---|---|
+| 77.1 | **96.0** | 40.8 | 25.4 | 45.8 |
+
+SMAT is well below Mamba-2 here (frozen-random hash gave 44 / 47 / 46 -- the same).  As predicted from the task
+structure: the 16 answer-slot queries are identical blank tokens, so their content hash cannot address 16 different
+cells, and the boundary reset hides the first half of the prefix from the recurrence.  Selective copying is a
+positional/ordered-recall task; the content-addressed G is the wrong tool for it, and the reset actively hurts.  The
+no-reset (hybrid) SMAT would be the fair variant for this task, not run.
+
+### MQAR, hash trained -- complete table (jobs 3135974 + 3136241), hyperplane read c=1, v10, hd16/ds16, lr 1e-2, 32 ep, seed 123
+Overall accuracy (64-pair slice).  Mamba-2 from the small-state sweep.  Point read at w16 d=3 for reference.
+
+| width | Mamba-2 | d=2 c=1 | d=3 c=1 | d=4 c=1 | d=3 point (w16 only) |
+|---|---|---|---|---|---|
+| 16 | 46.9 | 78.9 (76) | 58.7 (18) | 73.5 (57) | 79.8 (95; 4-pair 91, 8-pair 75, 16-pair 61) |
+| 32 | 82.8 | **95.9** (94) | **94.2** (88) | **95.4** (94) | |
+| 64 | 81.5 | **97.7** (98) | **96.8** (96) | 89.6, best 94.9 (72) | |
+
+Reading: at widths 32 and 64 every d beats Mamba-2 by +12 to +16 overall and by +50 or more on the 64-pair slice
+(Mamba-2's 64-pair accuracy is ~40 / ~35), and d=3/4 are now level with d=2 -- the "performance does not decrease with
+d" claim holds once the hash is trained (with the random hash d=3/4 fell off at 32-64 pairs).  Width 16 is the odd one:
+the hidden state is 16-dim, the hash has little to work with, and the trained point read shows the inverted-slices
+pattern again (64 pairs 95, 4 pairs 91, 8-16 pairs 61-75).  The width-16 recipe was never actually tuned; single seed.
+
+### Selective copying, d_state 16, no-reset (hybrid) SMAT arms, final (trained hash)
+| Mamba-2 | GDN | SMAT d=2 | SMAT d=3 | SMAT d=4 | SMAT reset d=2 / d=3 / d=4 |
+|---|---|---|---|---|---|
+| 77.1 | 96.0 | 54.5 | 34.9 | 65.0 | 40.8 / 25.4 / 45.8 |
+
+Removing the reset helps (+14 / +10 / +19) but every SMAT arm stays below Mamba-2, whose recurrence it contains.
+Correction to the first reading: identical blank query tokens do NOT make the read blind -- a cell is an r x p
+associative memory (sum_j psi_j v_j^T) read by the query vector phi_i, which differs across the 16 slots through the
+recurrent context, so one shared cell can still return 16 different values (Mamba-2's single state does exactly this).
+What "all queries hash to one cell" means is only that G's partition into N0 cells buys nothing here, so SMAT cannot
+beat Mamba-2; it does not explain being BELOW Mamba-2.  Unverified candidates for the deficit: slower optimisation
+(every arm was still rising at 10k steps; the STE hash + soft->hard switch at step 1000), the ungated additive read being
+noise while the cells are still disorganised, and clutter from noise tokens written into the cells.  Left as a
+negative result at the user's request.
+
+### PG-19 16K, trained-hash SMAT arms (job 3135994), nll per token on the test split
+| arm | nll (ppl) | @512 | @4096 | @6144 | @8000 (just before the 8192 reset) |
+|---|---|---|---|---|---|
+| GDN | **3.678 (39.6)** | 3.698 | 3.640 | 3.687 | 3.685 |
+| smat d=2 c=1 | 3.743 (42.2) | 3.748 | 3.702 | 3.748 | 3.813 |
+| smat d=3 c=1 | 3.744 (42.3) | 3.749 | 3.704 | 3.750 | 3.806 |
+| Mamba-2 | 3.752 (42.6) | 3.763 | 3.717 | 3.757 | 3.764 |
+| transformer | 3.797 (44.6) | 3.818 | 3.755 | 3.800 | 3.806 |
+
+SMAT edges Mamba-2 by 0.008 nats overall (and by ~0.015 away from the boundary) but pays ~0.05 nats in the window just
+before the reset at 8192, and stays 0.065 behind GDN everywhere.  Mid-run train losses had SMAT level with GDN; the
+final test gap says otherwise.  The frozen-random-hash SMAT arms scored 3.743 / 3.747 -- the trained hash changed
+nothing measurable on PG-19 at this scale.  d=4 (16K) and all 32K SMAT arms still to run (chain job 3136709).
