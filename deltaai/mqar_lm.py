@@ -253,9 +253,12 @@ def main():
                     help="routing objective: the query's cell distribution should carry mass on its payload's cell")
     ap.add_argument("--anneal-steps", type=int, default=0,
                     help="steps over which the soft top-k read is annealed to the hard mask (0 = hard throughout)")
-    ap.add_argument("--hash-src", choices=["hidden", "embed"], default="hidden",
+    ap.add_argument("--hash-src", choices=["hidden", "embed", "id"], default="hidden",
                     help="hash the layer input, or the token embedding (identical for a repeated token)")
     ap.add_argument("--hash-freeze", action="store_true", help="frozen random hash: nothing to learn, cannot collapse")
+    ap.add_argument("--hash-conv", type=int, default=0,
+                    help="learned depthwise causal conv of this width on the key-side hash input, "
+                         "replacing the fixed --hash-shift")
     ap.add_argument("--unfreeze-at", type=int, default=0,
                     help="curriculum: train with the hash frozen, then release it at this step")
     ap.add_argument("--hash-shift", type=int, default=0,
@@ -292,7 +295,7 @@ def main():
         smat_triton_bwd.patch()
     name = ((args.arm if args.arm not in ("smat", "mamba2smat") else f"{args.arm}_d{args.d}") + f"_T{args.T}_p{args.n_pairs}" + ("_pad" if args.pad_noise else "") + ("_zoo" if args.zoology else "")
             + (f"_taylor{args.taylor_dim}" if args.phi == "taylor" else "") + ("_oracle" if args.oracle_keep else "")
-            + (f"_P{2 * args.n_pairs if args.n_P == -1 else args.n_P}" if args.n_P else "") + ("_bank" if args.mask_bank else "") + (f"_{args.scan_kernel}" if args.scan_kernel != "phi" else "") + ("_c" + args.read_mode if args.assign == "content" else "") + ("_ppoint" if args.assign == "positional" and args.pos_read == "point" else "") + (f"_{args.hash_src}" if args.assign == "content" and args.hash_src != "hidden" else "") + ("_frz" if args.hash_freeze else "") + (f"_unfrz{args.unfreeze_at}" if args.unfreeze_at else "") + (f"_sh{args.hash_shift}" if args.hash_shift else "") + (f"_ag{args.agree_coef:g}" if args.agree_coef else "") + (f"_an{args.anneal_steps}" if args.anneal_steps else "") + f"_dm{args.d_model}_s{args.seed}" + ("" if args.decay == "off" else f"_decay{args.decay if args.decay != 'on' else ''}") + args.tag)
+            + (f"_P{2 * args.n_pairs if args.n_P == -1 else args.n_P}" if args.n_P else "") + ("_bank" if args.mask_bank else "") + (f"_{args.scan_kernel}" if args.scan_kernel != "phi" else "") + ("_c" + args.read_mode if args.assign == "content" else "") + ("_ppoint" if args.assign == "positional" and args.pos_read == "point" else "") + (f"_{args.hash_src}" if args.assign == "content" and args.hash_src != "hidden" else "") + ("_frz" if args.hash_freeze else "") + (f"_unfrz{args.unfreeze_at}" if args.unfreeze_at else "") + (f"_sh{args.hash_shift}" if args.hash_shift else "") + (f"_cv{args.hash_conv}" if args.hash_conv else "") + (f"_ag{args.agree_coef:g}" if args.agree_coef else "") + (f"_an{args.anneal_steps}" if args.anneal_steps else "") + f"_dm{args.d_model}_s{args.seed}" + ("" if args.decay == "off" else f"_decay{args.decay if args.decay != 'on' else ''}") + args.tag)
     print(json.dumps({"run": name, **vars(args)}, default=str), flush=True)
 
     if args.zoology:
@@ -322,7 +325,8 @@ def main():
                         dt_init=(args.dt_min, args.dt_max), A_init=(args.A_min, args.A_max),
                         scan_kernel=args.scan_kernel, assign=args.assign,
                         read_mode=args.read_mode, pos_read=args.pos_read, hash_src=args.hash_src,
-                        hash_freeze=args.hash_freeze, hash_shift=args.hash_shift).to(dev)
+                        hash_freeze=args.hash_freeze, hash_shift=args.hash_shift,
+                        hash_conv=args.hash_conv).to(dev)
     gate_p = [p for n, p in model.named_parameters() if any(k in n for k in ("w_dt", "A_log", "w_a", "w_h"))]
     gate_ids = {id(p) for p in gate_p}
     rest = [p for p in model.parameters() if id(p) not in gate_ids]

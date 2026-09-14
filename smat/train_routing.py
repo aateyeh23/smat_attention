@@ -56,8 +56,11 @@ from smat_mask import build_mask, d_max_geometric
 from smat_attn import featurise, make_phi, smat_attention, to_device
 from bench_routing import (choose_marked_set, pattern_table, row_support_size,
                            shatter_profile)
+from recurrent_arms import (Mamba2Gate, DeltaGate, mamba2_chunked,
+                            delta_chunked)
 
-ARMS = ["smat", "smat_content", "softmax", "softmax_content"]
+ARMS = ["smat", "smat_content", "softmax", "softmax_content",
+        "mamba2", "deltanet"]
 
 
 def _wandb_init(enabled: bool, project: str, cfg: Dict):
@@ -184,6 +187,7 @@ class Router(nn.Module):
         self.arm, self.k, self.spec = arm, k, spec
         self.use_content = arm.endswith("_content")
         self.is_smat = arm.startswith("smat")
+        self.chunk = 128
 
         self.pos = nn.Embedding(T, d_model)
         nn.init.normal_(self.pos.weight, std=0.02)
@@ -198,6 +202,10 @@ class Router(nn.Module):
         if self.is_smat:
             self.phi = make_phi(d_qk, r, device=device, dtype=torch.float32,
                                 seed=seed)
+        # the recurrent baselines: one d_qk x d_v state, so a causal-prefix row
+        # support and VC 1, whatever the gate does
+        self.gate = (Mamba2Gate(d_model) if arm == "mamba2" else
+                     DeltaGate(d_model) if arm == "deltanet" else None)
 
     def forward(self, pay, rows, bits, nu):
         nb, T, _ = pay.shape
@@ -216,6 +224,11 @@ class Router(nn.Module):
                                acc_dtype=torch.float32,
                                scan_backend="torch", incidence_backend="torch")
             o = o * nu.view(1, T, 1)                 # undo the mask-determined mean
+        elif self.arm == "mamba2":
+            logA, dt = self.gate(X)
+            o = mamba2_chunked(Q, K, V, logA, dt, chunk=self.chunk)
+        elif self.arm == "deltanet":
+            o = delta_chunked(Q, K, V, self.gate(X), chunk=self.chunk)
         else:
             o = F.scaled_dot_product_attention(
                 Q.unsqueeze(1), K.unsqueeze(1), V.unsqueeze(1), is_causal=True
@@ -366,9 +379,10 @@ def sweep(args, device) -> List[Dict]:
                                           candidates=args.candidates)
             prof = shatter_profile(spec_np, cols)
             arms = [a for a in args.arms if a.startswith("smat")]
-            # softmax has no mask parameter; run it once, under d = the first d
+            # the baselines have no mask parameter; run each once, under
+            # d = the first d, on that d's marked set
             if d == args.d[0]:
-                arms += [a for a in args.arms if a.startswith("softmax")]
+                arms += [a for a in args.arms if not a.startswith("smat")]
             for arm in arms:
                 for seed in range(args.seeds):
                     run = _wandb_init(args.wandb, args.wandb_project,

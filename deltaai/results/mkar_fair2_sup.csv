@@ -1,0 +1,13 @@
+run,arm,d,k,assign,read_mode,dirs,step,loss,exact_support,mse,q,N0,B,covers_k,ms_per_step
+mkar_smat_d3_k2_plane_learned_deltadir_sup_T1024_s0_sc3_id_fair2,smat,3,2,content,plane,learned,2000,2.0179431438446045,0.0009765625,6.3103607296943665,11,121,132,True,45.94136929512024
+mkar_smat_d3_k2_plane_learned_deltadir_sup_T1024_s0_sc3_id_fair2,smat,3,2,content,plane,learned,4000,1.1880981922149658,0.0,6.490081548690796,11,121,132,True,45.65919142961502
+mkar_smat_d3_k2_plane_learned_deltadir_sup_T1024_s0_sc3_id_fair2,smat,3,2,content,plane,learned,6000,0.3617746829986572,0.0,6.544419884681702,11,121,132,True,45.58957954247793
+mkar_smat_d3_k2_plane_learned_deltadir_sup_T1024_s0_sc3_id_fair2,smat,3,2,content,plane,learned,8000,0.35842326283454895,0.0,6.59412294626236,11,121,132,True,45.54562991857529
+mkar_smat_d3_k2_plane_learned_deltadir_sup_T1024_s0_sc3_id_fair2,smat,3,2,content,plane,learned,10000,0.3602026104927063,0.00048828125,6.716195344924927,11,121,132,True,45.53936796188354
+mkar_smat_d3_k2_plane_learned_deltadir_sup_T1024_s0_sc3_id_fair2,smat,3,2,content,plane,learned,12000,0.35755419731140137,0.00048828125,6.883833348751068,11,121,132,True,45.51995770136515
+mkar_smat_d4_k3_plane_learned_deltadir_sup_T1024_s0_sc3_id_fair2,smat,4,3,content,plane,learned,2000,2.824502468109131,0.0,3.1064687967300415,5,125,155,True,47.08206045627594
+mkar_smat_d4_k3_plane_learned_deltadir_sup_T1024_s0_sc3_id_fair2,smat,4,3,content,plane,learned,4000,1.671269178390503,0.0,3.928800731897354,5,125,155,True,47.06735461950302
+mkar_smat_d4_k3_plane_learned_deltadir_sup_T1024_s0_sc3_id_fair2,smat,4,3,content,plane,learned,6000,0.515792965888977,0.0,4.513329744338989,5,125,155,True,47.19965680440267
+mkar_smat_d4_k3_plane_learned_deltadir_sup_T1024_s0_sc3_id_fair2,smat,4,3,content,plane,learned,8000,0.44285935163497925,0.0478515625,5.364766418933868,5,125,155,True,47.15840995311737
+mkar_smat_d4_k3_plane_learned_deltadir_sup_T1024_s0_sc3_id_fair2,smat,4,3,content,plane,learned,10000,0.323430597782135,0.2255859375,11.769179821014404,5,125,155,True,47.21196808815002
+mkar_smat_d4_k3_plane_learned_deltadir_sup_T1024_s0_sc3_id_fair2,smat,4,3,content,plane,learned,12000,0.2340824156999588,0.271484375,19.950011730194092,5,125,155,True,47.21997574965159

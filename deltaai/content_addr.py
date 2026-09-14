@@ -70,7 +70,8 @@ class ContentAssign(nn.Module):
     """
 
     def __init__(self, n_heads, d_model, spec, mode="point", plant=True,
-                 src="hidden", freeze=False, shift=0):
+                 src="hidden", freeze=False, shift=0, vocab=None, conv_width=0,
+                 dir_head="linear", dir_hidden=512, dir_window=4, dir_soft=False):
         super().__init__()
         assert spec.kind == "geometric" and spec.dim >= 1
         self.h = n_heads
@@ -86,7 +87,28 @@ class ContentAssign(nn.Module):
         #       good the hash is.  Queries are never shifted.
         # freeze: no gradient to the hash at all (a frozen random projection cannot
         #       collapse, so the balance penalty is unnecessary).
+        # src "id": the cell is a fixed pseudorandom function of the token id -- no
+        #       projection, no dependence on the embedding.  Where the matching
+        #       criterion IS token identity this is all the hash can be doing, and
+        #       unlike the embedding hash nothing can move a token between cells
+        #       during training.
+        # conv_width > 0 replaces the fixed offset with a learned depthwise causal
+        # convolution on the KEY-side hash input, init uniform over lags.  The offset
+        # is otherwise a per-task constant read off the data layout; a conv lets the
+        # model find which lag identifies a stored item, which is the only version
+        # that could work on text.  Cost O(T w d_model) -- linear, non-dominant.
         self.src, self.freeze, self.shift = src, freeze, int(shift)
+        self.conv_width = int(conv_width)
+        if self.conv_width > 1:
+            self.kconv = nn.Conv1d(d_model, d_model, self.conv_width, groups=d_model, bias=False)
+            with torch.no_grad():
+                self.kconv.weight.fill_(1.0 / self.conv_width)
+            self.kconv.weight.requires_grad_(not freeze)
+        if src == "id":
+            assert vocab is not None, "the id hash needs the vocabulary size"
+            g = torch.Generator().manual_seed(1234)
+            self.register_buffer("id_cell",
+                                 torch.randint(0, int(spec.N0), (vocab, n_heads), generator=g))
         if mode == "plane" and self.dim == 1:
             self.mode = "point"          # hyperplanes of F_q^1 are single points
         # one projection, one vector per token, both roles: this is what makes a
@@ -104,8 +126,58 @@ class ContentAssign(nn.Module):
         if self.mode == "plane":
             dirs, grouped = _grouped_planes(self.q, self.dim)
             self.D = int(dirs.shape[0])
-            self.Wd = nn.Parameter(torch.randn(n_heads, self.D, d_model) * d_model ** -0.5,
-                                   requires_grad=not freeze)
+            # The direction a query reads along is a joint property of the cells
+            # it must cover -- the direction annihilating their differences --
+            # and a linear head cannot express that: the query's layer input is
+            # an additive mixture of the requested key embeddings, so a linear
+            # head's logits are additive in the keys, while the right direction
+            # is not.  Fitting the oracle direction directly, a linear head
+            # reaches 0.28 against a chance of 0.08 and one hidden layer reaches
+            # 1.00, so "dir_head" decides whether the arm is testing the mask or
+            # testing the head.
+            self.dir_head = dir_head
+            self.dir_soft = bool(dir_soft)
+            if dir_head in ("delta", "fixed"):
+                # Score directions by the CONSTRAINTS they satisfy, not by the
+                # tokens that raised them.  A query must read along a direction
+                # annihilating c_m - c_q for every requested cell c_m, which is
+                # an intersection of linear conditions, and a sum of per-
+                # difference scores is what computes an intersection.  f[s, delta]
+                # is free to learn 1{a_e . delta = 0}; delta = 0 scores every
+                # direction alike, which is the right behaviour for the requested
+                # key that sits in the query's own cell.
+                self.win = int(dir_window)
+                pts = np.stack([(np.arange(self.N0) // self.q ** (self.dim - 1 - j)) % self.q
+                                for j in range(self.dim)], 1)                      # (N0, dim)
+                diff = (pts[:, None, :] - pts[None, :, :]) % self.q                # (N0, N0, dim)
+                w = self.q ** np.arange(self.dim - 1, -1, -1)
+                self.register_buffer("diff_tab",
+                                     torch.as_tensor((diff * w).sum(-1), dtype=torch.long))
+                self.Wdelta = nn.Parameter(torch.zeros(n_heads, self.win, self.N0, self.D),
+                                           requires_grad=not freeze)
+                nn.init.normal_(self.Wdelta, std=0.02)
+                if dir_head == "fixed":
+                    # Nothing here needs learning: whether a_e annihilates a
+                    # difference is decided by the geometry.  Freezing f to that
+                    # indicator turns the direction into a deterministic function
+                    # of the query's own recent tokens -- a content-based type
+                    # map in the sense of Sec. 3.2, not an oracle, since it reads
+                    # the input and never the request.
+                    dirs = _grouped_planes(self.q, self.dim)[0]                # (D, dim)
+                    ind = (pts @ dirs.T) % self.q == 0                         # (N0, D)
+                    with torch.no_grad():
+                        self.Wdelta.copy_(torch.as_tensor(ind, dtype=torch.float32)
+                                          .expand(n_heads, self.win, self.N0, self.D).clone())
+                    self.Wdelta.requires_grad_(False)
+            elif dir_head == "mlp":
+                self.Wd1 = nn.Parameter(torch.randn(n_heads, dir_hidden, d_model) * d_model ** -0.5,
+                                        requires_grad=not freeze)
+                self.bd1 = nn.Parameter(torch.zeros(n_heads, dir_hidden), requires_grad=not freeze)
+                self.Wd = nn.Parameter(torch.randn(n_heads, self.D, dir_hidden) * dir_hidden ** -0.5,
+                                       requires_grad=not freeze)
+            else:
+                self.Wd = nn.Parameter(torch.randn(n_heads, self.D, d_model) * d_model ** -0.5,
+                                       requires_grad=not freeze)
             M = np.zeros((self.D, self.q, self.N0), dtype=np.float32)
             for e in range(self.D):
                 for o in range(self.q):
@@ -122,6 +194,7 @@ class ContentAssign(nn.Module):
         # only 2^{dim} states of size rp -- O(1) in T, unlike a soft read over all N0.
         self.anneal = 1.0
         self.last_soft_q = None   # soft cell distribution of the recent queries
+        self.last_soft_k = None   # soft cell distribution of the distant positions
         self.last_hard_k = None   # hard cell of each distant position
         self.probe = False
         self.last = None          # (key cells, query cells) when probing
@@ -206,21 +279,40 @@ class ContentAssign(nn.Module):
         first = agree.float().argmax(-1)
         return torch.where(agree.any(-1), first, torch.zeros_like(first))
 
-    def forward(self, u, Phi, Psi, Vb, n, emb=None, dir_override=None):
+    def _cells_id(self, ids):
+        """ids: (nb, L) -> (nb*h, L, N0) hard one-hot; nothing to learn."""
+        nb, L = ids.shape
+        c = self.id_cell[ids].permute(0, 2, 1).reshape(nb * self.h, L)
+        out = torch.zeros(nb * self.h, L, self.N0, device=ids.device)
+        return out.scatter_(-1, c.unsqueeze(-1), 1.0)
+
+    def forward(self, u, Phi, Psi, Vb, n, emb=None, dir_override=None, ids=None):
         """u: (nb, T, d_model) layer input.  emb: (nb, T, d_model) token embeddings,
         used instead of u when src == "embed".  Phi, Psi: (nb*h, T, r).
         Vb: (nb*h, T, p).  n: landmark/recent boundary."""
-        h = u if (self.src == "hidden" or emb is None) else emb
-        hk = h
-        if self.shift:                                              # prof(j) = hash(h_{j-shift})
-            hk = torch.cat([h.new_zeros(h.shape[0], self.shift, h.shape[2]),
-                            h[:, :-self.shift]], dim=1)
-        Wk = self._cells(hk[:, :n], plant_at=True)                  # (b, n, N0)
-        aux_k = self.aux
-        self.last_hard_k = Wk.argmax(-1).detach()
-        Wq = self._cells(h[:, n:])                                  # (b, T_R, N0)
-        self.last_soft_q = self._soft
-        self.aux = None if self.freeze else aux_k + self.aux
+        if self.src == "id":
+            assert ids is not None, "the id hash needs token ids"
+            ik = ids if not self.shift else torch.cat(
+                [ids.new_zeros(ids.shape[0], self.shift), ids[:, :-self.shift]], dim=1)
+            Wk, Wq = self._cells_id(ik[:, :n]), self._cells_id(ids[:, n:])
+            self.last_hard_k, self.last_soft_q, self.aux = Wk.argmax(-1).detach(), Wq, None
+        else:
+            h = u if (self.src == "hidden" or emb is None) else emb
+            hk = h
+            if self.conv_width > 1:                                 # learned lag mixture
+                w = self.conv_width - 1
+                hk = self.kconv(torch.nn.functional.pad(h, (0, 0, w, 0))
+                                .transpose(1, 2)).transpose(1, 2)
+            elif self.shift:                                        # prof(j) = hash(h_{j-shift})
+                hk = torch.cat([h.new_zeros(h.shape[0], self.shift, h.shape[2]),
+                                h[:, :-self.shift]], dim=1)
+            Wk = self._cells(hk[:, :n], plant_at=True)              # (b, n, N0)
+            self.last_soft_k = self._soft                           # key-side, for agreement
+            aux_k = self.aux
+            self.last_hard_k = Wk.argmax(-1).detach()
+            Wq = self._cells(h[:, n:])                              # (b, T_R, N0)
+            self.last_soft_q = self._soft
+            self.aux = None if self.freeze else aux_k + self.aux
         if self.probe:
             kc, qc = Wk.argmax(-1).detach(), Wq.argmax(-1).detach()
             self.last = (kc, qc)
@@ -247,11 +339,33 @@ class ContentAssign(nn.Module):
         U = torch.einsum("eox,bxrp->beorp", self.M, F)              # (b, D, q, r, p)
         Z = torch.einsum("bir,beorp->bieop", Phi_r, U)              # (b, T_R, D, q, p)
         nb = u.shape[0]
-        dl = torch.einsum("blm,hem->bhle", u[:, n:], self.Wd).reshape(Phi_r.shape[0], -1, self.D)
+        if getattr(self, "dir_head", "linear") in ("delta", "fixed"):
+            assert ids is not None, "the delta direction head needs token ids"
+            cq = self.id_cell[ids[:, n:]]                       # (nb, T_R, h)
+            dl = 0.0
+            for s in range(1, self.win + 1):
+                prev = ids[:, n - s:ids.shape[1] - s]           # the window, causal
+                cs = self.id_cell[prev]                         # (nb, T_R, h)
+                idx = self.diff_tab[cs, cq]                     # (nb, T_R, h)
+                dl = dl + self.Wdelta[:, s - 1][
+                    torch.arange(self.h, device=ids.device)[None, None, :], idx]
+            dl = dl.permute(0, 2, 1, 3).reshape(Phi_r.shape[0], -1, self.D)
+        elif getattr(self, "dir_head", "linear") == "mlp":
+            h = torch.einsum("blm,hkm->bhlk", u[:, n:], self.Wd1) + self.bd1[None, :, None, :]
+            dl = torch.einsum("bhlk,hek->bhle", torch.nn.functional.gelu(h), self.Wd).reshape(Phi_r.shape[0], -1, self.D)
+        else:
+            dl = torch.einsum("blm,hem->bhle", u[:, n:], self.Wd).reshape(Phi_r.shape[0], -1, self.D)
+        self.last_dir_logits = dl      # for the optional auxiliary supervision
         pe = torch.softmax(dl, dim=-1)
         dir_override = dir_override if dir_override is not None else getattr(self, "dir_ovr", None)
         if dir_override is not None:      # oracle: the direction is given, not learned
             we = torch.zeros_like(pe).scatter_(-1, dir_override.unsqueeze(-1), 1.0)
+        elif getattr(self, "dir_soft", False) and self.training:
+            # Z is materialised for every (direction, offset) anyway, so mixing
+            # over directions during training costs nothing and replaces the
+            # straight-through surrogate with an exact gradient.  Inference still
+            # reads the single argmax hyperplane.
+            we = pe
         else:
             we = torch.zeros_like(pe).scatter_(-1, pe.argmax(-1, keepdim=True), 1.0) + (pe - pe.detach())
         po = torch.einsum("bix,eox->bieo", Wq, self.M)              # offset marginal per direction
@@ -275,4 +389,23 @@ class ContentAssign(nn.Module):
         tgt = hk.gather(1, j)                                        # (B,P) cell to route to
         pq = sq.gather(1, i.unsqueeze(-1).expand(-1, -1, self.N0))   # (B,P,N0)
         lp = pq.gather(-1, tgt.unsqueeze(-1)).squeeze(-1).clamp_min(1e-9).log()
+        return -(lp * v).sum() / v.sum().clamp_min(1.0)
+
+    def key_agreement(self, pay_pos, key_cells, valid):
+        """Align the KEY-side hash with the query-side one: the cell a payload is
+        filed under should be the cell of the key naming it.  The oracle computes
+        directions from key-token cells and the mask files payloads by the
+        convolved key-side input, so nothing makes those agree once the hash is
+        learned -- this term does.  pay_pos: (nb, P) payload positions;
+        key_cells: (nb, P) target cells, detached; valid: (nb, P)."""
+        if self.last_soft_k is None:
+            return None
+        sk = self.last_soft_k                                        # (B, n, N0)
+        nb = pay_pos.shape[0]
+        rep = sk.shape[0] // nb
+        j = pay_pos.repeat_interleave(rep, 0).clamp_min(0)
+        tgt = key_cells.repeat_interleave(rep, 0).clamp_min(0)
+        v = valid.repeat_interleave(rep, 0).to(sk.dtype)
+        p = sk.gather(1, j.unsqueeze(-1).expand(-1, -1, self.N0))     # (B, P, N0)
+        lp = p.gather(-1, tgt.unsqueeze(-1)).squeeze(-1).clamp_min(1e-9).log()
         return -(lp * v).sum() / v.sum().clamp_min(1.0)

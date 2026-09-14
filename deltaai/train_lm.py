@@ -110,9 +110,10 @@ class Attention(nn.Module):
     def __init__(self, d_model, n_heads, arm, *, spec=None, r=64, learn_phi=False,
                  chunk=128, device=None, seed=0, qk_norm=False, triton_bwd=False,
                  no_lr=False, gate=False, phi_kind="elu1", taylor_dim=16, decay=False,
+                 dir_head="linear", dir_soft=False, dir_window=4,
                  dt_init=(1e-3, 1e-1), A_init=(1.0, 16.0), type_offsets=None, scan_kernel="phi",
                  assign="positional", read_mode="point", pos_read="plane", hash_src="hidden",
-                 hash_freeze=False, hash_shift=0):
+                 hash_freeze=False, hash_shift=0, vocab=None, hash_conv=0):
         super().__init__()
         self.h, self.dh = n_heads, d_model // n_heads
         self.arm, self.spec, self.chunk = arm, spec, chunk
@@ -142,7 +143,10 @@ class Attention(nn.Module):
         if (arm == "smat" and assign == "content" and spec is not None
                 and getattr(spec, "kind", "") == "geometric" and spec.d >= 2):
             self.ca = ContentAssign(n_heads, d_model, spec, mode=read_mode,
-                                    src=hash_src, freeze=hash_freeze, shift=hash_shift)
+                                    src=hash_src, freeze=hash_freeze, shift=hash_shift,
+                                    vocab=vocab, conv_width=hash_conv,
+                                    dir_head=dir_head, dir_soft=dir_soft,
+                                    dir_window=dir_window)
         if scan_kernel == "signed":
             # SSD's B and C: learned linear maps of q, k up to the state dimension r
             # (d_state), signed, no nonlinearity.  State per head is r x d_head.
@@ -203,7 +207,7 @@ class Attention(nn.Module):
         outer = (z.unsqueeze(-1) * z.unsqueeze(-2)).flatten(-2) / math.sqrt(2.0)
         return torch.cat([torch.ones_like(z[..., :1]), z, outer], dim=-1)
 
-    def forward(self, x, emb=None):
+    def forward(self, x, emb=None, ids=None):
         nb, T, C = x.shape
         q, k, v = self.qkv(x).view(nb, T, 3, self.h, self.dh).unbind(2)
         q, k = self.qn(q), self.kn(k)
@@ -256,7 +260,7 @@ class Attention(nn.Module):
                     H = self._scan(Phi, Psi, Vb, x, nb, T)
                     if n < T and self.ca is not None:
                         Ylr = self.ca(x.float(), Phi, Psi, Vb, n,
-                                      emb=None if emb is None else emb.float())
+                                      emb=None if emb is None else emb.float(), ids=ids)
                         H = torch.cat([H[:, :n], H[:, n:] + Ylr], dim=1)
                     elif n < T:
                         sp = self.spec_pt if self.pos_point else self.spec
@@ -304,7 +308,7 @@ class Attention(nn.Module):
                                               acc_dtype=torch.float32, backend=self.backend)
                     if n < T:
                         Ylr = self.ca(x.float(), Phi, Psi, Vb, n,
-                                      emb=None if emb is None else emb.float())
+                                      emb=None if emb is None else emb.float(), ids=ids)
                         H = torch.cat([H[:, :n], H[:, n:] + Ylr], dim=1)
                     o = H[..., :-1] / H[..., -1:].clamp_min(1e-6)
                 else:
@@ -426,12 +430,14 @@ class Block(nn.Module):
         super().__init__()
         self.ln1, self.ln2 = nn.LayerNorm(d_model), nn.LayerNorm(d_model)
         offsets = [layer_idx * n_heads + h for h in range(n_heads)] if mask_bank else None
+        vocab = kw.pop("vocab", None)
         if arm == "mamba2":
             self.attn = Mamba2Mixer(d_model, chunk=kw.get("chunk", 64))
         elif arm == "mamba2smat":
             self.attn = Mamba2Smat(d_model, n_heads, type_offsets=offsets, **kw)
         else:
-            self.attn = Attention(d_model, n_heads, arm, type_offsets=offsets, **kw)
+            self.attn = Attention(d_model, n_heads, arm, type_offsets=offsets,
+                                  vocab=vocab, **kw)
         self.mlp = nn.Sequential(nn.Linear(d_model, 4 * d_model), nn.GELU(),
                                  nn.Linear(4 * d_model, d_model))
         # optional causal depthwise short convolution before attention, the
@@ -440,11 +446,11 @@ class Block(nn.Module):
                      if short_conv else None)
         self.ln0 = nn.LayerNorm(d_model) if short_conv else None
 
-    def forward(self, x, emb=None):
+    def forward(self, x, emb=None, ids=None):
         if self.conv is not None:
             T = x.shape[1]
             x = x + self.conv(self.ln0(x).transpose(1, 2))[..., :T].transpose(1, 2)
-        x = x + (self.attn(self.ln1(x), emb=emb) if isinstance(self.attn, Attention)
+        x = x + (self.attn(self.ln1(x), emb=emb, ids=ids) if isinstance(self.attn, Attention)
                  else self.attn(self.ln1(x)))
         return x + self.mlp(self.ln2(x))
 
@@ -455,7 +461,8 @@ class LM(nn.Module):
         self.tok = nn.Embedding(vocab, d_model)
         self.pos = nn.Embedding(T, d_model)
         self.blocks = nn.ModuleList([Block(d_model, n_heads, arm, short_conv=short_conv, layer_idx=i,
-                                           mask_bank=mask_bank, **kw) for i in range(n_layers)])
+                                           mask_bank=mask_bank, vocab=vocab, **kw)
+                                     for i in range(n_layers)])
         self.ln_f = nn.LayerNorm(d_model)
         self.head = nn.Linear(d_model, vocab, bias=False)
         self.apply(self._init)
@@ -486,7 +493,7 @@ class LM(nn.Module):
         emb = self.tok(idx)
         x = emb + self.pos(torch.arange(T, device=idx.device))
         for b in self.blocks:
-            x = b(x, emb=emb)
+            x = b(x, emb=emb, ids=idx)
         return self.head(self.ln_f(x))
 
 

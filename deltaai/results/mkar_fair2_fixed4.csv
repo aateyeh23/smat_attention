@@ -1,0 +1,13 @@
+run,arm,d,k,assign,read_mode,dirs,step,loss,exact_support,mse,q,N0,B,covers_k,ms_per_step
+mkar_smat_d4_k1_plane_learned_fixeddir_T1024_s0_sc3_id_fair2,smat,4,1,content,plane,learned,2000,0.0034558067563921213,0.994140625,68.4008903503418,5,125,155,True,156.32296705245972
+mkar_smat_d4_k1_plane_learned_fixeddir_T1024_s0_sc3_id_fair2,smat,4,1,content,plane,learned,4000,0.002046949462965131,0.99755859375,86.71543502807617,5,125,155,True,156.26633954048157
+mkar_smat_d4_k1_plane_learned_fixeddir_T1024_s0_sc3_id_fair2,smat,4,1,content,plane,learned,6000,8.250094833783805e-05,0.99853515625,103.52658367156982,5,125,155,True,156.246679743131
+mkar_smat_d4_k1_plane_learned_fixeddir_T1024_s0_sc3_id_fair2,smat,4,1,content,plane,learned,8000,4.6773191570537165e-05,0.99951171875,117.26413917541504,5,125,155,True,156.2334941625595
+mkar_smat_d4_k1_plane_learned_fixeddir_T1024_s0_sc3_id_fair2,smat,4,1,content,plane,learned,10000,1.8077447748510167e-05,0.99951171875,128.75505828857422,5,125,155,True,156.2323593854904
+mkar_smat_d4_k1_plane_learned_fixeddir_T1024_s0_sc3_id_fair2,smat,4,1,content,plane,learned,12000,8.991514914669096e-05,1.0,133.99710655212402,5,125,155,True,156.22729597489038
+mkar_smat_d4_k2_plane_learned_fixeddir_w1_T1024_s0_sc3_id_fair2,smat,4,2,content,plane,learned,2000,0.009671011939644814,0.9794921875,69.51558589935303,5,125,155,True,156.34574341773987
+mkar_smat_d4_k2_plane_learned_fixeddir_w1_T1024_s0_sc3_id_fair2,smat,4,2,content,plane,learned,4000,0.005980983842164278,0.9912109375,93.02018547058105,5,125,155,True,156.2633295059204
+mkar_smat_d4_k2_plane_learned_fixeddir_w1_T1024_s0_sc3_id_fair2,smat,4,2,content,plane,learned,6000,0.0010581701062619686,0.9951171875,110.40365314483643,5,125,155,True,156.25958120822906
+mkar_smat_d4_k2_plane_learned_fixeddir_w1_T1024_s0_sc3_id_fair2,smat,4,2,content,plane,learned,8000,0.0024540808517485857,0.99853515625,125.40523052215576,5,125,155,True,156.28269144892693
+mkar_smat_d4_k2_plane_learned_fixeddir_w1_T1024_s0_sc3_id_fair2,smat,4,2,content,plane,learned,10000,0.0001233962393598631,0.998046875,137.47989463806152,5,125,155,True,156.27530798912048
+mkar_smat_d4_k2_plane_learned_fixeddir_w1_T1024_s0_sc3_id_fair2,smat,4,2,content,plane,learned,12000,0.0005277504096738994,1.0,142.902494430542,5,125,155,True,156.27873170375824
