@@ -1,6 +1,0 @@
-smat_d2_mr3_hd16_ds16_sig_delta_m2blk pool delta heads 2 d_state 16
-T=64 finite True beta_w.grad True
-T=128 finite True beta_w.grad True
-T=256 finite True beta_w.grad True
-lambda->0 equals Mamba-2: 1.2516975402832031e-06
-SMOKE OK

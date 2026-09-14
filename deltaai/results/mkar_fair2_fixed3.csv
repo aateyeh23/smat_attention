@@ -9,3 +9,4 @@ mkar_smat_d3_k3_plane_learned_fixeddir_w2_T1024_s0_sc3_id_fair2,smat,3,3,content
 mkar_smat_d3_k3_plane_learned_fixeddir_w2_T1024_s0_sc3_id_fair2,smat,3,3,content,plane,learned,4000,0.16833727061748505,0.55712890625,21.398385524749756,11,121,132,False,232.77183705568314
 mkar_smat_d3_k3_plane_learned_fixeddir_w2_T1024_s0_sc3_id_fair2,smat,3,3,content,plane,learned,6000,0.13262641429901123,0.6904296875,27.277140617370605,11,121,132,False,232.81815461317697
 mkar_smat_d3_k3_plane_learned_fixeddir_w2_T1024_s0_sc3_id_fair2,smat,3,3,content,plane,learned,8000,0.07550550252199173,0.7978515625,38.286160945892334,11,121,132,False,232.78510946035385
+mkar_smat_d3_k3_plane_learned_fixeddir_w2_T1024_s0_sc3_id_fair2,smat,3,3,content,plane,learned,10000,0.045883916318416595,0.8642578125,48.56572341918945,11,121,132,False,232.75751075744628
