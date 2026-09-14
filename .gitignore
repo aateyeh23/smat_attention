@@ -26,4 +26,5 @@ __pycache__/
 
 # DeltaAI/SCF job logs: verbose per-step output, regenerable; the CSVs in
 # deltaai/results are the record.
-deltaai/logs/*.out
+deltaai/logs/**/*.out
+/logs/*.out

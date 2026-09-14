@@ -1,0 +1,1 @@
+Fresh GDN campaign with quoted head counts: width 16 uses one head; widths 32 and 64 use two heads. Applies to native GDN and all SMAT variants. Head dimension remains 16 and expand_v remains 1. Seed 123 and original 32-epoch recipes retained. Earlier head-count runs are preserved in their original folders; do not combine their scores with this campaign.

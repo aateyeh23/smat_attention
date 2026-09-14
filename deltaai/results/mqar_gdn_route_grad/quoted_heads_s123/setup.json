@@ -1,0 +1,39 @@
+{
+  "seed": 123,
+  "widths": [
+    32
+  ],
+  "heads": {
+    "16": 1,
+    "32": 2,
+    "64": 2
+  },
+  "head_dim": 16,
+  "expand_v": 1,
+  "epochs": 32,
+  "steps_per_epoch": 707,
+  "d": 3,
+  "memory_update": "delta",
+  "memory_key_mode": "tied_causal",
+  "hash_key_shift": null,
+  "causal_kernel": 4,
+  "causal_init": "uniform average over four positions",
+  "shared_projection": true,
+  "extra_projection_parameters_two_layers": {
+    "16": 512,
+    "32": 2048,
+    "64": 4096
+  },
+  "source_sha256": {
+    "zoo_smat_gdn.py": "6b8ad5e46478bc56ead942d1c4e26373d5ca85333607219f88bb09abd3d8c149",
+    "zoo_gdn_causal_keys_configs.py": "6fc36abc5ed3cc47761131df7f3627f9b408d421cb68d6793ff9cd35e4f709a0",
+    "zoo_gdn_delta_configs.py": "58ec538bb13f0102b960aa06b65ef2c2c9c6877cd504eeda01928400a1c5c6f8",
+    "zoo_gdn_interleaved_configs.py": "876f0ecd2f7539ef974169292254cc1def403e6574db73f7043f0e7c9f93c753",
+    "zoo_gdn_reset_configs.py": "fa21ab306ca818465ac4f4a22235cc44008d68853347b9aaed691f5f693477b5",
+    "smat_delta_pool.py": "39dc75d8293117b5b697f81ad9112ab809065a678c0c8f37ec44c6efe7ff605c",
+    "zoo_gdn_route_grad_configs.py": "00b3637381354fe65047428d6b71c78a97188468ab3a5b347bfe3ae3204472c9"
+  },
+  "memory_route_full_grad": true,
+  "anneal_steps": 1000,
+  "diagnostic": "Hard output max error 0.0 with vs without neighbor support; query hash gradient differs while kconv gradient unchanged in seeded mixer test."
+}

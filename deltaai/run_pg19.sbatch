@@ -29,7 +29,7 @@ for SEQ in ${SEQS:-16384 32768}; do
   done
   [ -z "$todo" ] && continue
   left=$((BUDGET - ($(date +%s) - T0))); [ $left -lt 300 ] && break
-  MAXC=2; running=0                # arms sharing the GPU at once (~15 GB each at 16K, ~30 GB at 32K)
+  MAXC=$((SEQ <= 16384 ? 2 : 1)); running=0                # arms sharing the GPU at once (~15 GB each at 16K, ~30 GB at 32K)
   echo "=== $TAG arms:$todo  budget ${left}s  concurrency $MAXC  $(date +%H:%M:%S)"
   IFS='|'; for cfg in $todo; do [ -z "$cfg" ] && continue; IFS=' '; set -- $cfg
     name=$TAG-$1-d$2; ck=/work/hdd/bekw/archerdw/ckpt/$name.pt

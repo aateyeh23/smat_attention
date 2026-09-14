@@ -1,0 +1,42 @@
+{
+  "epoch": 32,
+  "saved_metrics": {
+    "valid/loss": 2.727914810180664,
+    "valid/accuracy": 0.60108125,
+    "valid/num_kv_pairs/accuracy-4": 0.9055,
+    "valid/num_kv_pairs/accuracy-8": 0.868375,
+    "valid/num_kv_pairs/accuracy-16": 0.6570625,
+    "valid/num_kv_pairs/accuracy-32": 0.4411875,
+    "valid/num_kv_pairs/accuracy-64": 0.13328125
+  },
+  "hard": {
+    "accuracy": 0.60108125,
+    "per_kv": {
+      "4": 0.9055,
+      "8": 0.868375,
+      "16": 0.6570625,
+      "32": 0.4411875,
+      "64": 0.13328125
+    }
+  },
+  "soft": {
+    "accuracy": 0.688175,
+    "per_kv": {
+      "4": 0.9725,
+      "8": 0.953375,
+      "16": 0.8305,
+      "32": 0.5375,
+      "64": 0.147
+    }
+  },
+  "memory_off": {
+    "accuracy": 0.264440625,
+    "per_kv": {
+      "4": 0.74575,
+      "8": 0.576,
+      "16": 0.000125,
+      "32": 0.000125,
+      "64": 0.000203125
+    }
+  }
+}

@@ -183,7 +183,16 @@ print(f"optimizer covers {n_opt}/{n_model} parameter tensors ({n_hash} content-h
 step = 0
 if os.path.exists(args.ckpt):
     ck = torch.load(args.ckpt, map_location=dev)
-    model.load_state_dict(ck["model"]); opt.load_state_dict(ck["opt"]); step = ck["step"]
+    model.load_state_dict(ck["model"])
+    names = [n_ for n_, _ in model.named_parameters()]
+    if ck.get("param_names") and ck["param_names"] != names:                 # parameter order changed since the save: remap Adam state by name
+        old_pos = {n_: i for i, n_ in enumerate(ck["param_names"])}
+        order = [p_ for g in opt.param_groups for p_ in g["params"]]; pid = {id(p_): i for i, p_ in enumerate(order)}
+        cur_names = [None] * len(order)
+        for n_, p_ in model.named_parameters(): cur_names[pid[id(p_)]] = n_
+        st = ck["opt"]["state"]; ck["opt"]["state"] = {i: st[old_pos[n_]] for i, n_ in enumerate(cur_names) if old_pos.get(n_) in st}
+        print("remapped optimizer state by parameter name", flush=True)
+    opt.load_state_dict(ck["opt"]); step = ck["step"]
     for b in model.blocks: b.mixer._steps = step
     print(f"resumed from {args.ckpt} at step {step}", flush=True)
 
@@ -214,5 +223,5 @@ while step < args.steps:
                 vl.append(F.cross_entropy(lg.float().view(-1, args.vocab), vt.reshape(-1), ignore_index=-100).item())
         print(f"VAL step {step} loss {np.mean(vl):.4f} ppl {math.exp(np.mean(vl)):.1f}", flush=True); model.train()
     if step % args.ckpt_every == 0 or step == args.steps:
-        torch.save({"model": model.state_dict(), "opt": opt.state_dict(), "step": step, "args": vars(args)}, args.ckpt)
+        torch.save({"model": model.state_dict(), "opt": opt.state_dict(), "step": step, "args": vars(args), "param_names": [n_ for n_, _ in model.named_parameters()]}, args.ckpt)
 print("TRAINING DONE", flush=True)

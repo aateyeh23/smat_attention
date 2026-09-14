@@ -910,3 +910,271 @@ SMAT edges Mamba-2 by 0.008 nats overall (and by ~0.015 away from the boundary) 
 before the reset at 8192, and stays 0.065 behind GDN everywhere.  Mid-run train losses had SMAT level with GDN; the
 final test gap says otherwise.  The frozen-random-hash SMAT arms scored 3.743 / 3.747 -- the trained hash changed
 nothing measurable on PG-19 at this scale.  d=4 (16K) and all 32K SMAT arms still to run (chain job 3136709).
+
+### Selective copying is high-variance at this budget (2026-09-12 14:40)
+A "G switched off" control (SMAT arm with d forced to 1, i.e. the bare Mamba-2 recurrence, 57,228 params, same seed
+and settings as the Mamba-2 arm that scored 77.1) finished at **18.6%**: identical configuration, identical seed,
+the only difference is GPU nondeterminism / sharing.  Mamba-2's curve took off at ~step 3000 and reached 77; the
+control crept from 13 to 18 over 10k steps.  So at 10k steps the outcome is a phase transition that may or may not
+happen, and every single-seed selective-copying comparison above (77.1 vs 34.9 etc.) is within this variance.
+Launched seeds 1 and 2 of the G-off control and of d3-gate to get a spread before reading anything into the
+gate/SSM-hash arms.
+
+### Selective copying, seeds (2026-09-13), no-reset, d_state 16, L 4096, 16 tokens / vocab 16, batch 32, 10k steps
+| arm | acc @4K steps: mean (seeds) | acc @10K: mean (seeds) | steps to 50% |
+|---|---|---|---|
+| Mamba-2 (4 seeds) | 28 (36 / 15 / 15 / 46) | 47 (77 / 19 / 18 / 73) | 4750 / never / never / 4500 |
+| GDN (3 seeds) | 69 (84 / 59 / 63) | 85 (96 / 77 / 83) | 2000 / 2250 / 2000 |
+| SMAT d=3 gated read (3 seeds) | 60 (58 / 62 / 60) | 67 (68 / 70 / 64) | 1500 / 2000 / 1750 |
+| SMAT d=4 gated read + SSM hash (3 seeds) | 49 (59 / 58 / 31) | 63 (74 / 64 / 52) | 3000 / 2750 / 8750 |
+
+Reading: with seeds the picture is consistent -- the gated SMAT arms escape the plateau every time and are far ahead at
+4K steps (58-62 vs Mamba-2's 28 mean, with 2 of 4 Mamba-2 seeds never reaching 50%), and at 10K they sit at 64-70 vs
+Mamba-2's 18-77 (bimodal) and GDN's 77-96.  The gate is what matters: it removes the fixed-weight read's tax.  The SSM
+hash adds nothing (d=4 gate+ssm is not better than d=3 gate).  Per-slot analysis: every SMAT and Mamba-2 arm solves the
+first ~7-10 answer slots and fails the later ones -- the ordered-readout limit of the Mamba-2 base, which G does not
+address; GDN's delta rule (overwrite) does.  Reset arm (gate + ssm hash) stayed at ~21% with the mirror-image slot
+profile (only second-half tokens recovered).  Selective copying stays out of the paper; the gate finding carries over.
+
+### Selective copying: independent G write gate (2026-09-13, complete)
+
+`lm/sc_train.py --g_write_mode independent` replaces G's Mamba-2 dt write multiplier with
+`sigmoid(W_write u + b_write)`, one scalar per token/head. The projection starts at zero, with
+bias chosen for `--g_write_init 0.1`; its initialization preserves the RNG stream for common
+parameters. The hash balance loss uses the actual G write weights. G's decay and the recurrence
+remain unchanged. This is replacement of dt, not an additional gate multiplying dt; the initial
+write scale therefore also changes. The default `shared` mode preserves the original write rule.
+
+`run_sc_write_gate.sbatch`: reset d=3, sigmoid read gate (original -8 bias), SSM hash,
+L=4096, n_copy=16, content vocab=16, d_model=64, 2 layers, head_dim=64, d_state=16,
+batch=32, 10K steps, lr=1e-3, warmup=500, cosine schedule, seeds 0/1/2 for each write mode.
+Interactive training job **3143146**, one GPU, two-hour slices with automatic checkpoint
+resumption for at most four slices (eight allocated hours total). The pending regular-partition
+job 3143141 was canceled at the user's request. Short validation job 3143143 exposed an overly
+strict bf16 cancellation tolerance in the G-scaling test; the test now bounds rounding error
+using the magnitudes of the terms before cancellation. Job 3143146 started on gh142; CPU and
+GPU checks passed (dense and sparse/bf16 paths, reset isolation, gate gradients, matching common
+initialization and checkpoint restoration). The L=4096 training/resume smoke test passed;
+all six training processes have launched.
+Results/checkpoints: `results/sc_write_gate/<job_id>/`. New evaluation diagnostics record
+all answer slots, accuracy conditioned on the source token's half, and mean G write strength
+for content versus noise per layer. GPU checks and a full-length trainer/resume smoke test
+must pass before the six training processes launch.
+
+All six runs completed 10K steps in the first interactive allocation (job 3143146), with no
+training errors or continuation job needed. Final answer-token accuracy:
+
+| arm | seed 0 | seed 1 | seed 2 | mean |
+|---|---:|---:|---:|---:|
+| reset d=3, independent G writes | 70.36 | 65.97 | 32.37 | **56.23** |
+| reset d=3, shared dt writes | 42.21 | 52.73 | 39.11 | **44.68** |
+
+Historical Mamba-2 four-run mean at 10K is 46.86% (77.12 / 18.33 / 73.34 / 18.63).
+The independent-write arm improves the matched reset-control mean by 11.55 points, and the
+historical Mamba-2 mean by 9.38 points. It helps two seeds and hurts one; three seeds do not
+establish a general advantage. First-half-source recall is 40.22% vs 16.94%; second-half recall
+is essentially equal, 71.86% vs 71.77%. Curves and machine-readable summaries are in
+`results/sc_write_gate/3143146/{learning_curves.png,learning_curves.csv,summary.json}`;
+regenerate with `python lm/sc_write_report.py results/sc_write_gate/3143146 --plot`.
+
+Investigation of the mid-training dip: independent seed 1 fell from 70.73% at step 4000
+(first-half 71.53%) to 49.00% at step 4750 (first-half 23.18%), then recovered to 67.16%
+at step 5750. Checkpoint-only inference interventions at 5750: baseline 67.16%, G off 8.72%,
+zero G writes at raw noise-token positions 53.91%, no G decay 26.29%, both interventions
+17.29%, fixed read gate 0.1 29.54%. Thus the learned model relies on G, and post-hoc removal
+of noise writes or decay does not repair it. Noise-token positions can carry useful contextual
+features after convolution/layers; raw noise write strength is not a direct measure of clutter.
+Direct first-half-to-answer retention is very small on many head/token paths, but indirect paths
+through earlier recent positions/layers remain. These diagnostics do not identify the exact
+cause of the earlier dip: that checkpoint was overwritten, and intervention at inference is
+not equivalent to training the changed architecture. Hard routing instability is a hypothesis.
+Snapshots, measurements and interventions: `results/sc_write_gate/3143146/diagnosis/diagnosis.json`.
+
+### Selective copying: d=2 and d=4 write-gate comparisons (2026-09-13, submitted)
+
+The same reset experiment now runs with `SC_D=2` (job **3143304**) and `SC_D=4`
+(job **3143305**), each with shared/independent writes and seeds 0/1/2, 10K steps.
+Both use `ghx4-interactive` and checkpointed two-hour slices; d=2 started on gh040,
+while d=4 initially waits for the per-user running-job limit. Output directories are
+`results/sc_write_gate/3143304/` and `results/sc_write_gate/3143305/`. The trainer now
+logs effective geometry to verify that neither requested dimension is silently reduced.
+The existing Gated DeltaNet baseline is complete: 96.02 / 77.08 / 83.11%, mean 85.40%,
+at 10K steps, using the same task and the standard recurrence without a halfway reset.
+
+### Selective copying: d=2 shared-initialized write correction (2026-09-13)
+
+Job **3143586** (`run_sc_write_correction.sbatch`, interactive) tests
+`g_write_mode=residual`: `w_G = dt * 2 * sigmoid(W_G u + b_G)`, with W_G=b_G=0.
+At initialization it exactly matches shared writes and preserves the initialization
+RNG for common parameters. The gate can subsequently attenuate or amplify writes
+by a factor between 0 and 2. Seeds 0/1/2, 10K steps, and all other settings match
+the completed d=2 run 3143304, including G decay and 1000-step hash annealing.
+The completed shared baseline is 37.79/48.29/57.30%, mean 47.79%; the previous
+independent sigmoid writes scored 12.38/55.74/29.86%, mean 32.66%.
+Outputs: `results/sc_write_correction/3143586/`. The batch validates exact initial
+equivalence, gradients, checkpoint loading, and a full-length trainer/resume smoke
+run before starting the three training runs. Hash annealing and decay ablations
+are not included in this first experiment.
+
+### Selective copying: d=2 correction with slower gate learning (2026-09-13)
+
+Job **3144022**, `run_sc_write_correction_slow.sbatch`: same reset d=2 residual
+write experiment, with `--g_write_lr_scale 0.1`. Only the G write projection's
+AdamW group uses one tenth of the main learning-rate schedule (peak 1e-4 vs 1e-3).
+Seeds 0/1/2, 10K steps, same initialization and all remaining settings. Optimizer
+checkpoints retain the multiplier; resume rejects a mismatched multiplier.
+The original correction job 3143586 completed at 36.82/49.90/36.43%, mean 41.05%,
+versus shared writes 47.79%. Outputs: `results/sc_write_correction/3144022/`.
+Full-length training/resume smoke checks run before the three full runs.
+
+### MQAR: GDN + SMAT with reset (2026-09-13, running/submitted)
+
+Single seed 123, widths 16, 32 and 64, two layers, 32 epochs (707 training batches per
+epoch), learning rate 0.01, existing Zoology MQAR data. At each width compare native
+GDN (d=1 control) against GDN + sparse SMAT c=1 at d=2/3/4. The hybrids reset the
+GDN recurrence and short convolutions halfway through each sequence. Cross-boundary
+G memory uses additive sigmoid(beta)*k*v writes, no temporal decay, trained content
+hashes, and a learned read gate initialized at 0.1. Thus this tests a new hybrid;
+it does not apply the GDN delta update itself to the SMAT memory.
+
+GPU validation passed at width 32 for native-GDN equivalence, reset isolation,
+nonzero G contribution, finite gradients, and hash parameter registration. The
+combined batch also validates widths 16 and 64 before launching all twelve arms.
+The d=3 runs at all three widths were launched as overlapping steps in existing
+allocation 3143304. Combined interactive job **3143670** resumes their epoch
+checkpoints and runs the other nine arms on three GPUs, with a fourth GPU for
+the separate Mamba-2 experiment below. Outputs/checkpoints
+(the directory retains its original two-width name):
+`results/mqar_gdn_reset/w16w32_s123/w{16,32,64}-d{1,2,3,4}.{log,json,pt}`.
+The batch submits continuation slices if needed. SC d=4 job 3143305 is temporarily
+held in the regular partition; the MQAR chain restores it to interactive at exit.
+Superseded pending MQAR jobs 3143356, 3143357, 3143362, 3143370 and 3143373 were canceled.
+
+### MQAR: width-16 Mamba-2 + SMAT/reset, independent writes (2026-09-13)
+
+Separate experiment requested alongside the GDN sweep: native Mamba-2 control
+(d=1) and SMAT/reset d=2/3/4, seed 123, width 16, two layers, 32 epochs, lr 0.01.
+Uses the reference Mamba-2 d_state=128 and head dimension 32. SMAT uses trained
+content hashes from layer inputs, causal key convolution, sparse c=1 reads,
+1000-step hash annealing, independent sigmoid G writes initialized at 0.1,
+and sigmoid read gates initialized at 0.1. G has no temporal decay, matching
+the additive-memory setup of the new GDN hybrid; this differs from the recent
+selective-copying setup. Recurrence and short convolution reset at the midpoint.
+All length-specific hashes are registered before optimizer construction.
+GPU preflight passed for native Mamba-2 equivalence, reset isolation, nonzero G
+contribution, finite gate/hash gradients, and parameter registration at all
+three sequence lengths for d=2/3/4.
+
+`run_mqar_mamba_w16.sh` validates and launches the four arms; the combined
+interactive job 3143670 runs this script on GPU 3 and includes its checkpoints
+in continuation/completion checks. A d=3 starter runs after validation in an
+overlapping step of allocation 3143304. Separate logs, source snapshots, epoch
+status and checkpoints: `results/mqar_mamba_reset/w16_independent_s123/`.
+
+### PG-19 300M-token sweep, COMPLETE (2026-09-12/13), nll per GPT-2 token on the PG-19 test split, 8 layers / d_model 384
+| arm | 16K nll (ppl) | 32K nll (ppl) | non-emb params |
+|---|---|---|---|
+| Gated DeltaNet | **3.678 (39.6)** | **3.738 (42.0)** | 9.5M |
+| SMAT d=2 c=1 | 3.743 (42.2) | 3.788 (44.2) | 8.5M used (7.55M base + 0.97M hash / direction logits / key conv; a further 6.3M alpha table was allocated but never used and is no longer allocated) |
+| SMAT d=3 c=1 | 3.744 (42.3) | 3.787 (44.1) | 8.5M used |
+| SMAT d=4 c=1 | 3.741 (42.1) | 3.788 (44.2) | 8.5M used |
+| Mamba-2 | 3.752 (42.6) | 3.803 (44.8) | 7.6M |
+| transformer (RoPE + 4x MLP) | 3.797 (44.6) | 3.910 (49.9) | 14.2M |
+
+SMAT (paper mask, reset, hyperplane read, trained hash, fixed-weight read) beats Mamba-2 by 0.01 nats at 16K and
+0.015 at 32K, flat across d = 2/3/4, and trails GDN by 0.065 / 0.05.  Loss by position is flat beyond ~1K for every arm
+at both lengths; SMAT pays ~0.05 nats in the window just before its boundary reset.  The 16K d=4 arm was rerun from
+scratch after a parameter-order change broke its optimizer resume (checkpoints now store parameter names and resumes
+remap by name).
+
+### MQAR GDN/reset interleaved-batch ablation (2026-09-13)
+
+Widths 16/32, d=3, seed 123, starting from scratch with identical initialization,
+data, optimizer, lr=0.01 and 32 epochs. Only training batch order changes: each
+epoch uses a deterministic permutation of the existing 707 batches. Every batch
+appears once, preserving task weights and within-batch examples; validation order
+and the initial prebuild forward stay unchanged. The sampler uses its own RNG
+(seed 123 + epoch), so resuming at an epoch reproduces its permutation.
+
+Both runs started on allocation 3143586. Replacement combined MQAR job 3143670
+resumes these along with all earlier MQAR arms; pending job 3143470 was canceled.
+Separate checkpoints/logs and full validation history:
+`results/mqar_gdn_interleaved/w16w32_s123/`. Entrypoints:
+`zoo_gdn_interleaved_configs.py`, `zoo_mqar_interleave.py`,
+`run_mqar_interleaved.sh`.
+
+### MQAR campaign moved to one GPU (2026-09-13)
+
+At the user's request, pending four-GPU job 3143670 was replaced by **3144330**
+(`run_mqar_one_gpu.sbatch`). One interactive GPU, four concurrent training
+processes, 100-minute work slices within two-hour allocations. The scheduler
+`mqar_one_gpu.py` preserves all existing per-experiment checkpoint paths and
+skips completed runs. Each allocation pre-submits an after-any successor; clean
+incomplete runs and allocation timeouts continue automatically. There is no
+fixed slice-count cap. A successful full campaign cancels the unused successor
+and releases postponed SC d=4 job 3143305; an ordinary validation/training error
+stops the successor for diagnosis.
+
+The manifest contains the original 18 MQAR arms plus plain GDN at widths 16/32
+with interleaved batches, to give the interleaving experiment matching controls.
+Priority: resume width16 Mamba-SMAT d3, run plain Mamba, and run the interleaved
+GDN controls; then the other unfinished arms. Status is written to
+`results/mqar_one_gpu/status.json`, and per-allocation source snapshots/test logs
+are in `results/mqar_one_gpu/<jobid>/`. This supersedes earlier four-GPU scheduling
+notes; the individual experiment recipes and result folders are unchanged.
+
+### Adaptive sequential + multi-node dispatch (2026-09-13, supersedes one-GPU sharing)
+
+`mqar_dispatch.py controller` maintains one **sequential** interactive worker
+(`run_mqar_dispatch_single.sbatch`, one GPU, one experiment at a time), plus a
+regular-partition multi-node backlog job (`run_mqar_dispatch_bulk.sbatch`, up to
+four nodes, one GPU and one sequential worker per node). The regular partition
+allows the backlog allocation to run alongside the interactive allocation.
+
+Every 20 seconds the controller excludes completed experiments, active claims,
+and the interactive worker's reserved first experiment from the backlog manifest.
+If the backlog job is still pending and that manifest changes, it cancels only
+a PENDING job and submits a replacement. Running multi-node jobs are retained;
+their workers also check completion and acquire shared atomic directory claims
+before starting anything. Claims owned by terminated Slurm allocations are cleaned
+by the controller. An experiment failure is recorded under `errors/` and is not
+retried endlessly. Completed/unfinished checkpoints remain in the original paths.
+
+Workers checkpoint near 100 minutes in a two-hour allocation. The controller
+submits replacement allocations until all 20 experiments complete; postponed SC
+d=4 is then released. The controller itself is a persistent lightweight process
+on the login node, with PID/host in `results/mqar_dispatch/controller.json`, job
+IDs in `jobs.json`, live state in `status.json`, and output in `controller.log`.
+Restarting the controller reacquires a singleton lock and adopts existing dispatch
+jobs. Creating `results/mqar_dispatch/STOP` stops future scheduling (it does not
+cancel already running allocations). Remove that file before restarting.
+
+Tests verified single ownership under eight simultaneous claim attempts, cleanup
+of claims from finished allocations, and omission of active, reserved, and
+completed tasks from queued manifests. Runtime locks provide a second check if a
+queued job starts during a refresh.
+
+Controller lifetime correction: the login-node background process did not persist.
+Queue management now runs inside the sequential Slurm allocation and pre-submits
+an after-any sequential successor while the current allocation is alive. Each new
+sequential worker starts its own controller process and resumes persisted dispatch
+state. The current allocation 3144373 was repaired via an overlapping controller
+step, and successor 3144412 was verified submitted. This supersedes the earlier
+login-node persistence description.
+
+### Corrected width-16 Mamba MQAR: hd16/ds16 (2026-09-13)
+
+User explicitly requested width16 plain Mamba-2 and SMAT d=2/3/4 with both
+headdim=16 and d_state=16. All four now use that configuration (two heads),
+seed123, two layers, lr0.01 and up to32 epochs; the SMAT arms retain independent
+writes. Fresh output paths: `results/mqar_mamba_reset/w16_hd16_ds16_independent_s123/`.
+The older `w16_independent_s123` checkpoints/results used hd32/ds128 and are
+preserved separately, not resumed or mixed with the corrected experiment.
+The historical width32/64 paper table already used hd16/ds16 and is unaffected.
+
+Sequential interactive job **3144545** reserves the corrected baseline first.
+Multi-node backlog **3144546** includes corrected d2/d3/d4 and the remaining GDN
+campaign. Dispatch priority starts with the four corrected Mamba arms, and the
+Slurm-hosted controller continues sequential jobs and refreshes the queued bulk
+manifest. GPU preflight checks assert both dimensions and two heads for all four
+arms and test baseline equivalence, gradients, and all MQAR sequence lengths.

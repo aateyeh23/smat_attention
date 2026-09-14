@@ -1,0 +1,149 @@
+{
+  "checkpoints": [
+    {
+      "group": "mqar_gdn_interleaved",
+      "width": 16,
+      "d": 1,
+      "heads": 1,
+      "layers": 2,
+      "head_dim": 16,
+      "seed": 123,
+      "epochs": 32,
+      "optimizer_steps": 22624,
+      "accuracy": 0.35705625
+    },
+    {
+      "group": "mqar_gdn_causal_keys",
+      "width": 16,
+      "d": 3,
+      "heads": 1,
+      "layers": 2,
+      "head_dim": 16,
+      "seed": 123,
+      "epochs": 32,
+      "optimizer_steps": 22624,
+      "accuracy": 0.411353125
+    },
+    {
+      "group": "mqar_gdn_soft_routes",
+      "width": 16,
+      "d": 3,
+      "heads": 1,
+      "layers": 2,
+      "head_dim": 16,
+      "seed": 123,
+      "epochs": 32,
+      "optimizer_steps": 22624,
+      "accuracy": 0.7805375
+    },
+    {
+      "group": "mqar_gdn_interleaved",
+      "width": 32,
+      "d": 1,
+      "heads": 2,
+      "layers": 2,
+      "head_dim": 16,
+      "seed": 123,
+      "epochs": 32,
+      "optimizer_steps": 22624,
+      "accuracy": 0.689315625
+    },
+    {
+      "group": "mqar_gdn_aligned",
+      "width": 32,
+      "d": 3,
+      "heads": 2,
+      "layers": 2,
+      "head_dim": 16,
+      "seed": 123,
+      "epochs": 32,
+      "optimizer_steps": 22624,
+      "accuracy": 0.634575
+    },
+    {
+      "group": "mqar_gdn_tied_keys",
+      "width": 32,
+      "d": 3,
+      "heads": 2,
+      "layers": 2,
+      "head_dim": 16,
+      "seed": 123,
+      "epochs": 32,
+      "optimizer_steps": 22624,
+      "accuracy": 0.7837375
+    },
+    {
+      "group": "mqar_gdn_causal_keys",
+      "width": 32,
+      "d": 3,
+      "heads": 2,
+      "layers": 2,
+      "head_dim": 16,
+      "seed": 123,
+      "epochs": 32,
+      "optimizer_steps": 22624,
+      "accuracy": 0.60108125
+    },
+    {
+      "group": "mqar_gdn_causal_soft",
+      "width": 32,
+      "d": 3,
+      "heads": 2,
+      "layers": 2,
+      "head_dim": 16,
+      "seed": 123,
+      "epochs": 32,
+      "optimizer_steps": 22624,
+      "accuracy": 0.532103125
+    },
+    {
+      "group": "mqar_gdn_soft_routes",
+      "width": 32,
+      "d": 3,
+      "heads": 2,
+      "layers": 2,
+      "head_dim": 16,
+      "seed": 123,
+      "epochs": 32,
+      "optimizer_steps": 22624,
+      "accuracy": 0.942909375
+    },
+    {
+      "group": "mqar_gdn_interleaved",
+      "width": 64,
+      "d": 1,
+      "heads": 2,
+      "layers": 2,
+      "head_dim": 16,
+      "seed": 123,
+      "epochs": 32,
+      "optimizer_steps": 22624,
+      "accuracy": 0.6052125
+    },
+    {
+      "group": "mqar_gdn_causal_keys",
+      "width": 64,
+      "d": 3,
+      "heads": 2,
+      "layers": 2,
+      "head_dim": 16,
+      "seed": 123,
+      "epochs": 32,
+      "optimizer_steps": 22624,
+      "accuracy": 0.357615625
+    },
+    {
+      "group": "mqar_gdn_soft_routes",
+      "width": 64,
+      "d": 3,
+      "heads": 2,
+      "layers": 2,
+      "head_dim": 16,
+      "seed": 123,
+      "epochs": 32,
+      "optimizer_steps": 22624,
+      "accuracy": 0.968465625
+    }
+  ],
+  "all_completed_checkpoints_passed": true
+}
