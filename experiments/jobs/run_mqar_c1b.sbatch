@@ -1,0 +1,26 @@
+#!/bin/bash
+#SBATCH --job-name=mqarc1b
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=32
+#SBATCH --mem=120G
+#SBATCH --gpus-per-node=1
+#SBATCH --time=02:00:00
+#SBATCH --output=logs/%x-%j.out
+# MQAR (Zoology, 2 layers, hd16/ds16, lr 1e-2, 32 epochs, seed 123) with the content hash actually TRAINED (Zoology's
+# fit() now prebuilds the lazy hash modules before its optimizer; before 2026-09-12 the hash was a frozen random
+# projection in every run).  SMAT d=2/3/4, hyperplane read (c=1), v10 recipe, widths 16/32/64; plus the d=3 point read
+# at width 16 (the earlier 80-82 headline).  All runs concurrently on one GPU (2-6 GB each).
+set -uo pipefail
+source "${SLURM_SUBMIT_DIR:-$(dirname "$0")}/_prelude.sh"
+export PYTHONPATH=/u/an author/smat_attention/the GPU cluster:/u/an author/.local/lib/python3.12/site-packages:/u/an author/zoology:${PYTHONPATH:-}
+export WANDB_MODE=disabled ZOO_EPOCHS=32 ZOO_MR3=1 ZOO_RESET_MR=1 ZOO_GDECAY=1 ZOO_LAMACT=one ZOO_POOL=sum ZOO_READ=chash ZOO_HCONV=1 ZOO_BALANCE=0.01 ZOO_BAL_GATED=1 ZOO_ANNEAL=1000 ZOO_HEADDIM=16 ZOO_DSTATE=16 ZOO_LRS=1e-2 ZOO_SEED=123
+FILT='grep --line-buffered -vi warn | grep --line-buffered -v "hi mamba" | grep --line-buffered -E "zoology\]|run_id=|valid/accuracy=|Traceback|Error" | sed -u -E "s/.*(valid\/loss=.*)\]$/\1/" | awk "!seen[\$0]++ {print; fflush()}"'
+cd /u/an author/smat_attention/the GPU cluster
+# the four runs that OOMed when ten shared the GPU with the selective-copying arms
+for cfg in "32 4" "64 2" "64 3"; do set -- $cfg; w=$1; d=$2
+  ( env ZOO_DS=$d ZOO_HCODIM=1 ZOO_DM=$w ZOO_TAG=_c1w${w}_trained python -m zoology.launch experiments/zoology/smat.py 2>&1 | eval "$FILT" > logs/mqar-c1t-w$w-d$d.out 2>&1; echo "ENDED $(date +%H:%M:%S)" >> logs/mqar-c1t-w$w-d$d.out ) &
+  sleep 3
+done
+( env ZOO_DS=3 ZOO_HCODIM=2 ZOO_DM=16 ZOO_TAG=_ptw16_trained python -m zoology.launch experiments/zoology/smat.py 2>&1 | eval "$FILT" > logs/mqar-pt-w16-d3.out 2>&1; echo "ENDED $(date +%H:%M:%S)" >> logs/mqar-pt-w16-d3.out ) &
+wait; echo "ALL DONE $(date)"

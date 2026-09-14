@@ -1,0 +1,11 @@
+# Copy to site.conf (gitignored) and fill in for your cluster.  Nothing here is
+# committed, which is why no job script names a partition, an account or a node.
+SMAT_PARTITION=            # e.g. gpu
+SMAT_ACCOUNT=              # e.g. my-allocation      (blank to omit)
+SMAT_EXCLUDE=              # nodes to avoid          (blank to omit)
+SMAT_GPUS=1                # per job
+SMAT_TIME=02:00:00
+SMAT_CPUS=8
+SMAT_MEM=64G
+SMAT_ENV=                  # command to activate your environment, e.g.
+                           # "source ~/venv/bin/activate" or "module load ..."

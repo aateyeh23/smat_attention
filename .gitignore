@@ -4,14 +4,13 @@ paper_drafts/
 # Job output.  Machine-generated and regenerated on every run -- but keep
 # logs/README.md, which is the write-up of the three kernel defects the smoke
 # runs caught and is not recoverable from a rerun.
-smat/logs/*.out
-smat/logs/*.log
+
 slurm-*.out
 smoke-*.out
 
 # The dark-mode rendering of the tracked figures: same panels, same CSVs,
 # regenerated with `plot_smat.py --dark`.
-smat/figs_dark/
+figures_dark/
 
 # Python
 __pycache__/
@@ -24,7 +23,22 @@ __pycache__/
 *.swp
 .DS_Store
 
-# DeltaAI/SCF job logs: verbose per-step output, regenerable; the CSVs in
-# deltaai/results are the record.
-deltaai/logs/**/*.out
+# Cluster job logs: verbose per-step output, regenerable; the CSVs in
+# the GPU cluster/results are the record.
+the GPU cluster/logs/**/*.out
 /logs/*.out
+
+# Local cluster settings: partition, account, module loads.  Never committed.
+site.conf
+
+# Datasets and caches
+data/
+zoology_cache/
+
+# Checkpoints and per-run scratch under results/: the CSV and JSON are the record
+results/**/*.pt
+results/**/*.tmp
+results/**/*.log
+results/**/*.out
+results/**/check_cache/
+results/**/cache-*/
