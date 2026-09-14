@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "smat"
+version = "0.1.0"
+description = "SMat-Attention: causal masks of tunable VC dimension, and the schedule that makes them cheap"
+requires-python = ">=3.10"
+dependencies = ["numpy", "torch"]
+
+[project.optional-dependencies]
+# Triton kernels, the Zoology sweeps and the recurrent baselines are optional:
+# every one of them has a torch fallback or is only needed for one experiment.
+kernels = ["triton"]
+zoology = ["zoology"]
+baselines = ["mamba-ssm", "flash-linear-attention"]
+figures = ["matplotlib", "pandas"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

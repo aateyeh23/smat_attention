@@ -1,5 +1,0 @@
-    early_stopping_metric='valid/accuracy',
-    early_stopping_threshold=0.99,
-    run_id='smat_d2_mr3_hd4_decay_m2blk-dm16-lr1.0e-02'
-Traceback (most recent call last):
-RuntimeError: one of the variables needed for gradient computation has been modified by an inplace operation: [torch.cuda.FloatTensor [256, 8, 32, 128]], which is output 0 of AsStridedBackward0, is at version 1; expected version 0 instead. Hint: enable anomaly detection to find the operation that failed to compute its gradient, with torch.autograd.set_detect_anomaly(True, check_nan=False).
