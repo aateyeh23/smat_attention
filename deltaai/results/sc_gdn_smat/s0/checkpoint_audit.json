@@ -1,0 +1,41 @@
+{
+  "completed": [
+    {
+      "d": 1,
+      "step": 10000,
+      "accuracy": 0.9602,
+      "head_dim": 16,
+      "heads": 4,
+      "expand_v": 2,
+      "matched_recipe": true
+    },
+    {
+      "d": 2,
+      "step": 10000,
+      "accuracy": 0.8811,
+      "head_dim": 16,
+      "heads": 4,
+      "expand_v": 2,
+      "matched_recipe": true
+    },
+    {
+      "d": 3,
+      "step": 10000,
+      "accuracy": 0.8411,
+      "head_dim": 16,
+      "heads": 4,
+      "expand_v": 2,
+      "matched_recipe": true
+    },
+    {
+      "d": 4,
+      "step": 10000,
+      "accuracy": 0.9775,
+      "head_dim": 16,
+      "heads": 4,
+      "expand_v": 2,
+      "matched_recipe": true
+    }
+  ],
+  "all_four_complete": true
+}

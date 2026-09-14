@@ -1,0 +1,24 @@
+{
+  "task": [
+    "delta",
+    32,
+    3
+  ],
+  "decision": "pruned_early",
+  "reason": "Accuracy collapsed after hard routing and remained far below the completed GDN baseline; prioritize key alignment. Checkpoint retained for possible resumption.",
+  "status": {
+    "next_epoch": 11,
+    "complete": false,
+    "metrics": {
+      "valid/loss": 6.273439884185791,
+      "valid/accuracy": 0.215125,
+      "valid/num_kv_pairs/accuracy-4": 0.657,
+      "valid/num_kv_pairs/accuracy-8": 0.380625,
+      "valid/num_kv_pairs/accuracy-16": 0.0040625,
+      "valid/num_kv_pairs/accuracy-32": 0.02953125,
+      "valid/num_kv_pairs/accuracy-64": 0.00440625
+    }
+  },
+  "baseline_final_accuracy": 0.689315625,
+  "time": 1789337822.8023462
+}

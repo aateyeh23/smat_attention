@@ -60,6 +60,36 @@ def _grouped_planes(q: int, dim: int):
     return dirs, grouped
 
 
+def _grouped_flats(q: int, dim: int, codim: int):
+    """All distinct partitions of F_q^dim (arithmetic mod q) into the q^codim cosets of a
+    codimension-``codim`` subspace: for each canonical ``codim x dim`` matrix A of full rank
+    (distinct induced partitions only), coset of x = A x mod q.  Returns
+    ``grouped``: (D_c, q^codim, q^(dim-codim)) point indices.  codim=1 reproduces the
+    hyperplanes of ``_grouped_planes`` (same partitions, possibly different order)."""
+    import itertools
+    N0 = q ** dim
+    idx = np.arange(N0, dtype=np.int64)
+    pts = np.stack([(idx // q ** (dim - 1 - k)) % q for k in range(dim)], axis=1)   # (N0, dim)
+    seen, grouped = set(), []
+    deg = q ** (dim - codim)
+    for rows in itertools.product(range(q), repeat=codim * dim):
+        A = np.asarray(rows, dtype=np.int64).reshape(codim, dim)
+        cid = (pts @ A.T) % q                                       # (N0, codim)
+        key = (cid * (q ** np.arange(codim))[None, :]).sum(1)      # coset id per point
+        _, first = np.unique(key, return_index=True)
+        relabel = {key[i]: r for r, i in enumerate(sorted(first))}
+        canon = tuple(relabel[k] for k in key)
+        if len(relabel) != q ** codim or canon in seen:
+            continue                                                # degenerate A, or same partition
+        counts = np.bincount(np.asarray(canon), minlength=q ** codim)
+        if (counts != deg).any():
+            continue
+        seen.add(canon)
+        g = np.stack([np.flatnonzero(np.asarray(canon) == o) for o in range(q ** codim)])
+        grouped.append(g)
+    return np.stack(grouped)                                        # (D_c, q^codim, deg)
+
+
 class ContentAssign(nn.Module):
     """Hashes tokens to profiles and queries to types, and runs the whole
     long-range branch (pool by profile, apply C, contract by type).
@@ -70,9 +100,16 @@ class ContentAssign(nn.Module):
     """
 
     def __init__(self, n_heads, d_model, spec, mode="point", plant=True,
-                 src="hidden", freeze=False, shift=0, vocab=None, conv_width=0,
-                 dir_head="linear", dir_hidden=512, dir_window=4, dir_soft=False):
+                 src="hidden", freeze=False, shift=0, codim=None, vocab=None,
+                 conv_width=0, dir_head="linear", dir_hidden=512, dir_window=4,
+                 dir_soft=False):
         super().__init__()
+        # codim: read from the codimension-c affine subspace through the query's own cell;
+        # c=1 is the hyperplane ("plane"), c=dim is the single cell ("point").
+        self.codim = None if codim is None else int(codim)
+        if self.codim is not None:
+            assert 1 <= self.codim <= int(spec.dim), (self.codim, spec.dim)
+            mode = "point" if self.codim == int(spec.dim) else "plane"
         assert spec.kind == "geometric" and spec.dim >= 1
         self.h = n_heads
         self.q, self.dim, self.N0 = int(spec.q), int(spec.dim), int(spec.N0)
@@ -87,11 +124,7 @@ class ContentAssign(nn.Module):
         #       good the hash is.  Queries are never shifted.
         # freeze: no gradient to the hash at all (a frozen random projection cannot
         #       collapse, so the balance penalty is unnecessary).
-        # src "id": the cell is a fixed pseudorandom function of the token id -- no
-        #       projection, no dependence on the embedding.  Where the matching
-        #       criterion IS token identity this is all the hash can be doing, and
-        #       unlike the embedding hash nothing can move a token between cells
-        #       during training.
+        self.src, self.freeze, self.shift = src, freeze, int(shift)
         # conv_width > 0 replaces the fixed offset with a learned depthwise causal
         # convolution on the KEY-side hash input, init uniform over lags.  The offset
         # is otherwise a per-task constant read off the data layout; a conv lets the
@@ -124,8 +157,13 @@ class ContentAssign(nn.Module):
         self.gamma = nn.Parameter(torch.ones(n_heads, self.dim), requires_grad=not freeze)
         self.b = nn.Parameter(torch.zeros(n_heads, self.dim), requires_grad=not freeze)
         if self.mode == "plane":
-            dirs, grouped = _grouped_planes(self.q, self.dim)
-            self.D = int(dirs.shape[0])
+            if self.codim is None or self.codim == 1:
+                dirs, grouped = _grouped_planes(self.q, self.dim)
+            else:
+                grouped = _grouped_flats(self.q, self.dim, self.codim)
+            self.D, self.n_cosets = int(grouped.shape[0]), int(grouped.shape[1])
+            self.dir_head = dir_head if (self.codim in (None, 1)) else "linear"
+            self.dir_soft = bool(dir_soft)
             # The direction a query reads along is a joint property of the cells
             # it must cover -- the direction annihilating their differences --
             # and a linear head cannot express that: the query's layer input is
@@ -135,9 +173,11 @@ class ContentAssign(nn.Module):
             # reaches 0.28 against a chance of 0.08 and one hidden layer reaches
             # 1.00, so "dir_head" decides whether the arm is testing the mask or
             # testing the head.
-            self.dir_head = dir_head
-            self.dir_soft = bool(dir_soft)
-            if dir_head in ("delta", "fixed"):
+            # the sparse read always scores directions with a linear Wd; the
+            # delta/fixed heads only replace the DENSE read's logits, so keep it
+            self.Wd = nn.Parameter(torch.randn(n_heads, self.D, d_model) * d_model ** -0.5,
+                                   requires_grad=not freeze)
+            if self.dir_head in ("delta", "fixed"):
                 # Score directions by the CONSTRAINTS they satisfy, not by the
                 # tokens that raised them.  A query must read along a direction
                 # annihilating c_m - c_q for every requested cell c_m, which is
@@ -156,7 +196,7 @@ class ContentAssign(nn.Module):
                 self.Wdelta = nn.Parameter(torch.zeros(n_heads, self.win, self.N0, self.D),
                                            requires_grad=not freeze)
                 nn.init.normal_(self.Wdelta, std=0.02)
-                if dir_head == "fixed":
+                if self.dir_head == "fixed":
                     # Nothing here needs learning: whether a_e annihilates a
                     # difference is decided by the geometry.  Freezing f to that
                     # indicator turns the direction into a deterministic function
@@ -169,7 +209,7 @@ class ContentAssign(nn.Module):
                         self.Wdelta.copy_(torch.as_tensor(ind, dtype=torch.float32)
                                           .expand(n_heads, self.win, self.N0, self.D).clone())
                     self.Wdelta.requires_grad_(False)
-            elif dir_head == "mlp":
+            elif self.dir_head == "mlp":
                 self.Wd1 = nn.Parameter(torch.randn(n_heads, dir_hidden, d_model) * d_model ** -0.5,
                                         requires_grad=not freeze)
                 self.bd1 = nn.Parameter(torch.zeros(n_heads, dir_hidden), requires_grad=not freeze)
@@ -177,12 +217,13 @@ class ContentAssign(nn.Module):
                                        requires_grad=not freeze)
             else:
                 self.Wd = nn.Parameter(torch.randn(n_heads, self.D, d_model) * d_model ** -0.5,
-                                       requires_grad=not freeze)
-            M = np.zeros((self.D, self.q, self.N0), dtype=np.float32)
+                                   requires_grad=not freeze)
+            M = np.zeros((self.D, self.n_cosets, self.N0), dtype=np.float32)
             for e in range(self.D):
-                for o in range(self.q):
+                for o in range(self.n_cosets):
                     M[e, o, grouped[e, o]] = 1.0
             self.register_buffer("M", torch.from_numpy(M))
+            self.register_buffer("coset_of", torch.from_numpy(M.argmax(1)))   # (D, N0): coset id of each cell per direction
         cols = spec.planted_cols if spec.planted_cols is not None else np.zeros(0, dtype=np.int64)
         self.register_buffer("plant_cols", torch.as_tensor(np.asarray(cols), dtype=torch.long))
         self.register_buffer("plant_cells",
@@ -194,7 +235,6 @@ class ContentAssign(nn.Module):
         # only 2^{dim} states of size rp -- O(1) in T, unlike a soft read over all N0.
         self.anneal = 1.0
         self.last_soft_q = None   # soft cell distribution of the recent queries
-        self.last_soft_k = None   # soft cell distribution of the distant positions
         self.last_hard_k = None   # hard cell of each distant position
         self.probe = False
         self.last = None          # (key cells, query cells) when probing
@@ -203,7 +243,7 @@ class ContentAssign(nn.Module):
         self.aux = None           # load-balancing penalty of the last forward
 
     # ------------------------------------------------------------------ hash
-    def _cells(self, u, plant_at=False):
+    def _cells(self, u, plant_at=False, tok_w=None):
         """u: (nb, L, d_model) layer input -> (nb*h, L, N0) cell weights whose
         forward value is the one-hot of ``floor(q sigma(W u))`` and whose
         backward path is the two-bin interpolation."""
@@ -233,12 +273,29 @@ class ContentAssign(nn.Module):
             idx = torch.cat([idx + lo[..., k:k + 1] * place, idx + hi[..., k:k + 1] * place], dim=-1)
             w = torch.cat([w * w_lo, w * w_hi], dim=-1)
             ws = torch.cat([ws * s_lo, ws * s_hi], dim=-1)
-        zer = torch.zeros(B, L, self.N0, device=s.device, dtype=s.dtype)
-        out = zer.scatter_add(-1, idx, w)
-        self._soft = zer.scatter_add(-1, idx, ws)                    # pure soft, for the agreement term
+        if a >= 1.0 and getattr(self, "hard_k1", True):
+            # hard mask: keep only the chosen cell (forward weight 1); its STE gradient still reaches W through
+            # the chosen bin's interpolation weight.  4x less pooling / gather work than carrying all 2^dim pairs.
+            idx1 = torch.zeros(B, L, 1, dtype=torch.long, device=u.device); w1 = torch.ones(B, L, 1, device=s.device, dtype=s.dtype)
+            for k in range(self.dim):
+                place = self.q ** (self.dim - 1 - k); f = frac[..., k:k + 1]
+                idx1 = idx1 + lo[..., k:k + 1] * place; w1 = w1 * (1.0 + ((1.0 - f) - (1.0 - f).detach()))
+            self._sparse = (idx1, w1)
+        else:
+            self._sparse = (idx, w)                                  # K = 2^dim (cell, weight) pairs per token
+        if getattr(self, "sparse_ops", False):
+            out = None                                              # dense (B, L, N0) never formed
+            self._soft = None
+        else:
+            zer = torch.zeros(B, L, self.N0, device=s.device, dtype=s.dtype)
+            out = zer.scatter_add(-1, idx, w)
+            self._soft = zer.scatter_add(-1, idx, ws)                # pure soft, for the agreement term
         # load balance: KL(mean bin occupancy || uniform), per head and coordinate.
         # Costs O(L) scatters plus O(q) on the mean, so no T*q term enters the cost.
         soft_lo, soft_hi = 1.0 - frac, frac
+        if tok_w is not None:                                        # gate-weighted occupancy: filler does not count
+            tw = tok_w.reshape(B, L, 1).to(s.dtype)
+            soft_lo, soft_hi = soft_lo * tw, soft_hi * tw
         occ = torch.zeros(B, self.dim, self.q, device=s.device, dtype=s.dtype)
         occ = occ.scatter_add(-1, lo.transpose(1, 2), soft_lo.transpose(1, 2))
         occ = occ.scatter_add(-1, hi.transpose(1, 2), soft_hi.transpose(1, 2))
@@ -247,10 +304,16 @@ class ContentAssign(nn.Module):
         if plant_at and self.plant and self.plant_cols.numel():
             cols = self.plant_cols[self.plant_cols < L]
             if cols.numel():
-                one = torch.zeros(cols.numel(), self.N0, device=out.device, dtype=out.dtype)
-                one[torch.arange(cols.numel(), device=out.device), self.plant_cells[: cols.numel()]] = 1.0
-                out = out.clone()
-                out[:, cols] = one            # a fixed, input-independent profile
+                if out is None:                                     # sparse path: overwrite the (idx, w) pairs
+                    idx2, w2 = idx.clone(), w.clone()
+                    idx2[:, cols, :] = self.plant_cells[: cols.numel()].view(1, -1, 1)
+                    w2[:, cols, :] = 0.0; w2[:, cols, 0] = 1.0
+                    self._sparse = (idx2, w2)
+                else:
+                    one = torch.zeros(cols.numel(), self.N0, device=out.device, dtype=out.dtype)
+                    one[torch.arange(cols.numel(), device=out.device), self.plant_cells[: cols.numel()]] = 1.0
+                    out = out.clone()
+                    out[:, cols] = one            # a fixed, input-independent profile
         return out
 
     # ------------------------------------------------------------- the branch
@@ -286,33 +349,61 @@ class ContentAssign(nn.Module):
         out = torch.zeros(nb * self.h, L, self.N0, device=ids.device)
         return out.scatter_(-1, c.unsqueeze(-1), 1.0)
 
-    def forward(self, u, Phi, Psi, Vb, n, emb=None, dir_override=None, ids=None):
+    def forward(self, u, Phi, Psi, Vb, n, emb=None, key_src=None, key_w=None,
+                dir_override=None, ids=None):
         """u: (nb, T, d_model) layer input.  emb: (nb, T, d_model) token embeddings,
         used instead of u when src == "embed".  Phi, Psi: (nb*h, T, r).
-        Vb: (nb*h, T, p).  n: landmark/recent boundary."""
-        if self.src == "id":
+        Vb: (nb*h, T, p).  n: landmark/recent boundary.
+        key_src: optional (nb, T, d_model) source for the KEY-side hash (e.g. a learned
+        causal conv of u, replacing the fixed shift); queries always hash h."""
+        if self.src == "id":                    # cells are a fixed table on token ids
             assert ids is not None, "the id hash needs token ids"
             ik = ids if not self.shift else torch.cat(
                 [ids.new_zeros(ids.shape[0], self.shift), ids[:, :-self.shift]], dim=1)
             Wk, Wq = self._cells_id(ik[:, :n]), self._cells_id(ids[:, n:])
             self.last_hard_k, self.last_soft_q, self.aux = Wk.argmax(-1).detach(), Wq, None
-        else:
-            h = u if (self.src == "hidden" or emb is None) else emb
-            hk = h
-            if self.conv_width > 1:                                 # learned lag mixture
-                w = self.conv_width - 1
-                hk = self.kconv(torch.nn.functional.pad(h, (0, 0, w, 0))
-                                .transpose(1, 2)).transpose(1, 2)
-            elif self.shift:                                        # prof(j) = hash(h_{j-shift})
-                hk = torch.cat([h.new_zeros(h.shape[0], self.shift, h.shape[2]),
-                                h[:, :-self.shift]], dim=1)
-            Wk = self._cells(hk[:, :n], plant_at=True)              # (b, n, N0)
-            self.last_soft_k = self._soft                           # key-side, for agreement
-            aux_k = self.aux
-            self.last_hard_k = Wk.argmax(-1).detach()
-            Wq = self._cells(h[:, n:])                              # (b, T_R, N0)
-            self.last_soft_q = self._soft
-            self.aux = None if self.freeze else aux_k + self.aux
+            return self._dense_read(u, Phi, Vb, Psi, n, Wk, Wq, dir_override, ids)
+        h = u if (self.src == "hidden" or emb is None) else emb
+        hk = h if key_src is None else key_src
+        if self.shift:                                              # prof(j) = hash(h_{j-shift})
+            hk = torch.cat([h.new_zeros(h.shape[0], self.shift, h.shape[2]),
+                            h[:, :-self.shift]], dim=1)
+        Wk = self._cells(hk[:, :n], plant_at=True, tok_w=key_w)     # (b, n, N0)  [None on the sparse path]
+        aux_k = self.aux
+        sk = self._sparse
+        self.last_hard_k = (Wk.argmax(-1) if Wk is not None else sk[0][..., 0]).detach()
+        Wq = self._cells(h[:, n:])                                  # (b, T_R, N0)
+        sq = self._sparse
+        self.last_soft_q = self._soft
+        self.aux = None if self.freeze else aux_k + self.aux
+        if getattr(self, "sparse_ops", False):
+            from smat_pool_ops import pool_sorted, read_sorted
+            P, V, Phi_r = Psi[:, :n], Vb[:, :n], Phi[:, n:]
+            dt = P.dtype
+            if getattr(self, "delta_updates", False):
+                from smat_delta_pool import pool_delta
+                F = pool_delta(P, V, sk[0], sk[1].to(dt), key_w, self.N0)
+            else:
+                F = pool_sorted(P, V, sk[0], sk[1].to(dt), self.N0)
+            if self.mode == "point":
+                return read_sorted(Phi_r, sq[0], sq[1].to(dt), F)            # (b, T_R, p)    one bmm
+            # affine-subspace read (codimension c; c=1 is the paper's hyperplane incidence): the query sums the
+            # q^(dim-c) pooled cells of the coset through its own cell along a chosen direction.  Aggregate the
+            # N0 cells to the D * q^c cosets once (an N0-sized index sum, no per-token work), then the query does
+            # a point read into that table at (direction, coset of its cell).  The direction is chosen hard with a
+            # one-sided straight-through factor on its softmax probability (gradient to the chosen direction's
+            # logit only; the dense path scores all D directions).
+            Bsz, r, p = F.shape[0], F.shape[2], F.shape[3]
+            Fc = torch.einsum("eox,bxrp->beorp", self.M.to(F.dtype), F).reshape(Bsz, self.D * self.n_cosets, r, p)
+            dl = torch.einsum("blm,hem->bhle", u[:, n:], self.Wd.to(u.dtype)).reshape(Phi_r.shape[0], -1, self.D)
+            pe = torch.softmax(dl.float(), dim=-1)
+            e_star = pe.argmax(-1, keepdim=True)                                                # (B, T_R, 1)
+            pmax = pe.gather(-1, e_star)                                                        # (B, T_R, 1)
+            ste = 1.0 + (pmax - pmax.detach())
+            idx, w = sq
+            coset = self.coset_of[e_star.expand_as(idx), idx]                                   # (B, T_R, K)
+            y = read_sorted(Phi_r, e_star * self.n_cosets + coset, w.to(dt), Fc)
+            return y * ste.to(y.dtype)
         if self.probe:
             kc, qc = Wk.argmax(-1).detach(), Wq.argmax(-1).detach()
             self.last = (kc, qc)
@@ -329,13 +420,20 @@ class ContentAssign(nn.Module):
             # low entropy because it has collapsed, or because it has swept the
             # irrelevant tokens into their own cell, and only this separates them.
             self.last_dens = pr.gather(1, qc).mean().item()
+        return self._dense_read(u, Phi, Vb, Psi, n, Wk, Wq, dir_override, ids)
+
+    def _dense_read(self, u, Phi, Vb, Psi, n, Wk, Wq, dir_override=None, ids=None):
+        """The dense (non-sparse_ops) read, shared by the projection and id hashes."""
         P, V = Psi[:, :n], Vb[:, :n]
-        F = torch.stack([(P * Wk[:, :, x:x + 1]).transpose(-1, -2) @ V
-                         for x in range(self.N0)], dim=1)           # (b, N0, r, p)
+        Bsz, r, p = P.shape[0], P.shape[-1], V.shape[-1]
+        # pool by cell as ONE batched matmul: F[x] = sum_j Wk[j,x] (Psi_j v_j^T)   -- (b, N0, r, p), no N0 loop
+        PV = torch.einsum("bnr,bnp->bnrp", P, V).reshape(Bsz, n, r * p)
+        F = torch.bmm(Wk.transpose(1, 2), PV).view(Bsz, self.N0, r, p)
         Phi_r = Phi[:, n:]
         if self.mode == "point":
-            Z = torch.einsum("bir,bxrp->bixp", Phi_r, F)            # (b, T_R, N0, p)
-            return torch.einsum("bix,bixp->bip", Wq, Z)
+            # the query's cell state U_i = sum_x Wq[i,x] F[x] as a bmm -- (b, T_R, r, p); never (b, T_R, N0, p)
+            Uq = torch.bmm(Wq, F.reshape(Bsz, self.N0, r * p)).view(Bsz, -1, r, p)
+            return torch.einsum("bir,birp->bip", Phi_r, Uq)
         U = torch.einsum("eox,bxrp->beorp", self.M, F)              # (b, D, q, r, p)
         Z = torch.einsum("bir,beorp->bieop", Phi_r, U)              # (b, T_R, D, q, p)
         nb = u.shape[0]
@@ -368,28 +466,10 @@ class ContentAssign(nn.Module):
             we = pe
         else:
             we = torch.zeros_like(pe).scatter_(-1, pe.argmax(-1, keepdim=True), 1.0) + (pe - pe.detach())
+
         po = torch.einsum("bix,eox->bieo", Wq, self.M)              # offset marginal per direction
         wo = torch.zeros_like(po).scatter_(-1, po.argmax(-1, keepdim=True), 1.0) + (po - po.detach())
         return torch.einsum("bie,bieo,bieop->bip", we, wo, Z)
-
-    def agreement(self, pairs, valid):
-        """The coupling term the quantization estimator does not provide: the
-        query's cell distribution should put its mass on the cell where the state
-        it needs actually sits.  ``pairs[b, :, 0]`` indexes recent queries,
-        ``pairs[b, :, 1]`` the distant position each one must reach.  Gradient
-        reaches every cell's logit, not just the two adjacent to a bin boundary."""
-        if self.last_soft_q is None or self.last_hard_k is None:
-            return None
-        sq, hk = self.last_soft_q, self.last_hard_k                  # (B,m,N0), (B,n)
-        nb = pairs.shape[0]
-        rep = sq.shape[0] // nb
-        i = pairs[..., 0].repeat_interleave(rep, 0).clamp_min(0)     # (B,P)
-        j = pairs[..., 1].repeat_interleave(rep, 0).clamp_min(0)
-        v = valid.repeat_interleave(rep, 0).to(sq.dtype)
-        tgt = hk.gather(1, j)                                        # (B,P) cell to route to
-        pq = sq.gather(1, i.unsqueeze(-1).expand(-1, -1, self.N0))   # (B,P,N0)
-        lp = pq.gather(-1, tgt.unsqueeze(-1)).squeeze(-1).clamp_min(1e-9).log()
-        return -(lp * v).sum() / v.sum().clamp_min(1.0)
 
     def key_agreement(self, pay_pos, key_cells, valid):
         """Align the KEY-side hash with the query-side one: the cell a payload is
@@ -408,4 +488,23 @@ class ContentAssign(nn.Module):
         v = valid.repeat_interleave(rep, 0).to(sk.dtype)
         p = sk.gather(1, j.unsqueeze(-1).expand(-1, -1, self.N0))     # (B, P, N0)
         lp = p.gather(-1, tgt.unsqueeze(-1)).squeeze(-1).clamp_min(1e-9).log()
+        return -(lp * v).sum() / v.sum().clamp_min(1.0)
+
+    def agreement(self, pairs, valid):
+        """The coupling term the quantization estimator does not provide: the
+        query's cell distribution should put its mass on the cell where the state
+        it needs actually sits.  ``pairs[b, :, 0]`` indexes recent queries,
+        ``pairs[b, :, 1]`` the distant position each one must reach.  Gradient
+        reaches every cell's logit, not just the two adjacent to a bin boundary."""
+        if self.last_soft_q is None or self.last_hard_k is None:
+            return None
+        sq, hk = self.last_soft_q, self.last_hard_k                  # (B,m,N0), (B,n)
+        nb = pairs.shape[0]
+        rep = sq.shape[0] // nb
+        i = pairs[..., 0].repeat_interleave(rep, 0).clamp_min(0)     # (B,P)
+        j = pairs[..., 1].repeat_interleave(rep, 0).clamp_min(0)
+        v = valid.repeat_interleave(rep, 0).to(sq.dtype)
+        tgt = hk.gather(1, j)                                        # (B,P) cell to route to
+        pq = sq.gather(1, i.unsqueeze(-1).expand(-1, -1, self.N0))   # (B,P,N0)
+        lp = pq.gather(-1, tgt.unsqueeze(-1)).squeeze(-1).clamp_min(1e-9).log()
         return -(lp * v).sum() / v.sum().clamp_min(1.0)

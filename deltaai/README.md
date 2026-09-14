@@ -572,3 +572,609 @@ convention) -- head_dim 16 with 2 heads is starved at width 64.  A faithful reru
 (2) SMAT still adds +33 / +11..15 / +24..18 mean, but with 1-2 heads the lambda gate fails to open on 4 of 30 SMAT
 runs (those seeds land at or below the control); last night's 4-8-head versions had 1 failure in 30.  Gate init /
 warmup fix is now required before the width-16/32 columns are quotable.
+
+### Paper mask M^(d) with Mamba-2 weights and boundary reset (`ZOO_RESET_MR=1 ZOO_GDECAY=1 ZOO_LAMACT=one ZOO_READ=type`), hd16/ds16, width 16, seed 123, lr 1e-2, 2026-09-10
+
+Exact implementation of the block mask: Mamba-2 recurrence restarted at n = T/2 (smoke: first half == Mamba-2 on the first
+half, 4e-7; G off -> second half == Mamba-2 restarted, 2e-7), G = decayed pooled read through C with the mask bank, added
+directly (per-head scale init 1).  d=1 reproduces Mamba-2 (42 @ ep17 vs 42; 77 vs 78 at width 32).
+
+| arm | final | cells | note |
+|---|---|---|---|
+| d=1 (== Mamba-2) | 46.9 | 91/74/49/17/3 | reference |
+| d=2 both layers, strict 0/1 G | 0.3 @ ep8 | chance | killed; 2 heads x 2 layers cover 4/13 row types |
+| layer 0 d=1, layer 1 d=2 strict | 26 @ ep13 | 66/44/14/7/2 | stopped; worse than two Mamba-2 layers |
+| d=2, G zeros -> 1/q (`ZOO_GFLOOR=q`) | 1 @ ep3 | chance | cancelled |
+| d=2, G = 1+1/q on C, 1-1/q off C (`ZOO_GFLOOR=pm`) | 46.0 | 90/76/46/15/3 | == Mamba-2 |
+| d=2, G = 1 on C, 1-1/q off C (`ZOO_GFLOOR=m`) | 41.7 | 82/65/40/17/4 | ~Mamba-2 (ahead early: 38 @ ep4 vs 33, then level) |
+
+Reading: a fixed-weight read of the landmark half is worth exactly one merged table (Mamba-2's capacity) regardless of the
+positional tilt; the strict sparse mask is worse than that because it hides 9/13 of the pairs.  Consistent with the
+whole positional-read series.
+
+### Content-hashed SMAT (Abdullah's `content_addr.ContentAssign`) in the Zoology pipeline, 2026-09-11 (job 3132062, `run_zoo_chash.sbatch`)
+
+Paper mask C, pooling and decode unchanged; profile = hash(key-side input), row type = hash(query input), learned hash
+annealed soft->hard over 2500 steps, balance 0.01 via Zoology's `get_auxiliary_loss`; Mamba-2 weights, boundary reset,
+G added with a per-head scale (init 1).  Width 16, hd16/ds16, lr 1e-2, seed 123, 32 epochs.  `hconv` = learned depthwise
+causal conv (width 4, init uniform over lags) on the key-side hash input instead of Abdullah's fixed shift of 1.
+Reference rows at this setting: Mamba-2 46.9; positional d=2 with the same weights: chance; content-read bank 72.8 / 80.3.
+
+| arm | final | best | cells 4/8/16/32/64 |
+|---|---|---|---|
+| d=2 point, learned conv | **86.1** | 86.5 | 88/81/88/90/84 |
+| d=2 point, fixed shift 1 | 37.8 | 37.9 | 79/60/35/12/2 (hash never engaged) |
+| d=3 plane, learned conv | 67.6 | 74.8 | 84/77/80/63/35 |
+| d=3 plane, fixed shift 1 | 72.1 | 79.3 | 90/78/70/58/66 |
+
+Reading: the paper's own architecture -- sparse C, pooled profiles, Theta(1) decode -- reaches 86 at the hard end
+(64 pairs, 16x16 state) once the assignment is by content, +39 over Mamba-2 and above the content-read bank's d=2
+(72.8).  The learned conv on the hash input is the more robust key-side source at d=2 (the fixed-shift run stayed at
+Mamba-2 level: a hash-engagement failure, the same one-seed failure mode seen before).  d=3 (49 cells of ~3) is worse
+than d=2 (13 cells of ~10) here, the opposite of the content-read bank: with hashing, more cells means more hash
+misses (hash_hit falls), and the plane read at d=3 sums q cells.  Curves are jumpy at lr 1e-2 (d=3 sh1: 79 -> 50 -> 79).
+Single seed; the 5-seed repeat and the width-32 column are next.
+
+### Affine-subspace family under content hashing (codimension-c reads), width 16, hd16/ds16, seed 123, learned hash + key-side conv, anneal 2500, balance 0.01 (job 3132250, `run_zoo_codim.sbatch`), 2026-09-11
+
+`ContentAssign(codim=c)`: read the codim-c flat through the query's cell (c=1 hyperplane ... c=dim point);
+`_grouped_flats` enumerates all full-rank coset partitions.  The hashed path bypasses the recent-block type-cycle
+cap on d (only q^{d-1} <= n binds), so d=4 (q=5, 125 cells) is buildable at T=256.
+
+| d (q, cells at T=256) | c=1 | c=2 | c=3 |
+|---|---|---|---|
+| 2 (13, 13) | **86.1** (point; done earlier) | | |
+| 3 (7, 49) | 67.6 final / 79.3 peak (earlier) | 72.0 final (85/72/61/66/74), collapsed to 32 mid-run | |
+| 4 (5, 125) | 58 @ ep20, best 65 (killed) | **84.2 @ ep14, 83 @ ep16, still rising, no spikes (killed)** | 42 @ ep21, best 68 then collapsed to 10 (killed) |
+
+Reading: (1) at d=4 the intermediate codimension is far ahead of both endpoints (84 vs 65 / 68), and level with
+d=2 -- so performance need not fall with d if c is chosen (c ~ (d-1)/2); the family is real; (2) d=3, which has no
+intermediate c, lands at 68-72 with both reads; both d=3 runs and the d=4 endpoints show anneal-time spikes /
+collapses, the d=4 line read never did; (3) the d=3 point read's cells are inverted (64-pair 74-82, 16-pair 36-61):
+keys are hashed correctly, filler contaminates the cells -- a hash-recipe symptom, not a geometry one.  Killed the
+d=4 runs at epochs 16-21 on request.  Next (queued, job 3132379): frozen embedding hash for the two point reads, and
+d=4 with heads split c=[1,2].
+
+### Content-hashed SMAT (Abdullah's `content_addr.ContentAssign`) in the Zoology pipeline, width 16, hd16 / ds16, seed 123, 2026-09-11 (job 3132062, `run_zoo_chash.sbatch`)
+
+Paper mask C + pooling unchanged; profile = hash(key-side input), row type = hash(query input); Mamba-2 weights
+(identity kernel, dt writes, decay folded into G), recurrence reset at the boundary, G added directly (per-head scale
+init 1); learned hash annealed soft->hard over 2500 steps, balance penalty 0.01 via Zoology's get_auxiliary_loss.
+Key-side source: fixed shift 1 (his recipe) or a learned depthwise causal conv (width 4, init uniform over lags).
+Hash adds 628 params/layer.
+
+| arm | mean | 4 / 8 / 16 / 32 / 64 |
+|---|---|---|
+| Mamba-2 (d=1), same setting | 46.9 | 91/74/49/17/3 |
+| positional d=2, paper mask | 0.3 (chance) | |
+| content-read bank (not SMAT), d=2 / d=3 | 72.8 / 80.3 | |
+| **chash d=2 point, conv** | **86.1** | 88/81/88/90/84 |
+| chash d=3 plane, shift 1 | 72.1 | 90/78/70/58/66 |
+| chash d=3 plane, conv | 67.6 | 84/77/80/63/35 |
+| chash d=2 point, shift 1 | 37.8 (hash never engaged; long cells at Mamba-2 level) | 79/60/35/12/2 |
+
+Reading: content addressing makes the paper's own architecture recall at the hard end (64 pairs in a 16x16 state):
+d=2 point + learned conv reaches 86.1, +39 over Mamba-2 and above the content-read bank, with sublinear memory and
+Theta(1) decode intact.  The learned conv on the key-side hash input is the more robust choice: the fixed shift-1
+run at d=2 never engaged (one more instance of the engagement failure), while conv engaged immediately (68 at epoch 1
+under the soft read) and held after the hard transition.  d=3 plane is behind d=2 point here (2 heads); training at
+lr 1e-2 is spiky (d3-sh1 dipped 76 -> 50 -> 74).  Single seed: seeds + width 32 next, then the d=3 point mode.
+
+### Frozen embedding hash for the point reads, and the learned head split (job 3132379, `run_zoo_split.sbatch`), width 16, seed 123, 2026-09-11
+
+`hash_src=embed, freeze` = Abdullah's frozen recipe: a fixed random projection of the token EMBEDDING (context-free),
+quantised; identical tokens share a cell by construction, nothing to learn, no anneal, no balance penalty.
+
+| read | learned contextual hash (earlier) | frozen embedding hash |
+|---|---|---|
+| d=3 point (49 cells) | 72.0, collapsed to 32 mid-run | **94.8** (98/94/93/94/95) |
+| d=4 point (125 cells) | 42, collapsed to 10 at ep4 | **88.4** (89/80/91/88/95) |
+| d=4 heads split c=[1,2], learned hash | | 36 @ ep10, no long recall (killed) |
+
+Reading: the d=3 dip and the fine-c collapses were the learned hash's training (STE quantiser, anneal-time boundary
+churn, balance penalty spreading filler), not the geometry: with the frozen hash the point read is the best read at
+every d and d=3 reaches 94.8, within 3 of full attention (98) and +48 over Mamba-2 (46.9), in the paper's own
+architecture (sparse C, pooled profiles, Theta(1) decode).  The affine family's middle codimension was a workaround
+for a bad hash.  Caveat: the frozen embedding hash is exact-token hashing -- right for MQAR (query token == key token),
+not for language, where the learned contextual hash is needed and its training is the open problem (fixes to try:
+freeze after anneal, gate-weighted balance, learned projection of the embedding, 10x lower hash lr / longer anneal).
+
+### enwik8 proof of concept: content-hashed SMAT vs Mamba-2 on text (2026-09-11, `lm/train_lm2.py`, `lm/eval_pos_loss.py`, `run_lm_poc*.sbatch`)
+
+Bytes, 90M/5M/5M split, vocab 256.  6 layers, d_model 384, headdim 64, d_state 64 (~5.8M non-emb params), T 4096,
+batch 8, 1500 steps = 49M bytes, lr 6e-4 cosine.  SMAT arms: paper mask with reset at 2048, content hash (learned,
+contextual, 16-byte key-side conv), v10 recipe (gated balance 0.01, anneal 500), point read.  Per-position loss on the
+5M test bytes (1220 sequences), window 501.  Fixes needed on the way: Abdullah's point read / pooling materialised
+(b h, T_R, N0, p) -- rewritten as bmm (exact, test passes); G branch checkpointed (45 GB -> 19 GB); eval must run a
+dummy forward before load_state_dict (lazy per-length hash modules).
+
+| arm | train nll @1500 | val nll | test bpb | nll 0-512 | 512-2048 | 2048-3072 (G on) | 3072-4096 | ktok/s |
+|---|---|---|---|---|---|---|---|---|
+| Mamba-2 | 1.215 | 1.244 | **1.757** | 1.239 | 1.216 | 1.212 | 1.216 | 607 |
+| SMAT d=2 | 1.224 | 1.248 | 1.767 | 1.241 | 1.222 | 1.226 | 1.221 | 94 |
+| SMAT d=3 | 1.223 | 1.252 | 1.767 | 1.240 | 1.222 | 1.226 | 1.221 | 59 |
+
+Reading: at this budget the content-hashed G is neutral-to-slightly-negative (+0.01 bpb), with no step at the
+boundary where it switches on; Mamba-2's own per-position curve is flat after ~500 bytes, i.e. the model is not yet
+using context at all, so there is nothing for G to add.  The test of long-context use needs a trained model:
+full budget (4000 steps, d_model 768) or the PG-19 / 16K-token setup.  The G branch costs 6-10x throughput as
+implemented (python-level pooling + recompute); a fused kernel is needed before any scaled run.
+
+### Read geometry used by the LM runs (2026-09-11)
+Every LM run before this date (enwik8 POC d=2/3/4, the selective-copying script, the first LDC launcher draft) used the
+**point read** (`hash_codim = d-1`: each query reads the single pooled cell its own hash lands in).  That was a
+side-effect of the OOM fix: the memory-bounded sparse ops (`smat_pool_ops.py`) only implemented the point read.  At d=2
+the point and hyperplane reads coincide (hyperplanes of F_q^1 are points), so the d=2 numbers are the paper's mask;
+the d=3 and d=4 enwik8 numbers are NOT (they are a hashed cell memory with N0 cells, one cell per query).
+`content_addr.py` now runs the affine-subspace read on the sparse path too: pool cells (one bmm), aggregate to the
+D * q^c cosets with the incidence M (one index sum over N0 cells, no per-token work), then a point read at
+(direction, coset of own cell).  Exact vs the dense plane read in float64 (fwd ~2e-14, grads Phi/Psi/Vb ~1e-14); the
+direction logits get a one-sided straight-through gradient (chosen direction only).  Defaults flipped to
+`hash_codim = 1` (paper's hyperplane incidence) in `lm/train_lm2.py`, `lm/sc_train.py`, `run_ldc.sbatch` (`arm:d:codim`).
+Hard-phase (anneal done) layer cost at width 512 / T 16K / batch 4, single GH200, point read:
+mamba2 5.8 ms, d=2 bf16 26.3 ms / 4.5 GB, d=3 bf16 34.5 ms / 7.8 GB, d=4 bf16 58.7 ms / 19.3 GB.
+
+### enwik8 POC rerun: d=3 with the HYPERPLANE read (job 3134208, `run_poc_d3c1_1gpu.sbatch`, 2026-09-11)
+Same settings as the d=3 point-read arm (v10, anneal 500, 16-byte key conv, 1500 steps / 49M bytes), read = codim 1
+on the exact sparse path (fp32 G branch).  Train loss at step 1500: 1.2228 (point read 1.2233).  Test per-position
+loss, 5M bytes, window 501:
+
+| arm | bpb | nll @512 / 1024 / 2048 / 4096 |
+|---|---|---|
+| mamba2 | 1.7568 | 1.219 / 1.218 / 1.214 / 1.216 |
+| smat d=2 (point = plane) | 1.7674 | 1.224 / 1.223 / 1.238 / 1.222 |
+| smat d=3 point | 1.7669 | 1.224 / 1.223 / 1.237 / 1.221 |
+| **smat d=3 hyperplane** | **1.7647** | 1.222 / 1.221 / 1.235 / 1.219 |
+| smat d=4 point | 1.7625 | 1.220 / 1.219 / 1.234 / 1.219 |
+| **smat d=4 hyperplane** (job 3134375) | **1.7633** | 1.221 / 1.220 / 1.233 / 1.219 |
+
+Reading: hyperplane vs point is a 0.002 bpb difference at d=3 and 0.001 at d=4, i.e. nothing; every SMAT arm is flat in position and
+~0.01 bpb behind Mamba-2, with the same bump at 2048 (the boundary reset).  At this size / budget (10.5M params, 49M
+bytes) the model does not use long context, so the read geometry cannot matter yet.  Training throughput on the sparse
+path: 187 ktok/s vs 59 ktok/s for the earlier dense point read (3.2x) on one GH200.
+
+### Pooling / read ops: capped sub-row layout (2026-09-12, `smat_pool_ops.py`)
+The d=4 hyperplane enwik8 run OOMed (7.4 GB padded tensor) and then crawled at 8-12 ktok/s on the segmented fallback:
+real bytes hash with heavy skew (one cell took >1400 of 16K key pairs early on), so the sorted-and-padded layout was
+O(B*N0*Lmax) and the segmented index_add serialised on the hot cells' atomics (bf16 -> fp32 accumulation did not
+help: 353-489 ms per layer step).  Replaced both by a capped layout: pairs sorted by cell, each cell split into
+ceil(count/64) sub-rows of 64 slots, one bmm over sub-rows, one small index_add of the per-sub-row partial sums.
+Memory O(pairs + B*N0*64), no per-token atomics, exact (float64 test at caps 64/3/1).  d=4 hyperplane layer at
+width 384 / T 4096 / batch 8 in the soft phase (K=8 pairs): 83.7 ms, 5.1 GB (padded 92 ms / 7.7 GB when it fit,
+segmented 353 ms).  Training rate at step 50: 46.5 ktok/s vs 11.9 before.
+
+### enwik8 POC at 16K context (job 3134595, `run_poc_len.sbatch` SEQ=16384, 2026-09-12)
+Same model / recipe / 49M-byte budget as the 4K arms, batch 2 x 16384 (32K tokens per step), SMAT with the
+hyperplane read (c=1), reset at 8192.  Test per-position loss over the 5M test bytes (305 sequences), mean nll by
+position segment:
+
+| arm | bpb | pos 0-1k | 1k-4k | 4k-8k | 8k-12k | 12k-16k |
+|---|---|---|---|---|---|---|
+| mamba2 | 1.7940 | 1.250 | 1.234 | 1.243 | 1.253 | 1.241 |
+| smat d=2 c=1 | 1.7974 | 1.251 | 1.235 | 1.244 | 1.257 | 1.244 |
+| smat d=3 c=1 | 1.8005 | 1.254 | 1.237 | 1.246 | 1.259 | 1.245 |
+| smat d=4 c=1 | 1.7967 | 1.251 | 1.235 | 1.243 | 1.256 | 1.243 |
+
+Reading: all arms within 0.007 bpb, ordering mamba2 < d=4 < d=2 < d=3 (single seed, noise-level).  Loss does NOT fall
+with position for any arm: 12k-16k is no better than 1k-4k, i.e. the model uses ~1k of context at this size/budget, so
+16K vs 4K only costs (1.79 vs 1.76 bpb, fewer independent sequences per step).  Per-arm training time: mamba2 3 min at
+~300 ktok/s, SMAT 5-8 min at 90-150 ktok/s.
+
+### enwik8 POC at 32K context (job 3134596, `run_poc_len.sbatch` SEQ=32768, 2026-09-12)
+Batch 1 x 32768, otherwise as the 16K sweep; reset at 16384; test eval over 152 sequences.
+
+| arm | bpb | pos 0-1k | 1k-4k | 4k-8k | 8k-16k | 16k-24k | 24k-32k |
+|---|---|---|---|---|---|---|---|
+| mamba2-d1 | 1.8162 | 1.268 | 1.248 | 1.254 | 1.256 | 1.255 | 1.271 |
+| smat-d2 | 1.8188 | 1.267 | 1.248 | 1.255 | 1.257 | 1.257 | 1.274 |
+| smat-d3 | 1.8153 | 1.267 | 1.247 | 1.253 | 1.254 | 1.256 | 1.271 |
+| smat-d4 | 1.8172 | 1.269 | 1.248 | 1.255 | 1.255 | 1.257 | 1.272 |
+
+Reading: all within 0.004 bpb (d=3 hyperplane nominally best, 1.8153 vs mamba2 1.8162): noise.  Loss RISES over the
+second half of every sequence (24k-32k worst), for Mamba-2 as much as SMAT: with batch 1 the 49M-byte budget is 1500
+single-sequence steps, so this is under-training plus enwik8's non-stationarity within a 32K window, not a mixer effect.
+4K -> 16K -> 32K costs 1.76 -> 1.79 -> 1.82 bpb for every arm alike.  Conclusion of the whole enwik8 series: at 10.5M
+params / 49M bytes nothing separates Mamba-2 from SMAT at any d, read geometry or context length; a real test of the
+long-range read needs the PG-19 300M-token setup.
+
+### PG-19 long-context sweep: setup (2026-09-12, `run_pg19.sbatch`, `lm/prep_pg19.py`)
+Found: the earlier PG-19 tokenisation had been killed after 5.4M train tokens, leaving a 320M-slot memmap of zeros --
+no run had used it.  Re-tokenised: 320M train tokens (book order), val = PG-19 validation split whole (50 books,
+4.6M), test = test split whole (100 books, 10.6M), files truncated to their real length.
+Model: 8 layers, d_model 384, GPT-2 vocab (19.3M tied embedding).  Non-embedding params: mamba2 7.6M, gdn (fla
+GatedDeltaNet, expand_v 2, hd 64, 6 heads) 9.5M, transformer (RoPE attn + 4x GELU MLP) 14.2M, smat d=2/3/4 13.9M
+(of which ~3M is the never-used tail of the per-head alpha tables, max_B 65536).  Budget 300M tokens per arm = 9155
+steps x 32K tokens, SEQ 16384 (batch 2) and 32768 (batch 1); cosine lr 6e-4, warmup 300; SMAT: hyperplane read, v10
+recipe (gated balance 0.01, anneal 1000 steps), 4-token key conv, reset at SEQ/2.
+Smoke, each arm alone at 32K (40 synthetic steps, rate includes warm-up so it under-reads): mamba2 64 ktok/s /
+27 GB, gdn 14 ktok/s (triton compile dominated) / 29 GB, transformer 178 ktok/s / 29 GB, smat d=2 49 / 32 GB,
+d=3 45 / 32 GB, d=4 35 / 32 GB.  Peak is dominated by the 32K x 50257 logits, so arms share a GPU 2 at a time at 32K
+and 4 at 16K; the job checkpoints every 250 steps and resubmits itself (one running job per user on the interactive
+partition).
+
+### BUG (found 2026-09-12 09:50): the learned content hash was never trained
+`SmatMamba2MR` builds its `ContentAssign` modules (hash projection W, gamma, b, direction logits Wd) lazily at the first
+forward for each sequence length.  Zoology's `Trainer.fit()`, `lm/train_lm2.py` and `lm/sc_train.py` all built the
+optimizer from `model.parameters()` BEFORE any forward, so those tensors were never in the optimizer.  Verified on saved
+checkpoints: optimizer had 86 of 116 tensors (enwik8 d=3), gamma still exactly 1 and b exactly 0, W rows at their
+randn norm (sqrt(d_model)).  Consequently every "learned contextual hash" number before this date is actually a
+**frozen random projection of the hidden state** (contextual but untrained; balance penalty, anneal, hash lr,
+freeze-after had no direct effect -- only side effects through the write gate dt in the gated-balance variants and
+noise).  Affected: MQAR hash-recipe iteration v0-v11, the affine-family table, the w32/w64 hyperplane sweep below,
+enwik8 SMAT arms (all lengths), PG-19 SMAT arms (first pass), selective copying SMAT arms.  NOT affected: frozen
+embedding hash (94.8 @ d=3 point, 88.4 @ d=4), all Mamba-2 / GDN / attention baselines, and the kernel/throughput work.
+Fix: a no-grad prebuild forward before the optimizer in all three trainers, with an assertion that the optimizer covers
+every parameter tensor (prints "optimizer covers N/N (k content-hash tensors)").  Quarantined outputs in
+`lm/out/invalid_frozenhash/`, `logs/invalid_frozenhash/`, ckpt/invalid_frozenhash/.  Reruns: `run_mqar_c1.sbatch`
+(MQAR w16/32/64 x d2/3/4 hyperplane + w16 d3 point, hash trained), `run_pg19.sbatch` SMAT arms, selective-copying SMAT
+arms (running on the PG-19 job's GPU).
+
+### MQAR w32 / w64, hyperplane read, FROZEN-RANDOM contextual hash (see bug above), hd16/ds16, lr 1e-2, 32 ep, seed 123
+| width | Mamba-2 (earlier) | d=2 c=1 | d=3 c=1 | d=4 c=1 |
+|---|---|---|---|---|
+| 32 | 82.8 | **96.2** (64 pairs: 94.3) | 68.7 (15.4) | 74.8 (35.3) |
+| 64 | 81.5 | **97.8** (98.4) | 84.2 (48.6) | OOM (GPU shared), rerunning |
+
+Even with an untrained random hash, d=2 (13 cells, hyperplane = point) beats Mamba-2 by +13 / +16 at 64 pairs 94-98;
+d=3/4 with the random hash fall off at 32-64 pairs (the random projection does not separate keys well enough for the
+finer cells).  The trained-hash rerun is queued (job 3135974).
+
+### Selective copying, d_state 16 (job 3134922, `run_sc.sbatch` DS=16 GDNHD=16), L 4096, 16 tokens / vocab 16, 10k steps
+Baselines (valid): Mamba-2 hd64/ds16 **77.1%**, Gated DeltaNet (head_dim 16, same 2048-number state per layer) **96.0%**.
+SMAT arms (frozen-random hash, invalid): d=2 44.1, d=3 46.7, d=4 46.2 -- rerunning with the trained hash.  Note the
+task structure: the 16 answer-slot inputs are identical blanks, so a content hash of the *query* maps all 16 queries to
+one cell; ordered recall by position is exactly what content addressing cannot do, and with the boundary reset the first
+half of the prefix is reachable only through G.  Expect SMAT <= Mamba-2 here unless the queries' hash is contextual
+(the key-side conv gives the keys context; queries hash their own hidden state, which after the recurrence does carry
+position).
+
+### PG-19 300M-token sweep, baselines (valid; `lm/out/pg19-*.json`), nll per GPT-2 token on the PG-19 test split
+| arm | 16K nll (ppl) | 32K nll (ppl) | 16K nll @512 / 4096 / 8000 |
+|---|---|---|---|
+| Gated DeltaNet | **3.678 (39.6)** | **3.738 (42.0)** | 3.698 / 3.640 / 3.685 |
+| Mamba-2 | 3.752 (42.6) | 3.803 (44.8) | 3.763 / 3.717 / 3.764 |
+| transformer (RoPE + 4x MLP) | 3.797 (44.6) | 3.910 (49.9) | 3.818 / 3.755 / 3.806 |
+| smat d=2 / d=3 (frozen-random hash, invalid) | 3.743 / 3.747 | -- | |
+GDN leads by 0.07 nats; the transformer is last (33M params, 300M tokens: too little data for attention at 16-32K, and
+batch 1 at 32K).  Loss is flat in position for every arm beyond ~1K.  SMAT arms rerunning with the trained hash
+(job 3135970 chain).
+
+### MQAR with the hash actually trained (job 3135974, `run_mqar_c1.sbatch`), hyperplane read, v10, hd16/ds16, lr 1e-2, 32 ep, seed 123
+Accuracy overall (4 / 8 / 16 / 32 / 64 pairs).  Mamba-2 rows from the small-state sweep.  "random" = the frozen-random
+contextual hash numbers from before the fix, same config.
+
+| width | Mamba-2 | d=2 c=1 trained (random) | d=3 c=1 trained (random) | d=4 c=1 trained (random) |
+|---|---|---|---|---|
+| 16 | 46.9 | 78.9 (84/75/79/81/76) (86.1) | 58.7 (91/81/63/40/18) (67.6) | 73.5 (86/79/82/64/57) (65) |
+| 32 | 82.8 | **95.9** (99/99/94/94/94) (96.2) | **94.2** (99/98/92/94/88) (68.7) | OOM, rerun queued (74.8) |
+| 64 | 81.5 | OOM, rerun queued (97.8) | OOM, rerun queued (84.2) | 89.6, best 94.9 (100/100/93/83/72) (OOM) |
+
+Reading: training the hash is what makes d=3 work at width 32 (68.7 -> 94.2, 64-pair 15 -> 88); d=2's hash is one
+number per token so random was already enough (96 either way).  At width 16 the trained hash is *worse* than random for
+d=2/3 (79 vs 86, 59 vs 68) -- the width-16 model has 16-dim hidden states to hash from and the v10 anneal/balance was
+never actually tuned (its "tuning" happened with a frozen hash); single seed.  Four runs OOMed (10 runs + 3 selective-
+copying arms on one GPU) and are queued (job 3135994's successor).  Frozen-embedding point read (94.8 @ w16 d=3) is
+still the best width-16 number.
+
+### Selective copying, d_state 16, final (trained hash; L 4096, 16 tokens / vocab 16, 10k steps, batch 32)
+| Mamba-2 | GDN | SMAT d=2 c=1 | SMAT d=3 c=1 | SMAT d=4 c=1 |
+|---|---|---|---|---|
+| 77.1 | **96.0** | 40.8 | 25.4 | 45.8 |
+
+SMAT is well below Mamba-2 here (frozen-random hash gave 44 / 47 / 46 -- the same).  As predicted from the task
+structure: the 16 answer-slot queries are identical blank tokens, so their content hash cannot address 16 different
+cells, and the boundary reset hides the first half of the prefix from the recurrence.  Selective copying is a
+positional/ordered-recall task; the content-addressed G is the wrong tool for it, and the reset actively hurts.  The
+no-reset (hybrid) SMAT would be the fair variant for this task, not run.
+
+### MQAR, hash trained -- complete table (jobs 3135974 + 3136241), hyperplane read c=1, v10, hd16/ds16, lr 1e-2, 32 ep, seed 123
+Overall accuracy (64-pair slice).  Mamba-2 from the small-state sweep.  Point read at w16 d=3 for reference.
+
+| width | Mamba-2 | d=2 c=1 | d=3 c=1 | d=4 c=1 | d=3 point (w16 only) |
+|---|---|---|---|---|---|
+| 16 | 46.9 | 78.9 (76) | 58.7 (18) | 73.5 (57) | 79.8 (95; 4-pair 91, 8-pair 75, 16-pair 61) |
+| 32 | 82.8 | **95.9** (94) | **94.2** (88) | **95.4** (94) | |
+| 64 | 81.5 | **97.7** (98) | **96.8** (96) | 89.6, best 94.9 (72) | |
+
+Reading: at widths 32 and 64 every d beats Mamba-2 by +12 to +16 overall and by +50 or more on the 64-pair slice
+(Mamba-2's 64-pair accuracy is ~40 / ~35), and d=3/4 are now level with d=2 -- the "performance does not decrease with
+d" claim holds once the hash is trained (with the random hash d=3/4 fell off at 32-64 pairs).  Width 16 is the odd one:
+the hidden state is 16-dim, the hash has little to work with, and the trained point read shows the inverted-slices
+pattern again (64 pairs 95, 4 pairs 91, 8-16 pairs 61-75).  The width-16 recipe was never actually tuned; single seed.
+
+### Selective copying, d_state 16, no-reset (hybrid) SMAT arms, final (trained hash)
+| Mamba-2 | GDN | SMAT d=2 | SMAT d=3 | SMAT d=4 | SMAT reset d=2 / d=3 / d=4 |
+|---|---|---|---|---|---|
+| 77.1 | 96.0 | 54.5 | 34.9 | 65.0 | 40.8 / 25.4 / 45.8 |
+
+Removing the reset helps (+14 / +10 / +19) but every SMAT arm stays below Mamba-2, whose recurrence it contains.
+Correction to the first reading: identical blank query tokens do NOT make the read blind -- a cell is an r x p
+associative memory (sum_j psi_j v_j^T) read by the query vector phi_i, which differs across the 16 slots through the
+recurrent context, so one shared cell can still return 16 different values (Mamba-2's single state does exactly this).
+What "all queries hash to one cell" means is only that G's partition into N0 cells buys nothing here, so SMAT cannot
+beat Mamba-2; it does not explain being BELOW Mamba-2.  Unverified candidates for the deficit: slower optimisation
+(every arm was still rising at 10k steps; the STE hash + soft->hard switch at step 1000), the ungated additive read being
+noise while the cells are still disorganised, and clutter from noise tokens written into the cells.  Left as a
+negative result at the user's request.
+
+### PG-19 16K, trained-hash SMAT arms (job 3135994), nll per token on the test split
+| arm | nll (ppl) | @512 | @4096 | @6144 | @8000 (just before the 8192 reset) |
+|---|---|---|---|---|---|
+| GDN | **3.678 (39.6)** | 3.698 | 3.640 | 3.687 | 3.685 |
+| smat d=2 c=1 | 3.743 (42.2) | 3.748 | 3.702 | 3.748 | 3.813 |
+| smat d=3 c=1 | 3.744 (42.3) | 3.749 | 3.704 | 3.750 | 3.806 |
+| Mamba-2 | 3.752 (42.6) | 3.763 | 3.717 | 3.757 | 3.764 |
+| transformer | 3.797 (44.6) | 3.818 | 3.755 | 3.800 | 3.806 |
+
+SMAT edges Mamba-2 by 0.008 nats overall (and by ~0.015 away from the boundary) but pays ~0.05 nats in the window just
+before the reset at 8192, and stays 0.065 behind GDN everywhere.  Mid-run train losses had SMAT level with GDN; the
+final test gap says otherwise.  The frozen-random-hash SMAT arms scored 3.743 / 3.747 -- the trained hash changed
+nothing measurable on PG-19 at this scale.  d=4 (16K) and all 32K SMAT arms still to run (chain job 3136709).
+
+### Selective copying is high-variance at this budget (2026-09-12 14:40)
+A "G switched off" control (SMAT arm with d forced to 1, i.e. the bare Mamba-2 recurrence, 57,228 params, same seed
+and settings as the Mamba-2 arm that scored 77.1) finished at **18.6%**: identical configuration, identical seed,
+the only difference is GPU nondeterminism / sharing.  Mamba-2's curve took off at ~step 3000 and reached 77; the
+control crept from 13 to 18 over 10k steps.  So at 10k steps the outcome is a phase transition that may or may not
+happen, and every single-seed selective-copying comparison above (77.1 vs 34.9 etc.) is within this variance.
+Launched seeds 1 and 2 of the G-off control and of d3-gate to get a spread before reading anything into the
+gate/SSM-hash arms.
+
+### Selective copying, seeds (2026-09-13), no-reset, d_state 16, L 4096, 16 tokens / vocab 16, batch 32, 10k steps
+| arm | acc @4K steps: mean (seeds) | acc @10K: mean (seeds) | steps to 50% |
+|---|---|---|---|
+| Mamba-2 (4 seeds) | 28 (36 / 15 / 15 / 46) | 47 (77 / 19 / 18 / 73) | 4750 / never / never / 4500 |
+| GDN (3 seeds) | 69 (84 / 59 / 63) | 85 (96 / 77 / 83) | 2000 / 2250 / 2000 |
+| SMAT d=3 gated read (3 seeds) | 60 (58 / 62 / 60) | 67 (68 / 70 / 64) | 1500 / 2000 / 1750 |
+| SMAT d=4 gated read + SSM hash (3 seeds) | 49 (59 / 58 / 31) | 63 (74 / 64 / 52) | 3000 / 2750 / 8750 |
+
+Reading: with seeds the picture is consistent -- the gated SMAT arms escape the plateau every time and are far ahead at
+4K steps (58-62 vs Mamba-2's 28 mean, with 2 of 4 Mamba-2 seeds never reaching 50%), and at 10K they sit at 64-70 vs
+Mamba-2's 18-77 (bimodal) and GDN's 77-96.  The gate is what matters: it removes the fixed-weight read's tax.  The SSM
+hash adds nothing (d=4 gate+ssm is not better than d=3 gate).  Per-slot analysis: every SMAT and Mamba-2 arm solves the
+first ~7-10 answer slots and fails the later ones -- the ordered-readout limit of the Mamba-2 base, which G does not
+address; GDN's delta rule (overwrite) does.  Reset arm (gate + ssm hash) stayed at ~21% with the mirror-image slot
+profile (only second-half tokens recovered).  Selective copying stays out of the paper; the gate finding carries over.
+
+### Selective copying: independent G write gate (2026-09-13, complete)
+
+`lm/sc_train.py --g_write_mode independent` replaces G's Mamba-2 dt write multiplier with
+`sigmoid(W_write u + b_write)`, one scalar per token/head. The projection starts at zero, with
+bias chosen for `--g_write_init 0.1`; its initialization preserves the RNG stream for common
+parameters. The hash balance loss uses the actual G write weights. G's decay and the recurrence
+remain unchanged. This is replacement of dt, not an additional gate multiplying dt; the initial
+write scale therefore also changes. The default `shared` mode preserves the original write rule.
+
+`run_sc_write_gate.sbatch`: reset d=3, sigmoid read gate (original -8 bias), SSM hash,
+L=4096, n_copy=16, content vocab=16, d_model=64, 2 layers, head_dim=64, d_state=16,
+batch=32, 10K steps, lr=1e-3, warmup=500, cosine schedule, seeds 0/1/2 for each write mode.
+Interactive training job **3143146**, one GPU, two-hour slices with automatic checkpoint
+resumption for at most four slices (eight allocated hours total). The pending regular-partition
+job 3143141 was canceled at the user's request. Short validation job 3143143 exposed an overly
+strict bf16 cancellation tolerance in the G-scaling test; the test now bounds rounding error
+using the magnitudes of the terms before cancellation. Job 3143146 started on gh142; CPU and
+GPU checks passed (dense and sparse/bf16 paths, reset isolation, gate gradients, matching common
+initialization and checkpoint restoration). The L=4096 training/resume smoke test passed;
+all six training processes have launched.
+Results/checkpoints: `results/sc_write_gate/<job_id>/`. New evaluation diagnostics record
+all answer slots, accuracy conditioned on the source token's half, and mean G write strength
+for content versus noise per layer. GPU checks and a full-length trainer/resume smoke test
+must pass before the six training processes launch.
+
+All six runs completed 10K steps in the first interactive allocation (job 3143146), with no
+training errors or continuation job needed. Final answer-token accuracy:
+
+| arm | seed 0 | seed 1 | seed 2 | mean |
+|---|---:|---:|---:|---:|
+| reset d=3, independent G writes | 70.36 | 65.97 | 32.37 | **56.23** |
+| reset d=3, shared dt writes | 42.21 | 52.73 | 39.11 | **44.68** |
+
+Historical Mamba-2 four-run mean at 10K is 46.86% (77.12 / 18.33 / 73.34 / 18.63).
+The independent-write arm improves the matched reset-control mean by 11.55 points, and the
+historical Mamba-2 mean by 9.38 points. It helps two seeds and hurts one; three seeds do not
+establish a general advantage. First-half-source recall is 40.22% vs 16.94%; second-half recall
+is essentially equal, 71.86% vs 71.77%. Curves and machine-readable summaries are in
+`results/sc_write_gate/3143146/{learning_curves.png,learning_curves.csv,summary.json}`;
+regenerate with `python lm/sc_write_report.py results/sc_write_gate/3143146 --plot`.
+
+Investigation of the mid-training dip: independent seed 1 fell from 70.73% at step 4000
+(first-half 71.53%) to 49.00% at step 4750 (first-half 23.18%), then recovered to 67.16%
+at step 5750. Checkpoint-only inference interventions at 5750: baseline 67.16%, G off 8.72%,
+zero G writes at raw noise-token positions 53.91%, no G decay 26.29%, both interventions
+17.29%, fixed read gate 0.1 29.54%. Thus the learned model relies on G, and post-hoc removal
+of noise writes or decay does not repair it. Noise-token positions can carry useful contextual
+features after convolution/layers; raw noise write strength is not a direct measure of clutter.
+Direct first-half-to-answer retention is very small on many head/token paths, but indirect paths
+through earlier recent positions/layers remain. These diagnostics do not identify the exact
+cause of the earlier dip: that checkpoint was overwritten, and intervention at inference is
+not equivalent to training the changed architecture. Hard routing instability is a hypothesis.
+Snapshots, measurements and interventions: `results/sc_write_gate/3143146/diagnosis/diagnosis.json`.
+
+### Selective copying: d=2 and d=4 write-gate comparisons (2026-09-13, submitted)
+
+The same reset experiment now runs with `SC_D=2` (job **3143304**) and `SC_D=4`
+(job **3143305**), each with shared/independent writes and seeds 0/1/2, 10K steps.
+Both use `ghx4-interactive` and checkpointed two-hour slices; d=2 started on gh040,
+while d=4 initially waits for the per-user running-job limit. Output directories are
+`results/sc_write_gate/3143304/` and `results/sc_write_gate/3143305/`. The trainer now
+logs effective geometry to verify that neither requested dimension is silently reduced.
+The existing Gated DeltaNet baseline is complete: 96.02 / 77.08 / 83.11%, mean 85.40%,
+at 10K steps, using the same task and the standard recurrence without a halfway reset.
+
+### Selective copying: d=2 shared-initialized write correction (2026-09-13)
+
+Job **3143586** (`run_sc_write_correction.sbatch`, interactive) tests
+`g_write_mode=residual`: `w_G = dt * 2 * sigmoid(W_G u + b_G)`, with W_G=b_G=0.
+At initialization it exactly matches shared writes and preserves the initialization
+RNG for common parameters. The gate can subsequently attenuate or amplify writes
+by a factor between 0 and 2. Seeds 0/1/2, 10K steps, and all other settings match
+the completed d=2 run 3143304, including G decay and 1000-step hash annealing.
+The completed shared baseline is 37.79/48.29/57.30%, mean 47.79%; the previous
+independent sigmoid writes scored 12.38/55.74/29.86%, mean 32.66%.
+Outputs: `results/sc_write_correction/3143586/`. The batch validates exact initial
+equivalence, gradients, checkpoint loading, and a full-length trainer/resume smoke
+run before starting the three training runs. Hash annealing and decay ablations
+are not included in this first experiment.
+
+### Selective copying: d=2 correction with slower gate learning (2026-09-13)
+
+Job **3144022**, `run_sc_write_correction_slow.sbatch`: same reset d=2 residual
+write experiment, with `--g_write_lr_scale 0.1`. Only the G write projection's
+AdamW group uses one tenth of the main learning-rate schedule (peak 1e-4 vs 1e-3).
+Seeds 0/1/2, 10K steps, same initialization and all remaining settings. Optimizer
+checkpoints retain the multiplier; resume rejects a mismatched multiplier.
+The original correction job 3143586 completed at 36.82/49.90/36.43%, mean 41.05%,
+versus shared writes 47.79%. Outputs: `results/sc_write_correction/3144022/`.
+Full-length training/resume smoke checks run before the three full runs.
+
+### MQAR: GDN + SMAT with reset (2026-09-13, running/submitted)
+
+Single seed 123, widths 16, 32 and 64, two layers, 32 epochs (707 training batches per
+epoch), learning rate 0.01, existing Zoology MQAR data. At each width compare native
+GDN (d=1 control) against GDN + sparse SMAT c=1 at d=2/3/4. The hybrids reset the
+GDN recurrence and short convolutions halfway through each sequence. Cross-boundary
+G memory uses additive sigmoid(beta)*k*v writes, no temporal decay, trained content
+hashes, and a learned read gate initialized at 0.1. Thus this tests a new hybrid;
+it does not apply the GDN delta update itself to the SMAT memory.
+
+GPU validation passed at width 32 for native-GDN equivalence, reset isolation,
+nonzero G contribution, finite gradients, and hash parameter registration. The
+combined batch also validates widths 16 and 64 before launching all twelve arms.
+The d=3 runs at all three widths were launched as overlapping steps in existing
+allocation 3143304. Combined interactive job **3143670** resumes their epoch
+checkpoints and runs the other nine arms on three GPUs, with a fourth GPU for
+the separate Mamba-2 experiment below. Outputs/checkpoints
+(the directory retains its original two-width name):
+`results/mqar_gdn_reset/w16w32_s123/w{16,32,64}-d{1,2,3,4}.{log,json,pt}`.
+The batch submits continuation slices if needed. SC d=4 job 3143305 is temporarily
+held in the regular partition; the MQAR chain restores it to interactive at exit.
+Superseded pending MQAR jobs 3143356, 3143357, 3143362, 3143370 and 3143373 were canceled.
+
+### MQAR: width-16 Mamba-2 + SMAT/reset, independent writes (2026-09-13)
+
+Separate experiment requested alongside the GDN sweep: native Mamba-2 control
+(d=1) and SMAT/reset d=2/3/4, seed 123, width 16, two layers, 32 epochs, lr 0.01.
+Uses the reference Mamba-2 d_state=128 and head dimension 32. SMAT uses trained
+content hashes from layer inputs, causal key convolution, sparse c=1 reads,
+1000-step hash annealing, independent sigmoid G writes initialized at 0.1,
+and sigmoid read gates initialized at 0.1. G has no temporal decay, matching
+the additive-memory setup of the new GDN hybrid; this differs from the recent
+selective-copying setup. Recurrence and short convolution reset at the midpoint.
+All length-specific hashes are registered before optimizer construction.
+GPU preflight passed for native Mamba-2 equivalence, reset isolation, nonzero G
+contribution, finite gate/hash gradients, and parameter registration at all
+three sequence lengths for d=2/3/4.
+
+`run_mqar_mamba_w16.sh` validates and launches the four arms; the combined
+interactive job 3143670 runs this script on GPU 3 and includes its checkpoints
+in continuation/completion checks. A d=3 starter runs after validation in an
+overlapping step of allocation 3143304. Separate logs, source snapshots, epoch
+status and checkpoints: `results/mqar_mamba_reset/w16_independent_s123/`.
+
+### PG-19 300M-token sweep, COMPLETE (2026-09-12/13), nll per GPT-2 token on the PG-19 test split, 8 layers / d_model 384
+| arm | 16K nll (ppl) | 32K nll (ppl) | non-emb params |
+|---|---|---|---|
+| Gated DeltaNet | **3.678 (39.6)** | **3.738 (42.0)** | 9.5M |
+| SMAT d=2 c=1 | 3.743 (42.2) | 3.788 (44.2) | 8.5M used (7.55M base + 0.97M hash / direction logits / key conv; a further 6.3M alpha table was allocated but never used and is no longer allocated) |
+| SMAT d=3 c=1 | 3.744 (42.3) | 3.787 (44.1) | 8.5M used |
+| SMAT d=4 c=1 | 3.741 (42.1) | 3.788 (44.2) | 8.5M used |
+| Mamba-2 | 3.752 (42.6) | 3.803 (44.8) | 7.6M |
+| transformer (RoPE + 4x MLP) | 3.797 (44.6) | 3.910 (49.9) | 14.2M |
+
+SMAT (paper mask, reset, hyperplane read, trained hash, fixed-weight read) beats Mamba-2 by 0.01 nats at 16K and
+0.015 at 32K, flat across d = 2/3/4, and trails GDN by 0.065 / 0.05.  Loss by position is flat beyond ~1K for every arm
+at both lengths; SMAT pays ~0.05 nats in the window just before its boundary reset.  The 16K d=4 arm was rerun from
+scratch after a parameter-order change broke its optimizer resume (checkpoints now store parameter names and resumes
+remap by name).
+
+### MQAR GDN/reset interleaved-batch ablation (2026-09-13)
+
+Widths 16/32, d=3, seed 123, starting from scratch with identical initialization,
+data, optimizer, lr=0.01 and 32 epochs. Only training batch order changes: each
+epoch uses a deterministic permutation of the existing 707 batches. Every batch
+appears once, preserving task weights and within-batch examples; validation order
+and the initial prebuild forward stay unchanged. The sampler uses its own RNG
+(seed 123 + epoch), so resuming at an epoch reproduces its permutation.
+
+Both runs started on allocation 3143586. Replacement combined MQAR job 3143670
+resumes these along with all earlier MQAR arms; pending job 3143470 was canceled.
+Separate checkpoints/logs and full validation history:
+`results/mqar_gdn_interleaved/w16w32_s123/`. Entrypoints:
+`zoo_gdn_interleaved_configs.py`, `zoo_mqar_interleave.py`,
+`run_mqar_interleaved.sh`.
+
+### MQAR campaign moved to one GPU (2026-09-13)
+
+At the user's request, pending four-GPU job 3143670 was replaced by **3144330**
+(`run_mqar_one_gpu.sbatch`). One interactive GPU, four concurrent training
+processes, 100-minute work slices within two-hour allocations. The scheduler
+`mqar_one_gpu.py` preserves all existing per-experiment checkpoint paths and
+skips completed runs. Each allocation pre-submits an after-any successor; clean
+incomplete runs and allocation timeouts continue automatically. There is no
+fixed slice-count cap. A successful full campaign cancels the unused successor
+and releases postponed SC d=4 job 3143305; an ordinary validation/training error
+stops the successor for diagnosis.
+
+The manifest contains the original 18 MQAR arms plus plain GDN at widths 16/32
+with interleaved batches, to give the interleaving experiment matching controls.
+Priority: resume width16 Mamba-SMAT d3, run plain Mamba, and run the interleaved
+GDN controls; then the other unfinished arms. Status is written to
+`results/mqar_one_gpu/status.json`, and per-allocation source snapshots/test logs
+are in `results/mqar_one_gpu/<jobid>/`. This supersedes earlier four-GPU scheduling
+notes; the individual experiment recipes and result folders are unchanged.
+
+### Adaptive sequential + multi-node dispatch (2026-09-13, supersedes one-GPU sharing)
+
+`mqar_dispatch.py controller` maintains one **sequential** interactive worker
+(`run_mqar_dispatch_single.sbatch`, one GPU, one experiment at a time), plus a
+regular-partition multi-node backlog job (`run_mqar_dispatch_bulk.sbatch`, up to
+four nodes, one GPU and one sequential worker per node). The regular partition
+allows the backlog allocation to run alongside the interactive allocation.
+
+Every 20 seconds the controller excludes completed experiments, active claims,
+and the interactive worker's reserved first experiment from the backlog manifest.
+If the backlog job is still pending and that manifest changes, it cancels only
+a PENDING job and submits a replacement. Running multi-node jobs are retained;
+their workers also check completion and acquire shared atomic directory claims
+before starting anything. Claims owned by terminated Slurm allocations are cleaned
+by the controller. An experiment failure is recorded under `errors/` and is not
+retried endlessly. Completed/unfinished checkpoints remain in the original paths.
+
+Workers checkpoint near 100 minutes in a two-hour allocation. The controller
+submits replacement allocations until all 20 experiments complete; postponed SC
+d=4 is then released. The controller itself is a persistent lightweight process
+on the login node, with PID/host in `results/mqar_dispatch/controller.json`, job
+IDs in `jobs.json`, live state in `status.json`, and output in `controller.log`.
+Restarting the controller reacquires a singleton lock and adopts existing dispatch
+jobs. Creating `results/mqar_dispatch/STOP` stops future scheduling (it does not
+cancel already running allocations). Remove that file before restarting.
+
+Tests verified single ownership under eight simultaneous claim attempts, cleanup
+of claims from finished allocations, and omission of active, reserved, and
+completed tasks from queued manifests. Runtime locks provide a second check if a
+queued job starts during a refresh.
+
+Controller lifetime correction: the login-node background process did not persist.
+Queue management now runs inside the sequential Slurm allocation and pre-submits
+an after-any sequential successor while the current allocation is alive. Each new
+sequential worker starts its own controller process and resumes persisted dispatch
+state. The current allocation 3144373 was repaired via an overlapping controller
+step, and successor 3144412 was verified submitted. This supersedes the earlier
+login-node persistence description.
+
+### Corrected width-16 Mamba MQAR: hd16/ds16 (2026-09-13)
+
+User explicitly requested width16 plain Mamba-2 and SMAT d=2/3/4 with both
+headdim=16 and d_state=16. All four now use that configuration (two heads),
+seed123, two layers, lr0.01 and up to32 epochs; the SMAT arms retain independent
+writes. Fresh output paths: `results/mqar_mamba_reset/w16_hd16_ds16_independent_s123/`.
+The older `w16_independent_s123` checkpoints/results used hd32/ds128 and are
+preserved separately, not resumed or mixed with the corrected experiment.
+The historical width32/64 paper table already used hd16/ds16 and is unaffected.
+
+Sequential interactive job **3144545** reserves the corrected baseline first.
+Multi-node backlog **3144546** includes corrected d2/d3/d4 and the remaining GDN
+campaign. Dispatch priority starts with the four corrected Mamba arms, and the
+Slurm-hosted controller continues sequential jobs and refreshes the queued bulk
+manifest. GPU preflight checks assert both dimensions and two heads for all four
+arms and test baseline equivalence, gradients, and all MQAR sequence lengths.

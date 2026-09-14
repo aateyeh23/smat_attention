@@ -2,3 +2,24 @@ data/
 zoology_cache/
 __pycache__/
 *.pyc
+
+# Local training checkpoints, verbose logs, and compiled Triton caches.
+results/**/*.pt
+results/**/*.tmp
+results/**/*.log
+results/**/*.out
+results/**/check_cache/
+results/**/cache-*/
+lm/out/**/*.pt
+lm/out/**/*.log
+lm/out/**/*.out
+
+# Live scheduler state; retain experiment manifests and result summaries.
+results/mqar_dispatch/backlog-[0-9]*.json
+results/mqar_dispatch/claims/
+results/mqar_dispatch/errors/
+results/mqar_dispatch/controller.json
+results/mqar_dispatch/controller.lock
+results/mqar_dispatch/jobs.json
+results/mqar_dispatch/status.json
+results/mqar_one_gpu/
