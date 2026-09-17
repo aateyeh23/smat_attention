@@ -28,3 +28,19 @@ __pycache__/
 # deltaai/results are the record.
 deltaai/logs/**/*.out
 /logs/*.out
+
+# Modal staging bundle duplicates source/dependencies and the cached MQAR data.
+/deltaai/results/mqar_gdn_four_reads/modal_bundle/
+/deltaai/results/pg19_scale_pilot/*.bin
+/deltaai/results/mqar_width_sweeps/**/*.pt
+/deltaai/results/pg19_2b_pretrain/**/*.pt
+/deltaai/results/pg19_2b_pretrain/**/*.partial
+/deltaai/results/mqar_gdn_transport/**/*.pt
+/deltaai/results/mqar_gdn_transport/**/*.partial
+
+# Experiment checkpoints and copied upstream sources stay outside Git.
+/deltaai/results/**/*.pt
+/deltaai/results/**/*.partial
+/deltaai/results/**/*.tar.gz
+/deltaai/results/mqar_log_linear/upstream/
+/deltaai/results/pg19_updated_transport/**/sources/

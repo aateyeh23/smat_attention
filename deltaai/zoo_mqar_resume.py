@@ -18,7 +18,9 @@ class ResumableTrainer(Trainer):
         with torch.no_grad():
             self.model(next(iter(self.train_dataloader))[0].to(self.device))
         self.loss_fn = torch.nn.CrossEntropyLoss()
-        self.optimizer = torch.optim.AdamW(self.model.parameters(), lr=self.learning_rate,
+        parameters = (self.optimizer_parameters() if hasattr(self, 'optimizer_parameters')
+                      else self.model.parameters())
+        self.optimizer = torch.optim.AdamW(parameters, lr=self.learning_rate,
                                           weight_decay=self.weight_decay)
         self.scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
             self.optimizer, T_max=self.max_epochs, eta_min=0.0)
@@ -33,12 +35,25 @@ class ResumableTrainer(Trainer):
                 if hasattr(module, "_steps"):
                     module._steps = ck.get("module_steps", {}).get(
                         name, 1 + start * len(self.train_dataloader))
-            if ck["complete"]:
+            resume_rejected = (os.environ.get('MQAR_RESUME_REJECTED') == '1'
+                               and self.early_stopping_metric is None
+                               and start < self.max_epochs
+                               and ck['metrics'].get('gate/failed', 0) > .5)
+            if ck["complete"] and not resume_rejected:
                 print(f"ALREADY COMPLETE: {path}", flush=True); return
+            if resume_rejected:
+                # The stopping epoch saved before its scheduler step. Complete
+                # that step so continuation follows the original32-epoch curve.
+                self.scheduler.step()
             torch.set_rng_state(ck["rng_cpu"].cpu())
             torch.cuda.set_rng_state_all([v.cpu() for v in ck["rng_cuda"]])
             np.random.set_state(ck["rng_numpy"]); random.setstate(ck["rng_python"])
             print(f"RESUMED {path.name} at epoch {start}", flush=True)
+        optimizer_config = dict(learning_rate=self.learning_rate,
+                                groups=[{k:g[k] for k in ('lr','initial_lr','weight_decay')}
+                                        for g in self.optimizer.param_groups])
+        (folder/'optimizer-config.json').write_text(json.dumps(optimizer_config,indent=2)+'\n')
+        print('OPTIMIZER_CONFIG '+json.dumps(optimizer_config),flush=True)
         print(f"TRAINING {path.name} parameter_tensors={len(list(self.model.parameters()))} epochs={self.max_epochs}", flush=True)
         started = time.monotonic()
         for epoch in range(start, self.max_epochs):

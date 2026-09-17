@@ -168,9 +168,49 @@ class ContentAssign(nn.Module):
         self.last_occ = None      # normalised entropy of the profile histogram
         self.last_dens = None     # mean row density of G over recent queries
         self.aux = None           # load-balancing penalty of the last forward
+        self.read_k = None
+        self.read_backend = "torch"
+
+    def enable_topk_reads(self, k, d_model):
+        """Learn a categorical score over types; gather exactly k distinct summaries.
+
+        This reader is independent of the write hash. At dim=1, types are points.
+        Selection is discrete; the selected logits receive ordinary softmax
+        gradients. This does not make scoring/summary construction constant cost.
+        """
+        n_types = self.N0 if self.mode == "point" else self.D * self.n_cosets
+        if not 1 <= k <= n_types:
+            raise ValueError(f"read_k={k} exceeds {n_types} available types")
+        self.read_k = int(k)
+        self.W_read = nn.Parameter(torch.randn(self.h, n_types, d_model) * d_model ** -0.5)
+        self.b_read = nn.Parameter(torch.zeros(self.h, n_types))
+        if hasattr(self, "Wd"):
+            self.Wd.requires_grad_(False)  # the top-k reader replaces direction selection
+
+    def _topk_reads(self, u):
+        if getattr(self, 'address_reads', False):
+            from smat_address_reads import address_read_logits
+            logits = address_read_logits(self, u)
+            bias = torch.zeros_like(self.b_read)
+        else:
+            logits = torch.einsum("blm,hem->bhle", self.ln(u), self.W_read)
+            bias = self.b_read
+        if self.training and getattr(self, 'read_noise_std', 0.) > 0:
+            # Explore alternative discrete routes early, without extra reads.
+            # The mixer anneals this noise to zero; evaluation is deterministic.
+            logits = logits + torch.randn_like(logits) * self.read_noise_std
+        if self.read_backend == "triton" and self.read_k == 4:
+            from smat_read_triton import top4_softmax
+            idx, weights = top4_softmax(logits, bias)
+        else:
+            logits = logits + bias[None, :, None, :]
+            scores, idx = logits.flatten(0, 1).topk(self.read_k, dim=-1)
+            weights = scores.softmax(-1)
+        self.last_read_idx, self.last_read_weights = idx.detach(), weights.detach()
+        return idx, weights
 
     # ------------------------------------------------------------------ hash
-    def _cells(self, u, plant_at=False, tok_w=None):
+    def _cells(self, u, plant_at=False, tok_w=None, retain_neighbors=False):
         """u: (nb, L, d_model) layer input -> (nb*h, L, N0) cell weights whose
         forward value is the one-hot of ``floor(q sigma(W u))`` and whose
         backward path is the two-bin interpolation."""
@@ -184,7 +224,8 @@ class ContentAssign(nn.Module):
         lo = s.floor()
         frac = s - lo
         lo = lo.long()
-        hi = (lo + 1).clamp(max=self.q - 1)
+        hi = ((lo + 1).remainder(self.q) if getattr(self, 'periodic_hash', False)
+              else (lo + 1).clamp(max=self.q - 1))
         B = nb * self.h
         idx = torch.zeros(B, L, 1, dtype=torch.long, device=u.device)
         w = torch.ones(B, L, 1, device=s.device, dtype=s.dtype)
@@ -200,7 +241,10 @@ class ContentAssign(nn.Module):
             idx = torch.cat([idx + lo[..., k:k + 1] * place, idx + hi[..., k:k + 1] * place], dim=-1)
             w = torch.cat([w * w_lo, w * w_hi], dim=-1)
             ws = torch.cat([ws * s_lo, ws * s_hi], dim=-1)
-        if a >= 1.0 and getattr(self, "hard_k1", True):
+        if retain_neighbors and getattr(self, 'symmetric_write_grad', False):
+            from smat_address_reads import symmetric_write_routes
+            idx, w, ws = symmetric_write_routes(s, self.q)
+        if a >= 1.0 and getattr(self, "hard_k1", True) and not retain_neighbors:
             # hard mask: keep only the chosen cell (forward weight 1); its STE gradient still reaches W through
             # the chosen bin's interpolation weight.  4x less pooling / gather work than carrying all 2^dim pairs.
             idx1 = torch.zeros(B, L, 1, dtype=torch.long, device=u.device); w1 = torch.ones(B, L, 1, device=s.device, dtype=s.dtype)
@@ -228,11 +272,16 @@ class ContentAssign(nn.Module):
         occ = occ.scatter_add(-1, hi.transpose(1, 2), soft_hi.transpose(1, 2))
         occ = occ / occ.sum(-1, keepdim=True).clamp_min(1e-6)
         self.aux = None if self.freeze else (occ * (occ.clamp_min(1e-9) * self.q).log()).sum(-1).mean()
+        if not self.freeze and getattr(self, 'joint_hash_balance', False):
+            from smat_address_reads import write_address_dependence
+            joint_weights = ws if tok_w is None else ws * tok_w.reshape(B,L,1).to(ws.dtype)
+            self.aux = self.aux + write_address_dependence(
+                idx, joint_weights, self.h, self.q, self.dim)
         if plant_at and self.plant and self.plant_cols.numel():
             cols = self.plant_cols[self.plant_cols < L]
             if cols.numel():
                 if out is None:                                     # sparse path: overwrite the (idx, w) pairs
-                    idx2, w2 = idx.clone(), w.clone()
+                    idx2, w2 = (t.clone() for t in self._sparse)
                     idx2[:, cols, :] = self.plant_cells[: cols.numel()].view(1, -1, 1)
                     w2[:, cols, :] = 0.0; w2[:, cols, 0] = 1.0
                     self._sparse = (idx2, w2)
@@ -255,10 +304,53 @@ class ContentAssign(nn.Module):
         if self.shift:                                              # prof(j) = hash(h_{j-shift})
             hk = torch.cat([h.new_zeros(h.shape[0], self.shift, h.shape[2]),
                             h[:, :-self.shift]], dim=1)
-        Wk = self._cells(hk[:, :n], plant_at=True, tok_w=key_w)     # (b, n, N0)  [None on the sparse path]
+        neighbor_grad = (getattr(self, "write_hash_neighbor_grad", False)
+                         and torch.is_grad_enabled())
+        if neighbor_grad and (self.read_k is None or not getattr(self, "sparse_ops", False)
+                              or self.anneal != 1.0):
+            raise ValueError("Neighbor write gradients require hard pooling and top-k reads")
+        balance_w = (key_w.detach() if key_w is not None
+                     and getattr(self, 'detach_balance_weights', False) else key_w)
+        Wk = self._cells(hk[:, :n], plant_at=True, tok_w=balance_w,
+                        retain_neighbors=neighbor_grad)          # None on the sparse path
         aux_k = self.aux
         sk = self._sparse
+        if neighbor_grad:
+            neighbor_idx, neighbor_weights = sk
+            # At anneal=1 only the first route has a nonzero forward weight,
+            # including planted anchors. Pool it once; train its hash separately.
+            sk = (sk[0][..., :1], sk[1][..., :1].detach())
+            self._sparse = sk
         self.last_hard_k = (Wk.argmax(-1) if Wk is not None else sk[0][..., 0]).detach()
+        if self.read_k is not None:
+            if not getattr(self, "sparse_ops", False):
+                raise ValueError("Top-k summary reads require sparse_ops")
+            from smat_pool_ops import pool_sorted, read_sorted
+            P, V, Phi_r = Psi[:, :n], Vb[:, :n], Phi[:, n:]
+            if getattr(self, "delta_updates", False):
+                from smat_delta_pool import pool_delta
+                memory = pool_delta(P, V, sk[0], sk[1].to(P.dtype), key_w, self.N0)
+                if neighbor_grad and neighbor_weights.requires_grad:
+                    from smat_write_hash_grad import with_delta_write_hash_gradient
+                    memory = with_delta_write_hash_gradient(
+                        memory, P, V, neighbor_idx, neighbor_weights, key_w, self.N0)
+            else:
+                memory = pool_sorted(P, V, sk[0], sk[1].to(P.dtype), self.N0)
+                if neighbor_grad and neighbor_weights.requires_grad:
+                    from smat_write_hash_grad import with_write_hash_gradient
+                    memory = with_write_hash_gradient(
+                        memory, P, V, neighbor_idx, neighbor_weights)
+            if self.mode == "plane":
+                # cuBLAS beats the sparse and custom dense kernels at training shapes.
+                memory = torch.einsum("eox,bxrp->beorp", self.M.to(memory.dtype), memory)
+                memory = memory.flatten(1, 2)
+            idx, weights = self._topk_reads(h[:, n:])
+            self.last_write_idx, self.last_write_weights = sk[0].detach(), sk[1].detach()
+            self.aux = None if self.freeze else aux_k
+            if self.read_backend == "triton":
+                from smat_read_triton import read_topk
+                return read_topk(Phi_r, idx, weights.to(Phi_r.dtype), memory)
+            return read_sorted(Phi_r, idx, weights.to(Phi_r.dtype), memory)
         Wq = self._cells(h[:, n:])                                  # (b, T_R, N0)
         sq = self._sparse
         self.last_soft_q = self._soft

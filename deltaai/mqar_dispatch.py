@@ -11,13 +11,14 @@ import subprocess
 import sys
 import time
 import importlib
-import mqar_one_gpu as campaign
-from mqar_one_gpu import TASKS, paths
+campaign = importlib.import_module(os.environ.get('MQAR_CAMPAIGN_MODULE', 'mqar_one_gpu'))
+TASKS, paths = campaign.TASKS, campaign.paths
 
 ROOT=Path(__file__).resolve().parent
 STATE=Path(os.environ.get('MQAR_DISPATCH_STATE',ROOT/'results/mqar_dispatch'))
 ACTIVE={'PENDING','RUNNING','CONFIGURING','COMPLETING','SUSPENDED'}
 JOB_NAMES={}
+JOB_PREFIX=os.environ.get('MQAR_JOB_PREFIX', 'mqar')
 
 
 def key(task): return '-'.join(map(str,task))
@@ -79,8 +80,13 @@ def worker(role,manifest,minutes):
     preferred=os.environ.get('MQAR_FIRST_TASK')
     if preferred:
         candidates.sort(key=lambda t:key(t)!=preferred)
-    deadline=time.monotonic()+minutes*60
     job=os.environ['SLURM_JOB_ID']
+    # Honor shorter backfill allocations too, leaving time to save/exit.
+    remaining=commands(['squeue','-h','-j',job,'-o','%L']).splitlines()[0]
+    days,clock=(remaining.split('-',1) if '-' in remaining else ('0',remaining))
+    fields=list(map(int,clock.split(':')))
+    seconds=int(days)*86400+sum(v*60**i for i,v in enumerate(reversed(fields)))
+    deadline=time.monotonic()+min(minutes*60,max(0,seconds-120))
     attempted=set()
     mamba_validated=False
     gdn_validated=False
@@ -101,6 +107,14 @@ def worker(role,manifest,minutes):
         if selected is None: break
         task,directory=selected;attempted.add(key(task))
         config,folder,_=paths(task);folder.mkdir(parents=True,exist_ok=True)
+        if hasattr(campaign, 'prepare_worker') and not gdn_validated:
+            try:
+                campaign.prepare_worker()
+            except Exception as error:
+                write(STATE/'errors'/f'{key(task)}.json',dict(task=task,job=job,preflight_failed=True,error=repr(error)))
+                release(directory)
+                raise
+            gdn_validated=True
         if task[0] in ('gdn','delta','interleaved','aligned','alignedsoft','tiedkeys','causalkeys','causalsoft','routegrad','softroutes') and not gdn_validated:
             with (folder/f'heads-preflight-{job}-{os.getpid()}.log').open('w') as test_log:
                 check=subprocess.run([sys.executable,'-u','test_gdn_heads.py'],cwd=ROOT,
@@ -147,6 +161,7 @@ def worker(role,manifest,minutes):
 
 def submit(role,manifest=None,first=None,count=0,dependency=None):
     cmd=['sbatch','--parsable','--comment=mqar-dispatch-v1']
+    cmd += ['--job-name='+JOB_PREFIX+('-backlog' if role=='bulk' else '-sequential')]
     if dependency:cmd += ['--dependency=afterany:'+dependency]
     if role=='bulk':
         cmd += ['--nodes='+str(min(4,count)), 'run_mqar_dispatch_bulk.sbatch',str(manifest)]
@@ -172,7 +187,7 @@ def controller(interval):
                 state['reserved']=state.pop('next_reserved',None)
                 write(STATE/'jobs.json',state)
             # Recover submitted allocations if the controller restarted between sbatch and saving its state.
-            for role,name in [('single','mqar-sequential'),('bulk','mqar-backlog')]:
+            for role,name in [('single',JOB_PREFIX+'-sequential'),('bulk',JOB_PREFIX+'-backlog')]:
                 candidates=[job for job in current if JOB_NAMES.get(job)==name]
                 if state.get(role) not in current and candidates:
                     state[role]=candidates[0]
@@ -183,8 +198,10 @@ def controller(interval):
                     job=state.get(role)
                     if current.get(job)=='PENDING': commands(['scancel','--state=PENDING',job])
                 write(STATE/'status.json',dict(complete=True,unfinished=[]))
-                subprocess.run(['scontrol','update','JobId=3143305','Partition=ghx4-interactive','Nice=0'])
-                subprocess.run(['scontrol','release','3143305'])
+                release_job=getattr(campaign, 'RELEASE_JOB', '3143305')
+                if release_job:
+                    subprocess.run(['scontrol','update','JobId='+release_job,'Partition=ghx4-interactive','Nice=0'])
+                    subprocess.run(['scontrol','release',release_job])
                 print('ALL EXPERIMENTS COMPLETE',flush=True);return
             single=state.get('single')
             reserved=state.get('reserved') if current.get(single) in ('PENDING','CONFIGURING') else None

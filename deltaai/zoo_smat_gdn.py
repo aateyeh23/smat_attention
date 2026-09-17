@@ -20,7 +20,8 @@ class SmatGDNReset(nn.Module):
                  n_heads=None, reset=True, lam_bias=-2.197224577,
                  anneal_steps=1000, balance_coef=0.01, hash_codim=1,
                  prebuild_lengths=(64, 128, 256), memory_update="additive", hash_key_shift=None,
-                 memory_hash_source="hidden", memory_key_mode="base", memory_route_full_grad=False, memory_route_soft=False, **_):
+                 memory_hash_source="hidden", memory_key_mode="base", memory_route_full_grad=False, memory_route_soft=False,
+                 memory_read_k=None, **_):
         super().__init__()
         if memory_update not in ("additive", "delta"):
             raise ValueError(memory_update)
@@ -36,6 +37,9 @@ class SmatGDNReset(nn.Module):
         self.memory_key_mode = memory_key_mode
         self.memory_route_full_grad = memory_route_full_grad
         self.memory_route_soft = memory_route_soft
+        self.memory_read_k = memory_read_k
+        if memory_read_k is not None and (memory_route_soft or memory_route_full_grad):
+            raise ValueError("Fixed top-k reads use exactly one hard write route")
         self.gdn = GatedDeltaNet(hidden_size=d_model, head_dim=headdim,
             num_heads=n_heads if n_heads is not None else (1 if d_model == 16 else 2), expand_v=expand_v,
             mode="chunk", use_gate=True, use_short_conv=True, layer_idx=layer_idx)
@@ -58,6 +62,11 @@ class SmatGDNReset(nn.Module):
             # Register every mixture length's hash before the optimizer is built.
             for length in prebuild_lengths:
                 self._spec(length, torch.device("cpu"))
+                if memory_read_k is not None:
+                    if self.specs[length] is None or int(self.specs[length].dim) != d - 1:
+                        raise ValueError(f"Requested d={d} is infeasible at length={length}")
+                    for ca in self.ca[str(length)].values():
+                        ca.enable_topk_reads(memory_read_k, d_model)
             self.specs.clear()  # device-specific geometry is rebuilt after .to(cuda)
             if memory_key_mode in ('tied_previous','tied_causal'):
                 # Preserve the initialization RNG stream for the unchanged layers.
@@ -120,6 +129,11 @@ class SmatGDNReset(nn.Module):
                     kf = F.normalize(kf, dim=-1, eps=1e-6)
                 ca = next(iter(self.ca[str(length)].values()))
                 ca.delta_updates = self.memory_update == "delta"
+                if self.memory_read_k is not None:
+                    if ca.read_k != self.memory_read_k:
+                        raise ValueError("Fixed-read routing requires a prebuilt sequence length")
+                    ca.anneal = 1.0  # one write bucket from the first step, also in eval
+                    ca.hard_k1 = True
                 if self.memory_route_soft:
                     ca.anneal = 0.0  # same sparse neighboring-cell mixture in train and eval
                 if self.memory_route_full_grad:

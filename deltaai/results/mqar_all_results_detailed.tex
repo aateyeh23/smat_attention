@@ -1,0 +1,23 @@
+% Requires \usepackage{booktabs}
+\begin{table*}[t]
+\centering
+\scriptsize
+\caption{Final MQAR overall and64-pair accuracy (\%), epoch32, seed123.}
+\begin{tabular}{llrrrrrrrrr}
+\toprule
+ & & & \multicolumn{4}{c}{Overall accuracy} & \multicolumn{4}{c}{64-pair accuracy} \\
+\cmidrule(lr){4-7}\cmidrule(lr){8-11}
+Backbone & Configuration & Width & Base & $d=2$ & $d=3$ & $d=4$ & Base & $d=2$ & $d=3$ & $d=4$ \\
+\midrule
+GDN & Original & 16 & 35.71 & 50.04 & 48.84 & 46.03 & 0.92 & 8.64 & 3.35 & 3.05 \\
+GDN & Original & 32 & 69.86 & 59.79 & 43.57 & 68.07 & 10.22 & 10.70 & 5.14 & 15.99 \\
+GDN & Original & 64 & 43.38 & 43.96 & 40.50 & 0.03 & 1.16 & 7.82 & 5.30 & 0.03 \\
+GDN & Current transport & 32 & 69.86 & 70.26 & 82.78 & 82.55 & 10.22 & 16.98 & 69.67 & 46.74 \\
+GDN & Current transport & 64 & 43.38 & 68.95 & 64.92 & 32.87 & 1.16 & 17.39 & 18.88 & 3.09 \\
+GDN & Transport ablation & 32 & 69.86 & -- & 81.78 & -- & 10.22 & -- & 49.08 & -- \\
+Mamba-2 & Original & 16 & 42.03 & 43.12 & 59.47 & 44.67 & 3.35 & 3.42 & 28.20 & 3.94 \\
+Mamba-2 & Original & 32 & 77.24 & 75.68 & 83.99 & 84.22 & 25.99 & 39.60 & 68.11 & 56.33 \\
+Mamba-2 & Original & 64 & 83.92 & 90.51 & 90.10 & 93.02 & 44.38 & 80.73 & 74.43 & 85.41 \\
+\bottomrule
+\end{tabular}
+\end{table*}

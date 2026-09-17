@@ -1,5 +1,30 @@
 # DeltaAI job scripts
 
+## Current GDN + SMAT transport configuration
+
+The selected recipe is `23_decay_no_rescale`: learned scalar decay enabled on
+distant transport, profile-output incidence rescaling disabled, neighboring
+write-hash gradients enabled, detached write-hash inputs, and content-only
+writes. It retains one hard bucket write and four distinct learned weighted
+hyperplane reads per head. The width32/d3 recipe uses two layers, two heads,
+and head/state dimensions16 with the original optimizer.
+
+`zoo_gdn_transport_configs.py` defines these defaults. The audited Modal
+launcher `modal_gdn_iteration.py::run` selects this trial by default. Historical
+named variants retain their explicit configurations and original defaults.
+
+The width32/d3 run **completed32epochs**, with accuracy82.78% versus81.78%
+for trial22 and69.86% for GDN. All15 baseline gates passed. See
+[`results/mqar_gdn_iterations/23_decay_no_rescale/FINAL.md`](results/mqar_gdn_iterations/23_decay_no_rescale/FINAL.md)
+for the checkpoint and comparison. This single-seed MQAR result does not
+establish PG19 or selective-copying gains.
+
+The launcher supports width32/64 and d2/3/4. `--continue-below-baseline`
+logs baseline comparisons without terminating on a failed gate, and can resume
+a gate-stopped checkpoint while completing its skipped scheduler step.
+Width64 trials26–28 use this option and `--width 64`, with two heads and
+head/state16. Their matched baseline is the archived width64 GDN history.
+
 Ports of the `../smat/*.sbatch` scripts for NCSA DeltaAI (GH200, partition
 `ghx4`, account `bekw-dtai-gh`).  The Python code in `../smat` is used
 unmodified; only the Slurm headers and environment differ.  Results and logs
@@ -1178,3 +1203,210 @@ campaign. Dispatch priority starts with the four corrected Mamba arms, and the
 Slurm-hosted controller continues sequential jobs and refreshes the queued bulk
 manifest. GPU preflight checks assert both dimensions and two heads for all four
 arms and test baseline equivalence, gradients, and all MQAR sequence lengths.
+
+### MQAR: width 16, one write and four distinct reads (2026-09-16)
+
+Job **3162862**, `run_mqar_four_reads.sbatch`, requests one interactive GPU for
+GDN + SMAT d=2/3/4, model width 16, one head, head/key/value dimensions 16
+(16x16 memory state per head/profile). GDN's default remains two heads at other
+widths. Two layers, seed 123, lr 0.01, interleaved batches, the existing five-cell
+MQAR mixture, up to 32 epochs with the existing >99% accuracy early stop.
+
+The new `memory_read_k=4` path uses exactly one hard write bucket throughout
+training and evaluation, delta-memory updates, learned causal tied memory keys,
+and a weighted top-four selection over distinct hyperplane summaries. Directions
+may differ. At d=2, hyperplanes are individual points. A learned linear scorer
+over all types replaces the neighboring-cell query interpolator and hard direction
+selector. Its selected logits are softmax-normalized; selection is discrete.
+All types are scored and the existing incidence summaries are still constructed,
+so four gathered reads does not imply constant total routing cost. The write
+occupancy auxiliary loss and planted write anchors are retained; the old query
+cell occupancy auxiliary loss is inapplicable to this categorical reader.
+
+CPU checks passed for exact route counts, dense-reference outputs and gradients,
+and the one-head/two-head default rule. The job gates training on GPU checks at
+all MQAR lengths for all three d values, state shape, effective geometry, finite
+nonzero gradients, reset isolation, train/eval agreement and checkpoint roundtrip.
+A real two-epoch smoke run checks trainer checkpoint resumption before full-data
+training. The three arms run sequentially, with automatic continuation after
+two-hour allocations; validation/training errors stop continuation.
+
+Outputs: `results/mqar_gdn_four_reads/w16_h1_hd16_state16_s123/`. This directory
+contains the recipe, frozen source snapshot and hashes, preflight logs, smoke
+results, per-arm epoch checkpoints/metrics/history, and overall status. Entry
+points: `zoo_gdn_four_reads_configs.py`, `run_mqar_four_reads.py`, and
+`test_four_reads.py`. No trained results are available at submission time.
+
+At the user's request, pending standalone job 3162862 was replaced by the
+existing adaptive dispatcher: interactive job **3162888** reserves d=2 and
+two-node regular-partition backlog job **3162889** starts with d=3/4. The campaign
+is isolated by `MQAR_CAMPAIGN_MODULE=mqar_four_reads_campaign`, job prefix
+`mqar-read4`, and state under the result directory's `dispatch/`. Shared claims
+prevent duplicate training, the controller refreshes pending backlog allocations,
+and interactive successor jobs resume unfinished checkpoints. GPU validation and
+trainer smoke/resume checks are shared under a validation lock. Model code and
+the training recipe are unchanged. `dispatch/status.json` is the scheduler status;
+the per-arm `w16-d*.json` files contain training progress and metrics.
+
+Short 20-minute regular-partition backfill jobs **3162912** (d=3) and
+**3162913** (d=4) also use the same dispatcher claims/checkpoints. These offer
+single-GPU opportunities while the longer allocations wait; an incomplete short
+slice is subsequently resumed by the adaptive campaign.
+
+The user subsequently requested Modal to avoid the queue. The launcher
+`modal_mqar_four_reads.py` builds CUDA 13/PyTorch 2.11/Triton 3.7.1, runs the GPU
+preflight and real trainer resume smoke, then launches d=2/3/4 concurrently on
+one H100 each. It uploads the frozen model source, current Zoology/FLA source,
+and the existing MQAR data cache. Epoch checkpoints/metrics persist in Modal
+volume `smat-mqar-four-reads-results`, under `four_reads_w16_s123/`; each new
+epoch is also printed to Modal logs. The app is launched detached. Local app
+IDs/status are recorded in `results/mqar_gdn_four_reads/modal_launch.json`.
+The staging directory `modal_bundle/` is ignored by Git. Slurm fallback jobs
+are retained until Modal startup is confirmed.
+
+Modal GPU preflight passed all d=2/3/4 checks. Slurm jobs 3162888, 3162889,
+3162912, 3162913 and successor 3163054 were then canceled, and `dispatch/STOP`
+prevents further cluster scheduling. The Slurm d=2 run reached epoch 7 at
+39.2159375% validation accuracy before migration. Its model/optimizer/scheduler/RNG
+checkpoint and corresponding metrics/history were uploaded to the Modal volume;
+d=2 resumes at epoch 8 on H100, while d=3/4 start fresh. These are early results,
+not final accuracies. The active Modal app is recorded in `modal_launch.json`.
+
+All three Modal arms subsequently completed 32 epochs. Final validation accuracy:
+d=2 **50.0409375%**, d=3 **48.8384375%**, d=4 **46.0346875%**, versus the earlier
+width-16 GDN baseline's **35.705625%**. This seed supports an accuracy gain over
+GDN, but not increasing accuracy with d. The historical soft-write/soft-read
+d=3 reference remains much stronger at **78.05375%**. These are historical
+controls, not reruns on Modal; d=2 also resumed across GPU platforms. Its final
+validation loss (6.0985) is worse than GDN's (4.1910), despite higher accuracy.
+
+Final checkpoints, all 32 history entries per arm, training logs, metrics CSV,
+accuracy curves, and interpretation are saved in
+`results/mqar_gdn_four_reads/modal_results/`; start with `report.md`.
+App `ap-4isCxDz7XqUcfU7xwrXPXi` completed and stopped with zero tasks.
+All predecessor Modal apps are stopped; the Slurm dispatcher STOP remains set.
+
+### Expanded four-read MQAR sweeps
+
+`modal_mqar_width_sweeps.py` runs the same seed-123, 32-epoch, two-layer recipe
+at widths 32/64 for GDN and 16/32/64 for Mamba2. Every width has a baseline and
+SMAT d=2/3/4. Head and state dimensions are 16; GDN has two heads, while Mamba2
+keeps its native 2x expansion (2/4/8 heads). SMAT uses one learned write bucket
+and four distinct weighted read types. GDN keeps delta writes and tied causal
+keys; Mamba2 keeps its native additive memory/write gate. These sweeps use the
+frozen original routing backend, independently of the optimization work.
+
+Checkpoints and histories persist in `smat-mqar-width-sweeps:/seed123/full/`.
+`collect_mqar_width_sweeps.py --watch` refreshes the local CSV/Markdown report
+every minute until all arms complete. App IDs and source hashes are recorded in
+`results/mqar_width_sweeps/manifest.json`.
+
+All 20 arms completed 32 epochs. Final metrics, the LaTeX comparison table,
+accuracy curves and all checkpoints are in `results/mqar_width_sweeps/`;
+start with `final-report.md`. The strongest final arm is Mamba2 + SMAT d=4 at
+width 64: 93.02% overall and 85.41% on 64-pair recall, versus 83.92%/44.38% for
+Mamba2. GDN + SMAT is not consistently better, and GDN width-64 d=4 collapsed
+to chance under this shared learning-rate recipe. These are single-seed results.
+
+### Optional fused four-read backend
+
+`ContentAssign.read_backend = "triton"` enables `smat_read_triton.py` for the
+fixed-four-read path. It fuses bias/top-4/softmax and their derivatives and gathers query
+tiles directly into grouped tensor-core reads. Backward reduces sorted readers
+per cell without floating-point atomics. Route sorting remains a GPU PyTorch
+operation; plane aggregation/projection retain cuBLAS (the sparse and custom
+matrix kernels in `smat_aggregation_experiments.py` benchmarked slower).
+Write hashing/packing remains PyTorch, and delta updates still use
+the existing FLA chunk kernels. The reader supports CUDA float32 state/query
+dimensions up to 128 and uses tf32x3 products. Exact score ties choose the
+lowest type index. The default backend remains `torch`.
+
+`test_smat_read_gpu.py` checks float64-reference output/gradient agreement,
+duplicates, skewed/empty cells, odd feature sizes, sparse-incidence derivatives,
+top-4 routing, and full d=2/3/4 mixer parameter gradients. Run it through
+`modal_smat_kernel_pilot.py::sweep` for GPU validation followed by bounded 16K
+PG19 throughput pilots. Optimized modules are mounted under a separate import
+root; overlapping file/directory mounts can otherwise load the frozen reference
+module. The v1 integration checks were invalid for this reason. V3 validated
+the kernels, while v4 retains cuBLAS aggregation and adds FLA fused RMSNorm.
+
+### Larger PG19 models
+
+`lm/gdn_smat_scale.py` defines 16-layer, width-1024 models with a shared
+2816-wide SwiGLU FFN, tied GPT-2 embeddings, two 64-dimensional GDN heads, and
+fixed 16K context. Trainable counts are 200.49M/205.90M/220.85M/250.77M for
+baseline/d2/d3/d4. Short-prefix inference right-pads to the training window to
+preserve the learned geometry and recurrence split. Greedy generation recomputes
+the window without a cache and requires prompt plus answer to fit inside 16K;
+it does not support extrapolation beyond the trained context.
+
+`lm/prep_pg19_scale.py` prepares unique within-book next-token windows from the
+official disjoint PG19 lists, with SHA-256 manifests and book row provenance.
+`modal_pg19_scale_data.py::extend` reuses the completed 1B-token prefix to build
+2B unique tokens. `lm/train_pg19_scale.py` provides matched data order, BF16
+training, accumulation, fixed validation rows, retained 250M-token model
+milestones, and a resumable model/optimizer/RNG checkpoint every ten minutes.
+`modal_pg19_pretrain.py::validate` checks causal inference and optimizer resume
+on GPU. The full `::sweep` is separate from validation and throughput pilots.
+
+The selected implementation improved matched H100 training throughput by
+10.7%/12.9%/12.8% for SMAT d=2/3/4, with lower peak memory. Fused RMSNorm also
+improved plain GDN by 12.6%. D=4 fits microbatch 3 at 66.95 GB and reached
+52.6K tokens/s in the bounded pilot. Full measurements and rejected aggregation
+variants are recorded in `results/pg19_scale_pilot/optimization-report.md`.
+
+The four 2B-token runs were launched in Modal app `ap-rXpfNtHnd8XUVQJzq5Hz4r`.
+All use microbatches 3+3+2, giving an identical 131,072-token optimizer batch,
+40M-token learning-rate warmup, and a maximum 11.8 training hours including
+compilation/evaluation/checkpoint work. An unfinished run saves resumable state
+at the time cap. `collect_pg19_pretrain.py --watch` refreshes a report with both
+latest progress and a comparison at the latest common training-token count.
+Checkpoints live in `smat-pg19-2b-checkpoints:/seed123/d{1,2,3,4}/`; the same
+volume's `/source/` includes a self-contained source bundle, provenance, data
+manifest and loading instructions. Local provenance is under
+`results/pg19_2b_pretrain/`.
+
+The app was stopped at the user's request on September 16 at 21:20 CDT,
+before reaching the token target. Immutable handoff snapshots capture GDN at
+877,002,752 tokens and SMAT d=2/3/4 at 540,672,000 / 500,039,680 / 405,667,840.
+They are retained in each arm's Modal `handoff/` directory. The portable local
+package is `results/pg19_2b_pretrain/handoff/`, with weights-only and full
+optimizer checkpoints, exact source bundle, environment record and loading
+instructions. `download_pg19_handoff.py` downloads these snapshots and checks
+each file against the export's SHA-256 manifest. The periodic collector is
+stopped; historical training logs can include progress beyond exported states.
+
+### Width-32 GDN/SMAT with boundary transport
+
+`modal_gdn_transport.py::run` validates and trains one width-32, d=3 MQAR arm
+using the previous seed-123, 32-epoch, LR-0.01 recipe. `zoo_gdn_transport.py`
+keeps the two local GDN segments and one-write/four-read routing, but pools
+GDN boundary-transported write contributions additively and transports recent
+queries back to the boundary. `smat_gdn_transport.py` computes the products
+using FLA with identity initial states, zero values and 16-token chunks.
+The independent memory Q/K projection is frozen; memory features reuse GDN Q/K.
+
+GPU output/gradient checks against FP64 products and the dense masked operator,
+causality, reset isolation and checkpoint restoration passed. Experiment source,
+recipe, validation logs and matched-epoch comparisons are under
+`results/mqar_gdn_transport/w32_d3_s123/`; the checkpoint volume is
+`smat-gdn-transport-w32-d3`. `collect_gdn_transport.py --watch` refreshes progress
+and downloads the checkpoint on completion. This is an experimental variant,
+not a change to existing MQAR or PG19 models.
+
+The transport run is paused at epoch 23/32; its checkpoint is downloaded and
+Modal has stopped. The original source snapshot and results remain in that
+directory. The subsequent opt-in `zoo_gdn_transport_neighbor_configs.py` recipe
+sets `write_hash_neighbor_grad=True`. It keeps one pooled forward write and four
+reads, while `smat_write_hash_grad.py` restores gradients through zero-weight
+neighboring write routes during backward. The ordinary pool supplies key/value
+gradients; the adapter supplies only write-weight gradients. This is an additive
+pooling, first-order estimator and is not enabled for the older delta-pool runs.
+
+The new recipe is available through `modal_gdn_transport.py::run` with
+`--neighbor-write-grad`; it has not been launched. It uses a separate
+`/seed123/neighbor_write_grad/` directory in the same volume, so the original
+epoch-23 checkpoint is not implicitly resumed or overwritten. GPU reference
+checks now cover the neighbor estimator and both full-mixer modes, but these new
+checks have not been executed while runs are paused. Historical GPU validation
+above applies to the original implementation only.
