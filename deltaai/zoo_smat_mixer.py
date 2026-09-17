@@ -268,7 +268,7 @@ class SmatMamba2MR(nn.Module):
     def __init__(self, d_model, layer_idx=0, d=2, d_state=128, headdim=None, mask_bank=True, n_P=0,
                  lam_bias=-8.0, detach_g=False, write_gate=True, g_decay=False, kernel="id", r=64, lam_act="softplus", pool="sum", read="type", reset=False, d_layers=None, g_floor=None,
                  hash_mode="point", hash_shift=1, hash_conv=False, hash_freeze=False, anneal_steps=0, balance_coef=0.01, hash_codim=None, hash_src="hidden", hash_freeze_after=0, hash_lr_scale=1.0, balance_gated=False, hash_conv_width=4, hash_ckpt=False, sparse_ops=False, g_bf16=False,
-                 g_write_mode="shared", g_write_init=0.1, **_):
+                 g_write_mode="shared", g_write_init=0.1, mamba_heads=None, **_):
         super().__init__()
         # read == "chash": Abdullah's content-addressed assignment (content_addr.ContentAssign): profile = hash(key-side
         # source), row type = hash(query input), same C / pooling / decode as the paper.  hash_conv replaces the fixed
@@ -288,8 +288,19 @@ class SmatMamba2MR(nn.Module):
         self.lam_act, self.pool, self.read, self.reset = lam_act, pool, read, reset   # reset: run the recurrence separately on each half (paper mask: G is the only cross path)   # read: "type" (positional incidence) or "content" (softmax over ALL profiles by key match; option 2)   # pool: "sum" (additive profile states) or "delta" (per-profile delta rule)                              # "softplus" (unbounded) or "sigmoid" (lambda <= 1)
         d_inner = 2 * d_model
         headdim = headdim or min(64, d_inner)
-        self.mixer = Mamba2(d_model=d_model, d_state=d_state, d_conv=4, expand=2,
-                            headdim=headdim, ngroups=1, chunk_size=64, use_mem_eff_path=False)
+        if mamba_heads is None:
+            self.mixer = Mamba2(d_model=d_model, d_state=d_state, d_conv=4, expand=2,
+                                headdim=headdim, ngroups=1, chunk_size=64, use_mem_eff_path=False)
+        else:
+            # Explicit memory width independent of residual width. Initialize the
+            # native SSD/conv/norm at H*P, then give it residual-width I/O maps.
+            inner = int(mamba_heads) * int(headdim)
+            self.mixer = Mamba2(d_model=inner, d_state=d_state, d_conv=4, expand=1,
+                                headdim=headdim, ngroups=1, chunk_size=64, use_mem_eff_path=False)
+            self.mixer.in_proj = nn.Linear(d_model, 2*inner + 2*d_state + int(mamba_heads), bias=False)
+            self.mixer.out_proj = nn.Linear(inner, d_model, bias=False)
+            self.mixer.d_model = d_model
+            self.mixer.expand = inner / d_model
         m = self.mixer
         assert m.d_ssm == m.d_inner, "d_mlp path not supported"
         self.d, self.n_P = d, n_P
@@ -488,7 +499,8 @@ class SmatMamba2MR(nn.Module):
                     if self.g_bf16:
                         Phi, Psi, Vb = Phi.to(torch.bfloat16), Psi.to(torch.bfloat16), Vb.to(torch.bfloat16)
                     if self.hash_conv:
-                        ksrc = self.kconv(F_.pad(hsrc.transpose(1, 2), (self.hash_conv_width - 1, 0))).transpose(1, 2)   # causal, (b, l, C)
+                        write_src = hsrc.detach() if getattr(self, 'detach_write_hash_input', False) else hsrc
+                        ksrc = self.kconv(F_.pad(write_src.transpose(1, 2), (self.hash_conv_width - 1, 0))).transpose(1, 2)   # causal, (b, l, C)
                     mods = self.ca[str(l)]
                     emb = _EMB.get("x").float() if self.hash_src == "embed" else None
                     kw_all = write_weights.permute(0, 2, 1).reshape(b * self.h, l)[:, :n] if self.balance_gated else None   # actual G write strength per landmark token

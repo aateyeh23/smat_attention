@@ -171,7 +171,7 @@ class ContentAssign(nn.Module):
         self.read_k = None
         self.read_backend = "torch"
 
-    def enable_topk_reads(self, k, d_model):
+    def enable_topk_reads(self, k, d_model, rank=None):
         """Learn a categorical score over types; gather exactly k distinct summaries.
 
         This reader is independent of the write hash. At dim=1, types are points.
@@ -182,7 +182,13 @@ class ContentAssign(nn.Module):
         if not 1 <= k <= n_types:
             raise ValueError(f"read_k={k} exceeds {n_types} available types")
         self.read_k = int(k)
-        self.W_read = nn.Parameter(torch.randn(self.h, n_types, d_model) * d_model ** -0.5)
+        if rank is not None and not 1 <= int(rank) <= d_model:
+            raise ValueError('Read rank must be between1 and model width')
+        read_dim = d_model if rank is None else int(rank)
+        self.read_proj = None if rank is None else nn.Linear(d_model, read_dim, bias=False)
+        if self.read_proj is not None:
+            nn.init.normal_(self.read_proj.weight, std=d_model ** -0.5)
+        self.W_read = nn.Parameter(torch.randn(self.h, n_types, read_dim) * read_dim ** -0.5)
         self.b_read = nn.Parameter(torch.zeros(self.h, n_types))
         if hasattr(self, "Wd"):
             self.Wd.requires_grad_(False)  # the top-k reader replaces direction selection
@@ -193,7 +199,10 @@ class ContentAssign(nn.Module):
             logits = address_read_logits(self, u)
             bias = torch.zeros_like(self.b_read)
         else:
-            logits = torch.einsum("blm,hem->bhle", self.ln(u), self.W_read)
+            read_features = self.ln(u)
+            if getattr(self, 'read_proj', None) is not None:
+                read_features = self.read_proj(read_features)
+            logits = torch.einsum("blm,hem->bhle", read_features, self.W_read)
             bias = self.b_read
         if self.training and getattr(self, 'read_noise_std', 0.) > 0:
             # Explore alternative discrete routes early, without extra reads.

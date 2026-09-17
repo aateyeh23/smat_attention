@@ -4,6 +4,7 @@ from dataclasses import asdict
 import json
 import math
 import os
+import signal
 from pathlib import Path
 import time
 
@@ -11,6 +12,8 @@ import numpy as np
 import torch
 if os.environ.get('PG19_MEMORY_VARIANT') == 'updated_transport':
     from gdn_smat_transport_scale import ScaleConfig, ScaleLM
+elif os.environ.get('PG19_MEMORY_VARIANT') == 'mamba2_fixed_write':
+    from mamba_smat_scale import ScaleConfig, ScaleLM
 else:
     from gdn_smat_scale import ScaleConfig, ScaleLM
 
@@ -28,10 +31,14 @@ def atomic_save(path, obj):
 
 
 def train(args):
+    variant_args = {}
+    if getattr(args, 'read_rank', None) is not None:
+        variant_args['read_rank'] = args.read_rank
     cfg = ScaleConfig(d=args.d, layers=args.layers, width=args.width,
                       ffn_width=args.ffn_width, length=args.length, head_dim=args.head_dim,
                       activation_checkpointing=getattr(args, 'activation_checkpointing', False), loss_chunk=args.loss_chunk,
-                      read_backend=args.backend, fused_norm=True)
+                      read_backend=args.backend, fused_norm=True,
+                      heads=getattr(args, 'heads', 2), **variant_args)
     torch.set_num_threads(4)
     torch.manual_seed(cfg.seed)
     torch.cuda.manual_seed_all(cfg.seed)
@@ -121,6 +128,12 @@ def train(args):
         print(json.dumps(dict(event='checkpoint', tokens=cursor*cfg.length, step=step,
                               complete=complete, milestone=milestone)), flush=True)
 
+    stop_requested = False
+    def request_stop(signum, frame):
+        nonlocal stop_requested
+        stop_requested = True
+    signal.signal(signal.SIGTERM, request_stop)
+    signal.signal(signal.SIGUSR1, request_stop)
     while cursor < target_rows:
         tokens = cursor*cfg.length
         if tokens < args.warmup_tokens:
@@ -172,12 +185,14 @@ def train(args):
                 next_eval += args.eval_every
             while next_milestone <= cursor*cfg.length:
                 next_milestone += args.checkpoint_every
+        stop_requested = stop_requested or (out/'STOP').exists()
         time_limit = elapsed_before+time.monotonic()-start > args.max_hours*3600
-        if milestone or is_end or time_limit or time.monotonic()-last_save > 600:
+        pilot_limit = getattr(args, 'max_steps', None) is not None and step >= args.max_steps
+        if milestone or is_end or time_limit or stop_requested or pilot_limit or time.monotonic()-last_save > 600:
             save(milestone, is_end)
             last_save = time.monotonic()
-        if time_limit and not is_end:
-            print('TIME_LIMIT: resumable checkpoint saved', flush=True)
+        if (time_limit or stop_requested or pilot_limit) and not is_end:
+            print('PAUSED: resumable checkpoint saved', flush=True)
             return False
     return True
 
@@ -203,6 +218,9 @@ if __name__ == '__main__':
     p.add_argument('--width', type=int, default=1024)
     p.add_argument('--ffn-width', type=int, default=2816)
     p.add_argument('--head-dim', type=int, default=64)
+    p.add_argument('--heads', type=int, default=2)
+    p.add_argument('--read-rank', type=int, default=None)
+    p.add_argument('--max-steps', type=int, default=None)
     p.add_argument('--length', type=int, default=16384)
     p.add_argument('--loss-chunk', type=int, default=4096)
     p.add_argument('--activation-checkpointing', action='store_true')

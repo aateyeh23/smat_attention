@@ -1,0 +1,10 @@
+{
+  "state": "paused_for_revised_w768_models",
+  "app": "ap-6wbM8igc5rYlRNT4qVqmaH",
+  "volume": "pg19-updated-transport-d34",
+  "checkpoints": {
+    "d3": 17694720,
+    "d4": 10747904
+  },
+  "note": "Latest committed resumable checkpoints retained; later unsaved progress discarded."
+}

@@ -10,6 +10,7 @@ from zoo_gdn_transport import SmatGDNTransport
 @dataclass
 class ScaleConfig(OriginalConfig):
     memory_variant: str = 'updated_transport_decay_no_rescale'
+    read_rank: int | None = None
 
 
 class Block(nn.Module):
@@ -23,7 +24,10 @@ class Block(nn.Module):
             write_hash_neighbor_grad=True,transport_scalar_decay=True,
             detach_write_hash_input=True,memory_plant=False,memory_incidence_rescale=False)
         for modules in self.mixer.ca.values():
-            for ca in modules.values():ca.read_backend=cfg.read_backend
+            for ca in modules.values():
+                if cfg.read_rank is not None:
+                    ca.enable_topk_reads(4,cfg.width,rank=cfg.read_rank)
+                ca.read_backend=cfg.read_backend
         self.norm2=RMSNorm(cfg.width,cfg.fused_norm)
         self.up_gate=nn.Linear(cfg.width,2*cfg.ffn_width,bias=False)
         self.down=nn.Linear(cfg.ffn_width,cfg.width,bias=False)

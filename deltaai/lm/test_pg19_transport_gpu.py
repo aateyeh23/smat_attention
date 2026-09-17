@@ -1,10 +1,14 @@
 """Full-context GPU validation for the updated PG19 transport configuration."""
 import argparse
+import os
 import json
 import time
 import numpy as np
 import torch
-from gdn_smat_transport_scale import ScaleConfig, ScaleLM
+if os.environ.get('PG19_MEMORY_VARIANT') == 'mamba2_fixed_write':
+    from mamba_smat_scale import ScaleConfig, ScaleLM
+else:
+    from gdn_smat_transport_scale import ScaleConfig, ScaleLM
 
 
 def main(d):
@@ -16,6 +20,13 @@ def main(d):
     tokens=torch.randint(cfg.vocab,(1,256),device='cuda')
     with torch.autocast('cuda',dtype=torch.bfloat16):
         loss,aux=model.loss(tokens,tokens.roll(-1,1))
+    if os.environ.get('PG19_MEMORY_VARIANT') == 'mamba2_fixed_write':
+        # Task loss alone must reach write-hash parameters, not just balance aux.
+        hashes=[ca.W for block in model.blocks for modules in block.mixer.ca.values() for ca in modules.values()]
+        grads=torch.autograd.grad(loss,hashes,retain_graph=True)
+        assert all(g.isfinite().all() for g in grads)
+        assert any(g.abs().max()>0 for g in grads),'No task-loss gradient to write hash'
+        print('PASS MAMBA TASK-LOSS WRITE-HASH GRADIENT',flush=True)
     (loss+aux).backward()
     for name,p in model.named_parameters():
         if p.requires_grad:assert p.grad is not None and p.grad.isfinite().all(),name

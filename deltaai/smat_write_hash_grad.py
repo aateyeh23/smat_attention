@@ -4,8 +4,13 @@ The memory input is already pooled using detached, hard write weights. Its
 ordinary autograd path supplies key/value gradients. This identity supplies only
 the missing write-weight gradients, including zero-valued neighboring routes.
 """
+import os
 import torch
 from torch.autograd.function import once_differentiable
+
+WRITE_HASH_BACKEND = os.environ.get('SMAT_WRITE_HASH_BACKEND', 'torch')
+if WRITE_HASH_BACKEND not in ('torch', 'triton'):
+    raise ValueError(WRITE_HASH_BACKEND)
 
 
 class _WriteHashGradient(torch.autograd.Function):
@@ -19,6 +24,10 @@ class _WriteHashGradient(torch.autograd.Function):
     @once_differentiable
     def backward(ctx, memory_grad):
         keys, values, indices = ctx.saved_tensors
+        if WRITE_HASH_BACKEND == 'triton':
+            from smat_write_hash_triton import write_hash_gradient
+            gradient = write_hash_gradient(memory_grad, keys, values, indices, ctx.weight_dtype)
+            return memory_grad, None, None, None, gradient
         batch, length, routes = indices.shape
         cells, key_dim, value_dim = memory_grad.shape[1:]
         gradient = torch.empty(indices.shape, device=keys.device, dtype=ctx.weight_dtype)
