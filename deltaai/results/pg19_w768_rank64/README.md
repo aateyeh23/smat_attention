@@ -51,6 +51,22 @@ gradient, microbatch2, and no activation checkpointing. It preserves the model,
 training examples, global batch8, optimizer, and schedule. Its checkpoints and
 source manifests are separate. The default launcher now selects this candidate.
 
+The launcher selects microbatch2 for GDN d3 and microbatch1 for the other arms;
+all retain global batch8 through gradient accumulation. GDN d4 and both Mamba
+arms exceeded device memory at microbatch2 without activation checkpointing.
+The Triton compilation cache is container-local to avoid volume I/O during
+autotuning. Sweep failures are collected independently so one failed arm does
+not cancel the others.
+
+Completed GDN pilots measured20,197tokens/s for d3 (microbatch2) and12,858tokens/s
+for d4 (microbatch1), averaging steps2–4. These imply27.5/43.2hours for2Btokens
+before evaluation and checkpoint overhead. Both saved524,288-token checkpoints.
+Mamba d3/d4 also completed at microbatch1, saving524,288-token checkpoints.
+They measured38,373/20,630tokens/s, respectively (14.5/26.9hours for2Btokens).
+Their peak allocated GPU memory was45.4/65.4GB. All four pilots are stopped.
+The main campaign is pending a choice between more GPUs and fewer tokens;
+these short pilots do not establish language-model quality or long-run stability.
+
 The fused kernel computes each neighbor gradient as k^T (dL/dMemory_cell) v
 without materializing gathered state matrices. GPU checks cover state sizes
 16/64/128,4/8neighbor routes and strided inputs, followed by end-to-end task-loss

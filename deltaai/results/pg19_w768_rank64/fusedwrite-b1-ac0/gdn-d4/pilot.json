@@ -1,0 +1,15 @@
+{
+  "family": "gdn",
+  "d": 4,
+  "mean_tokens_per_second": 12857.579527229595,
+  "status": {
+    "tokens": 524288,
+    "target_tokens": 2000000000,
+    "step": 4,
+    "elapsed_seconds": 174.576031593,
+    "validation": null,
+    "complete": false,
+    "checkpoint": "latest.pt"
+  },
+  "hours_for_2b": 43.208409046120074
+}

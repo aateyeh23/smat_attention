@@ -23,8 +23,10 @@ else:image=modal.Image.debian_slim()
 
 @app.function(image=image,gpu='H100',cpu=4,memory=49152,timeout=43200,
               max_containers=4,volumes={'/data':data,'/checkpoints':volume})
-def run(family:str,d:int,pilot:bool=True,fused_write:bool=True,batch:int=2,activation_checkpointing:bool=False):
+def run(family:str,d:int,pilot:bool=True,fused_write:bool=True,batch:int=0,activation_checkpointing:bool=False):
     assert family in ('gdn','mamba2') and d in (3,4)
+    batch=batch or (2 if family=='gdn' and d==3 else 1)
+    assert batch in (1,2,4,8), 'Microbatch must divide global batch8'
     data.reload();volume.reload()
     root=Path('/checkpoints/seed123')
     if fused_write:root=root/f'fusedwrite-b{batch}-ac{int(activation_checkpointing)}'
@@ -47,7 +49,7 @@ def run(family:str,d:int,pilot:bool=True,fused_write:bool=True,batch:int=2,activ
     volume.commit()
     env=dict(os.environ,PYTHONPATH='/opt/pg19-rank64/lm:/opt/pg19-rank64:'+os.environ['PYTHONPATH'],
         PYTHONSAFEPATH='1',PG19_MEMORY_VARIANT=variant,PG19_EXPECTED_SOURCES=json.dumps(sources),
-        TRITON_CACHE_DIR='/checkpoints/triton-cache',
+        TRITON_CACHE_DIR='/tmp/pg19-triton-cache',
         SMAT_WRITE_HASH_BACKEND='triton' if fused_write else 'torch')
     def execute(args,name):
         last=time.monotonic()
@@ -86,10 +88,13 @@ def run(family:str,d:int,pilot:bool=True,fused_write:bool=True,batch:int=2,activ
     return dict(family=family,d=d,**status)
 
 @app.function(timeout=46800)
-def sweep(pilot:bool=True,fused_write:bool=True,batch:int=2,activation_checkpointing:bool=False):
+def sweep(pilot:bool=True,fused_write:bool=True,batch:int=0,activation_checkpointing:bool=False):
     calls={f'{f}-d{d}':run.spawn(f,d,pilot,fused_write,batch,activation_checkpointing) for f in ('gdn','mamba2') for d in (3,4)}
     print('CALLS '+json.dumps({k:c.object_id for k,c in calls.items()}),flush=True)
-    results={k:c.get() for k,c in calls.items()}
+    results={}
+    for key,call in calls.items():
+        try:results[key]=call.get()
+        except Exception as error:results[key]=dict(error=str(error))
     print('RESULTS '+json.dumps(results),flush=True)
     return results
 
