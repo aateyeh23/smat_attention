@@ -17,7 +17,7 @@
     "lr": 0.001,
     "warmup": 500,
     "wd": 0.1,
-    "ckpt": "/work/hdd/bekw/an author/ckpt/sc4k-nc16-ds16-gdn-d1.pt",
+    "ckpt": "<work>/ckpt/sc4k-nc16-ds16-gdn-d1.pt",
     "ckpt_every": 250,
     "eval_every": 250,
     "log_every": 50,
@@ -35,6 +35,6 @@
   "verified_accuracy": 0.9602,
   "verification_time": 1789339853.9700134,
   "checkpoint_sha256": "a81bc4445ec8ad2c7910d56b8bfe9277cf1d24454b4242eb7f857e2d195bd0cb",
-  "source_checkpoint": "/work/hdd/bekw/an author/ckpt/sc4k-nc16-ds16-gdn-d1.pt",
+  "source_checkpoint": "<work>/ckpt/sc4k-nc16-ds16-gdn-d1.pt",
   "reused": true
 }

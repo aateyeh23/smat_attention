@@ -292,7 +292,7 @@ def main():
     dev = torch.device(args.device)
     amp = None if (dev.type != "cuda" or args.no_amp) else torch.bfloat16
     if args.triton_bwd:
-        import smat_triton_bwd
+        from smat.kernels import triton_bwd as smat_triton_bwd
         smat_triton_bwd.patch()
     name = ((args.arm if args.arm not in ("smat", "mamba2smat") else f"{args.arm}_d{args.d}") + f"_T{args.T}_p{args.n_pairs}" + ("_pad" if args.pad_noise else "") + ("_zoo" if args.zoology else "")
             + (f"_taylor{args.taylor_dim}" if args.phi == "taylor" else "") + ("_oracle" if args.oracle_keep else "")

@@ -75,8 +75,16 @@ class PhaseTimer:
         return out
 
 
+_LAST_SAMPLE: List[float] = []
+
+
 def bench(fn, device, warmup: int = 3, repeat: int = 10) -> float:
-    """Median wall-clock of ``fn`` in ms."""
+    """Median wall-clock of ``fn`` in ms.
+
+    The full sample of ``repeat`` timings is left in ``_LAST_SAMPLE``, so a
+    caller that wants the spread can record one with ``spread()`` instead of
+    timing the same function twice.
+    """
     for _ in range(warmup):
         fn()
     sync(device)
@@ -90,7 +98,24 @@ def bench(fn, device, warmup: int = 3, repeat: int = 10) -> float:
         else:
             t0 = time.perf_counter(); fn()
             ts.append((time.perf_counter() - t0) * 1e3)
+    _LAST_SAMPLE[:] = ts
     return float(np.median(ts))
+
+
+def spread(prefix: str) -> Dict[str, float]:
+    """Quantiles of the most recent ``bench`` sample, as CSV columns.
+
+    Interquartile range rather than a standard deviation: the timing
+    distribution on a shared GPU has a long right tail (a neighbour's kernel,
+    a clock step), and a symmetric bar around the median would misreport it.
+    """
+    ts = np.asarray(_LAST_SAMPLE, dtype=float)
+    if ts.size == 0:
+        return {}
+    return {f"{prefix}_p25": float(np.percentile(ts, 25)),
+            f"{prefix}_p75": float(np.percentile(ts, 75)),
+            f"{prefix}_min": float(ts.min()),
+            f"{prefix}_n": int(ts.size)}
 
 
 def check_cpu_health():
@@ -180,6 +205,7 @@ def run_config(T: int, d: int, args, device, dtype) -> Optional[Dict]:
 
     # -- prefill: the schedule of the draft --------------------------------
     row["prefill_ms"] = bench(prefill(), device, args.warmup, args.repeat)
+    row.update(spread("prefill_ms"))
     row["prefill_peak_MB"] = _peak(device, prefill())
 
     timer = PhaseTimer(device)
@@ -243,6 +269,7 @@ def run_config(T: int, d: int, args, device, dtype) -> Optional[Dict]:
             row["sdpa_ms"] = bench(
                 lambda: F.scaled_dot_product_attention(q4, k4, v4, is_causal=True),
                 device, args.warmup, args.repeat)
+            row.update(spread("sdpa_ms"))
         except RuntimeError as e:
             print(f"    sdpa failed: {e}")
     row["dense_masked_ms"] = ""
@@ -279,7 +306,7 @@ def _normalizer_conditioning(Q, K, V, g, h, spec, args, device) -> Dict:
     Inputs are held fixed and only the accumulation dtype varies, so input
     quantisation cannot mask the effect.
     """
-    from smat_attn import pool_profiles, apply_incidence, query_by_type
+    from smat.attention import pool_profiles, apply_incidence, query_by_type
     out: Dict[str, object] = {}
     phid = make_phi(args.d_qk, args.r, device=device, dtype=torch.float64,
                     seed=args.seed)
@@ -541,8 +568,11 @@ def main(argv=None):
         check_cpu_health()
 
     info = {"device": str(device), "dtype": args.dtype, "torch": torch.__version__,
-            "python": platform.python_version(), "host": platform.node(),
-            "gpu": torch.cuda.get_device_name(device) if device.type == "cuda" else None,
+            # README: record capability and memory, never a host or product name
+            "python": platform.python_version(), "host": "anonymized",
+            "gpu": (("sm_%d%d, %.0f GiB" % (*torch.cuda.get_device_capability(device),
+                     torch.cuda.get_device_properties(device).total_memory / 2**30))
+                    if device.type == "cuda" else None),
             "triton": have_triton(), "tf32": args.tf32, "args": vars(args)}
     print(json.dumps({k: v for k, v in info.items() if k != "args"}, indent=2))
     print(f"\nsweep: T={args.T}  d={args.d}  nb={args.nb} r={args.r} "

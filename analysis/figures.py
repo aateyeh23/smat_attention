@@ -63,6 +63,15 @@ DARK = dict(
 )
 MARKERS = ["o", "s", "^", "D", "v"]
 
+# The paper's palette on white: a darker, desaturated take on LIGHT["series"],
+# same order so d -> colour is unchanged, plus a grey for reference lines.
+# First drawn for fig16; every paper figure should take it from here so they
+# cannot drift apart.
+MUTED = ["#1f4e79", "#9c4722", "#2f6b52", "#8a6d1e", "#6b4a72"]
+MUTED_GREY = "#575651"
+# three greys for baselines, darkest first, legible on white
+MUTED_GREYS = ["#2b2a27", "#575651", "#8a8880"]
+
 # The learned run's four arms.  These are compared against each other rather
 # than against d, so they are separated by dash pattern and marker, not colour.
 ARM_STYLE = {
@@ -161,7 +170,7 @@ def set_T_axis(ax, Ts):
     ax.set_xmargin(0.10)
 
 
-def place_end_labels(ax, items, min_gap_pt=11.0):
+def place_end_labels(ax, items, min_gap_pt=11.0, fontsize=8.5):
     """Direct labels at line ends, pushed apart so converging lines stay legible.
 
     The relief rule requires visible labels for the low-contrast slots, so these
@@ -182,7 +191,7 @@ def place_end_labels(ax, items, min_gap_pt=11.0):
         x, y, text, color = items[i]
         ax.annotate(text, xy=(x, y),
                     xytext=(5, (ys[k] - disp[i][1]) / px_per_pt),
-                    textcoords="offset points", color=color, fontsize=8.5,
+                    textcoords="offset points", color=color, fontsize=fontsize,
                     va="center", ha="left", fontweight="bold",
                     annotation_clip=False)
 

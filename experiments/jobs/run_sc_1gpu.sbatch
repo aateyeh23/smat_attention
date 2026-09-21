@@ -17,7 +17,7 @@ export PYTHONPATH=/u/an author/smat_attention/the GPU cluster:/u/an author/.loca
 cd /u/an author/smat_attention/the GPU cluster
 i=0
 for cfg in "mamba2 1 1" "smat 2 1" "smat 3 1" "smat 3 0"; do set -- $cfg
-  name=$1-d$2-r$3; ck=/work/hdd/bekw/an author/ckpt/sc-$name.pt
+  name=$1-d$2-r$3; ck=${SMAT_WORK}/ckpt/sc-$name.pt
   ( CUDA_VISIBLE_DEVICES=0 python -u tasks/copying.py --arm $1 --d $2 --reset $3 --ckpt $ck --max_minutes 110 2>&1 | grep --line-buffered -v -i "warn\|hi mamba\|custom_" >> logs/sc-$name.out 2>&1 ) &
   i=$((i+1)); sleep 3
 done

@@ -1,7 +1,7 @@
 # the GPU cluster job scripts
 
-Ports of the `../smat/*.sbatch` scripts for the computing centre the GPU cluster (GPU, partition
-`ghx4`, account `bekw-dtai-gh`).  The Python code in `../smat` is used
+Ports of the `../smat/*.sbatch` scripts for the computing centre the GPU cluster (partition and account
+from `experiments/site.conf`).  The Python code in `../smat` is used
 unmodified; only the Slurm headers and environment differ.  Results and logs
 are written here, not into the repo's `results/` and `logs/`.
 
@@ -952,7 +952,7 @@ Interactive training job **3143146**, one GPU, two-hour slices with automatic ch
 resumption for at most four slices (eight allocated hours total). The pending regular-partition
 job 3143141 was canceled at the user's request. Short validation job 3143143 exposed an overly
 strict bf16 cancellation tolerance in the G-scaling test; the test now bounds rounding error
-using the magnitudes of the terms before cancellation. Job 3143146 started on gh142; CPU and
+using the magnitudes of the terms before cancellation. Job 3143146 started on a GPU node; CPU and
 GPU checks passed (dense and sparse/bf16 paths, reset isolation, gate gradients, matching common
 initialization and checkpoint restoration). The L=4096 training/resume smoke test passed;
 all six training processes have launched.
@@ -994,7 +994,7 @@ Snapshots, measurements and interventions: `results/sc_write_gate/3143146/diagno
 
 The same reset experiment now runs with `SC_D=2` (job **3143304**) and `SC_D=4`
 (job **3143305**), each with shared/independent writes and seeds 0/1/2, 10K steps.
-Both use `ghx4-interactive` and checkpointed two-hour slices; d=2 started on gh040,
+Both use the interactive partition and checkpointed two-hour slices; d=2 started on a GPU node,
 while d=4 initially waits for the per-user running-job limit. Output directories are
 `results/sc_write_gate/3143304/` and `results/sc_write_gate/3143305/`. The trainer now
 logs effective geometry to verify that neither requested dimension is silently reduced.

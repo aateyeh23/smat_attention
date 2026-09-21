@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=smat-bench
-#SBATCH --gres=gpu:1                # H200 also available on this partition
+#SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=96G
 #SBATCH --time=03:30:00

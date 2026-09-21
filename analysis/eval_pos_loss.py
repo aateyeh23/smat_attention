@@ -4,7 +4,7 @@ import argparse, os, sys, json, math, numpy as np, torch, torch.nn.functional as
 sys.path.insert(0, "/u/an author/smat_attention/the GPU cluster")
 ap = argparse.ArgumentParser()
 ap.add_argument("--ckpt", required=True); ap.add_argument("--out", required=True)
-ap.add_argument("--data", default="/work/hdd/bekw/an author/pg19"); ap.add_argument("--n_tokens", type=float, default=3.9e7)
+ap.add_argument("--data", default=os.path.join(os.environ.get("SMAT_WORK", "data"), "pg19")); ap.add_argument("--n_tokens", type=float, default=3.9e7)
 ap.add_argument("--seq_len", type=int, default=16384); ap.add_argument("--batch", type=int, default=4)
 ap.add_argument("--window", type=int, default=501); ap.add_argument("--split", default="test")
 a = ap.parse_args()

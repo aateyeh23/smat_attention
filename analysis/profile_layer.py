@@ -1,5 +1,6 @@
 import torch, sys; sys.path.insert(0, "/u/an author/smat_attention/the GPU cluster")
-from smat.mixers import zoology as zoo_smat_mixer as z
+from smat.mixers import zoology as z
+zoo_smat_mixer = z                                   # the pre-reorg name, still used
 from torch.profiler import profile, ProfilerActivity
 import os
 dm, T, B = int(os.environ.get("DM", 512)), int(os.environ.get("T", 16384)), int(os.environ.get("B", 4))

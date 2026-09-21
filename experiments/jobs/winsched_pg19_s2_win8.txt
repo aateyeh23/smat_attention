@@ -1,0 +1,1 @@
+pg19 --sched win8 --seed 2 --T 2048 --nb 16 --d-model 384 --layers 4 --heads 4 --steps 6000 --log-every 500 --eval-T 2048 4096 8192 16384 --eval-tokens 131072 --eval-batches 8 --out results/window_schedules/pg19_s2_win8.csv

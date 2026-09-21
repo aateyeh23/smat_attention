@@ -7,7 +7,7 @@ document boundaries), write per-source uint16 memmaps of shape (n_chunks, SEQ) u
 A fixed interleaved order (order.npy) defines the training sequence used by every model.  Held-out chunks come
 from documents never used for training (val/*.bin).  Resumable per source."""
 import os, sys, json, io, numpy as np, tiktoken, requests, zstandard as zstd, time
-SEQ = int(os.environ.get("SEQ", 16384)); OUT = os.environ.get("OUT", "/work/hdd/bekw/an author/ldc")
+SEQ = int(os.environ.get("SEQ", 16384)); OUT = os.environ.get("OUT", os.path.join(os.environ.get("SMAT_WORK", "data"), "ldc"))
 QUOTA = {"arxiv": int(2.2e8), "books": int(1.6e8), "pile": int(1.6e8)}      # train tokens per source (~540M total)
 VAL_QUOTA = int(2.0e7)                                                       # held-out tokens per source
 enc = tiktoken.get_encoding("gpt2")
