@@ -21,7 +21,7 @@ BASE="--arm smat --reset 0 --seq_len 4096 --n_copy 16 --n_vocab 16 --d_model 64 
 echo "=== smoke"; python -u tasks/copying.py $BASE --d 3 --lam_act sigmoid --hash_src ssm --steps 3 --log_every 1 --eval_every 3 --ckpt_every 3 --max_minutes 5 --ckpt /tmp/sctweak_smoke.pt 2>&1 | grep -v -i "warn\|hi mamba\|custom_\|torchao" | grep -E "optimizer covers|FINAL|Traceback|Error" | tee logs/sctweak-smoke.out; rm -f /tmp/sctweak_smoke.pt
 grep -q FINAL logs/sctweak-smoke.out || { echo "SMOKE FAILED"; exit 1; }
 while IFS='|' read -r name extra; do [ -z "$name" ] && continue
-  ( python -u tasks/copying.py $BASE $extra --ckpt /work/hdd/bekw/an author/ckpt/sc4k-tweak-$name.pt 2>&1 | grep --line-buffered -v -i "warn\|hi mamba\|custom_\|torchao" > logs/sc4k-tweak-$name.out 2>&1
+  ( python -u tasks/copying.py $BASE $extra --ckpt ${SMAT_WORK}/ckpt/sc4k-tweak-$name.pt 2>&1 | grep --line-buffered -v -i "warn\|hi mamba\|custom_\|torchao" > logs/sc4k-tweak-$name.out 2>&1
     echo "END $name: $(grep -E 'SOLVED|FINAL|TIME LIMIT|Traceback' logs/sc4k-tweak-$name.out | tail -1 | cut -c1-80)" ) &
   sleep 2
 done <<'ARMS'

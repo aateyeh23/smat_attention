@@ -9,7 +9,8 @@ Checkpoints every --ckpt_every steps to --ckpt (resumable: the job limit is 2 h)
 import argparse, math, os, sys, time, json
 import numpy as np, torch, torch.nn as nn, torch.nn.functional as F
 sys.path.insert(0, "/u/an author/smat_attention/the GPU cluster")
-from smat.mixers import zoology as zoo_smat_mixer as z
+from smat.mixers import zoology as z
+zoo_smat_mixer = z                                   # the pre-reorg name, still used
 
 ap = argparse.ArgumentParser()
 ap.add_argument("--arm", default="mamba2", choices=["mamba2", "smat", "attn", "gdn"]); ap.add_argument("--mlp_mult", type=int, default=4)   # attn arm: transformer block = attention + MLP(mlp_mult x d_model)
@@ -19,7 +20,7 @@ ap.add_argument("--d_state", type=int, default=64); ap.add_argument("--headdim",
 ap.add_argument("--seq_len", type=int, default=16384); ap.add_argument("--batch", type=int, default=4)
 ap.add_argument("--steps", type=int, default=5000); ap.add_argument("--lr", type=float, default=6e-4)
 ap.add_argument("--warmup", type=int, default=200); ap.add_argument("--wd", type=float, default=0.1)
-ap.add_argument("--data", default="/work/hdd/bekw/an author/pg19"); ap.add_argument("--vocab", type=int, default=50257)
+ap.add_argument("--data", default=os.path.join(os.environ.get("SMAT_WORK", "data"), "pg19")); ap.add_argument("--vocab", type=int, default=50257)
 ap.add_argument("--ckpt", required=True); ap.add_argument("--ckpt_every", type=int, default=250)
 ap.add_argument("--val_every", type=int, default=250); ap.add_argument("--log_every", type=int, default=10)
 ap.add_argument("--synthetic", action="store_true", help="random tokens (smoke / benchmark)")

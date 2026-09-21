@@ -1,7 +1,8 @@
 """Throughput of one layer at LM scale: Mamba-2 (zoology class) vs SmatMamba2MR chash d=3, d_model 512, T 8192."""
 import time, torch, sys
 sys.path.insert(0, "/u/an author/smat_attention/the GPU cluster")
-from smat.mixers import zoology as zoo_smat_mixer as z
+from smat.mixers import zoology as z
+zoo_smat_mixer = z                                   # the pre-reorg name, still used
 from zoology.mixers.mamba2 import Mamba2
 dm, T, B = 512, 16384, 2
 def bench(mod, name, steps=5):

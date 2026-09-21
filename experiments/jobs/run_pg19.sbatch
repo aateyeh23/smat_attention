@@ -20,7 +20,7 @@ T0=$(date +%s); BUDGET=$((105 * 60))                       # seconds of training
 STEPS=${STEPS:-9155}
 for SEQ in ${SEQS:-16384 32768}; do
   BATCH=$((32768 / SEQ)); TAG=pg19-$((SEQ / 1024))k
-  COMMON="--data /work/hdd/bekw/an author/pg19 --d_model 384 --n_layers 8 --headdim 64 --d_state 64 --seq_len $SEQ --batch $BATCH --steps $STEPS --warmup 300 --lr 6e-4 --anneal 1000 --balance 0.01 --balance_gated 1 --hash_conv_width 4 --reset 1 --hash_codim 1 --sparse_ops 1 --hash_ckpt 1 --ckpt_every 250 --val_every 500 --log_every 25"
+  COMMON="--data ${SMAT_WORK}/pg19 --d_model 384 --n_layers 8 --headdim 64 --d_state 64 --seq_len $SEQ --batch $BATCH --steps $STEPS --warmup 300 --lr 6e-4 --anneal 1000 --balance 0.01 --balance_gated 1 --hash_conv_width 4 --reset 1 --hash_codim 1 --sparse_ops 1 --hash_ckpt 1 --ckpt_every 250 --val_every 500 --log_every 25"
   todo=""
   for cfg in ${ARMS:-"mamba2 1" "gdn 1" "attn 0" "smat 2" "smat 3" "smat 4"}; do set -- $cfg
     name=$TAG-$1-d$2; [ -f results/lm/$name.json ] && continue; todo="$todo|$cfg"
@@ -30,7 +30,7 @@ for SEQ in ${SEQS:-16384 32768}; do
   MAXC=$((SEQ <= 16384 ? 2 : 1)); running=0                # arms sharing the GPU at once (~15 GB each at 16K, ~30 GB at 32K)
   echo "=== $TAG arms:$todo  budget ${left}s  concurrency $MAXC  $(date +%H:%M:%S)"
   IFS='|'; for cfg in $todo; do [ -z "$cfg" ] && continue; IFS=' '; set -- $cfg
-    name=$TAG-$1-d$2; ck=/work/hdd/bekw/an author/ckpt/$name.pt
+    name=$TAG-$1-d$2; ck=${SMAT_WORK}/ckpt/$name.pt
     left=$((BUDGET - ($(date +%s) - T0))); [ $left -lt 300 ] && break
     ( ENV=""; [ "$1" = gdn ] && ENV="env PYTHONPATH=/u/an author/triton371:$PYTHONPATH FLA_TILELANG=0"
       timeout $left $ENV python -u tasks/lm.py --arm $1 --d $2 $COMMON --ckpt $ck 2>&1 | grep --line-buffered -v -i "warn\|hi mamba\|custom_\|torchao" >> logs/lm-$name.out 2>&1

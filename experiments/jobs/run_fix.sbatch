@@ -14,8 +14,8 @@ source "${SLURM_SUBMIT_DIR:-$(dirname "$0")}/_prelude.sh"
 export PYTHONPATH=/u/an author/smat_attention/the GPU cluster:/u/an author/.local/lib/python3.12/site-packages:/u/an author/zoology:${PYTHONPATH:-} PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 cd /u/an author/smat_attention/the GPU cluster
 SEQ=16384; BATCH=2; STEPS=9155
-COMMON="--data /work/hdd/bekw/an author/pg19 --d_model 384 --n_layers 8 --headdim 64 --d_state 64 --seq_len $SEQ --batch $BATCH --steps $STEPS --warmup 300 --lr 6e-4 --anneal 1000 --balance 0.01 --balance_gated 1 --hash_conv_width 4 --reset 1 --hash_codim 1 --sparse_ops 1 --hash_ckpt 1 --ckpt_every 250 --val_every 500 --log_every 25"
-name=pg19-16k-smat-d4; ck=/work/hdd/bekw/an author/ckpt/$name.pt
+COMMON="--data ${SMAT_WORK}/pg19 --d_model 384 --n_layers 8 --headdim 64 --d_state 64 --seq_len $SEQ --batch $BATCH --steps $STEPS --warmup 300 --lr 6e-4 --anneal 1000 --balance 0.01 --balance_gated 1 --hash_conv_width 4 --reset 1 --hash_codim 1 --sparse_ops 1 --hash_ckpt 1 --ckpt_every 250 --val_every 500 --log_every 25"
+name=pg19-16k-smat-d4; ck=${SMAT_WORK}/ckpt/$name.pt
 ( python -u tasks/lm.py --arm smat --d 4 $COMMON --ckpt $ck > logs/lm-$name.debug.out 2>&1; echo "train exit code $?" >> logs/lm-$name.debug.out
   grep -E "^step|VAL|resumed|TRAINING DONE" logs/lm-$name.debug.out >> logs/lm-$name.out
   if grep -q "TRAINING DONE" logs/lm-$name.debug.out; then
@@ -25,7 +25,7 @@ name=pg19-16k-smat-d4; ck=/work/hdd/bekw/an author/ckpt/$name.pt
 sleep 20
 BASE="--arm smat --reset 0 --seq_len 4096 --n_copy 16 --n_vocab 16 --d_model 64 --n_layers 2 --headdim 64 --d_state 16 --batch 32 --steps 10000 --warmup 500 --lr 1e-3 --hash_conv_width 4 --eval_every 250 --ckpt_every 250 --log_every 50 --max_minutes 110"
 launch() { name=$1; extra=$2; grep -q "FINAL\|SOLVED" logs/sc4k-tweak-$name.out 2>/dev/null && return; E2=""; case "$extra" in *"--arm gdn"*) E2="PYTHONPATH=/u/an author/triton371:$PYTHONPATH FLA_TILELANG=0";; esac
-  ( env $E2 python -u tasks/copying.py $BASE $extra --ckpt /work/hdd/bekw/an author/ckpt/sc4k-tweak-$name.pt 2>&1 | grep --line-buffered -v -i "warn\|hi mamba\|custom_\|torchao" >> logs/sc4k-tweak-$name.out 2>&1
+  ( env $E2 python -u tasks/copying.py $BASE $extra --ckpt ${SMAT_WORK}/ckpt/sc4k-tweak-$name.pt 2>&1 | grep --line-buffered -v -i "warn\|hi mamba\|custom_\|torchao" >> logs/sc4k-tweak-$name.out 2>&1
     echo "END $name: $(grep -E 'SOLVED|FINAL|TIME LIMIT|Traceback' logs/sc4k-tweak-$name.out | tail -1 | cut -c1-80)" ) &
   sleep 2; }
 launch d3-gate-s1 "--d 3 --lam_act sigmoid --anneal 1000 --balance 0.01 --balance_gated 1 --seed 1"

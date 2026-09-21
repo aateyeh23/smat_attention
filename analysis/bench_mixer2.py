@@ -1,7 +1,8 @@
 """One-layer throughput at LM scale: Mamba-2 vs SMAT chash point read, dense vs segmented ops, fp32 vs bf16."""
 import time, torch, sys
 sys.path.insert(0, "/u/an author/smat_attention/the GPU cluster")
-from smat.mixers import zoology as zoo_smat_mixer as z
+from smat.mixers import zoology as z
+zoo_smat_mixer = z                                   # the pre-reorg name, still used
 dm, T, B = 512, 16384, 4
 def bench(mod, name, steps=4):
     mod = mod.cuda().train(); x = torch.randn(B, T, dm, device="cuda", requires_grad=True); torch.cuda.reset_peak_memory_stats()

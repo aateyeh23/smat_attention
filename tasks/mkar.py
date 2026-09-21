@@ -98,6 +98,9 @@ class MKAR:
 class MKARModel(nn.Module):
     def __init__(self, T, d_model, heads, layers, N, vocab, arm="smat", **kw):
         super().__init__()
+        if arm in train_lm.RECURRENT:
+            # the VC-1 baselines: same block, the mixer swapped for the recurrence
+            arm, kw = "rec_" + arm, {**kw, "T": T}
         self.tok = nn.Embedding(vocab, d_model)
         self.pos = nn.Embedding(T, d_model)
         self.pay_in = nn.Linear(N, d_model, bias=False)
@@ -227,9 +230,11 @@ def main(argv=None):
                     help="align the key-side hash with the query-side one: a payload should be "
                          "filed under the cell of the key naming it")
     ap.add_argument("--unfreeze-at", type=int, default=0)
-    ap.add_argument("--arm", choices=["smat", "softmax"], default="smat",
+    ap.add_argument("--arm", choices=["smat", "softmax", *train_lm.RECURRENT], default="smat",
                     help="softmax is the unmasked baseline: every distant payload is visible "
-                         "and the kernel alone has to isolate the requested ones")
+                         "and the kernel alone has to isolate the requested ones.  mamba2, "
+                         "deltanet, gated_deltanet and loglinear are the VC-1 recurrent "
+                         "baselines, in the same block with only the mixer changed")
     ap.add_argument("--hash-src", choices=["embed", "id"], default="embed",
                     help="hash a frozen projection of the token embedding, or the token id directly")
     ap.add_argument("--assign", choices=["content", "positional"], default="content",
@@ -238,6 +243,10 @@ def main(argv=None):
     ap.add_argument("--ablate", choices=["none", "nolr", "permidx", "shuftgt"], default="none",
                     help="leak hunt: nolr disables the long-range block entirely, permidx "
                          "decouples a pair's index from its position rank, shuftgt randomises targets")
+    ap.add_argument("--warmup", type=int, default=0,
+                    help="linear learning-rate warmup over this many steps; 0 is none")
+    ap.add_argument("--rerun", action="store_true",
+                    help="train even if --out already holds this run's final step")
     ap.add_argument("--tag", default="")
     args = ap.parse_args(argv)
 
@@ -259,6 +268,17 @@ def main(argv=None):
             + (f"_ag{args.agree_coef:g}" if args.agree_coef else "")
             + ("_pos" if args.assign == "positional" else "")
             + ("" if args.ablate == "none" else f"_{args.ablate}") + args.tag)
+    # A preempted job is requeued from the top of its script, so without this
+    # every restart retrains the runs it had already finished.  A run counts as
+    # finished if this output file already holds its final evaluation; a run
+    # that was cut short is retrained from scratch.  --rerun overrides.
+    if not args.rerun and os.path.exists(args.out):
+        with open(args.out, newline="") as fh:
+            done = any(r.get("run") == name and int(r.get("step") or 0) >= args.steps
+                       for r in csv.DictReader(fh))
+        if done:
+            print(f"skip: {name} already reached step {args.steps} in {args.out}", flush=True)
+            return 0
     print(json.dumps({"run": name, **vars(args), "q": spec.q, "N0": spec.N0, "B": spec.B,
                       "deg": spec.uniform_deg, "n": spec.n, "device": dev,
                       "covers_k": args.k <= max(args.d - 1, 1)}), flush=True)
@@ -271,6 +291,12 @@ def main(argv=None):
                       hash_conv=args.hash_conv, dir_head=args.dir_head, dir_soft=args.dir_soft, dir_window=args.dir_window,
                       no_lr=(args.ablate == "nolr")).to(dev)
     opt = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=0.1)
+    # Linear warmup, then constant.  Off by default, which is the fair2 protocol;
+    # it exists for the softmax baseline, which at a constant 3e-4 stays on its
+    # initial plateau for the whole run on some seeds.
+    sched = (torch.optim.lr_scheduler.LambdaLR(
+                 opt, lambda s: min(1.0, (s + 1) / args.warmup))
+             if args.warmup else None)
     os.makedirs(os.path.dirname(args.out) or ".", exist_ok=True)
     new = not os.path.exists(args.out)
     fields = ["run", "arm", "d", "k", "assign", "read_mode", "dirs", "step", "loss", "exact_support", "mse",
@@ -320,6 +346,8 @@ def main(argv=None):
                 loss = loss + args.agree_coef * torch.stack(ag).mean()
         opt.zero_grad(set_to_none=True); loss.backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0); opt.step()
+        if sched is not None:
+            sched.step()
         if step % args.eval_every == 0 or step == args.steps:
             ev = evaluate(model, task, spec.n, args.nb, 8,
                           args.dirs == "oracle" and args.arm == "smat")

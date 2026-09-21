@@ -22,7 +22,7 @@ if ! grep -q "TRAINING DONE" logs/lm-poc-smoke.out; then echo "SMOKE FAILED -- h
 rm -f /tmp/poc_smoke.pt
 i=0
 for cfg in "mamba2 1" "smat 2" "smat 3"; do set -- $cfg
-  name=$1-d$2; ck=/work/hdd/bekw/an author/ckpt/poc-$name.pt; rm -f $ck
+  name=$1-d$2; ck=${SMAT_WORK}/ckpt/poc-$name.pt; rm -f $ck
   ( CUDA_VISIBLE_DEVICES=0 python -u tasks/lm.py --arm $1 --d $2 $COMMON --ckpt $ck 2>&1 | grep --line-buffered -v -i "warn\|hi mamba\|custom_" > logs/lm-poc-$name.out 2>&1
     CUDA_VISIBLE_DEVICES=0 python -u analysis/eval_pos_loss.py --ckpt $ck --out results/lm/poc-$name --split test --n_tokens 5e6 --seq_len 4096 --batch 8 2>&1 | grep --line-buffered -v -i "warn\|hi mamba\|custom_" >> logs/lm-poc-$name.out 2>&1 ) &
   i=$((i+1)); sleep 3

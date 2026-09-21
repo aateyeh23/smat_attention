@@ -5,7 +5,8 @@ arms differ only in the mixer's d / reset.  Resumable (--ckpt)."""
 import argparse, math, os, sys, time, json
 import numpy as np, torch, torch.nn as nn, torch.nn.functional as F
 sys.path.insert(0, "/u/an author/smat_attention/the GPU cluster")
-from smat.mixers import zoology as zoo_smat_mixer as z
+from smat.mixers import zoology as z
+zoo_smat_mixer = z                                   # the pre-reorg name, still used
 
 ap = argparse.ArgumentParser()
 ap.add_argument("--arm", default="mamba2", choices=["mamba2", "smat", "gdn", "gdn_smat"]); ap.add_argument("--d", type=int, default=3)

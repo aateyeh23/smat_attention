@@ -12,7 +12,7 @@ set -eo pipefail
 continuation_queued=0
 restore_copying() {
     if [ "$continuation_queued" -eq 0 ]; then
-        scontrol update JobId=3143305 Partition=ghx4-interactive Nice=0 || true
+        scontrol update JobId=3143305 Partition=${SMAT_PARTITION} Nice=0 || true
         scontrol release 3143305 || true
     fi
 }

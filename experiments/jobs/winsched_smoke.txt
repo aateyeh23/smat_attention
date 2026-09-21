@@ -1,0 +1,3 @@
+mqar --sched none --steps 60 --log-every 20 --eval-T 1024 8192 --D 0 --eval-batches 1 --out results/window_schedules/smoke_mqar.csv
+mqar --sched dbl --steps 60 --log-every 20 --eval-T 1024 8192 --D 0 --eval-batches 1 --out results/window_schedules/smoke_mqar.csv
+pg19 --sched win8 --T 2048 --nb 16 --d-model 384 --layers 4 --heads 4 --steps 60 --log-every 20 --eval-T 16384 --eval-tokens 65536 --eval-batches 1 --out results/window_schedules/smoke_pg19.csv

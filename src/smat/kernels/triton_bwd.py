@@ -30,7 +30,7 @@ import sys
 import torch
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "smat"))
-from smat.kernels import triton_fwd as smat_triton as _tri          # noqa: E402
+from smat.kernels import triton_fwd as _tri                        # noqa: E402
 from smat import attention as smat_attn                    # noqa: E402
 
 import triton                       # noqa: E402

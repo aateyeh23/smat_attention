@@ -30,6 +30,9 @@ from smat.mask import build_mask, d_max_geometric, materialise  # noqa: E402
 from smat.attention import (featurise, make_phi, smat_attention, to_device, segmented_causal_scan,  # noqa: E402
                        pool_profiles, apply_incidence, query_by_type)
 from smat.assign import ContentAssign                          # noqa: E402
+from smat.mixers.recurrent import (mamba2_chunked, delta_chunked,  # noqa: E402
+                                  gated_delta_chunked, loglinear_attention,
+                                  fenwick_levels)
 import dataclasses                                                # noqa: E402
 
 BUCKETS = [(0, 512), (512, 2048), (2048, 4096)]
@@ -425,6 +428,90 @@ class Mamba2Smat(nn.Module):
         return y
 
 
+RECURRENT = ("mamba2", "deltanet", "gated_deltanet", "loglinear")
+
+
+class RecurrentMixer(nn.Module):
+    """The VC-1 baselines as a drop-in for ``Attention``: same QKV and output
+    projections, same heads, same QK-norm; only the mixing rule differs.
+
+    The rules are the chunked forms in ``smat.mixers.recurrent`` -- the same
+    code the routing benchmark runs -- applied per head with the heads folded
+    into the batch:
+
+      mamba2          S_t = a_t S_{t-1} + dt_t k_t v_t^T      (SSD, scalar decay)
+      deltanet        the delta rule, beta_t = sigmoid(.)
+      gated_deltanet  the delta rule with the Mamba-2 decay on what is kept
+      loglinear       linear attention under the hierarchical Fenwick mask,
+                      lambda_t = softplus(.) per head and level
+
+    Gates are per head and read the block input, as in the references; decay
+    uses the Mamba-2 reference initialisation (see DT_INIT).  This is the
+    recurrence, not ``mamba_ssm.Mamba2`` (``Mamba2Mixer`` above): that block
+    brings its own expansion, convolution and output gate, so a difference
+    against it would not isolate the mixing rule.  State per head is
+    d_head x d_head, or Theta(log T) of them for loglinear.
+    """
+
+    # The Mamba-2 reference initialisation.  Not taken from the caller: the
+    # task scripts pass SMAT's own decay init (dt in [0.1, 1]), which at A up
+    # to 16 forgets a distant pair within a few tokens -- a handicap, not a
+    # baseline.
+    DT_INIT, A_INIT = (1e-3, 1e-1), (1.0, 16.0)
+
+    def __init__(self, d_model, n_heads, arm, *, chunk=128, T=None, qk_norm=False, **_):
+        super().__init__()
+        assert arm in RECURRENT, arm
+        self.arm, self.h, self.dh, self.chunk = arm, n_heads, d_model // n_heads, chunk
+        self.gate_stats, self.probe, self._last, self.key_keep, self.ca = None, False, None, None, None
+        self.qn = nn.LayerNorm(self.dh) if qk_norm else nn.Identity()
+        self.kn = nn.LayerNorm(self.dh) if qk_norm else nn.Identity()
+        self.qkv = nn.Linear(d_model, 3 * d_model, bias=False)
+        self.out = nn.Linear(d_model, d_model, bias=False)
+        if arm in ("mamba2", "gated_deltanet"):
+            self.w_dt = nn.Linear(d_model, n_heads)
+            lo, hi = self.DT_INIT
+            u = torch.rand(n_heads) * (math.log(hi) - math.log(lo))
+            dt = torch.exp(math.log(lo) + u)
+            with torch.no_grad():                               # inverse softplus
+                self.w_dt.bias.copy_(dt + torch.log(-torch.expm1(-dt)))
+            self.A_log = nn.Parameter(torch.log(torch.empty(n_heads).uniform_(*self.A_INIT)))
+        if arm in ("deltanet", "gated_deltanet"):
+            self.w_b = nn.Linear(d_model, n_heads)
+        if arm == "loglinear":
+            assert T is not None, "loglinear needs T for its level table"
+            self.H = T.bit_length()
+            self.w_lam = nn.Linear(d_model, n_heads * self.H)
+            nn.init.normal_(self.w_lam.weight, std=0.02); nn.init.zeros_(self.w_lam.bias)
+            self.register_buffer("lev", fenwick_levels(T), persistent=False)
+
+    def forward(self, x):
+        nb, T, C = x.shape
+        q, k, v = self.qkv(x).view(nb, T, 3, self.h, self.dh).unbind(2)
+        q, k = self.qn(q), self.kn(k)
+        with torch.autocast(device_type=x.device.type, enabled=False):
+            fold = lambda t: t.transpose(1, 2).reshape(nb * self.h, T, -1).float()
+            gate = lambda lin: lin(x.float()).transpose(1, 2).reshape(nb * self.h, T)
+            Q, K, V = fold(q), fold(k), fold(v)
+            c = min(self.chunk, T)
+            if self.arm in ("mamba2", "gated_deltanet"):
+                dt = F.softplus(gate(self.w_dt))
+                A = self.A_log.exp().repeat(nb).unsqueeze(-1)       # (nb*h, 1)
+                logA = -dt * A
+            if self.arm == "mamba2":
+                o = mamba2_chunked(Q, K, V, logA, dt, chunk=c)
+            elif self.arm == "deltanet":
+                o = delta_chunked(Q, K, V, torch.sigmoid(gate(self.w_b)), chunk=c)
+            elif self.arm == "gated_deltanet":
+                o = gated_delta_chunked(Q, K, V, logA, torch.sigmoid(gate(self.w_b)), chunk=c)
+            else:
+                lam = F.softplus(self.w_lam(x.float())).view(nb, T, self.h, self.H)
+                lam = lam.permute(0, 2, 1, 3).reshape(nb * self.h, T, self.H)
+                o = loglinear_attention(Q, K, V, lam, self.lev, chunk=c)
+        o = o.view(nb, self.h, T, self.dh).transpose(1, 2).reshape(nb, T, C)
+        return self.out(o.to(x.dtype))
+
+
 class Block(nn.Module):
     def __init__(self, d_model, n_heads, arm, short_conv=0, layer_idx=0, mask_bank=False, **kw):
         super().__init__()
@@ -435,6 +522,8 @@ class Block(nn.Module):
             self.attn = Mamba2Mixer(d_model, chunk=kw.get("chunk", 64))
         elif arm == "mamba2smat":
             self.attn = Mamba2Smat(d_model, n_heads, type_offsets=offsets, **kw)
+        elif arm.startswith("rec_"):
+            self.attn = RecurrentMixer(d_model, n_heads, arm[4:], **kw)
         else:
             self.attn = Attention(d_model, n_heads, arm, type_offsets=offsets,
                                   vocab=vocab, **kw)
@@ -573,7 +662,7 @@ def main():
     torch.manual_seed(args.seed)
     dev = torch.device(args.device)
     if args.triton_bwd:
-        import smat_triton_bwd
+        from smat.kernels import triton_bwd as smat_triton_bwd
         smat_triton_bwd.patch()
     amp = None if (args.no_amp or dev.type != "cuda") else torch.bfloat16
     name = ((args.arm if args.arm == "softmax" else f"smat_d{args.d}") + ("_qkn" if args.qk_norm else "")

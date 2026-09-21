@@ -2,7 +2,7 @@
 val.bin / test.bin: the PG-19 validation (50 books) and test (100 books) splits, whole.  Documents separated by <|endoftext|>."""
 import os, sys, numpy as np, tiktoken
 from datasets import load_dataset
-OUT = "/work/hdd/bekw/an author/pg19"
+OUT = os.path.join(os.environ.get("SMAT_WORK", "data"), "pg19")
 N_TRAIN = int(float(os.environ.get("N_TRAIN_TOKENS", "3.2e8")))
 N_VAL = int(float(os.environ.get("N_VAL_TOKENS", "3.9e7")))
 enc = tiktoken.get_encoding("gpt2"); EOT = enc.eot_token

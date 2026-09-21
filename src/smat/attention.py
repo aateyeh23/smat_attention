@@ -35,7 +35,7 @@ import torch
 from smat.mask import MaskSpec
 
 try:
-    import smat_triton as _tri
+    from smat.kernels import triton_fwd as _tri
 except Exception:                                       # pragma: no cover
     _tri = None
 

@@ -21,7 +21,7 @@ echo "=== smoke (synthetic, 3 steps, hyperplane sparse path) ==="
 CUDA_VISIBLE_DEVICES=0 python -u tasks/lm.py --arm smat --d 3 --synthetic --steps 3 --log_every 1 --val_every 3 --ckpt_every 3 --ckpt /tmp/d3c1_smoke.pt --d_model 384 --n_layers 6 --seq_len 4096 --batch 2 --hash_conv_width 16 --hash_codim 1 --sparse_ops 1 2>&1 | grep -v -i "warn\|hi mamba\|custom_" | grep -E "arm=|step 3|DONE|Traceback|Error" | tee logs/d3c1-smoke.out
 if ! grep -q "TRAINING DONE" logs/d3c1-smoke.out; then echo "SMOKE FAILED -- holding"; sleep 6000; exit 1; fi
 rm -f /tmp/d3c1_smoke.pt
-name=smat-d3-c1; ck=/work/hdd/bekw/an author/ckpt/poc-$name.pt; rm -f $ck
+name=smat-d3-c1; ck=${SMAT_WORK}/ckpt/poc-$name.pt; rm -f $ck
 ( CUDA_VISIBLE_DEVICES=0 python -u tasks/lm.py --arm smat --d 3 $COMMON --ckpt $ck 2>&1 | grep --line-buffered -v -i "warn\|hi mamba\|custom_" > logs/lm-poc-$name.out 2>&1
   CUDA_VISIBLE_DEVICES=0 python -u analysis/eval_pos_loss.py --ckpt $ck --out results/lm/poc-$name --split test --n_tokens 5e6 --seq_len 4096 --batch 8 2>&1 | grep --line-buffered -v -i "warn\|hi mamba\|custom_" >> logs/lm-poc-$name.out 2>&1 ) &
 # MQAR d=3 hyperplane arms

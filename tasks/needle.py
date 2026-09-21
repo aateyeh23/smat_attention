@@ -145,7 +145,7 @@ def main():
     dev = torch.device(args.device)
     amp = None if dev.type != "cuda" else torch.bfloat16
     if args.triton_bwd:
-        import smat_triton_bwd
+        from smat.kernels import triton_bwd as smat_triton_bwd
         smat_triton_bwd.patch()
     name = ((args.arm if args.arm == "softmax" else f"smat_d{args.d}") + f"_ref{args.d_ref}_k{args.k}"
             + ("_pad" if args.pad_haystack else ""))

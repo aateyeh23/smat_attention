@@ -1,7 +1,5 @@
 #!/bin/bash
 #SBATCH --job-name=sc-write-correction-slow-d2
-#SBATCH --account=bekw-dtai-gh
-#SBATCH --partition=ghx4-interactive
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=24

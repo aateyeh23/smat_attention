@@ -22,6 +22,16 @@ Four arms, because the interesting comparison is not SMAT against nothing:
                   address the requested landmarks.  Expected to solve every k,
                   approximately and at Theta(T^2).  Running it is the point --
                   a handicapped baseline would make the whole comparison void.
+  mamba2          scalar-decay linear recurrence (Mamba-2 / SSD).
+  deltanet        the delta rule.
+  gated_deltanet  the delta rule with Mamba-2's decay, i.e. Gated DeltaNet.
+  loglinear       log-linear attention: linear attention under the hierarchical
+                  Fenwick mask, Theta(log T) states rather than one.
+
+The last four are the models the paper claims are pinned at VC 1.  They differ
+in how much they carry -- one state, one orthogonalising state, one gated state,
+log T states -- and not at all in what their row supports are, which is the
+prediction being tested.  ``src/smat/mixers/recurrent.py`` holds all four.
 
 What separates SMAT from softmax_content is not that softmax cannot do the task.
 It is *leakage*: unrequested payloads are structurally absent from SMAT's output
@@ -56,11 +66,13 @@ from smat.mask import build_mask, d_max_geometric
 from smat.attention import featurise, make_phi, smat_attention, to_device
 from routing_ceiling import (choose_marked_set, pattern_table, row_support_size,
                            shatter_profile)
-from smat.mixers.recurrent import (Mamba2Gate, DeltaGate, mamba2_chunked,
-                            delta_chunked)
+from smat.mixers.recurrent import (Mamba2Gate, DeltaGate, GatedDeltaGate,
+                            LogLinearGate, mamba2_chunked, delta_chunked,
+                            gated_delta_chunked, loglinear_attention,
+                            fenwick_levels)
 
 ARMS = ["smat", "smat_content", "softmax", "softmax_content",
-        "mamba2", "deltanet"]
+        "mamba2", "deltanet", "gated_deltanet", "loglinear"]
 
 
 def _wandb_init(enabled: bool, project: str, cfg: Dict):
@@ -202,10 +214,16 @@ class Router(nn.Module):
         if self.is_smat:
             self.phi = make_phi(d_qk, r, device=device, dtype=torch.float32,
                                 seed=seed)
-        # the recurrent baselines: one d_qk x d_v state, so a causal-prefix row
-        # support and VC 1, whatever the gate does
+        # the recurrent baselines: a causal-prefix row support and VC 1
+        # whatever the gate does, and whether the state is one matrix (mamba2,
+        # deltanet, gated_deltanet) or log T of them (loglinear)
         self.gate = (Mamba2Gate(d_model) if arm == "mamba2" else
-                     DeltaGate(d_model) if arm == "deltanet" else None)
+                     DeltaGate(d_model) if arm == "deltanet" else
+                     GatedDeltaGate(d_model) if arm == "gated_deltanet" else
+                     LogLinearGate(d_model, T) if arm == "loglinear" else None)
+        if arm == "loglinear":
+            # position-only and fixed, so a buffer rather than a parameter
+            self.register_buffer("lev", fenwick_levels(T), persistent=False)
 
     def forward(self, pay, rows, bits, nu):
         nb, T, _ = pay.shape
@@ -229,6 +247,12 @@ class Router(nn.Module):
             o = mamba2_chunked(Q, K, V, logA, dt, chunk=self.chunk)
         elif self.arm == "deltanet":
             o = delta_chunked(Q, K, V, self.gate(X), chunk=self.chunk)
+        elif self.arm == "gated_deltanet":
+            logA, beta = self.gate(X)
+            o = gated_delta_chunked(Q, K, V, logA, beta, chunk=self.chunk)
+        elif self.arm == "loglinear":
+            o = loglinear_attention(Q, K, V, self.gate(X), self.lev,
+                                    chunk=self.chunk)
         else:
             o = F.scaled_dot_product_attention(
                 Q.unsqueeze(1), K.unsqueeze(1), V.unsqueeze(1), is_causal=True
