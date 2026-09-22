@@ -1,2 +1,0 @@
-3189287 validation
-3189302 training array 0-2 afterok:3189287

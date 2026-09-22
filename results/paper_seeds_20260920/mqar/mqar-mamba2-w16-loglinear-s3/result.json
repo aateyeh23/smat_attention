@@ -1,0 +1,22 @@
+{
+  "name": "mqar-mamba2-w16-loglinear-s3",
+  "task": "mqar",
+  "family": "mamba2",
+  "width": 16,
+  "d": 0,
+  "seed": 3,
+  "lr": 0.01,
+  "result": "results/paper_seeds_20260920/mqar/mqar-mamba2-w16-loglinear-s3/result.json",
+  "gate": "mqar_loglinear_recipe_verified.json",
+  "next_epoch": 32,
+  "complete": true,
+  "metrics": {
+    "valid/loss": 3.4766135215759277,
+    "valid/accuracy": 0.43378125,
+    "valid/num_kv_pairs/accuracy-4": 0.83775,
+    "valid/num_kv_pairs/accuracy-8": 0.66675,
+    "valid/num_kv_pairs/accuracy-16": 0.433375,
+    "valid/num_kv_pairs/accuracy-32": 0.1833125,
+    "valid/num_kv_pairs/accuracy-64": 0.04771875
+  }
+}

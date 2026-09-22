@@ -1,0 +1,9 @@
+{
+ "files": {
+  "joint_loglinear.py": {
+   "contents_scrubbed": true,
+   "sha256": "1153102edb21f477673bd66c4cf36a7dcd797d527bb8a82007f282901687346b"
+  }
+ },
+ "note": "Files in this frozen bundle changed only to remove names, home paths, accounts, cluster names and URLs. sha256 is of the file as run (the value in source_sha256.json); the unmodified file is at tag archive/pre-cleanup-2026-09-22. Entries marked path_renamed sat under a directory whose name identified the cluster; it is now code/."
+}

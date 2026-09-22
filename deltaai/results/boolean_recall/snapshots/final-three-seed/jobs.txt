@@ -1,7 +1,0 @@
-JobID|JobName|Partition|State|ExitCode|Elapsed|AllocTRES
-3172006|boolean-recall|ghx4-interactive|COMPLETED|0:0|00:03:55|billing=2000,cpu=4,gres/gpu=1,mem=64G,node=1
-3172006.batch|batch||COMPLETED|0:0|00:03:55|cpu=4,gres/gpu=1,mem=64G,node=1
-3172006.extern|extern||COMPLETED|0:0|00:03:55|billing=2000,cpu=4,gres/gpu=1,mem=64G,node=1
-3172032|boolean-recall|ghx4-interactive|COMPLETED|0:0|00:07:05|billing=2000,cpu=4,gres/gpu=1,mem=64G,node=1
-3172032.batch|batch||COMPLETED|0:0|00:07:05|cpu=4,gres/gpu=1,mem=64G,node=1
-3172032.extern|extern||COMPLETED|0:0|00:07:05|billing=2000,cpu=4,gres/gpu=1,mem=64G,node=1

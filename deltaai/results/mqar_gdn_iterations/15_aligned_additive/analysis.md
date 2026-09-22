@@ -1,3 +1,0 @@
-From trial14: derive query hyperplane scores from the shared writer address map rather than an independent categorical read projection. This combines tied causal retrieval features, which train the writer context through the task loss, with address-aligned reading and simple additive profiles. Earlier shared-address trials did not use tied causal memory features without transport. Geometry and hash remain length-specific. Exactly one hard write and four distinct weighted reads.
-
-Rejected at epoch4:39.46625% versus60.65875%. The combination of tied causal retrieval features and address-based reads does not solve the hard-routing comparison. Return to trial07 and correct the edge bias in the write interpolation and balance surrogate next.

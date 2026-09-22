@@ -1,7 +1,0 @@
-run,complete,epoch,steps,validation_accuracy
-shared-gdn_current-d1-w64-s123,True,32,22624,0.841571875
-shared-gdn_current-d3-w64-s123,False,27,19300,0.65510625
-shared-mamba2-d1-w64-s123,True,32,22624,0.728559375
-shared-mamba2-d3-w64-s123,True,32,22624,0.6899093749999999
-unique-gdn_current-d1-w64-s123,False,9,6600,0.781796875
-unique-mamba2-d1-w64-s123,True,32,22624,0.99925

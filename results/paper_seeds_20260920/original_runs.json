@@ -1,0 +1,306 @@
+[
+  {
+    "task": "mqar",
+    "family": "gdn",
+    "width": 16,
+    "d": 1,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_seed123/mqar_gdn_interleaved/quoted_heads_s123/w16-d1.json"
+  },
+  {
+    "task": "mqar",
+    "family": "gdn",
+    "width": 16,
+    "d": 2,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_seed123/mqar_gdn_four_reads/modal_results/w16-d2.json"
+  },
+  {
+    "task": "mqar",
+    "family": "gdn",
+    "width": 16,
+    "d": 3,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_seed123/mqar_gdn_four_reads/modal_results/w16-d3.json"
+  },
+  {
+    "task": "mqar",
+    "family": "gdn",
+    "width": 16,
+    "d": 4,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_seed123/mqar_gdn_four_reads/modal_results/w16-d4.json"
+  },
+  {
+    "task": "mqar",
+    "family": "gdn",
+    "width": 32,
+    "d": 1,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_seed123/mqar_width_sweeps/gdn/w32-d1.json"
+  },
+  {
+    "task": "mqar",
+    "family": "gdn",
+    "width": 32,
+    "d": 2,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_seed123/mqar_gdn_iterations/24_decay_no_rescale_d2/w32-d2.json"
+  },
+  {
+    "task": "mqar",
+    "family": "gdn",
+    "width": 32,
+    "d": 3,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_seed123/mqar_gdn_iterations/23_decay_no_rescale/w32-d3.json"
+  },
+  {
+    "task": "mqar",
+    "family": "gdn",
+    "width": 32,
+    "d": 4,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_seed123/mqar_gdn_iterations/25_decay_no_rescale_d4/w32-d4.json"
+  },
+  {
+    "task": "mqar",
+    "family": "gdn",
+    "width": 64,
+    "d": 1,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_seed123/mqar_gdn_iterations/30_w64_lr003_gdn/w64-d1.json"
+  },
+  {
+    "task": "mqar",
+    "family": "gdn",
+    "width": 64,
+    "d": 2,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_seed123/mqar_gdn_iterations/31_w64_lr003_d2/w64-d2.json"
+  },
+  {
+    "task": "mqar",
+    "family": "gdn",
+    "width": 64,
+    "d": 3,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_seed123/mqar_gdn_iterations/32_w64_lr003_d3/w64-d3.json"
+  },
+  {
+    "task": "mqar",
+    "family": "gdn",
+    "width": 64,
+    "d": 4,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_seed123/mqar_gdn_iterations/29_w64_lr003_d4/w64-d4.json"
+  },
+  {
+    "task": "mqar",
+    "family": "mamba2",
+    "width": 16,
+    "d": 1,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_seed123/mqar_width_sweeps/mamba2/w16-d1.json"
+  },
+  {
+    "task": "mqar",
+    "family": "mamba2",
+    "width": 16,
+    "d": 2,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_seed123/mqar_width_sweeps/mamba2/w16-d2.json"
+  },
+  {
+    "task": "mqar",
+    "family": "mamba2",
+    "width": 16,
+    "d": 3,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_seed123/mqar_width_sweeps/mamba2/w16-d3.json"
+  },
+  {
+    "task": "mqar",
+    "family": "mamba2",
+    "width": 16,
+    "d": 4,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_seed123/mqar_width_sweeps/mamba2/w16-d4.json"
+  },
+  {
+    "task": "mqar",
+    "family": "mamba2",
+    "width": 32,
+    "d": 1,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_seed123/mqar_width_sweeps/mamba2/w32-d1.json"
+  },
+  {
+    "task": "mqar",
+    "family": "mamba2",
+    "width": 32,
+    "d": 2,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_seed123/mqar_width_sweeps/mamba2/w32-d2.json"
+  },
+  {
+    "task": "mqar",
+    "family": "mamba2",
+    "width": 32,
+    "d": 3,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_seed123/mqar_width_sweeps/mamba2/w32-d3.json"
+  },
+  {
+    "task": "mqar",
+    "family": "mamba2",
+    "width": 32,
+    "d": 4,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_seed123/mqar_width_sweeps/mamba2/w32-d4.json"
+  },
+  {
+    "task": "mqar",
+    "family": "mamba2",
+    "width": 64,
+    "d": 1,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_seed123/mqar_width_sweeps/mamba2/w64-d1.json"
+  },
+  {
+    "task": "mqar",
+    "family": "mamba2",
+    "width": 64,
+    "d": 2,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_seed123/mqar_width_sweeps/mamba2/w64-d2.json"
+  },
+  {
+    "task": "mqar",
+    "family": "mamba2",
+    "width": 64,
+    "d": 3,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_seed123/mqar_width_sweeps/mamba2/w64-d3.json"
+  },
+  {
+    "task": "mqar",
+    "family": "mamba2",
+    "width": 64,
+    "d": 4,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_seed123/mqar_width_sweeps/mamba2/w64-d4.json"
+  },
+  {
+    "task": "joint",
+    "family": "mamba2",
+    "width": 64,
+    "d": 1,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_seed123/joint_recall_iterations/explicit_context_capacity512/shared-mamba2-d1-w64-s123/result.json"
+  },
+  {
+    "task": "joint",
+    "family": "mamba2",
+    "width": 64,
+    "d": 2,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_seed123/joint_recall_iterations/explicit_context_capacity512/shared-mamba2-d2-w64-s123/result.json"
+  },
+  {
+    "task": "joint",
+    "family": "mamba2",
+    "width": 64,
+    "d": 3,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_seed123/joint_recall_iterations/explicit_context_capacity512/shared-mamba2-d3-w64-s123/result.json"
+  },
+  {
+    "task": "joint",
+    "family": "mamba2",
+    "width": 64,
+    "d": 4,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_seed123/joint_recall_iterations/explicit_context_capacity512/shared-mamba2-d4-w64-s123/result.json"
+  },
+  {
+    "task": "joint",
+    "family": "gdn_current",
+    "width": 64,
+    "d": 1,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_seed123/joint_recall_iterations/explicit_context_capacity512/shared-gdn_current-d1-w64-s123/result.json"
+  },
+  {
+    "task": "joint",
+    "family": "gdn_current",
+    "width": 64,
+    "d": 2,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_seed123/joint_recall_iterations/explicit_context_capacity512/shared-gdn_current-d2-w64-s123/result.json"
+  },
+  {
+    "task": "joint",
+    "family": "gdn_current",
+    "width": 64,
+    "d": 3,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_seed123/joint_recall_iterations/explicit_context_capacity512/shared-gdn_current-d3-w64-s123/result.json"
+  },
+  {
+    "task": "joint",
+    "family": "gdn_current",
+    "width": 64,
+    "d": 4,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_seed123/joint_recall_iterations/explicit_context_capacity512/shared-gdn_current-d4-w64-s123/result.json"
+  },
+  {
+    "task": "mqar",
+    "family": "gdn",
+    "width": 16,
+    "d": 0,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_loglinear/gdn-w16/result.json"
+  },
+  {
+    "task": "mqar",
+    "family": "gdn",
+    "width": 32,
+    "d": 0,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_loglinear/gdn-w32/result.json"
+  },
+  {
+    "task": "mqar",
+    "family": "gdn",
+    "width": 64,
+    "d": 0,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_loglinear/gdn-w64/result.json"
+  },
+  {
+    "task": "mqar",
+    "family": "mamba2",
+    "width": 16,
+    "d": 0,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_loglinear/mamba2-w16/result.json"
+  },
+  {
+    "task": "mqar",
+    "family": "mamba2",
+    "width": 32,
+    "d": 0,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_loglinear/mamba2-w32/result.json"
+  },
+  {
+    "task": "mqar",
+    "family": "mamba2",
+    "width": 64,
+    "d": 0,
+    "seed": 123,
+    "result": "results/paper_seeds_20260920/original_loglinear/mamba2-w64/result.json"
+  }
+]

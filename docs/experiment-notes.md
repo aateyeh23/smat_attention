@@ -1,8 +1,8 @@
 # the GPU cluster job scripts
 
 The original experiment tree and its later transport, PG-19, and recall
-campaigns are retained under [`../deltaai/`](../deltaai/). See
-[`../deltaai/README.md`](../deltaai/README.md) for the selected GDN transport
+campaigns are retained under [`../`](../). See
+[`../README.md`](../README.md) for the selected GDN transport
 recipe and each campaign's results directory for its frozen protocol.
 These legacy scripts retain their original paths and cluster settings;
 the current `experiments/` layout continues to use `site.conf`.

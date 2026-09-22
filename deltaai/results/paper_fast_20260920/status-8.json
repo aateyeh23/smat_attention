@@ -1,9 +1,0 @@
-{
-  "job": "3182688",
-  "total": 1,
-  "completed": [
-    "joint-fast-loglinear-mamba2-s4"
-  ],
-  "running": [],
-  "failed": []
-}

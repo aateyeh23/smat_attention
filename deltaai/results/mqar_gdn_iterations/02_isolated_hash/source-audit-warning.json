@@ -1,4 +1,0 @@
-{
-  "status": "unverified_intended_variant",
-  "reason": "Training source-resolution defect: Python -m prioritized its /opt/smat/deltaai working directory over /opt/transport and /opt/iterate in PYTHONPATH. The frozen bundled content_addr.py was therefore loaded during training, while script-based GPU validation used the modified content_addr.py. Changes implemented only in the overlay router were not exercised; model-wrapper changes could still apply. The unmodified resume trainer also ignored trial21 optimizer_parameters, confirmed by its one-group checkpoint. Raw accuracies and checkpoints are preserved, but intended ablation attributions are unreliable. Trials01\u201321 must not be treated as verified tests of the advertised full routing implementation. The pure-GDN baseline is unchanged. Source auditing and safe-path launch begin at trial22."
-}

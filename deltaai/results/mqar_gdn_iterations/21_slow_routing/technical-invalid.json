@@ -1,5 +1,0 @@
-{
-  "reason": "Actual saved optimizer has one group at initial_lr=.01, not the requested two groups. The frozen resume trainer shadowed the modified fit method.",
-  "epoch": 4,
-  "accuracy": 0.38500625
-}

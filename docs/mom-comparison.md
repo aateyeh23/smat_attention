@@ -7,7 +7,7 @@ Du et al., *MoM: Linear Sequence Modeling with Mixture-of-Memories*
 
 The snippet uses final-epoch **test** macro accuracy, averaged equally across
 five binding loads, and sample standard deviations (`ddof=1`). The existing
-`deltaai/results/paper_seeds_20260920/table3.tex` reports validation accuracy;
+`results/paper_seeds_20260920/table3.tex` reports validation accuracy;
 its values must not be substituted into this test-accuracy table.
 
 | Model | Included training seeds | Mean (%) | Sample SD (%) |
@@ -26,14 +26,14 @@ runs in their three-seed campaigns.
 
 Sources:
 
-- GDN: `deltaai/results/paper_seeds_20260920/per_seed.csv`, selecting
+- GDN: `results/paper_seeds_20260920/per_seed.csv`, selecting
   `task=joint`, `family=gdn_current`, `d=1`, `split=test`, `cell=macro`.
-- GDN + SMat: `deltaai/results/joint_incidence_20260921/geometry/`,
+- GDN + SMat: `results/joint_incidence_20260921/geometry/`,
   each seed's `result.json`, `final_test.accuracy`.
-- MoM: `deltaai/results/joint_mom_20260921/mom_profiles/` and `mom_bytes/`,
+- MoM: `results/joint_mom_20260921/mom_profiles/` and `mom_bytes/`,
   each seed's `result.json`, `final_test.accuracy`.
 
 Our MoM variants use top-4 routing with no shared memory. The original MoM
 paper's main configuration has four routed memories, top-2 activation, and
 an additional shared memory. GDN + SMat retains its local GDN recurrent state.
-The full protocol is in `deltaai/results/joint_mom_20260921/protocol.json`.
+The full protocol is in `results/joint_mom_20260921/protocol.json`.

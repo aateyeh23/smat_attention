@@ -1,9 +1,0 @@
-{
-  "tokens": 10747904,
-  "target_tokens": 2000000000,
-  "step": 82,
-  "elapsed_seconds": 605.000391583,
-  "validation": null,
-  "complete": false,
-  "checkpoint": "latest.pt"
-}

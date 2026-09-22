@@ -1,0 +1,21 @@
+{
+  "name": "mqar-gdn-w16-d3-s1",
+  "task": "mqar",
+  "family": "gdn",
+  "width": 16,
+  "d": 3,
+  "seed": 1,
+  "lr": 0.01,
+  "result": "results/paper_seeds_20260920/mqar/mqar-gdn-w16-d3-s1/result.json",
+  "next_epoch": 32,
+  "complete": true,
+  "metrics": {
+    "valid/loss": 4.434887886047363,
+    "valid/accuracy": 0.470234375,
+    "valid/num_kv_pairs/accuracy-4": 0.96975,
+    "valid/num_kv_pairs/accuracy-8": 0.78725,
+    "valid/num_kv_pairs/accuracy-16": 0.355,
+    "valid/num_kv_pairs/accuracy-32": 0.18290625,
+    "valid/num_kv_pairs/accuracy-64": 0.056265625
+  }
+}

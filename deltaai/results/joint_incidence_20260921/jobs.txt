@@ -1,6 +1,0 @@
-3188880 validation
-3188884 training afterok:3188880
-3188900 validation with campaign launcher included
-3188903 training afterok:3188900
-3188903 canceled while pending; replaced by fragmented GPU scheduling
-3188913 array 0-3 four single-GPU shards

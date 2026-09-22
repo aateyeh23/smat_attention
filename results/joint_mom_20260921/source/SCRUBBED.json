@@ -1,0 +1,37 @@
+{
+ "files": {
+  "incidence_ablation/common.py": {
+   "contents_scrubbed": true,
+   "sha256": "1a9eaf46316ea3c4ee7f1c0901a4285b3dfed4a99d84c1e257cd8f17b2b96903"
+  },
+  "incidence_ablation/prepare.py": {
+   "contents_scrubbed": true,
+   "sha256": "42b15ea8caad7f04771cf0415d0067d6f2b70e04d08e995b3d72b8bb2557611e"
+  },
+  "incidence_ablation/run.sbatch": {
+   "contents_scrubbed": true,
+   "sha256": "0966b7f39157d99200089c6978edd1092eaf9c64ab4623e42d7f416c23e30cfc"
+  },
+  "incidence_ablation/run_sharded.sbatch": {
+   "contents_scrubbed": true,
+   "sha256": "4f0335b02eecca1f97c109896de64daba939376cedf055bd08002c401e00a635"
+  },
+  "incidence_ablation/validate.sbatch": {
+   "contents_scrubbed": true,
+   "sha256": "95805ed254e53e6016f67f918337c2caa8259ae92629f4f29b5183112eb223f2"
+  },
+  "mom_ablation/common.py": {
+   "contents_scrubbed": true,
+   "sha256": "4f7f9cf6fd3143e397ea05d91a399989b369eb2164913a671dc37cfdc2c771de"
+  },
+  "mom_ablation/run.sbatch": {
+   "contents_scrubbed": true,
+   "sha256": "a49b0889dd417d5342a9da9cc7b9db8408e9315d8f10580140358a797fe01984"
+  },
+  "mom_ablation/validate.sbatch": {
+   "contents_scrubbed": true,
+   "sha256": "3700c85e23bd2cd1a257a5bed05b5a01050d232514f1347f460fbfbfe40c5849"
+  }
+ },
+ "note": "Files in this frozen bundle changed only to remove names, home paths, accounts, cluster names and URLs. sha256 is of the file as run (the value in source_sha256.json); the unmodified file is at tag archive/pre-cleanup-2026-09-22. Entries marked path_renamed sat under a directory whose name identified the cluster; it is now code/."
+}

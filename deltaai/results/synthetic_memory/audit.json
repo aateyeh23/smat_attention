@@ -1,8 +1,0 @@
-{
-  "completed_runs": 354,
-  "primary_500_step_runs": 248,
-  "matched_comparison_groups": 31,
-  "verified_prediction_files": 220,
-  "confirmed_cells": 120,
-  "notes": "All primary comparisons have eight models, equal recipe fields except family/d/output, matching validation/test hashes, and final step500. Saved predictions reproduce metrics. State binding independently recomputed."
-}

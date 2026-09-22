@@ -1,4 +1,0 @@
-{
-  "app": "ap-NIZhdNrseKCWMSqRhJfZug",
-  "reason": "Householder parametrization stores +/-1 sign slots as parameter diagonals and casts them to int. AdamW weight decay can reduce them below1, invalidating the orthogonal map. Replaced with Cayley coordinates before interpreting accuracy; run stopped. Fresh trial08b includes post-optimizer GPU check."
-}

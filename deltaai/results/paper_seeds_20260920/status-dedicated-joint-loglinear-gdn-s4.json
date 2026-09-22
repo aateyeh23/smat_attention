@@ -1,9 +1,0 @@
-{
-  "job": "3183540",
-  "total": 1,
-  "completed": [],
-  "running": [
-    "joint-loglinear-gdn-s4"
-  ],
-  "failed": []
-}

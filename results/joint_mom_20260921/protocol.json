@@ -1,0 +1,38 @@
+{
+  "parent_campaign": "results/joint_incidence_20260921",
+  "seeds": [
+    123,
+    456,
+    789
+  ],
+  "variants": [
+    "mom_profiles",
+    "mom_bytes"
+  ],
+  "mechanism": "MoM Gated DeltaNet with independent per-memory K/V, beta and decay projections; shared Q and output; top4 reads/writes; no shared memory.",
+  "memory_matching": "Per length match q^2 states or q^2+q(q+1) states to SMAT matrix tables. Count is per head/layer. Same 2 heads, key/value dim16, 2 layers.",
+  "auxiliary": "Coefficient .01 times mean per-layer Switch/MoM balancing loss; includes all four route positions.",
+  "routing": "One learned router per length, shared across heads as in MoM. Expert bank shared across lengths via prefixes. SMAT instead routes each head independently.",
+  "initialization": "Construct paired SMAT then replace mixers; embedding, residual norms and tied output head retained. MoM mixer uses snapshotted FLA initialization.",
+  "training": {
+    "epochs": 32,
+    "batch": 256,
+    "lr": 0.003,
+    "weight_decay": 0.1,
+    "steps": 22560,
+    "examples_per_epoch": 180000,
+    "early_stopping": false
+  },
+  "primary": "Final test accuracy at 128 bindings, paired by training seed against geometry; all loads, macro and exact recall secondary.",
+  "limitations": [
+    "Whole-mixer baseline, not a geometry-only intervention. Four writes vs SMAT one.",
+    "Matches provisioned FP32 matrix states only; MoM per-memory convolution cache, total GPU allocation, parameters and runtime separately reported.",
+    "No shared memory and top4 are modifications to the paper default top2 plus shared.",
+    "Many more memories than paper default; single fixed training recipe, no hyperparameter tuning.",
+    "Trainer legacy family/d labels remain gdn_current/d3 for file compatibility; ablation.json identifies actual architecture."
+  ],
+  "implementation": "Snapshot FLA MomAttention initialization; own mathematically equivalent packed forward with stable chronological sort and per-stream convolution; independent batch shards with activation checkpointing.",
+  "upstream": "https://github.com/fla-org/flash-linear-attention/blob/main/fla/layers/mom.py",
+  "paper": "https://arxiv.org/abs/2502.13685",
+  "data_manifest_sha256": "c493864e586b38c7758d6d13f89ea4e19abd0de54393c896707476352f3ace56"
+}

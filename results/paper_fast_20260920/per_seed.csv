@@ -1,0 +1,11 @@
+family,seed,backend,validation_accuracy,test_accuracy,epochs,steps,source
+mamba2,123,upstream_triton_fixed16,84.91603515625,84.96651367187499,32,22560,results/paper_fast_20260920/joint_loglinear/shared-mamba2-d0-w64-s123/result.json
+gdn,123,fp32_binary_tree_chunk64,7.916308593750002,7.996572265624999,32,22560,results/paper_fast_20260920/joint_loglinear/shared-gdn-d0-w64-s123/result.json
+mamba2,1,upstream_triton_fixed16,45.336484375000005,45.3455078125,32,22560,results/paper_fast_20260920/joint_loglinear/shared-mamba2-d0-w64-s1/result.json
+gdn,1,fp32_binary_tree_chunk64,56.318300781249995,56.386542968749986,32,22560,results/paper_fast_20260920/joint_loglinear/shared-gdn-d0-w64-s1/result.json
+mamba2,2,upstream_triton_fixed16,79.55337890624999,79.535615234375,32,22560,results/paper_fast_20260920/joint_loglinear/shared-mamba2-d0-w64-s2/result.json
+gdn,2,fp32_binary_tree_chunk64,56.36521484375,56.408222656250004,32,22560,results/paper_fast_20260920/joint_loglinear/shared-gdn-d0-w64-s2/result.json
+mamba2,3,upstream_triton_fixed16,67.76158203125,67.65881835937499,32,22560,results/paper_fast_20260920/joint_loglinear/shared-mamba2-d0-w64-s3/result.json
+gdn,3,fp32_binary_tree_chunk64,63.73378906249999,63.77429687500001,32,22560,results/paper_fast_20260920/joint_loglinear/shared-gdn-d0-w64-s3/result.json
+mamba2,4,upstream_triton_fixed16,50.760878906249985,50.800751953125,32,22560,results/paper_fast_20260920/joint_loglinear/shared-mamba2-d0-w64-s4/result.json
+gdn,4,fp32_binary_tree_chunk64,53.29783203125,53.277490234375,32,22560,results/paper_fast_20260920/joint_loglinear/shared-gdn-d0-w64-s4/result.json

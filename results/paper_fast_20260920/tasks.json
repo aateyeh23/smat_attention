@@ -1,0 +1,112 @@
+[
+  {
+    "name": "joint-fast-loglinear-mamba2-s123",
+    "task": "joint_loglinear",
+    "family": "mamba2",
+    "width": 64,
+    "d": 0,
+    "seed": 123,
+    "lr": 0.003,
+    "result": "results/paper_fast_20260920/joint_loglinear/shared-mamba2-d0-w64-s123/result.json",
+    "backend": "upstream_triton_fixed16"
+  },
+  {
+    "name": "joint-fast-loglinear-gdn-s123",
+    "task": "joint_loglinear",
+    "family": "gdn",
+    "width": 64,
+    "d": 0,
+    "seed": 123,
+    "lr": 0.003,
+    "result": "results/paper_fast_20260920/joint_loglinear/shared-gdn-d0-w64-s123/result.json",
+    "backend": "fp32_binary_tree_chunk64"
+  },
+  {
+    "name": "joint-fast-loglinear-mamba2-s1",
+    "task": "joint_loglinear",
+    "family": "mamba2",
+    "width": 64,
+    "d": 0,
+    "seed": 1,
+    "lr": 0.003,
+    "result": "results/paper_fast_20260920/joint_loglinear/shared-mamba2-d0-w64-s1/result.json",
+    "backend": "upstream_triton_fixed16"
+  },
+  {
+    "name": "joint-fast-loglinear-gdn-s1",
+    "task": "joint_loglinear",
+    "family": "gdn",
+    "width": 64,
+    "d": 0,
+    "seed": 1,
+    "lr": 0.003,
+    "result": "results/paper_fast_20260920/joint_loglinear/shared-gdn-d0-w64-s1/result.json",
+    "backend": "fp32_binary_tree_chunk64"
+  },
+  {
+    "name": "joint-fast-loglinear-mamba2-s2",
+    "task": "joint_loglinear",
+    "family": "mamba2",
+    "width": 64,
+    "d": 0,
+    "seed": 2,
+    "lr": 0.003,
+    "result": "results/paper_fast_20260920/joint_loglinear/shared-mamba2-d0-w64-s2/result.json",
+    "backend": "upstream_triton_fixed16"
+  },
+  {
+    "name": "joint-fast-loglinear-gdn-s2",
+    "task": "joint_loglinear",
+    "family": "gdn",
+    "width": 64,
+    "d": 0,
+    "seed": 2,
+    "lr": 0.003,
+    "result": "results/paper_fast_20260920/joint_loglinear/shared-gdn-d0-w64-s2/result.json",
+    "backend": "fp32_binary_tree_chunk64"
+  },
+  {
+    "name": "joint-fast-loglinear-mamba2-s3",
+    "task": "joint_loglinear",
+    "family": "mamba2",
+    "width": 64,
+    "d": 0,
+    "seed": 3,
+    "lr": 0.003,
+    "result": "results/paper_fast_20260920/joint_loglinear/shared-mamba2-d0-w64-s3/result.json",
+    "backend": "upstream_triton_fixed16"
+  },
+  {
+    "name": "joint-fast-loglinear-gdn-s3",
+    "task": "joint_loglinear",
+    "family": "gdn",
+    "width": 64,
+    "d": 0,
+    "seed": 3,
+    "lr": 0.003,
+    "result": "results/paper_fast_20260920/joint_loglinear/shared-gdn-d0-w64-s3/result.json",
+    "backend": "fp32_binary_tree_chunk64"
+  },
+  {
+    "name": "joint-fast-loglinear-mamba2-s4",
+    "task": "joint_loglinear",
+    "family": "mamba2",
+    "width": 64,
+    "d": 0,
+    "seed": 4,
+    "lr": 0.003,
+    "result": "results/paper_fast_20260920/joint_loglinear/shared-mamba2-d0-w64-s4/result.json",
+    "backend": "upstream_triton_fixed16"
+  },
+  {
+    "name": "joint-fast-loglinear-gdn-s4",
+    "task": "joint_loglinear",
+    "family": "gdn",
+    "width": 64,
+    "d": 0,
+    "seed": 4,
+    "lr": 0.003,
+    "result": "results/paper_fast_20260920/joint_loglinear/shared-gdn-d0-w64-s4/result.json",
+    "backend": "fp32_binary_tree_chunk64"
+  }
+]

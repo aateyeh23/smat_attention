@@ -1,1 +1,0 @@
-Width64 lower-learning-rate experiment. Fresh32-epoch run, seed123, two heads, head/state16. AdamW initial LR0.003 verified in actual trainer. No warmup/clipping or baseline early termination. Checkpoints every epoch. In gates.jsonl, baseline denotes historical GDN at LR0.01; compare29_w64_lr003_d4 to30_w64_lr003_gdn for the matched LR0.003 comparison.
