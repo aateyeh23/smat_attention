@@ -1,0 +1,10 @@
+{
+  "backend": "fp32_binary_tree_chunk64",
+  "seed": 2,
+  "family": "gdn",
+  "levels": 13,
+  "initialization": "fresh from seed",
+  "source_manifest_sha256": "c579c793cad0f78c2b3bb94aa354685231779eded10b432b84e0c2cad72f1886",
+  "original_campaign": "paper_seeds_20260920",
+  "upstream_commit": "7f8644159c1406fae1ad863829a5b3a4fbf63022"
+}

@@ -1,0 +1,20 @@
+{
+  "trial": "03_content_only",
+  "name": "content_only",
+  "kwargs": {
+    "write_hash_neighbor_grad": true,
+    "transport_scalar_decay": false,
+    "detach_write_hash_input": true,
+    "memory_plant": false
+  },
+  "width": 32,
+  "d": 3,
+  "heads": 2,
+  "head_dim": 16,
+  "state_dim": 16,
+  "layers": 2,
+  "seed": 123,
+  "epochs": 32,
+  "learning_rate": 0.01,
+  "gate": "strictly beat baseline at epochs 4,6,8,...,32"
+}

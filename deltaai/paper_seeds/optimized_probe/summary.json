@@ -1,0 +1,16 @@
+[
+  {
+    "family": "mamba2",
+    "backend": "upstream",
+    "dense_mean_seconds": 1.3148772478476167,
+    "optimized_mean_seconds": 0.042650367692112924,
+    "speedup": 30.82921247806192
+  },
+  {
+    "family": "gdn",
+    "backend": "tree64",
+    "dense_mean_seconds": 1.5556413005664944,
+    "optimized_mean_seconds": 0.1759039186872542,
+    "speedup": 8.84369894756196
+  }
+]

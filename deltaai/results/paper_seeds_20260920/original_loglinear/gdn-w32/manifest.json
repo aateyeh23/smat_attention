@@ -1,0 +1,20 @@
+{
+  "family": "gdn",
+  "width": 32,
+  "seed": 123,
+  "lr": 0.01,
+  "layers": 2,
+  "epochs": 32,
+  "head_dim": 16,
+  "state_dim": 16,
+  "heads": 2,
+  "backend": "dense-pytorch-exact-log-linear",
+  "hierarchy": "base2-WEAK",
+  "levels": 9,
+  "upstream_commit": "7f8644159c1406fae1ad863829a5b3a4fbf63022",
+  "sha256": "dab3543712bef0f5a9b2ed1d8260e02e4f0184a62ae74270a29c95dcd12d127e",
+  "lambda_mode": "softplus(L * l_proj(u))",
+  "weight_decay": 0.1,
+  "precision": "float32",
+  "note": "Matched Zoology backbone; MQAR levels9 rather than unused upstream LM levels15; no epoch gates"
+}

@@ -1,0 +1,19 @@
+{
+  "trial": "16_periodic_hash",
+  "created_at": "2026-09-17T07:18:07.207871+00:00",
+  "hypothesis": "From trial07: replace clamping of the upper interpolation neighbor with modulo-q wraparound, matching the cyclic finite-field coordinates. For uniform continuous coordinates, the old soft marginal occupancy has expected mass1/(2q) in bin0 and3/(2q) in bin(q-1), despite uniformly distributed hard writes. Wraparound gives1/q in every bin and avoids canceling the task routing gradient in the final bin when both neighbors coincide. Hard forward routing is unchanged; only the surrogate task gradient and auxiliary occupancy change. Exactly one write and four weighted reads.",
+  "sources": {
+    "zoo_gdn_transport.py": "dde674a5244af8be7f085ed0c30acba81605b03ef9207deec23c528a2339724c",
+    "content_addr.py": "db5e75dbb8dc3a8cdbdf523f654eca1fa4411366300928cc162972c5092d8ee0",
+    "smat_gdn_transport.py": "1c40aeaab63fe89e1bb83c6cae2e0990ac1b2427c71bfd52326722d871bc30d4",
+    "smat_address_reads.py": "4bce3957b84e7dba015555645871b9f76181da582dbfb6037498ae5e2756b7b6",
+    "smat_write_hash_grad.py": "92a3f81025cf5c0bf89956f3b97573bd74aff55d94f91c873d884ef417e3135e",
+    "zoo_gdn_gated_trainer.py": "2f8d28a9da90e21a08df9064df948472575879ba2144a368556faa6c259a340e",
+    "zoo_gdn_iteration_configs.py": "cac3e40aa6c719b102a4cf8cebeca81b2c8afffc1691937431f043951b9bc02e",
+    "test_gdn_iteration_gpu.py": "95bf452eace218139f13dfc43d980a4b4f259217dfcf5faff998a2f6f7f097c6",
+    "test_gdn_transport_gpu.py": "802fd3803d57b7a2e6553b3eb652900202c411e90f52dee91472f370ceaf7357",
+    "modal_gdn_iteration.py": "ed009e9f60fa5de0536f81c4736b5c8c058e74f042dce1ea548c25c3cd377683",
+    "modal_gdn_transport.py": "a7607e97b22c153f95a8d2b7c091974fd653befbc9326cbf563054edb5c8722c"
+  },
+  "app": "ap-O0CyMJaFIw4DQW6O5QwF4c"
+}

@@ -1,0 +1,24 @@
+{
+  "trial": "23_decay_no_rescale",
+  "status": "paused",
+  "complete": false,
+  "reason": "User requested pause",
+  "epoch": 14,
+  "accuracy": 0.759159375,
+  "baseline": 0.656484375,
+  "reference_accuracy": 0.7601125,
+  "passed_gates": [
+    4,
+    6,
+    8,
+    10,
+    12,
+    14
+  ],
+  "source_verified": true,
+  "checkpoint": "/u/archerdw/smat_attention/deltaai/results/mqar_gdn_iterations/23_decay_no_rescale/checkpoint-epoch14.pt",
+  "checkpoint_sha256": "429af23089f6211f16f07b11773559da5492ec307570e886b47bdec7fac4674b",
+  "app": "ap-hn0NxQ5Jd2JmAgX9WYfDjE",
+  "app_stopped": true,
+  "paused_at": "2026-09-17T16:06:53.421381+00:00"
+}

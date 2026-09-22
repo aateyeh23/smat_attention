@@ -1,0 +1,42 @@
+{
+  "condition": "shared",
+  "family": "mamba2",
+  "d": 4,
+  "width": 64,
+  "seed": 4,
+  "parameters": 1358256,
+  "trainable_parameters": 1183152,
+  "epoch": 32,
+  "steps": 22560,
+  "lr": 0.0,
+  "elapsed_seconds": 3534.6608888730407,
+  "accuracy": 0.5775414062500001,
+  "exact_accuracy": 0.2535,
+  "cells": {
+    "c1-k4": {
+      "accuracy": 0.995125,
+      "exact_accuracy": 0.981,
+      "eval_loss": 0.015447413325309753
+    },
+    "c2-k8": {
+      "accuracy": 0.91275,
+      "exact_accuracy": 0.2865,
+      "eval_loss": 0.24887009048461914
+    },
+    "c8-k16": {
+      "accuracy": 0.43932421875,
+      "exact_accuracy": 0.0,
+      "eval_loss": 1.703863265991211
+    },
+    "c16-k16": {
+      "accuracy": 0.31194140625,
+      "exact_accuracy": 0.0,
+      "eval_loss": 2.1357039642333984
+    },
+    "c32-k16": {
+      "accuracy": 0.22856640625,
+      "exact_accuracy": 0.0,
+      "eval_loss": 2.3746924591064453
+    }
+  }
+}

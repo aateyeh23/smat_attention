@@ -1,0 +1,13 @@
+{
+  "job": "3188922",
+  "elapsed": 7121.582944773138,
+  "completed": [
+    "buckets_profiles-s123",
+    "random-t17-s456",
+    "geometry-s789",
+    "random-t29-s789"
+  ],
+  "running": [],
+  "failed": [],
+  "total": 4
+}

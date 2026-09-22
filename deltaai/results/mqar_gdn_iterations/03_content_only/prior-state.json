@@ -1,0 +1,23 @@
+{
+  "trial": "02_isolated_hash",
+  "app": "ap-Gl2ZFmHiWsyXVmhciWJrWf",
+  "volume": "smat-gdn-w32-d3-iterations",
+  "remote_path": "/02_isolated_hash",
+  "status": "paused_by_user",
+  "goal_complete": false,
+  "last_rejected": {
+    "trial": "02_isolated_hash",
+    "epoch": 4,
+    "accuracy": 0.5666375,
+    "baseline": 0.6065875
+  },
+  "next_action": "Training paused by user. Further progress toward the training goal requires the user to resume; saved-weight analysis is complete.",
+  "analysis": "02_isolated_hash/diagnosis.md",
+  "evaluation_probe_complete": true,
+  "additional_analysis": "02_isolated_hash/address-alignment.md",
+  "goal_blocker": {
+    "reason": "User requested training pause; analysis is complete, and the next required step is a new training experiment. No instruction to resume has been received.",
+    "audit": "Pause remains in force across the user pause/analysis turn and two automatic goal continuations. Previous turn completed new address-alignment analysis; current verification confirms no GPU containers remain.",
+    "completion": "Not achieved: trial02 rejected at epoch4, 0.5666375 vs baseline 0.6065875."
+  }
+}

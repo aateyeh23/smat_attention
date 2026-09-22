@@ -1,0 +1,10 @@
+{
+  "epoch": 32,
+  "accuracy": 0.770459375,
+  "baseline": 0.433846875,
+  "margin": 0.3366124999999999,
+  "required": true,
+  "decision": "pass",
+  "complete": true,
+  "trial": "30_w64_lr003_gdn"
+}

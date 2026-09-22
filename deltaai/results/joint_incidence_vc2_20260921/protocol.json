@@ -1,0 +1,36 @@
+{
+  "parent_campaign": "/u/archerdw/smat_attention/deltaai/results/joint_incidence_20260921",
+  "training_seeds": [
+    123,
+    456,
+    789
+  ],
+  "topology_seed": 17,
+  "variant": "random_vc2",
+  "scope": "Exact VC dimension 2 for individual summary supports over profiles; the four-summary union family is not constrained to VC 2.",
+  "counts": "Same profile count, summary count, distinct summary count, row degree and column degree as geometry and original random arms.",
+  "construction": "Random column relabeling of geometric incidence; mix pairs of groups in one random partition; 500 degree-preserving swap proposals accepted iff no duplicate summary and no shattered triple. Exact final VC=2 required.",
+  "caveat": "Constrained random walk from geometry, not uniform sampling over all VC-2 families. Column relabeling also changes alignment to the learned coordinate hash.",
+  "model": {
+    "family": "gdn_current",
+    "d": 3,
+    "width": 64,
+    "layers": 2,
+    "head_dim": 16,
+    "state_dim": 16,
+    "writes": 1,
+    "reads": 4
+  },
+  "training": {
+    "epochs": 32,
+    "batch": 256,
+    "lr": 0.003,
+    "weight_decay": 0.1,
+    "steps": 22560,
+    "examples_per_epoch": 180000,
+    "early_stopping": false
+  },
+  "primary": "Final-epoch test accuracy at 128 bindings; pair by training seed against original geometry and random-t17.",
+  "secondary": "All five loads, macro accuracy, exact-table accuracy; no test-based selection of matrices or checkpoints.",
+  "data_manifest_sha256": "c493864e586b38c7758d6d13f89ea4e19abd0de54393c896707476352f3ace56"
+}

@@ -1,0 +1,42 @@
+{
+  "condition": "shared",
+  "family": "gdn_current",
+  "d": 3,
+  "width": 64,
+  "seed": 4,
+  "parameters": 209960,
+  "trainable_parameters": 193064,
+  "epoch": 32,
+  "steps": 22560,
+  "lr": 0.0,
+  "elapsed_seconds": 1694.9097069911659,
+  "accuracy": 0.5322820312500001,
+  "exact_accuracy": 0.2185,
+  "cells": {
+    "c1-k4": {
+      "accuracy": 0.999375,
+      "exact_accuracy": 0.9975,
+      "eval_loss": 0.0035565622746944426
+    },
+    "c2-k8": {
+      "accuracy": 0.86034375,
+      "exact_accuracy": 0.095,
+      "eval_loss": 0.3935595169067383
+    },
+    "c8-k16": {
+      "accuracy": 0.383609375,
+      "exact_accuracy": 0.0,
+      "eval_loss": 1.8530882720947266
+    },
+    "c16-k16": {
+      "accuracy": 0.23616796875,
+      "exact_accuracy": 0.0,
+      "eval_loss": 2.350632522583008
+    },
+    "c32-k16": {
+      "accuracy": 0.1819140625,
+      "exact_accuracy": 0.0,
+      "eval_loss": 2.5304715881347657
+    }
+  }
+}

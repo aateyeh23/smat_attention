@@ -1,0 +1,7 @@
+{
+  "/u/archerdw/smat_attention/deltaai/incidence_ablation/run_sharded.sbatch": "4f0335b02eecca1f97c109896de64daba939376cedf055bd08002c401e00a635",
+  "/u/archerdw/smat_attention/deltaai/results/joint_incidence_20260921/shards/0/tasks.json": "fff9e26cc74b84bb2a38218a91e1d3ea27d71aa9b5df6cf1896ad3b2b8d4bfe2",
+  "/u/archerdw/smat_attention/deltaai/results/joint_incidence_20260921/shards/1/tasks.json": "1e8baeb0aec1c7b4b349ee481fc1f452e9d21787a4ac10bcf15c7ddffa0d5ec9",
+  "/u/archerdw/smat_attention/deltaai/results/joint_incidence_20260921/shards/2/tasks.json": "be40f995de7012e07a078da325d15a950f557f102563bd5f5111849ce8adccdf",
+  "/u/archerdw/smat_attention/deltaai/results/joint_incidence_20260921/shards/3/tasks.json": "3701ac567a7d4d7dd31226c90c0b9449fee6482cd200c8a05972ed6ac3285f9d"
+}

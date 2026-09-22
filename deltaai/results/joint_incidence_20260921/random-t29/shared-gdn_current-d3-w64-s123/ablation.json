@@ -1,0 +1,332 @@
+{
+  "variant": "random",
+  "topology_seed": 29,
+  "parameters": 209960,
+  "trainable_parameters": 193064,
+  "matrix_tables": [
+    {
+      "layer": 0,
+      "length": 64,
+      "q": 5,
+      "profile_count": 25,
+      "read_type_count": 30,
+      "materialized_summary_count": 30,
+      "heads": 2,
+      "state_rank": 16,
+      "value_dimension": 16,
+      "write_count": 1,
+      "read_count": 4,
+      "profile_table_bytes_per_example": 51200,
+      "summary_table_bytes_per_example": 61440,
+      "combined_matrix_table_bytes_per_example": 112640,
+      "reference_combined_matrix_table_bytes_per_example": 112640,
+      "read_table_bytes_per_example": 61440,
+      "hash_radices": [
+        5,
+        5
+      ],
+      "incidence_edges": 150,
+      "incidence_sha256": "29192565f4fb157e8f77bd7a2fa9b445ef83dc394885003b40e66d4d208fc04c",
+      "pairwise_profile_overlap_histogram": {
+        "0": 95,
+        "1": 126,
+        "2": 63,
+        "3": 16
+      }
+    },
+    {
+      "layer": 0,
+      "length": 100,
+      "q": 5,
+      "profile_count": 25,
+      "read_type_count": 30,
+      "materialized_summary_count": 30,
+      "heads": 2,
+      "state_rank": 16,
+      "value_dimension": 16,
+      "write_count": 1,
+      "read_count": 4,
+      "profile_table_bytes_per_example": 51200,
+      "summary_table_bytes_per_example": 61440,
+      "combined_matrix_table_bytes_per_example": 112640,
+      "reference_combined_matrix_table_bytes_per_example": 112640,
+      "read_table_bytes_per_example": 61440,
+      "hash_radices": [
+        5,
+        5
+      ],
+      "incidence_edges": 150,
+      "incidence_sha256": "01cd1f10f0f7282d8f193c3387ecfca3fb4f585b270362f94b17d69353d51616",
+      "pairwise_profile_overlap_histogram": {
+        "0": 105,
+        "1": 109,
+        "2": 68,
+        "3": 17,
+        "4": 1
+      }
+    },
+    {
+      "layer": 0,
+      "length": 772,
+      "q": 11,
+      "profile_count": 121,
+      "read_type_count": 132,
+      "materialized_summary_count": 132,
+      "heads": 2,
+      "state_rank": 16,
+      "value_dimension": 16,
+      "write_count": 1,
+      "read_count": 4,
+      "profile_table_bytes_per_example": 247808,
+      "summary_table_bytes_per_example": 270336,
+      "combined_matrix_table_bytes_per_example": 518144,
+      "reference_combined_matrix_table_bytes_per_example": 518144,
+      "read_table_bytes_per_example": 270336,
+      "hash_radices": [
+        11,
+        11
+      ],
+      "incidence_edges": 1452,
+      "incidence_sha256": "8d277a0f30825c87d86ab8601cd80240a6d820b02c8972014e9ea1d8af06850e",
+      "pairwise_profile_overlap_histogram": {
+        "0": 2577,
+        "1": 2779,
+        "2": 1352,
+        "3": 446,
+        "4": 91,
+        "5": 15
+      }
+    },
+    {
+      "layer": 0,
+      "length": 1540,
+      "q": 11,
+      "profile_count": 121,
+      "read_type_count": 132,
+      "materialized_summary_count": 132,
+      "heads": 2,
+      "state_rank": 16,
+      "value_dimension": 16,
+      "write_count": 1,
+      "read_count": 4,
+      "profile_table_bytes_per_example": 247808,
+      "summary_table_bytes_per_example": 270336,
+      "combined_matrix_table_bytes_per_example": 518144,
+      "reference_combined_matrix_table_bytes_per_example": 518144,
+      "read_table_bytes_per_example": 270336,
+      "hash_radices": [
+        11,
+        11
+      ],
+      "incidence_edges": 1452,
+      "incidence_sha256": "87005ec40eaa0308c9da5e110faf55dd689b9f84adbefbf914fbe5bbbf62d033",
+      "pairwise_profile_overlap_histogram": {
+        "0": 2550,
+        "1": 2808,
+        "2": 1367,
+        "3": 444,
+        "4": 73,
+        "5": 14,
+        "6": 4
+      }
+    },
+    {
+      "layer": 0,
+      "length": 3076,
+      "q": 13,
+      "profile_count": 169,
+      "read_type_count": 182,
+      "materialized_summary_count": 182,
+      "heads": 2,
+      "state_rank": 16,
+      "value_dimension": 16,
+      "write_count": 1,
+      "read_count": 4,
+      "profile_table_bytes_per_example": 346112,
+      "summary_table_bytes_per_example": 372736,
+      "combined_matrix_table_bytes_per_example": 718848,
+      "reference_combined_matrix_table_bytes_per_example": 718848,
+      "read_table_bytes_per_example": 372736,
+      "hash_radices": [
+        13,
+        13
+      ],
+      "incidence_edges": 2366,
+      "incidence_sha256": "1661f22773aaaec6595a6fccb0c7dafe449bfa2a3e370ce26e5719ef543a230a",
+      "pairwise_profile_overlap_histogram": {
+        "0": 5058,
+        "1": 5398,
+        "2": 2678,
+        "3": 841,
+        "4": 187,
+        "5": 33,
+        "6": 1
+      }
+    },
+    {
+      "layer": 1,
+      "length": 64,
+      "q": 5,
+      "profile_count": 25,
+      "read_type_count": 30,
+      "materialized_summary_count": 30,
+      "heads": 2,
+      "state_rank": 16,
+      "value_dimension": 16,
+      "write_count": 1,
+      "read_count": 4,
+      "profile_table_bytes_per_example": 51200,
+      "summary_table_bytes_per_example": 61440,
+      "combined_matrix_table_bytes_per_example": 112640,
+      "reference_combined_matrix_table_bytes_per_example": 112640,
+      "read_table_bytes_per_example": 61440,
+      "hash_radices": [
+        5,
+        5
+      ],
+      "incidence_edges": 150,
+      "incidence_sha256": "f3323a8ec0ef701c7cd380ce0136ee5927976d5322b651e504460024afbf8362",
+      "pairwise_profile_overlap_histogram": {
+        "0": 98,
+        "1": 127,
+        "2": 55,
+        "3": 17,
+        "4": 3
+      }
+    },
+    {
+      "layer": 1,
+      "length": 100,
+      "q": 5,
+      "profile_count": 25,
+      "read_type_count": 30,
+      "materialized_summary_count": 30,
+      "heads": 2,
+      "state_rank": 16,
+      "value_dimension": 16,
+      "write_count": 1,
+      "read_count": 4,
+      "profile_table_bytes_per_example": 51200,
+      "summary_table_bytes_per_example": 61440,
+      "combined_matrix_table_bytes_per_example": 112640,
+      "reference_combined_matrix_table_bytes_per_example": 112640,
+      "read_table_bytes_per_example": 61440,
+      "hash_radices": [
+        5,
+        5
+      ],
+      "incidence_edges": 150,
+      "incidence_sha256": "3b6d6cda592766b2915103efcb507811d475e3f2a58fa1364ab0f298eed7f009",
+      "pairwise_profile_overlap_histogram": {
+        "0": 90,
+        "1": 136,
+        "2": 60,
+        "3": 12,
+        "4": 2
+      }
+    },
+    {
+      "layer": 1,
+      "length": 772,
+      "q": 11,
+      "profile_count": 121,
+      "read_type_count": 132,
+      "materialized_summary_count": 132,
+      "heads": 2,
+      "state_rank": 16,
+      "value_dimension": 16,
+      "write_count": 1,
+      "read_count": 4,
+      "profile_table_bytes_per_example": 247808,
+      "summary_table_bytes_per_example": 270336,
+      "combined_matrix_table_bytes_per_example": 518144,
+      "reference_combined_matrix_table_bytes_per_example": 518144,
+      "read_table_bytes_per_example": 270336,
+      "hash_radices": [
+        11,
+        11
+      ],
+      "incidence_edges": 1452,
+      "incidence_sha256": "2aca451426c97ab5fe0e52c0451a3925ba17f8f39bf04746876b98ce041641e4",
+      "pairwise_profile_overlap_histogram": {
+        "0": 2525,
+        "1": 2833,
+        "2": 1383,
+        "3": 428,
+        "4": 78,
+        "5": 13
+      }
+    },
+    {
+      "layer": 1,
+      "length": 1540,
+      "q": 11,
+      "profile_count": 121,
+      "read_type_count": 132,
+      "materialized_summary_count": 132,
+      "heads": 2,
+      "state_rank": 16,
+      "value_dimension": 16,
+      "write_count": 1,
+      "read_count": 4,
+      "profile_table_bytes_per_example": 247808,
+      "summary_table_bytes_per_example": 270336,
+      "combined_matrix_table_bytes_per_example": 518144,
+      "reference_combined_matrix_table_bytes_per_example": 518144,
+      "read_table_bytes_per_example": 270336,
+      "hash_radices": [
+        11,
+        11
+      ],
+      "incidence_edges": 1452,
+      "incidence_sha256": "4b124befcd522dbe4ca0556d435b7577c2abdd52bab764bc5b0bd419a22fcbb2",
+      "pairwise_profile_overlap_histogram": {
+        "0": 2578,
+        "1": 2761,
+        "2": 1397,
+        "3": 407,
+        "4": 104,
+        "5": 10,
+        "6": 3
+      }
+    },
+    {
+      "layer": 1,
+      "length": 3076,
+      "q": 13,
+      "profile_count": 169,
+      "read_type_count": 182,
+      "materialized_summary_count": 182,
+      "heads": 2,
+      "state_rank": 16,
+      "value_dimension": 16,
+      "write_count": 1,
+      "read_count": 4,
+      "profile_table_bytes_per_example": 346112,
+      "summary_table_bytes_per_example": 372736,
+      "combined_matrix_table_bytes_per_example": 718848,
+      "reference_combined_matrix_table_bytes_per_example": 718848,
+      "read_table_bytes_per_example": 372736,
+      "hash_radices": [
+        13,
+        13
+      ],
+      "incidence_edges": 2366,
+      "incidence_sha256": "8061454e7961bb0f1e147d1614bfe0aa11923940acf0e8fca0b80d507625ee5e",
+      "pairwise_profile_overlap_histogram": {
+        "0": 5043,
+        "1": 5363,
+        "2": 2771,
+        "3": 814,
+        "4": 179,
+        "5": 23,
+        "6": 3
+      }
+    }
+  ],
+  "byte_budget_definition": "FP32 profile plus materialized summary tables, per example. This is not an implemented autoregressive KV cache or total training memory. Read-table-only bytes, peak CUDA bytes, and static buffers are reported separately.",
+  "registered_buffer_bytes": 603056,
+  "training_seed": 123,
+  "source_manifest_sha256": "9cb10517ad8f5503509e7c23e1334196254abb29b4c013a3330843d7656d397b",
+  "initialization": "fresh, shared backbone and writer initialization by training seed"
+}

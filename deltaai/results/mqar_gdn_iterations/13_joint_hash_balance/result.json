@@ -1,0 +1,10 @@
+{
+  "epoch": 4,
+  "accuracy": 0.523584375,
+  "baseline": 0.6065875,
+  "margin": -0.08300312499999996,
+  "required": true,
+  "decision": "reject",
+  "complete": true,
+  "trial": "13_joint_hash_balance"
+}

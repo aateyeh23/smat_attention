@@ -1,0 +1,10 @@
+{
+  "epoch": 4,
+  "accuracy": 0.548178125,
+  "baseline": 0.6065875,
+  "margin": -0.058409374999999986,
+  "required": true,
+  "decision": "reject",
+  "complete": true,
+  "trial": "16_periodic_hash"
+}

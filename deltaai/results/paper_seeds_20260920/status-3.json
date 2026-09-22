@@ -1,0 +1,29 @@
+{
+  "job": "3182779",
+  "total": 20,
+  "completed": [
+    "mqar-gdn-w16-d4-s1",
+    "mqar-gdn-w64-d2-s1",
+    "mqar-mamba2-w16-loglinear-s1",
+    "mqar-mamba2-w64-d3-s1",
+    "joint-gdn_current-d2-s1",
+    "mqar-gdn-w32-d1-s2",
+    "mqar-gdn-w64-d4-s2",
+    "mqar-mamba2-w32-d2-s2",
+    "mqar-mamba2-w64-loglinear-s2",
+    "joint-gdn_current-d4-s2",
+    "mqar-gdn-w32-d3-s3",
+    "mqar-mamba2-w16-d1-s3",
+    "mqar-mamba2-w32-d4-s3",
+    "joint-mamba2-d2-s3",
+    "mqar-gdn-w16-d2-s4",
+    "mqar-gdn-w32-loglinear-s4",
+    "mqar-mamba2-w16-d3-s4",
+    "mqar-mamba2-w64-d1-s4",
+    "joint-mamba2-d4-s4"
+  ],
+  "running": [
+    "joint-loglinear-gdn-s1"
+  ],
+  "failed": []
+}

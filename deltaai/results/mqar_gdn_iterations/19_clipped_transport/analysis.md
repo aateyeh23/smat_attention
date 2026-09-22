@@ -1,0 +1,3 @@
+Use exactly trial07 architecture and add global gradient-norm clipping at1 before each AdamW update. This is an explicit training-recipe change; data, initialization seed, optimizer type, learning rate, decay, scheduler, epoch budget and strict baseline gates remain fixed. Hard routing and its surrogate can produce variable gradients; clipping limits rare updates that could dominate Adam moments. Record unclipped gradient norm mean/p95/max and clipping fraction every epoch. There is no claim yet that gradients are the cause or that clipping improves accuracy.
+
+Rejected at epoch4:56.510625% versus60.65875%. Clipping occurred in only4/707 first-epoch steps, but in about40% of later steps; epoch3 maximum unclipped norm34.9474. Limiting spikes alone did not pass the gate.

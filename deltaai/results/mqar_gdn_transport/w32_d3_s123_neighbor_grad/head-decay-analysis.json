@@ -1,0 +1,905 @@
+{
+  "method": "Read-only first-layer gate analysis from saved weights and cached examples.\n\nNo model construction, recurrence, backward, optimizer, or GPU job. Reconstruct\nembedding -> RMSNorm -> forget gate exactly as the first block specifies.\n",
+  "rows": [
+    {
+      "checkpoint": "neighbor_epoch3",
+      "epoch": 3,
+      "pairs": 4,
+      "length": 64,
+      "alpha_mean_per_head": [
+        0.9999940395355225,
+        0.37487149238586426
+      ],
+      "query_path_decay_mean_per_head": [
+        0.9997645020484924,
+        2.1939101360416547e-20
+      ],
+      "query_path_log_decay_quantiles": [
+        [
+          -0.00031006132485345006,
+          -101.76470184326172
+        ],
+        [
+          -0.0002259606699226424,
+          -71.23046112060547
+        ],
+        [
+          -0.00016234087524935603,
+          -49.672828674316406
+        ]
+      ],
+      "fraction_query_paths_below_1e_minus6": [
+        0.0,
+        1.0
+      ],
+      "beta_mean_per_head": [
+        0.3745180368423462,
+        0.5883867740631104
+      ]
+    },
+    {
+      "checkpoint": "neighbor_epoch3",
+      "epoch": 3,
+      "pairs": 8,
+      "length": 64,
+      "alpha_mean_per_head": [
+        0.9999940395355225,
+        0.3575603663921356
+      ],
+      "query_path_decay_mean_per_head": [
+        0.9997861981391907,
+        1.6734546182865882e-15
+      ],
+      "query_path_log_decay_quantiles": [
+        [
+          -0.00030561781022697687,
+          -97.6025390625
+        ],
+        [
+          -0.00021059854771010578,
+          -70.29823303222656
+        ],
+        [
+          -0.0001293281966354698,
+          -46.99772262573242
+        ]
+      ],
+      "fraction_query_paths_below_1e_minus6": [
+        0.0,
+        1.0
+      ],
+      "beta_mean_per_head": [
+        0.3633772134780884,
+        0.5969927310943604
+      ]
+    },
+    {
+      "checkpoint": "neighbor_epoch3",
+      "epoch": 3,
+      "pairs": 16,
+      "length": 64,
+      "alpha_mean_per_head": [
+        0.9999945759773254,
+        0.3168357014656067
+      ],
+      "query_path_decay_mean_per_head": [
+        0.9998332262039185,
+        2.1532606253593656e-10
+      ],
+      "query_path_log_decay_quantiles": [
+        [
+          -0.00023834817693568766,
+          -91.00045013427734
+        ],
+        [
+          -0.00016327764024026692,
+          -62.24985122680664
+        ],
+        [
+          -0.00010021447815233842,
+          -40.91254425048828
+        ]
+      ],
+      "fraction_query_paths_below_1e_minus6": [
+        0.0,
+        1.0
+      ],
+      "beta_mean_per_head": [
+        0.3350699841976166,
+        0.616753101348877
+      ]
+    },
+    {
+      "checkpoint": "neighbor_epoch3",
+      "epoch": 3,
+      "pairs": 32,
+      "length": 128,
+      "alpha_mean_per_head": [
+        0.9999946355819702,
+        0.31559866666793823
+      ],
+      "query_path_decay_mean_per_head": [
+        0.9996589422225952,
+        7.525661295661772e-19
+      ],
+      "query_path_log_decay_quantiles": [
+        [
+          -0.00048376782797276974,
+          -181.8221435546875
+        ],
+        [
+          -0.0003347546444274485,
+          -122.7413330078125
+        ],
+        [
+          -0.00020854522881563753,
+          -82.62881469726562
+        ]
+      ],
+      "fraction_query_paths_below_1e_minus6": [
+        0.0,
+        1.0
+      ],
+      "beta_mean_per_head": [
+        0.33387187123298645,
+        0.6166815757751465
+      ]
+    },
+    {
+      "checkpoint": "neighbor_epoch3",
+      "epoch": 3,
+      "pairs": 64,
+      "length": 256,
+      "alpha_mean_per_head": [
+        0.9999946355819702,
+        0.31488996744155884
+      ],
+      "query_path_decay_mean_per_head": [
+        0.9993152022361755,
+        7.261485027445175e-34
+      ],
+      "query_path_log_decay_quantiles": [
+        [
+          -0.000956248608417809,
+          -363.7289733886719
+        ],
+        [
+          -0.0006742447731085122,
+          -249.6105499267578
+        ],
+        [
+          -0.0004317310231272131,
+          -169.64207458496094
+        ]
+      ],
+      "fraction_query_paths_below_1e_minus6": [
+        0.0,
+        1.0
+      ],
+      "beta_mean_per_head": [
+        0.3337057828903198,
+        0.617559552192688
+      ]
+    },
+    {
+      "checkpoint": "neighbor_epoch6",
+      "epoch": 6,
+      "pairs": 4,
+      "length": 64,
+      "alpha_mean_per_head": [
+        0.9999967217445374,
+        0.3214173913002014
+      ],
+      "query_path_decay_mean_per_head": [
+        0.9998653531074524,
+        1.2405004381466639e-24
+      ],
+      "query_path_log_decay_quantiles": [
+        [
+          -0.0001978810760192573,
+          -123.45284271240234
+        ],
+        [
+          -0.00012546607467811555,
+          -88.14575958251953
+        ],
+        [
+          -8.472436456941068e-05,
+          -60.769676208496094
+        ]
+      ],
+      "fraction_query_paths_below_1e_minus6": [
+        0.0,
+        1.0
+      ],
+      "beta_mean_per_head": [
+        0.36815086007118225,
+        0.6459635496139526
+      ]
+    },
+    {
+      "checkpoint": "neighbor_epoch6",
+      "epoch": 6,
+      "pairs": 8,
+      "length": 64,
+      "alpha_mean_per_head": [
+        0.9999968409538269,
+        0.30655524134635925
+      ],
+      "query_path_decay_mean_per_head": [
+        0.9998854994773865,
+        2.75604006957358e-18
+      ],
+      "query_path_log_decay_quantiles": [
+        [
+          -0.00016890637925826013,
+          -118.7718734741211
+        ],
+        [
+          -0.000109260028693825,
+          -85.74375915527344
+        ],
+        [
+          -6.219630449777469e-05,
+          -57.92171096801758
+        ]
+      ],
+      "fraction_query_paths_below_1e_minus6": [
+        0.0,
+        1.0
+      ],
+      "beta_mean_per_head": [
+        0.35838788747787476,
+        0.659424901008606
+      ]
+    },
+    {
+      "checkpoint": "neighbor_epoch6",
+      "epoch": 6,
+      "pairs": 16,
+      "length": 64,
+      "alpha_mean_per_head": [
+        0.9999970197677612,
+        0.26868629455566406
+      ],
+      "query_path_decay_mean_per_head": [
+        0.9999078512191772,
+        3.118067002511049e-12
+      ],
+      "query_path_log_decay_quantiles": [
+        [
+          -0.00014266565267462283,
+          -109.85444641113281
+        ],
+        [
+          -8.623667235951871e-05,
+          -75.611328125
+        ],
+        [
+          -4.797855581273325e-05,
+          -49.805931091308594
+        ]
+      ],
+      "fraction_query_paths_below_1e_minus6": [
+        0.0,
+        1.0
+      ],
+      "beta_mean_per_head": [
+        0.3325704336166382,
+        0.6946618556976318
+      ]
+    },
+    {
+      "checkpoint": "neighbor_epoch6",
+      "epoch": 6,
+      "pairs": 32,
+      "length": 128,
+      "alpha_mean_per_head": [
+        0.9999969601631165,
+        0.26788535714149475
+      ],
+      "query_path_decay_mean_per_head": [
+        0.9998149871826172,
+        3.3865079219992475e-21
+      ],
+      "query_path_log_decay_quantiles": [
+        [
+          -0.0002731225686147809,
+          -221.43783569335938
+        ],
+        [
+          -0.00017792050493881106,
+          -149.73614501953125
+        ],
+        [
+          -0.00010536312765907496,
+          -100.74613189697266
+        ]
+      ],
+      "fraction_query_paths_below_1e_minus6": [
+        0.0,
+        1.0
+      ],
+      "beta_mean_per_head": [
+        0.3318816125392914,
+        0.6962924003601074
+      ]
+    },
+    {
+      "checkpoint": "neighbor_epoch6",
+      "epoch": 6,
+      "pairs": 64,
+      "length": 256,
+      "alpha_mean_per_head": [
+        0.9999970197677612,
+        0.26701194047927856
+      ],
+      "query_path_decay_mean_per_head": [
+        0.999626100063324,
+        4.333907864494508e-40
+      ],
+      "query_path_log_decay_quantiles": [
+        [
+          -0.0005338265909813344,
+          -443.78717041015625
+        ],
+        [
+          -0.00036382258986122906,
+          -303.7415466308594
+        ],
+        [
+          -0.0002283622743561864,
+          -207.0395965576172
+        ]
+      ],
+      "fraction_query_paths_below_1e_minus6": [
+        0.0,
+        1.0
+      ],
+      "beta_mean_per_head": [
+        0.33104684948921204,
+        0.6967180967330933
+      ]
+    },
+    {
+      "checkpoint": "original_transport_epoch23",
+      "epoch": 23,
+      "pairs": 4,
+      "length": 64,
+      "alpha_mean_per_head": [
+        0.9999934434890747,
+        0.9546513557434082
+      ],
+      "query_path_decay_mean_per_head": [
+        0.9997408986091614,
+        0.17482677102088928
+      ],
+      "query_path_log_decay_quantiles": [
+        [
+          -0.0004238136752974242,
+          -2.5533525943756104
+        ],
+        [
+          -0.00021014059893786907,
+          -1.7688841819763184
+        ],
+        [
+          -0.00010614562779664993,
+          -1.2849549055099487
+        ]
+      ],
+      "fraction_query_paths_below_1e_minus6": [
+        0.0,
+        0.0
+      ],
+      "beta_mean_per_head": [
+        0.3913322687149048,
+        0.5969414114952087
+      ]
+    },
+    {
+      "checkpoint": "original_transport_epoch23",
+      "epoch": 23,
+      "pairs": 8,
+      "length": 64,
+      "alpha_mean_per_head": [
+        0.9999935626983643,
+        0.9552614092826843
+      ],
+      "query_path_decay_mean_per_head": [
+        0.9997502565383911,
+        0.2083113044500351
+      ],
+      "query_path_log_decay_quantiles": [
+        [
+          -0.0005300903576426208,
+          -2.325289011001587
+        ],
+        [
+          -0.00018493994139134884,
+          -1.6646431684494019
+        ],
+        [
+          -8.313217404065654e-05,
+          -1.0351312160491943
+        ]
+      ],
+      "fraction_query_paths_below_1e_minus6": [
+        0.0,
+        0.0
+      ],
+      "beta_mean_per_head": [
+        0.39013224840164185,
+        0.6103644967079163
+      ]
+    },
+    {
+      "checkpoint": "original_transport_epoch23",
+      "epoch": 23,
+      "pairs": 16,
+      "length": 64,
+      "alpha_mean_per_head": [
+        0.9999935626983643,
+        0.9567047953605652
+      ],
+      "query_path_decay_mean_per_head": [
+        0.9998021125793457,
+        0.27931880950927734
+      ],
+      "query_path_log_decay_quantiles": [
+        [
+          -0.000390090310247615,
+          -1.9565033912658691
+        ],
+        [
+          -0.00015166084631346166,
+          -1.3324350118637085
+        ],
+        [
+          -6.268317520152777e-05,
+          -0.8369823694229126
+        ]
+      ],
+      "fraction_query_paths_below_1e_minus6": [
+        0.0,
+        0.0
+      ],
+      "beta_mean_per_head": [
+        0.38708019256591797,
+        0.641302764415741
+      ]
+    },
+    {
+      "checkpoint": "original_transport_epoch23",
+      "epoch": 23,
+      "pairs": 32,
+      "length": 128,
+      "alpha_mean_per_head": [
+        0.9999939799308777,
+        0.9571812152862549
+      ],
+      "query_path_decay_mean_per_head": [
+        0.9996222853660583,
+        0.08514560759067535
+      ],
+      "query_path_log_decay_quantiles": [
+        [
+          -0.0006536591681651771,
+          -3.8869516849517822
+        ],
+        [
+          -0.0003338784445077181,
+          -2.715708017349243
+        ],
+        [
+          -0.00016017377492971718,
+          -1.7398271560668945
+        ]
+      ],
+      "fraction_query_paths_below_1e_minus6": [
+        0.0,
+        0.0
+      ],
+      "beta_mean_per_head": [
+        0.3862382173538208,
+        0.6418042778968811
+      ]
+    },
+    {
+      "checkpoint": "original_transport_epoch23",
+      "epoch": 23,
+      "pairs": 64,
+      "length": 256,
+      "alpha_mean_per_head": [
+        0.9999939799308777,
+        0.9570018649101257
+      ],
+      "query_path_decay_mean_per_head": [
+        0.9992245435714722,
+        0.010590367019176483
+      ],
+      "query_path_log_decay_quantiles": [
+        [
+          -0.0012609995901584625,
+          -7.812367916107178
+        ],
+        [
+          -0.0007109238067641854,
+          -5.475893497467041
+        ],
+        [
+          -0.0003833196242339909,
+          -3.6147067546844482
+        ]
+      ],
+      "fraction_query_paths_below_1e_minus6": [
+        0.0,
+        0.0
+      ],
+      "beta_mean_per_head": [
+        0.38683241605758667,
+        0.6424083709716797
+      ]
+    },
+    {
+      "checkpoint": "gdn_baseline_epoch32",
+      "epoch": 32,
+      "pairs": 4,
+      "length": 64,
+      "alpha_mean_per_head": [
+        1.0,
+        0.9999980330467224
+      ],
+      "query_path_decay_mean_per_head": [
+        0.999994158744812,
+        0.9999193549156189
+      ],
+      "query_path_log_decay_quantiles": [
+        [
+          -8.181198609236162e-06,
+          -0.00010949626448564231
+        ],
+        [
+          -5.609306754195131e-06,
+          -7.762696623103693e-05
+        ],
+        [
+          -3.975092567998217e-06,
+          -5.718799729947932e-05
+        ]
+      ],
+      "fraction_query_paths_below_1e_minus6": [
+        0.0,
+        0.0
+      ],
+      "beta_mean_per_head": [
+        0.2225731462240219,
+        0.602225124835968
+      ]
+    },
+    {
+      "checkpoint": "gdn_baseline_epoch32",
+      "epoch": 32,
+      "pairs": 8,
+      "length": 64,
+      "alpha_mean_per_head": [
+        1.0,
+        0.9999978542327881
+      ],
+      "query_path_decay_mean_per_head": [
+        0.9999939203262329,
+        0.9999194741249084
+      ],
+      "query_path_log_decay_quantiles": [
+        [
+          -7.777033715683501e-06,
+          -0.00010682161519071087
+        ],
+        [
+          -5.028940904594492e-06,
+          -7.098331116139889e-05
+        ],
+        [
+          -2.827873458954855e-06,
+          -4.3814812670461833e-05
+        ]
+      ],
+      "fraction_query_paths_below_1e_minus6": [
+        0.0,
+        0.0
+      ],
+      "beta_mean_per_head": [
+        0.22429127991199493,
+        0.6049001216888428
+      ]
+    },
+    {
+      "checkpoint": "gdn_baseline_epoch32",
+      "epoch": 32,
+      "pairs": 16,
+      "length": 64,
+      "alpha_mean_per_head": [
+        1.0,
+        0.9999980926513672
+      ],
+      "query_path_decay_mean_per_head": [
+        0.9999958276748657,
+        0.9999412298202515
+      ],
+      "query_path_log_decay_quantiles": [
+        [
+          -6.048228442523396e-06,
+          -8.401100058108568e-05
+        ],
+        [
+          -3.968926648667548e-06,
+          -5.6860204495023936e-05
+        ],
+        [
+          -2.3988211523828795e-06,
+          -3.624460441642441e-05
+        ]
+      ],
+      "fraction_query_paths_below_1e_minus6": [
+        0.0,
+        0.0
+      ],
+      "beta_mean_per_head": [
+        0.2277413308620453,
+        0.6109423041343689
+      ]
+    },
+    {
+      "checkpoint": "gdn_baseline_epoch32",
+      "epoch": 32,
+      "pairs": 32,
+      "length": 128,
+      "alpha_mean_per_head": [
+        1.0,
+        0.9999979734420776
+      ],
+      "query_path_decay_mean_per_head": [
+        0.999990701675415,
+        0.9998721480369568
+      ],
+      "query_path_log_decay_quantiles": [
+        [
+          -1.2362340385152493e-05,
+          -0.00017379946075379848
+        ],
+        [
+          -8.184929356502835e-06,
+          -0.00011759690823964775
+        ],
+        [
+          -5.1683168749150354e-06,
+          -7.62973795644939e-05
+        ]
+      ],
+      "fraction_query_paths_below_1e_minus6": [
+        0.0,
+        0.0
+      ],
+      "beta_mean_per_head": [
+        0.2279645800590515,
+        0.6111149787902832
+      ]
+    },
+    {
+      "checkpoint": "gdn_baseline_epoch32",
+      "epoch": 32,
+      "pairs": 64,
+      "length": 256,
+      "alpha_mean_per_head": [
+        1.0,
+        0.9999979734420776
+      ],
+      "query_path_decay_mean_per_head": [
+        0.9999817609786987,
+        0.9997479915618896
+      ],
+      "query_path_log_decay_quantiles": [
+        [
+          -2.3987631720956415e-05,
+          -0.00034077613963745534
+        ],
+        [
+          -1.6508623957633972e-05,
+          -0.00023675261763855815
+        ],
+        [
+          -1.0655592632247135e-05,
+          -0.0001560660602990538
+        ]
+      ],
+      "fraction_query_paths_below_1e_minus6": [
+        0.0,
+        0.0
+      ],
+      "beta_mean_per_head": [
+        0.22789908945560455,
+        0.6112464666366577
+      ]
+    },
+    {
+      "checkpoint": "original_smat_epoch32",
+      "epoch": 32,
+      "pairs": 4,
+      "length": 64,
+      "alpha_mean_per_head": [
+        0.8735081553459167,
+        0.6588819622993469
+      ],
+      "query_path_decay_mean_per_head": [
+        0.008297436870634556,
+        1.9646099644887727e-06
+      ],
+      "query_path_log_decay_quantiles": [
+        [
+          -7.25899600982666,
+          -22.283660888671875
+        ],
+        [
+          -5.238425254821777,
+          -16.113027572631836
+        ],
+        [
+          -3.9054808616638184,
+          -12.119383811950684
+        ]
+      ],
+      "fraction_query_paths_below_1e_minus6": [
+        0.0,
+        0.7092198729515076
+      ],
+      "beta_mean_per_head": [
+        0.6354711055755615,
+        0.6332801580429077
+      ]
+    },
+    {
+      "checkpoint": "original_smat_epoch32",
+      "epoch": 32,
+      "pairs": 8,
+      "length": 64,
+      "alpha_mean_per_head": [
+        0.8742529153823853,
+        0.6593099236488342
+      ],
+      "query_path_decay_mean_per_head": [
+        0.015545101836323738,
+        3.074133564950898e-05
+      ],
+      "query_path_log_decay_quantiles": [
+        [
+          -6.884744644165039,
+          -21.079486846923828
+        ],
+        [
+          -4.938895225524902,
+          -15.271533966064453
+        ],
+        [
+          -3.1877670288085938,
+          -10.115194320678711
+        ]
+      ],
+      "fraction_query_paths_below_1e_minus6": [
+        0.0,
+        0.6314606666564941
+      ],
+      "beta_mean_per_head": [
+        0.6398131251335144,
+        0.642120897769928
+      ]
+    },
+    {
+      "checkpoint": "original_smat_epoch32",
+      "epoch": 32,
+      "pairs": 16,
+      "length": 64,
+      "alpha_mean_per_head": [
+        0.8755503296852112,
+        0.6605594158172607
+      ],
+      "query_path_decay_mean_per_head": [
+        0.030498404055833817,
+        0.0003292853944003582
+      ],
+      "query_path_log_decay_quantiles": [
+        [
+          -5.814340114593506,
+          -17.949853897094727
+        ],
+        [
+          -4.029427528381348,
+          -12.636903762817383
+        ],
+        [
+          -2.617180347442627,
+          -8.278162956237793
+        ]
+      ],
+      "fraction_query_paths_below_1e_minus6": [
+        0.0,
+        0.3369140625
+      ],
+      "beta_mean_per_head": [
+        0.6501413583755493,
+        0.6644786596298218
+      ]
+    },
+    {
+      "checkpoint": "original_smat_epoch32",
+      "epoch": 32,
+      "pairs": 32,
+      "length": 128,
+      "alpha_mean_per_head": [
+        0.8758782148361206,
+        0.6606841087341309
+      ],
+      "query_path_decay_mean_per_head": [
+        0.0018646451644599438,
+        1.2189736935397377e-06
+      ],
+      "query_path_log_decay_quantiles": [
+        [
+          -11.744714736938477,
+          -36.76424026489258
+        ],
+        [
+          -8.168489456176758,
+          -25.44625473022461
+        ],
+        [
+          -5.456188201904297,
+          -17.013389587402344
+        ]
+      ],
+      "fraction_query_paths_below_1e_minus6": [
+        0.027099609375,
+        0.962890625
+      ],
+      "beta_mean_per_head": [
+        0.6508597135543823,
+        0.6652897596359253
+      ]
+    },
+    {
+      "checkpoint": "original_smat_epoch32",
+      "epoch": 32,
+      "pairs": 64,
+      "length": 256,
+      "alpha_mean_per_head": [
+        0.8757440447807312,
+        0.6605511903762817
+      ],
+      "query_path_decay_mean_per_head": [
+        3.6035795346833766e-05,
+        5.07796915627523e-10
+      ],
+      "query_path_log_decay_quantiles": [
+        [
+          -23.443206787109375,
+          -73.0844955444336
+        ],
+        [
+          -16.48505401611328,
+          -51.26593017578125
+        ],
+        [
+          -11.158195495605469,
+          -34.991397857666016
+        ]
+      ],
+      "fraction_query_paths_below_1e_minus6": [
+        0.7442626953125,
+        0.999755859375
+      ],
+      "beta_mean_per_head": [
+        0.6503041982650757,
+        0.6643407344818115
+      ]
+    }
+  ]
+}

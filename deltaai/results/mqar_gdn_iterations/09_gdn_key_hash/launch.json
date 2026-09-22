@@ -1,0 +1,18 @@
+{
+  "trial": "09_gdn_key_hash",
+  "created_at": "2026-09-17T06:46:04.573302+00:00",
+  "hypothesis": "From trial07: hash the normalized local GDN keys, back-projected with the existing key projection to model width. Routing uses contextual features directly trained for retrieval; retain isolated hash gradients, ordinary hash directions, incidence scaling and categorical four reads.",
+  "sources": {
+    "zoo_gdn_transport.py": "cd4af2c512159cadd8f461091fdd3906f0d69f45f7cffb2e5f9379062a710618",
+    "content_addr.py": "2d0609e46b5fa8528b165b7a563e8f349bbeb4319c80d32b2ce79459fca2df64",
+    "smat_gdn_transport.py": "1c40aeaab63fe89e1bb83c6cae2e0990ac1b2427c71bfd52326722d871bc30d4",
+    "smat_address_reads.py": "470bae644dc54d94accb9870737a8536eae522d4721581d2881524a3dc40e199",
+    "smat_write_hash_grad.py": "92a3f81025cf5c0bf89956f3b97573bd74aff55d94f91c873d884ef417e3135e",
+    "zoo_gdn_gated_trainer.py": "2f8d28a9da90e21a08df9064df948472575879ba2144a368556faa6c259a340e",
+    "zoo_gdn_iteration_configs.py": "cac3e40aa6c719b102a4cf8cebeca81b2c8afffc1691937431f043951b9bc02e",
+    "test_gdn_iteration_gpu.py": "b4ae7940e548fe5b5bfc98fbe7b4a41de3cce9ffa53083ceda6469cc49c55665",
+    "modal_gdn_iteration.py": "9a8787ad23cf1a887d3831b2da6b9caa77ad5f6c3ee04168649efdfae5c628f4",
+    "modal_gdn_transport.py": "a7607e97b22c153f95a8d2b7c091974fd653befbc9326cbf563054edb5c8722c"
+  },
+  "app": "ap-WMIbfLnPZrhieVVvJMviGu"
+}

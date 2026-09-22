@@ -1,0 +1,10 @@
+{
+  "epoch": 4,
+  "accuracy": 0.3544875,
+  "baseline": 0.6065875,
+  "margin": -0.25209999999999994,
+  "required": true,
+  "decision": "reject",
+  "complete": true,
+  "trial": "14_tied_additive"
+}

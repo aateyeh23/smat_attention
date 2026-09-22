@@ -1,0 +1,10 @@
+{
+  "epoch": 32,
+  "accuracy": 0.32865,
+  "baseline": 0.433846875,
+  "margin": -0.10519687500000002,
+  "required": true,
+  "decision": "below_baseline",
+  "complete": true,
+  "trial": "28_w64_decay_no_rescale_d4"
+}

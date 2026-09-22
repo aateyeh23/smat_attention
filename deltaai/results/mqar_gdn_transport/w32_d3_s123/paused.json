@@ -1,0 +1,36 @@
+{
+  "status": "paused",
+  "reason": "User requested pause and continued analysis",
+  "app": "ap-Nh8gXpdPFFxWIaPh125oFn",
+  "app_state": "stopped",
+  "tasks": 0,
+  "stopped_at": "2026-09-16T23:42:11-05:00",
+  "recorded_at": "2026-09-17T04:47:33.902674+00:00",
+  "completed_epochs": 23,
+  "planned_epochs": 32,
+  "training_complete": false,
+  "checkpoint": "/u/archerdw/smat_attention/deltaai/results/mqar_gdn_transport/w32_d3_s123/w32-d3.pt",
+  "remote_checkpoint": "smat-gdn-transport-w32-d3:/seed123/w32-d3.pt",
+  "checkpoint_bytes": 3648855,
+  "sha256": "b51aff6a0555af677e42067c1fb8666ea4ee118eecbdc011f4594a368262d8fa",
+  "checkpoint_fields_verified": [
+    "model",
+    "optimizer",
+    "scheduler",
+    "rng_cpu",
+    "rng_cuda",
+    "rng_numpy",
+    "rng_python",
+    "module_steps"
+  ],
+  "collector_stopped": true,
+  "metrics": {
+    "valid/loss": 3.293553352355957,
+    "valid/accuracy": 0.54806875,
+    "valid/num_kv_pairs/accuracy-4": 0.94775,
+    "valid/num_kv_pairs/accuracy-8": 0.9015,
+    "valid/num_kv_pairs/accuracy-16": 0.6548125,
+    "valid/num_kv_pairs/accuracy-32": 0.198875,
+    "valid/num_kv_pairs/accuracy-64": 0.03740625
+  }
+}

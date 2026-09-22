@@ -1,0 +1,16 @@
+{
+  "git_head": "cf6992897b65f002ea27947398cfbde9f2418785",
+  "note": "Current GDN transport correction and binding evaluation; workspace contains unrelated preexisting changes.",
+  "sha256": {
+    "deltaai/synthetic_memory.py": "0cf2a064a2ae72a1e22d6193148c6a76d942a4989f23764a3eba4703e10ec23f",
+    "deltaai/synthetic_memory_campaign.py": "ae3f4067f20ae80bc1c4a5d4eb4c9235aabc779dfb6fbd67fe1b635d22cc14c5",
+    "deltaai/collect_synthetic_memory.py": "5f490d89e5d2e4a4e083b4bde4502f5eafe666276951c66ce7e6daebfbdbf031",
+    "deltaai/run_synthetic_memory.sbatch": "e3a5bf941d27af7aa37b344389f48af658ac603a4522d814d90d13fbffed1063",
+    "deltaai/run_synthetic_memory_parallel.sbatch": "f763a403011282ad596bac871a407cb9c98a86b45b8b8e00c0d345eb4dd0d972",
+    "deltaai/zoo_mamba_four_reads.py": "76c62bfda3302c549675cf50e1648aa7ccebfb5cc1ebd9e50918c866a0c72621",
+    "deltaai/zoo_smat_mixer.py": "ed8c39210eb4e845a6ed60f9447564563f722f991eaa6cc6f3f9ee7f1226605f",
+    "deltaai/zoo_smat_gdn.py": "a53d0a8f3171d55badb5f0b3cd5c8a88fbc4acfc4dfa1131585b78e49a1fa101",
+    "deltaai/zoo_gdn_transport.py": "cac9f8badc5ac2b1c321572c9e250a4398284fa1a5269442b1b68eb4b65a01ac",
+    "deltaai/zoo_gdn_transport_configs.py": "f77d71650a9afdda4c5fc0112a0c643d4a857d6667a166dae09955bc6ef10a7d"
+  }
+}

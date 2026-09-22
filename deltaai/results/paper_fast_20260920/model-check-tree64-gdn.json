@@ -1,0 +1,52 @@
+[
+  {
+    "family": "gdn",
+    "backend": "tree64",
+    "checkpoint_steps": 10575,
+    "length": 64,
+    "logit_error": 0.0,
+    "gradient_error": 6.992370344960364e-07,
+    "dense_loss": 0.008064717054367065,
+    "optimized_loss": 0.008064717054367065
+  },
+  {
+    "family": "gdn",
+    "backend": "tree64",
+    "checkpoint_steps": 10575,
+    "length": 100,
+    "logit_error": 0.0,
+    "gradient_error": 6.95222697686404e-05,
+    "dense_loss": 0.03552461415529251,
+    "optimized_loss": 0.03552461415529251
+  },
+  {
+    "family": "gdn",
+    "backend": "tree64",
+    "checkpoint_steps": 10575,
+    "length": 772,
+    "logit_error": 0.0004281856818124652,
+    "gradient_error": 0.003794647054746747,
+    "dense_loss": 2.158013343811035,
+    "optimized_loss": 2.158090114593506
+  },
+  {
+    "family": "gdn",
+    "backend": "tree64",
+    "checkpoint_steps": 10575,
+    "length": 1540,
+    "logit_error": 0.0005296596791595221,
+    "gradient_error": 0.005589410196989775,
+    "dense_loss": 2.4731733798980713,
+    "optimized_loss": 2.4731292724609375
+  },
+  {
+    "family": "gdn",
+    "backend": "tree64",
+    "checkpoint_steps": 10575,
+    "length": 3076,
+    "logit_error": 0.0005325237289071083,
+    "gradient_error": 0.004542249720543623,
+    "dense_loss": 2.6331119537353516,
+    "optimized_loss": 2.6332576274871826
+  }
+]

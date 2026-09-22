@@ -1,0 +1,67 @@
+{
+  "interval_minutes": 30,
+  "platform": "DeltaAI",
+  "last_check": "2026-09-20T21:56:22.921434+00:00",
+  "active_array": "3180525",
+  "shards": 8,
+  "objective": "Finish all 162 runs, repair failures, then aggregate final-epoch five-seed results",
+  "completed_new_runs": 153,
+  "active_workers": 0,
+  "current_failures": [],
+  "continuation_verified": true,
+  "table2_additional_complete": 120,
+  "table3_additional_complete": 32,
+  "loglinear_joint_complete": 0,
+  "dedicated_seed4_array": "3181805",
+  "live_jobs": [],
+  "progress": {
+    "joint-loglinear-mamba2-s123": {
+      "epoch": 30,
+      "steps": 21400,
+      "status_age_seconds": 73
+    },
+    "joint-loglinear-gdn-s123": {
+      "epoch": 22,
+      "steps": 15510,
+      "status_age_seconds": 112
+    },
+    "joint-loglinear-mamba2-s1": {
+      "epoch": 30,
+      "steps": 21500,
+      "status_age_seconds": 55
+    },
+    "joint-loglinear-gdn-s1": {
+      "epoch": 23,
+      "steps": 16300,
+      "status_age_seconds": 89
+    },
+    "joint-loglinear-mamba2-s2": {
+      "epoch": 29,
+      "steps": 20600,
+      "status_age_seconds": 118
+    },
+    "joint-loglinear-gdn-s2": {
+      "epoch": 22,
+      "steps": 15600,
+      "status_age_seconds": 87
+    },
+    "joint-loglinear-gdn-s3": {
+      "epoch": 19,
+      "steps": 14000,
+      "status_age_seconds": 149
+    },
+    "joint-loglinear-mamba2-s4": {
+      "epoch": 18,
+      "steps": 13200,
+      "status_age_seconds": 52
+    },
+    "joint-loglinear-gdn-s4": {
+      "epoch": 15,
+      "steps": 10800,
+      "status_age_seconds": 29
+    }
+  },
+  "status": "stopped_by_user",
+  "stopped_at": "2026-09-20T22:22:11.020475+00:00",
+  "monitor_running": false
+}

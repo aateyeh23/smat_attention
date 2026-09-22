@@ -1,0 +1,5 @@
+{
+  "status": "unverified_restored_gradient",
+  "reason": "Unsafe Python -m launch gave the frozen bundled content_addr.py precedence over the modified router. Intended neighboring write-gradient restoration was not exercised in training.",
+  "audit": "../mqar_gdn_iterations/SOURCE-RESOLUTION-AUDIT.md"
+}

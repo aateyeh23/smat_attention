@@ -1,0 +1,14 @@
+{
+  "trial": "22_verified_transport",
+  "epoch": 24,
+  "sha256": "6f99ccfd533002d1fbce77d1d3c65e94d3548f6d2db1974168fb6fa87a74d816",
+  "source": "immutable Modal per-epoch checkpoint",
+  "gate": {
+    "epoch": 24,
+    "accuracy": 0.82425625,
+    "baseline": 0.689121875,
+    "margin": 0.13513437500000003,
+    "required": true,
+    "decision": "pass"
+  }
+}

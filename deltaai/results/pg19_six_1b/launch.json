@@ -1,0 +1,18 @@
+{
+  "app": "ap-Ct7PmYxF02GfpwSOLnrOgl",
+  "campaign": "six-1b-constant3e-5-20260917",
+  "parent_campaign": "six-750m-constant3e-5-20260917",
+  "target_tokens": 1000000000,
+  "actual_target_tokens": 1000013824,
+  "learning_rate": 3e-05,
+  "lr_schedule": "constant",
+  "handoff": "Each arm automatically resumes after its 750M parent completes",
+  "arms": [
+    "gdn-baseline",
+    "gdn-smat-d2",
+    "gdn-smat-d3",
+    "mamba2-baseline",
+    "mamba2-smat-d2",
+    "mamba2-smat-d3"
+  ]
+}

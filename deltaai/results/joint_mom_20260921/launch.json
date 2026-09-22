@@ -1,0 +1,15 @@
+{
+  "validation_job": "3189847",
+  "training_array": "3189849",
+  "dependency": "afterok:3189847",
+  "variants": [
+    "mom_profiles",
+    "mom_bytes"
+  ],
+  "seeds": [
+    123,
+    456,
+    789
+  ],
+  "array_concurrency": 3
+}

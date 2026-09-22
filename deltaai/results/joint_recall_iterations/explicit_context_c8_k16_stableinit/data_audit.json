@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "cell": "c8-k16",
+      "split": "train",
+      "examples": 180000,
+      "decoded": true,
+      "paired": true,
+      "disjoint": true
+    },
+    {
+      "cell": "c8-k16",
+      "split": "validation",
+      "examples": 5000,
+      "decoded": true,
+      "paired": true,
+      "disjoint": true
+    },
+    {
+      "cell": "c8-k16",
+      "split": "test",
+      "examples": 10000,
+      "decoded": true,
+      "paired": true,
+      "disjoint": true
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "condition": "shared",
+  "family": "gdn",
+  "d": 0,
+  "width": 64,
+  "seed": 1,
+  "parameters": 61468,
+  "trainable_parameters": 61468,
+  "epoch": 24,
+  "batch_in_epoch": 380,
+  "steps": 17300,
+  "train_loss": 0.0027334438636898994,
+  "elapsed_seconds": 28141.161254223436
+}

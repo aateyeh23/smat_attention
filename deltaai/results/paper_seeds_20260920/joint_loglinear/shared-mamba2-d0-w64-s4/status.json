@@ -1,0 +1,14 @@
+{
+  "condition": "shared",
+  "family": "mamba2",
+  "d": 0,
+  "width": 64,
+  "seed": 4,
+  "parameters": 105984,
+  "trainable_parameters": 105984,
+  "epoch": 20,
+  "batch_in_epoch": 100,
+  "steps": 14200,
+  "train_loss": 0.9208438992500305,
+  "elapsed_seconds": 18924.321910844184
+}

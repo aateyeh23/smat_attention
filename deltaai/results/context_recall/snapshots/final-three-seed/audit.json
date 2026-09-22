@@ -1,0 +1,78 @@
+{
+  "passed": true,
+  "completed_runs": 64,
+  "groups": [
+    {
+      "records": 4,
+      "shared": 0.0,
+      "seed": 123,
+      "runs": 8,
+      "test_sha256": "82c82e65b297ff0beecdd6d95b904bb2fa7d94660df71ac97c7e72088052fca5",
+      "validation_sha256": "4cb013bd00934c5d5154f08f91f645c8cf54bb4c31662ca90bfa5bb095a7540d"
+    },
+    {
+      "records": 4,
+      "shared": 0.0,
+      "seed": 456,
+      "runs": 8,
+      "test_sha256": "e3cd630659dc708bbcc5d7882a7bd20e8ed7fe5e465c4d8fafb288832d979936",
+      "validation_sha256": "75d44f8c303a160d02cfdecee34581d2a6a57daf978c90b7ab9fa635ba91b4e7"
+    },
+    {
+      "records": 4,
+      "shared": 0.0,
+      "seed": 789,
+      "runs": 8,
+      "test_sha256": "6c30d1056107095f6751a0be733c94c04fa80bc747744a4e76cbe7913ef2a3c8",
+      "validation_sha256": "13f7a43479846d364178fdbff7c6f4b17a6610b2df73573a1b9b3043061e5687"
+    },
+    {
+      "records": 4,
+      "shared": 1.0,
+      "seed": 123,
+      "runs": 8,
+      "test_sha256": "d6988d839d4fcf8d474a658dbc82033760d2b65a06e5f2299f1826431338b423",
+      "validation_sha256": "5d4b5f573f2df0c9af517246d4b77c933751a3b824d23597a9e7063aa3d30860"
+    },
+    {
+      "records": 4,
+      "shared": 1.0,
+      "seed": 456,
+      "runs": 8,
+      "test_sha256": "f465e9a9a58ff3619ac9eee0641c7f9dd9ff16117958abf5e330e382c2f6e9b8",
+      "validation_sha256": "d0ee317a8178b5d8b62e4ec4ee2b32f7d323aca2697416aca9f1078dbc4afb2b"
+    },
+    {
+      "records": 4,
+      "shared": 1.0,
+      "seed": 789,
+      "runs": 8,
+      "test_sha256": "f789601aaecf46fc07a0a009bd44b5d832f1c48ee2b280915b2412a95b081b25",
+      "validation_sha256": "f0fb9d76ddd2a3b9ea25c2f67deeaa2eb05e7c4f0dc37c7ac19d5c8e4744c3f5"
+    },
+    {
+      "records": 8,
+      "shared": 0.0,
+      "seed": 123,
+      "runs": 8,
+      "test_sha256": "fdddd618070991ffc30f3dc899ba02122539b887237e2f0fe6b7618ae8e607b7",
+      "validation_sha256": "5aa081dfa664bf3f292a3124261fc0c8127a54967e0291ffc528fded23c2e714"
+    },
+    {
+      "records": 8,
+      "shared": 1.0,
+      "seed": 123,
+      "runs": 8,
+      "test_sha256": "676f271ea7849408a9d3d5606dbf93e22b5e2a73b59fd49b54374ca4c0795e71",
+      "validation_sha256": "70af810d4bd630df13609665cea2cd2dd07ea8391a58cc3b9ce5c9785f2e7353"
+    }
+  ],
+  "checks": [
+    "complete expected grid",
+    "matched recipes within condition/seed",
+    "independent token decoding",
+    "regenerated validation/test hashes",
+    "saved accuracy/exact/context-binding metrics",
+    "reuse conditions differ only in key identities"
+  ]
+}

@@ -1,0 +1,2787 @@
+{
+  "passed": true,
+  "completed": 41,
+  "scheduled": 43,
+  "scores": [
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c1-k4",
+      "accuracy": 0.9985,
+      "exact_accuracy": 0.99425,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k8",
+      "accuracy": 0.95021875,
+      "exact_accuracy": 0.5355,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k16",
+      "accuracy": 0.505333984375,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c16-k16",
+      "accuracy": 0.2540517578125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c32-k16",
+      "accuracy": 0.215275390625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c1-k4",
+      "accuracy": 0.998125,
+      "exact_accuracy": 0.993,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k8",
+      "accuracy": 0.947625,
+      "exact_accuracy": 0.51925,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k16",
+      "accuracy": 0.501916015625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c16-k16",
+      "accuracy": 0.2992841796875,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c32-k16",
+      "accuracy": 0.2352421875,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c1-k4",
+      "accuracy": 0.9974375,
+      "exact_accuracy": 0.99,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k8",
+      "accuracy": 0.955609375,
+      "exact_accuracy": 0.5105,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k16",
+      "accuracy": 0.515763671875,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c16-k16",
+      "accuracy": 0.3905654296875,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c32-k16",
+      "accuracy": 0.2901181640625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c1-k4",
+      "accuracy": 0.997625,
+      "exact_accuracy": 0.9905,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k8",
+      "accuracy": 0.959328125,
+      "exact_accuracy": 0.53625,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k16",
+      "accuracy": 0.537177734375,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c16-k16",
+      "accuracy": 0.3945439453125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c32-k16",
+      "accuracy": 0.2859658203125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c1-k4",
+      "accuracy": 0.9883125,
+      "exact_accuracy": 0.958,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k8",
+      "accuracy": 0.8219375,
+      "exact_accuracy": 0.177,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k16",
+      "accuracy": 0.25348828125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c16-k16",
+      "accuracy": 0.1783232421875,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c32-k16",
+      "accuracy": 0.1374052734375,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c1-k4",
+      "accuracy": 0.9883125,
+      "exact_accuracy": 0.958,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k8",
+      "accuracy": 0.8219375,
+      "exact_accuracy": 0.177,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k16",
+      "accuracy": 0.25348828125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c16-k16",
+      "accuracy": 0.1783232421875,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c32-k16",
+      "accuracy": 0.1374052734375,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c1-k4",
+      "accuracy": 0.9974375,
+      "exact_accuracy": 0.99,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k8",
+      "accuracy": 0.901453125,
+      "exact_accuracy": 0.26375,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k16",
+      "accuracy": 0.2515703125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c16-k16",
+      "accuracy": 0.1820361328125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c32-k16",
+      "accuracy": 0.13649951171875,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c1-k4",
+      "accuracy": 0.9974375,
+      "exact_accuracy": 0.99,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k8",
+      "accuracy": 0.901453125,
+      "exact_accuracy": 0.26375,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k16",
+      "accuracy": 0.2515703125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c16-k16",
+      "accuracy": 0.1820361328125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c32-k16",
+      "accuracy": 0.13649951171875,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512_lr01-shared-mamba2-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c1-k4",
+      "accuracy": 0.9925625,
+      "exact_accuracy": 0.97075,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512_lr01-shared-mamba2-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k8",
+      "accuracy": 0.854546875,
+      "exact_accuracy": 0.122,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512_lr01-shared-mamba2-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k16",
+      "accuracy": 0.41883203125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512_lr01-shared-mamba2-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c16-k16",
+      "accuracy": 0.2772216796875,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512_lr01-shared-mamba2-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c32-k16",
+      "accuracy": 0.21018896484375,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512_lr01-shared-mamba2-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c1-k4",
+      "accuracy": 0.9925625,
+      "exact_accuracy": 0.97075,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512_lr01-shared-mamba2-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k8",
+      "accuracy": 0.854546875,
+      "exact_accuracy": 0.122,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512_lr01-shared-mamba2-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k16",
+      "accuracy": 0.41883203125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512_lr01-shared-mamba2-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c16-k16",
+      "accuracy": 0.27722265625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512_lr01-shared-mamba2-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c32-k16",
+      "accuracy": 0.2101884765625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512_lr01-shared-mamba2-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c1-k4",
+      "accuracy": 0.8595625,
+      "exact_accuracy": 0.61925,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512_lr01-shared-mamba2-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k8",
+      "accuracy": 0.410375,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512_lr01-shared-mamba2-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k16",
+      "accuracy": 0.17598828125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512_lr01-shared-mamba2-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c16-k16",
+      "accuracy": 0.136453125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512_lr01-shared-mamba2-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c32-k16",
+      "accuracy": 0.1111513671875,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512_lr01-shared-mamba2-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c1-k4",
+      "accuracy": 0.858375,
+      "exact_accuracy": 0.588,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512_lr01-shared-mamba2-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k8",
+      "accuracy": 0.409546875,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512_lr01-shared-mamba2-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k16",
+      "accuracy": 0.1759609375,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512_lr01-shared-mamba2-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c16-k16",
+      "accuracy": 0.1362666015625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512_lr01-shared-mamba2-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c32-k16",
+      "accuracy": 0.110720703125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512_lr01-shared-gdn_current-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c1-k4",
+      "accuracy": 0.99675,
+      "exact_accuracy": 0.98725,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512_lr01-shared-gdn_current-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k8",
+      "accuracy": 0.7930625,
+      "exact_accuracy": 0.04175,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512_lr01-shared-gdn_current-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k16",
+      "accuracy": 0.28870703125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512_lr01-shared-gdn_current-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c16-k16",
+      "accuracy": 0.2066982421875,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512_lr01-shared-gdn_current-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c32-k16",
+      "accuracy": 0.14688330078125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512_lr01-shared-gdn_current-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c1-k4",
+      "accuracy": 0.996875,
+      "exact_accuracy": 0.98775,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512_lr01-shared-gdn_current-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k8",
+      "accuracy": 0.79478125,
+      "exact_accuracy": 0.04425,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512_lr01-shared-gdn_current-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k16",
+      "accuracy": 0.289818359375,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512_lr01-shared-gdn_current-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c16-k16",
+      "accuracy": 0.2054072265625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512_lr01-shared-gdn_current-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c32-k16",
+      "accuracy": 0.14468798828125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed-shared-mamba2-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c1-k4",
+      "accuracy": 0.999875,
+      "exact_accuracy": 0.9995,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed-shared-mamba2-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k8",
+      "accuracy": 0.998015625,
+      "exact_accuracy": 0.9695,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed-shared-mamba2-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k16",
+      "accuracy": 0.852328125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed-shared-mamba2-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c1-k4",
+      "accuracy": 0.999875,
+      "exact_accuracy": 0.9995,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed-shared-mamba2-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k8",
+      "accuracy": 0.998015625,
+      "exact_accuracy": 0.9695,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed-shared-mamba2-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k16",
+      "accuracy": 0.852328125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed-shared-mamba2-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c1-k4",
+      "accuracy": 0.99975,
+      "exact_accuracy": 0.999,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed-shared-mamba2-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k8",
+      "accuracy": 0.9960625,
+      "exact_accuracy": 0.93975,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed-shared-mamba2-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k16",
+      "accuracy": 0.74812109375,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed-shared-mamba2-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c1-k4",
+      "accuracy": 0.9996875,
+      "exact_accuracy": 0.99875,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed-shared-mamba2-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k8",
+      "accuracy": 0.995578125,
+      "exact_accuracy": 0.9325,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed-shared-mamba2-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k16",
+      "accuracy": 0.759396484375,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_lr003-shared-mamba2-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c1-k4",
+      "accuracy": 0.9994375,
+      "exact_accuracy": 0.99775,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_lr003-shared-mamba2-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k8",
+      "accuracy": 0.9888125,
+      "exact_accuracy": 0.84175,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_lr003-shared-mamba2-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k16",
+      "accuracy": 0.558490234375,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_lr003-shared-mamba2-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c1-k4",
+      "accuracy": 0.9974375,
+      "exact_accuracy": 0.98975,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_lr003-shared-mamba2-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k8",
+      "accuracy": 0.980078125,
+      "exact_accuracy": 0.73825,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_lr003-shared-mamba2-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k16",
+      "accuracy": 0.588556640625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_lr003-shared-mamba2-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c1-k4",
+      "accuracy": 1.0,
+      "exact_accuracy": 1.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_lr003-shared-mamba2-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k8",
+      "accuracy": 0.999828125,
+      "exact_accuracy": 0.99725,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_lr003-shared-mamba2-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k16",
+      "accuracy": 0.926234375,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_lr003-shared-mamba2-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c1-k4",
+      "accuracy": 1.0,
+      "exact_accuracy": 1.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_lr003-shared-mamba2-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k8",
+      "accuracy": 0.999828125,
+      "exact_accuracy": 0.99725,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_lr003-shared-mamba2-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k16",
+      "accuracy": 0.926234375,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_c8_k16_no_scalar_decay-shared-gdn_current-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k16",
+      "accuracy": 0.11299921875,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22528,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_c8_k16_no_scalar_decay-shared-gdn_current-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k16",
+      "accuracy": 0.113746875,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22528,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_no_scalar_decay-shared-gdn_current-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c1-k4",
+      "accuracy": 0.99925,
+      "exact_accuracy": 0.997,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_no_scalar_decay-shared-gdn_current-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k8",
+      "accuracy": 0.961765625,
+      "exact_accuracy": 0.579,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_no_scalar_decay-shared-gdn_current-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k16",
+      "accuracy": 0.345955078125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_no_scalar_decay-shared-gdn_current-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c1-k4",
+      "accuracy": 0.99925,
+      "exact_accuracy": 0.997,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_no_scalar_decay-shared-gdn_current-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k8",
+      "accuracy": 0.961765625,
+      "exact_accuracy": 0.579,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_no_scalar_decay-shared-gdn_current-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k16",
+      "accuracy": 0.345955078125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_c8_k16_stableinit-shared-mamba2-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k16",
+      "accuracy": 0.50026328125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22528,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_c8_k16_stableinit-shared-mamba2-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k16",
+      "accuracy": 0.51326640625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22528,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_c8_k16_stableinit-shared-mamba2-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k16",
+      "accuracy": 0.3945328125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22528,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_c8_k16_stableinit-shared-mamba2-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k16",
+      "accuracy": 0.3945328125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22528,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_stableinit-shared-gdn_current-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c1-k4",
+      "accuracy": 0.457375,
+      "exact_accuracy": 0.005,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_stableinit-shared-gdn_current-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k8",
+      "accuracy": 0.2313125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_stableinit-shared-gdn_current-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k16",
+      "accuracy": 0.108564453125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_stableinit-shared-gdn_current-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c1-k4",
+      "accuracy": 0.4586875,
+      "exact_accuracy": 0.0065,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_stableinit-shared-gdn_current-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k8",
+      "accuracy": 0.231171875,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_stableinit-shared-gdn_current-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k16",
+      "accuracy": 0.108578125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_stableinit-shared-gdn_current-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c1-k4",
+      "accuracy": 0.998875,
+      "exact_accuracy": 0.996,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_stableinit-shared-gdn_current-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k8",
+      "accuracy": 0.761953125,
+      "exact_accuracy": 0.19725,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_stableinit-shared-gdn_current-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k16",
+      "accuracy": 0.26987109375,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_stableinit-shared-gdn_current-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c1-k4",
+      "accuracy": 0.998875,
+      "exact_accuracy": 0.996,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_stableinit-shared-gdn_current-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k8",
+      "accuracy": 0.761953125,
+      "exact_accuracy": 0.19725,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_stableinit-shared-gdn_current-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k16",
+      "accuracy": 0.26987109375,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_lr003-shared-gdn_current-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c1-k4",
+      "accuracy": 0.9999375,
+      "exact_accuracy": 0.99975,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_lr003-shared-gdn_current-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k8",
+      "accuracy": 0.986671875,
+      "exact_accuracy": 0.83375,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_lr003-shared-gdn_current-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k16",
+      "accuracy": 0.640345703125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_lr003-shared-gdn_current-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c1-k4",
+      "accuracy": 0.99975,
+      "exact_accuracy": 0.999,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_lr003-shared-gdn_current-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k8",
+      "accuracy": 0.988765625,
+      "exact_accuracy": 0.84975,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_lr003-shared-gdn_current-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k16",
+      "accuracy": 0.679796875,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_lr003-shared-gdn_current-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c1-k4",
+      "accuracy": 0.9999375,
+      "exact_accuracy": 0.99975,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_lr003-shared-gdn_current-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k8",
+      "accuracy": 0.9769375,
+      "exact_accuracy": 0.7125,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_lr003-shared-gdn_current-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k16",
+      "accuracy": 0.38137109375,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_lr003-shared-gdn_current-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c1-k4",
+      "accuracy": 1.0,
+      "exact_accuracy": 1.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_lr003-shared-gdn_current-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k8",
+      "accuracy": 0.97715625,
+      "exact_accuracy": 0.7135,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed_lr003-shared-gdn_current-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k16",
+      "accuracy": 0.3811953125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_c8_k16_stableinit-shared-gdn_current-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k16",
+      "accuracy": 0.06260859375,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22528,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_c8_k16_stableinit-shared-gdn_current-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k16",
+      "accuracy": 0.0620515625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22528,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_c8_k16_stableinit-shared-gdn_current-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k16",
+      "accuracy": 0.338815625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22528,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_c8_k16_stableinit-shared-gdn_current-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k16",
+      "accuracy": 0.338815625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22528,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_c8_k16_longinit-shared-gdn_current-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k16",
+      "accuracy": 0.2271515625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22528,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_c8_k16_longinit-shared-gdn_current-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k16",
+      "accuracy": 0.2330890625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22528,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_c8_k16_longinit-shared-gdn_current-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k16",
+      "accuracy": 0.06243828125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22528,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_c8_k16_longinit-shared-gdn_current-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k16",
+      "accuracy": 0.0621890625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22528,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed-shared-gdn_current-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c1-k4",
+      "accuracy": 0.9999375,
+      "exact_accuracy": 0.99975,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed-shared-gdn_current-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k8",
+      "accuracy": 0.93225,
+      "exact_accuracy": 0.411,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed-shared-gdn_current-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k16",
+      "accuracy": 0.331650390625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed-shared-gdn_current-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c1-k4",
+      "accuracy": 0.9999375,
+      "exact_accuracy": 0.99975,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed-shared-gdn_current-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k8",
+      "accuracy": 0.93225,
+      "exact_accuracy": 0.411,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed-shared-gdn_current-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k16",
+      "accuracy": 0.331650390625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_c8_k16-shared-mamba2-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k16",
+      "accuracy": 0.06248359375,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22528,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_c8_k16-shared-mamba2-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k16",
+      "accuracy": 0.0629328125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22528,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-gdn_current-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k2",
+      "accuracy": 1.0,
+      "exact_accuracy": 1.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-gdn_current-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k4",
+      "accuracy": 0.979,
+      "exact_accuracy": 0.853,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-gdn_current-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c4-k4",
+      "accuracy": 0.665375,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-gdn_current-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c4-k8",
+      "accuracy": 0.481171875,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-gdn_current-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k8",
+      "accuracy": 0.2890390625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-gdn_current-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k2",
+      "accuracy": 1.0,
+      "exact_accuracy": 1.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-gdn_current-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k4",
+      "accuracy": 0.979,
+      "exact_accuracy": 0.853,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-gdn_current-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c4-k4",
+      "accuracy": 0.665375,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-gdn_current-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c4-k8",
+      "accuracy": 0.481171875,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-gdn_current-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k8",
+      "accuracy": 0.2890390625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-gdn_current-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k2",
+      "accuracy": 1.0,
+      "exact_accuracy": 1.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-gdn_current-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k4",
+      "accuracy": 0.9863125,
+      "exact_accuracy": 0.9015,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-gdn_current-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c4-k4",
+      "accuracy": 0.95478125,
+      "exact_accuracy": 0.528,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-gdn_current-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c4-k8",
+      "accuracy": 0.841546875,
+      "exact_accuracy": 0.0055,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-gdn_current-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k8",
+      "accuracy": 0.426765625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-gdn_current-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k2",
+      "accuracy": 1.0,
+      "exact_accuracy": 1.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-gdn_current-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k4",
+      "accuracy": 0.9863125,
+      "exact_accuracy": 0.9015,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-gdn_current-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c4-k4",
+      "accuracy": 0.95478125,
+      "exact_accuracy": 0.528,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-gdn_current-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c4-k8",
+      "accuracy": 0.841546875,
+      "exact_accuracy": 0.0055,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-gdn_current-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k8",
+      "accuracy": 0.426765625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-mamba2-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k2",
+      "accuracy": 0.999875,
+      "exact_accuracy": 0.9995,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-mamba2-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k4",
+      "accuracy": 0.9781875,
+      "exact_accuracy": 0.8625,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-mamba2-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c4-k4",
+      "accuracy": 0.67459375,
+      "exact_accuracy": 0.0015,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-mamba2-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c4-k8",
+      "accuracy": 0.46521875,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-mamba2-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k8",
+      "accuracy": 0.3326953125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-mamba2-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k2",
+      "accuracy": 0.999875,
+      "exact_accuracy": 0.9995,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-mamba2-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k4",
+      "accuracy": 0.9781875,
+      "exact_accuracy": 0.8625,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-mamba2-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c4-k4",
+      "accuracy": 0.67459375,
+      "exact_accuracy": 0.0015,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-mamba2-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c4-k8",
+      "accuracy": 0.46521875,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-mamba2-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k8",
+      "accuracy": 0.3326953125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-mamba2-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k2",
+      "accuracy": 0.99975,
+      "exact_accuracy": 0.999,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-mamba2-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k4",
+      "accuracy": 0.9821875,
+      "exact_accuracy": 0.8695,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-mamba2-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c4-k4",
+      "accuracy": 0.68828125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-mamba2-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c4-k8",
+      "accuracy": 0.623765625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-mamba2-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k8",
+      "accuracy": 0.350578125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-mamba2-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k2",
+      "accuracy": 0.99975,
+      "exact_accuracy": 0.999,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-mamba2-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k4",
+      "accuracy": 0.9821875,
+      "exact_accuracy": 0.8695,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-mamba2-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c4-k4",
+      "accuracy": 0.68828125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-mamba2-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c4-k8",
+      "accuracy": 0.623765625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-shared-mamba2-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k8",
+      "accuracy": 0.350578125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_c8_k16-shared-gdn_current-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k16",
+      "accuracy": 0.06266015625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22528,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_c8_k16-shared-gdn_current-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k16",
+      "accuracy": 0.0623609375,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22528,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_c8_k16-shared-gdn_current-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k16",
+      "accuracy": 0.0624828125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22528,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_c8_k16-shared-gdn_current-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k16",
+      "accuracy": 0.0622453125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22528,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_c8_k16-shared-mamba2-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k16",
+      "accuracy": 0.79587109375,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22528,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_c8_k16-shared-mamba2-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k16",
+      "accuracy": 0.8149890625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22528,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed-shared-gdn_current-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c1-k4",
+      "accuracy": 0.065,
+      "exact_accuracy": 0.00025,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed-shared-gdn_current-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k8",
+      "accuracy": 0.061921875,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed-shared-gdn_current-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k16",
+      "accuracy": 0.062810546875,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed-shared-gdn_current-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c1-k4",
+      "accuracy": 0.0615625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed-shared-gdn_current-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k8",
+      "accuracy": 0.06325,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_mixed-shared-gdn_current-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k16",
+      "accuracy": 0.06325,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d2-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c1-k4",
+      "accuracy": 0.998625,
+      "exact_accuracy": 0.9945,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d2-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k8",
+      "accuracy": 0.93065625,
+      "exact_accuracy": 0.41175,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d2-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k16",
+      "accuracy": 0.272068359375,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d2-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c16-k16",
+      "accuracy": 0.19428125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d2-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c32-k16",
+      "accuracy": 0.13414697265625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d2-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c1-k4",
+      "accuracy": 0.9985,
+      "exact_accuracy": 0.994,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d2-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k8",
+      "accuracy": 0.924046875,
+      "exact_accuracy": 0.401,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d2-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k16",
+      "accuracy": 0.30058984375,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d2-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c16-k16",
+      "accuracy": 0.1960166015625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d2-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c32-k16",
+      "accuracy": 0.13565625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d2-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c1-k4",
+      "accuracy": 0.9946875,
+      "exact_accuracy": 0.97925,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d2-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k8",
+      "accuracy": 0.785578125,
+      "exact_accuracy": 0.02825,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d2-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k16",
+      "accuracy": 0.246173828125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d2-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c16-k16",
+      "accuracy": 0.1253974609375,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d2-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c32-k16",
+      "accuracy": 0.12218701171875,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d2-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c1-k4",
+      "accuracy": 0.99475,
+      "exact_accuracy": 0.9795,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d2-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k8",
+      "accuracy": 0.785140625,
+      "exact_accuracy": 0.02775,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d2-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k16",
+      "accuracy": 0.246107421875,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d2-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c16-k16",
+      "accuracy": 0.1244072265625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d2-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c32-k16",
+      "accuracy": 0.1222841796875,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d4-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c1-k4",
+      "accuracy": 0.9975625,
+      "exact_accuracy": 0.99025,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d4-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k8",
+      "accuracy": 0.532015625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d4-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k16",
+      "accuracy": 0.243123046875,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d4-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c16-k16",
+      "accuracy": 0.1742783203125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d4-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c32-k16",
+      "accuracy": 0.14046826171875,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d4-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c1-k4",
+      "accuracy": 0.997,
+      "exact_accuracy": 0.98825,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d4-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k8",
+      "accuracy": 0.5290625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d4-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k16",
+      "accuracy": 0.24363671875,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d4-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c16-k16",
+      "accuracy": 0.174423828125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-mamba2-d4-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c32-k16",
+      "accuracy": 0.14013818359375,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d4-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c1-k4",
+      "accuracy": 0.998375,
+      "exact_accuracy": 0.99375,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d4-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k8",
+      "accuracy": 0.936859375,
+      "exact_accuracy": 0.40675,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d4-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k16",
+      "accuracy": 0.46150390625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d4-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c16-k16",
+      "accuracy": 0.2940087890625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d4-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c32-k16",
+      "accuracy": 0.19616357421875,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d4-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c1-k4",
+      "accuracy": 0.9961875,
+      "exact_accuracy": 0.985,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d4-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k8",
+      "accuracy": 0.9243125,
+      "exact_accuracy": 0.331,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d4-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k16",
+      "accuracy": 0.475837890625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d4-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c16-k16",
+      "accuracy": 0.2956953125,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "explicit_context_capacity512-shared-gdn_current-d4-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c32-k16",
+      "accuracy": 0.2545712890625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22560,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-gdn_current-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k2",
+      "accuracy": 1.0,
+      "exact_accuracy": 1.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-gdn_current-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k4",
+      "accuracy": 0.9995625,
+      "exact_accuracy": 0.9965,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-gdn_current-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c4-k4",
+      "accuracy": 0.99634375,
+      "exact_accuracy": 0.942,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-gdn_current-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c4-k8",
+      "accuracy": 0.98415625,
+      "exact_accuracy": 0.622,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-gdn_current-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k8",
+      "accuracy": 0.775015625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-gdn_current-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k2",
+      "accuracy": 1.0,
+      "exact_accuracy": 1.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-gdn_current-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k4",
+      "accuracy": 0.9995625,
+      "exact_accuracy": 0.9965,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-gdn_current-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c4-k4",
+      "accuracy": 0.99634375,
+      "exact_accuracy": 0.942,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-gdn_current-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c4-k8",
+      "accuracy": 0.98415625,
+      "exact_accuracy": 0.622,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-gdn_current-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k8",
+      "accuracy": 0.775015625,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-gdn_current-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k2",
+      "accuracy": 0.999875,
+      "exact_accuracy": 0.9995,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-gdn_current-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k4",
+      "accuracy": 0.9983125,
+      "exact_accuracy": 0.987,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-gdn_current-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c4-k4",
+      "accuracy": 0.97525,
+      "exact_accuracy": 0.679,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-gdn_current-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c4-k8",
+      "accuracy": 0.8570625,
+      "exact_accuracy": 0.0065,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-gdn_current-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k8",
+      "accuracy": 0.5990859375,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-gdn_current-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k2",
+      "accuracy": 0.999875,
+      "exact_accuracy": 0.9995,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-gdn_current-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k4",
+      "accuracy": 0.9983125,
+      "exact_accuracy": 0.987,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-gdn_current-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c4-k4",
+      "accuracy": 0.97525,
+      "exact_accuracy": 0.679,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-gdn_current-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c4-k8",
+      "accuracy": 0.8570625,
+      "exact_accuracy": 0.0065,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-gdn_current-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k8",
+      "accuracy": 0.5990859375,
+      "exact_accuracy": 0.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-mamba2-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k2",
+      "accuracy": 1.0,
+      "exact_accuracy": 1.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-mamba2-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k4",
+      "accuracy": 1.0,
+      "exact_accuracy": 1.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-mamba2-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c4-k4",
+      "accuracy": 0.99990625,
+      "exact_accuracy": 0.9985,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-mamba2-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c4-k8",
+      "accuracy": 0.999828125,
+      "exact_accuracy": 0.9945,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-mamba2-d3-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k8",
+      "accuracy": 0.9995,
+      "exact_accuracy": 0.97,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-mamba2-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k2",
+      "accuracy": 1.0,
+      "exact_accuracy": 1.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-mamba2-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k4",
+      "accuracy": 1.0,
+      "exact_accuracy": 1.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-mamba2-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c4-k4",
+      "accuracy": 0.99990625,
+      "exact_accuracy": 0.9985,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-mamba2-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c4-k8",
+      "accuracy": 0.999890625,
+      "exact_accuracy": 0.9965,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-mamba2-d3-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k8",
+      "accuracy": 0.99946875,
+      "exact_accuracy": 0.968,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-mamba2-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k2",
+      "accuracy": 1.0,
+      "exact_accuracy": 1.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-mamba2-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c2-k4",
+      "accuracy": 1.0,
+      "exact_accuracy": 1.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-mamba2-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c4-k4",
+      "accuracy": 1.0,
+      "exact_accuracy": 1.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-mamba2-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c4-k8",
+      "accuracy": 0.999859375,
+      "exact_accuracy": 0.9955,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-mamba2-d1-w64-s123",
+      "endpoint": "final_test",
+      "cell": "c8-k8",
+      "accuracy": 0.99621875,
+      "exact_accuracy": 0.786,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-mamba2-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k2",
+      "accuracy": 1.0,
+      "exact_accuracy": 1.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-mamba2-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c2-k4",
+      "accuracy": 1.0,
+      "exact_accuracy": 1.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-mamba2-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c4-k4",
+      "accuracy": 1.0,
+      "exact_accuracy": 1.0,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-mamba2-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c4-k8",
+      "accuracy": 0.999859375,
+      "exact_accuracy": 0.9955,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    },
+    {
+      "task": "joint_recall-unique-mamba2-d1-w64-s123",
+      "endpoint": "best_test",
+      "cell": "c8-k8",
+      "accuracy": 0.99621875,
+      "exact_accuracy": 0.786,
+      "epochs": 32,
+      "steps": 22624,
+      "examples_seen": 5760000
+    }
+  ]
+}

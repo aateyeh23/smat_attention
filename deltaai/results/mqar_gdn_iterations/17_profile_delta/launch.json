@@ -1,0 +1,20 @@
+{
+  "trial": "17_profile_delta",
+  "created_at": "2026-09-17T07:22:44.126935+00:00",
+  "hypothesis": "From trial14: replace additive profile accumulation with bucket-local delta correction S_c <- S_c + beta*k*(v-k^T S_c)^T, retaining normalized tied causal features, categorical four-plane reading, and incidence scaling. One hard forward write. The custom backward replays neighboring profiles only to recover the full hard-STE route gradient; payload/beta gradients come once through the hard forward. The actual write beta remains trainable while its occupancy-loss weight is detached. No full value-state recurrence crosses the boundary. Requires FP64 sequential-state reference and all-gradient GPU validation.",
+  "sources": {
+    "zoo_gdn_transport.py": "9f5b782861ca92d7ccfb363a6279ba0698a810c77118b67bef04239acd7fc0b7",
+    "content_addr.py": "4484f8ac62aded52195a05d9f9b3a6a292731749c409806ccd57d95e2b74482f",
+    "smat_gdn_transport.py": "1c40aeaab63fe89e1bb83c6cae2e0990ac1b2427c71bfd52326722d871bc30d4",
+    "smat_address_reads.py": "4bce3957b84e7dba015555645871b9f76181da582dbfb6037498ae5e2756b7b6",
+    "smat_write_hash_grad.py": "44f98f32e6f293fc5f644e37de9441803161644081144d040e82c3f7dd526278",
+    "smat_delta_pool.py": "39dc75d8293117b5b697f81ad9112ab809065a678c0c8f37ec44c6efe7ff605c",
+    "zoo_gdn_gated_trainer.py": "2f8d28a9da90e21a08df9064df948472575879ba2144a368556faa6c259a340e",
+    "zoo_gdn_iteration_configs.py": "cac3e40aa6c719b102a4cf8cebeca81b2c8afffc1691937431f043951b9bc02e",
+    "test_gdn_iteration_gpu.py": "971f358b9e11528d5aafc49b829bcd24eb7dafab246b73e2695c03c1a4aa2338",
+    "test_gdn_transport_gpu.py": "802fd3803d57b7a2e6553b3eb652900202c411e90f52dee91472f370ceaf7357",
+    "modal_gdn_iteration.py": "33d5282ff2f0d4c198c9d20f47601ec819731083fcb745f53a724ad03d69a4e0",
+    "modal_gdn_transport.py": "a7607e97b22c153f95a8d2b7c091974fd653befbc9326cbf563054edb5c8722c"
+  },
+  "app": "ap-SFf5CWSJhNSqbBVEYLeAAT"
+}

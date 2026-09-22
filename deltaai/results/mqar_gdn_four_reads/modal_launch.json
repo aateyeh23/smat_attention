@@ -1,0 +1,61 @@
+{
+  "app_id": "ap-4isCxDz7XqUcfU7xwrXPXi",
+  "url": "https://modal.com/apps/archerdwang/main/ap-4isCxDz7XqUcfU7xwrXPXi",
+  "volume": "smat-mqar-four-reads-results",
+  "phase": "complete",
+  "gpu": "H100",
+  "parallel_training_arms": [
+    2,
+    3,
+    4
+  ],
+  "previous_failed_app": "ap-nIgiBzQBFoQc1WMLWHqod7",
+  "slurm_stopped": true,
+  "d2_resume_epoch": 8,
+  "d2_completed_epochs_before_migration": 7,
+  "d2_accuracy_before_migration": 0.392159375,
+  "modal_state": "stopped",
+  "modal_tasks": 0,
+  "local_results": "/u/archerdw/smat_attention/deltaai/results/mqar_gdn_four_reads/modal_results",
+  "results": {
+    "2": {
+      "next_epoch": 32,
+      "complete": true,
+      "metrics": {
+        "valid/loss": 6.09849214553833,
+        "valid/accuracy": 0.500409375,
+        "valid/num_kv_pairs/accuracy-4": 0.98575,
+        "valid/num_kv_pairs/accuracy-8": 0.83075,
+        "valid/num_kv_pairs/accuracy-16": 0.3765,
+        "valid/num_kv_pairs/accuracy-32": 0.222625,
+        "valid/num_kv_pairs/accuracy-64": 0.086421875
+      }
+    },
+    "3": {
+      "next_epoch": 32,
+      "complete": true,
+      "metrics": {
+        "valid/loss": 4.0767822265625,
+        "valid/accuracy": 0.488384375,
+        "valid/num_kv_pairs/accuracy-4": 0.9745,
+        "valid/num_kv_pairs/accuracy-8": 0.842875,
+        "valid/num_kv_pairs/accuracy-16": 0.4523125,
+        "valid/num_kv_pairs/accuracy-32": 0.13871875,
+        "valid/num_kv_pairs/accuracy-64": 0.033515625
+      }
+    },
+    "4": {
+      "next_epoch": 32,
+      "complete": true,
+      "metrics": {
+        "valid/loss": 4.201655387878418,
+        "valid/accuracy": 0.460346875,
+        "valid/num_kv_pairs/accuracy-4": 0.945,
+        "valid/num_kv_pairs/accuracy-8": 0.781375,
+        "valid/num_kv_pairs/accuracy-16": 0.4144375,
+        "valid/num_kv_pairs/accuracy-32": 0.13040625,
+        "valid/num_kv_pairs/accuracy-64": 0.030515625
+      }
+    }
+  }
+}

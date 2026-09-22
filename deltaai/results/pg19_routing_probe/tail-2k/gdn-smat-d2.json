@@ -1,0 +1,36 @@
+{
+  "arm": "gdn-smat-d2",
+  "checkpoint": "/checkpoints/seed123/six-1b-constant3e-5-20260917/gdn-smat-d2/latest.pt",
+  "checkpoint_sha256": "aba9b08b3657eb943713b8711b89e6996bd3f7b868a8b42e3c5d7298ca5707bc",
+  "tokens": 789856256,
+  "rows": [
+    229,
+    120
+  ],
+  "regions": {
+    "second_half": {
+      "tokens": 16384,
+      "normal_loss": 2.9240166203455074,
+      "zero_memory_loss": 2.926326457761852,
+      "loss_increase": 0.0023098374163446067,
+      "per_sequence_loss_increase": [
+        0.0035657531076052074,
+        0.0010539217250848942
+      ],
+      "top1_changed_fraction": 0.01116943359375,
+      "mean_kl": 0.001164259459983441
+    },
+    "last_2k": {
+      "tokens": 4096,
+      "normal_loss": 2.7167677546691813,
+      "zero_memory_loss": 2.7172236558083984,
+      "loss_increase": 0.0004559011392171186,
+      "per_sequence_loss_increase": [
+        0.0006088128092742728,
+        0.0003029894691604085
+      ],
+      "top1_changed_fraction": 0.006591796875,
+      "mean_kl": 0.00014052139522391371
+    }
+  }
+}

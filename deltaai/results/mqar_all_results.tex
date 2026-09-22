@@ -1,0 +1,27 @@
+% Requires \usepackage{booktabs}
+\begin{table*}[t]
+\centering
+\small
+\caption{Final MQAR accuracy (\%), epoch 32, seed 123. SMAT uses one write and four weighted reads per head. Head and state dimensions are 16.}
+\label{tab:mqar-gdn-mamba-all}
+\begin{tabular}{lrrrrr}
+\toprule
+Backbone & Width & Baseline & $d=2$ & $d=3$ & $d=4$ \\
+\midrule
+GDN & 16 & 35.71 & 50.04 & 48.84 & 46.03 \\
+GDN & 32 & 69.86 & 70.26 & 82.78 & 82.55 \\
+GDN & 64 & 43.38 & 68.95 & 64.92 & 32.87 \\
+\midrule
+GDN (ablation) & 32 & 69.86 & -- & 81.78 & -- \\
+\midrule
+Mamba-2 & 16 & 42.03 & 43.12 & 59.47 & 44.67 \\
+Mamba-2 & 32 & 77.24 & 75.68 & 83.99 & 84.22 \\
+Mamba-2 & 64 & 83.92 & 90.51 & 90.10 & 93.02 \\
+\bottomrule
+\end{tabular}
+\end{table*}
+% Current transport: scalar decay ON, incidence rescaling OFF.
+% Transport ablation: scalar decay OFF, incidence rescaling ON.
+% GDN heads by width16/32/64:1/2/2; Mamba-2 heads:2/4/8. Head/state dimensions16.
+% Width16 GDN baseline is historical. Repeated baselines reuse the same runs.
+% Original Mamba-2 results do not use the updated GDN transport configuration.

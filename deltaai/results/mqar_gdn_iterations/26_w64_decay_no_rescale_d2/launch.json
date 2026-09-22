@@ -1,0 +1,30 @@
+{
+  "trial": "26_w64_decay_no_rescale_d2",
+  "width": 64,
+  "d": 2,
+  "resume_epoch": 0,
+  "stop_on_failed_gate": false,
+  "created_at": "2026-09-17T16:29:56.487534+00:00",
+  "sources": {
+    "zoo_gdn_transport.py": "cac9f8badc5ac2b1c321572c9e250a4398284fa1a5269442b1b68eb4b65a01ac",
+    "content_addr.py": "4484f8ac62aded52195a05d9f9b3a6a292731749c409806ccd57d95e2b74482f",
+    "smat_gdn_transport.py": "1c40aeaab63fe89e1bb83c6cae2e0990ac1b2427c71bfd52326722d871bc30d4",
+    "smat_address_reads.py": "d05e0138da9c599aafe81fc286962a7dda89eadf4473d4236eb9a3726b1ad0df",
+    "smat_write_hash_grad.py": "44f98f32e6f293fc5f644e37de9441803161644081144d040e82c3f7dd526278",
+    "smat_delta_pool.py": "39dc75d8293117b5b697f81ad9112ab809065a678c0c8f37ec44c6efe7ff605c",
+    "zoo_gdn_gated_trainer.py": "b76e4569174b5d9ba4365de8570d59cb9c36a8220d0f2e51f83209def2ac0f8d",
+    "zoo_gdn_iteration_configs.py": "7d0ae5e26e4cef519c0dc32a264d5f59bfa0fd708cb15cceee5311d39c0c7dec",
+    "zoo_mqar_resume.py": "ae54e7eeec4ea3d57f37e7a01cb0019f101e9203bab33aa5edb6df78f344d06c",
+    "audit_gdn_sources.py": "1d1fdb3c0d2fd89ea4c6d7e9ff20382c30b1a977eb097e1a89a8168dca83d12d",
+    "test_gdn_iteration_gpu.py": "339511eec170b42b8ed8f71e36b389a1c1113fad2a064bb3adebd5ae8286bcfe",
+    "test_gdn_transport_gpu.py": "802fd3803d57b7a2e6553b3eb652900202c411e90f52dee91472f370ceaf7357",
+    "modal_gdn_iteration.py": "77ea45751f7452e2bcbe784b449efe39580aaedf519254ebee8ab63824bb1e2d",
+    "modal_gdn_transport.py": "0d4400ab0ae929c12d45dbb3f5cc2ac79ffd871c3d4b223676594e6f3468f496",
+    "collect_gdn_iteration.py": "0035b9e0cd00e93a006dd6e2879266c8945d7bd8af619864224f3a468bfe5e4d",
+    "zoo_gdn_transport_configs.py": "f77d71650a9afdda4c5fc0112a0c643d4a857d6667a166dae09955bc6ef10a7d",
+    "zoo_gdn_transport_neighbor_configs.py": "155b7495d03a9bf3cccae466e2c12c8a1d0ed946ef5fe5d978b5b09ff81aab88"
+  },
+  "baseline_sha256": "83091c31f17ad5a7e608f0b43091c493b4ab0e4801bd2cd73dba1e5475bb7dde",
+  "description": "User-requested width64 MQAR batch d2/3/4. Train all32epochs regardless of baseline comparisons. Two heads, head/state16, two layers, seed123, original AdamW recipe. Scalar decay on, incidence rescale off, neighboring write gradients and detached hash inputs, one content write/four weighted reads.",
+  "app": "ap-TjL2KGt113knGNHidDmg4d"
+}

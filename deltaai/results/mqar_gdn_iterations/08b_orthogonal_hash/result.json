@@ -1,0 +1,10 @@
+{
+  "epoch": 4,
+  "accuracy": 0.5252,
+  "baseline": 0.6065875,
+  "margin": -0.08138749999999995,
+  "required": true,
+  "decision": "reject",
+  "complete": true,
+  "trial": "08b_orthogonal_hash"
+}

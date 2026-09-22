@@ -1,0 +1,7 @@
+{
+  "confirm_joint_recall.py": "52296dda0811000ce1630af1bb2869a220c327ab13d42e5095eaa7567b187238",
+  "joint_recall_controls.py": "e37e8f32b326df3cd3b1578352e2c49ab88ea51ff812b9183246c2c461d0f1e8",
+  "audit_joint_recall_confirmation.py": "610d32ac6c5fa1feb1f3bddfda376796b871d7f5c8425da492f87f838cbf7f77",
+  "collect_joint_recall_confirmation.py": "1d3d1823bf5366113c5bc8b9dcd7b8310cfbbd1aa86b65aa4ad861e5813ee434",
+  "run_joint_recall_confirmation_when_ready.py": "de1744923038aac3df9694723d415810a77da84eef8d1dbedf9b7416301ddaf5"
+}

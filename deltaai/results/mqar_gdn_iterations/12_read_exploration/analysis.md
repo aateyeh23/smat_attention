@@ -1,0 +1,3 @@
+From trial07: add Gaussian read-logit exploration with standard deviation linearly decaying from 1 to 0 over the existing 1000-step annealing period. Exactly four distinct weighted reads at every step; evaluation always deterministic. Same one hard content write, transport and incidence scaling. Motivation: checkpoint07 oracle-read intervention improves 32-pair sample accuracy from30.49% to54.98%, while ordinary plane target mass is near chance. No labels enter training or routing.
+
+Rejected at epoch4:53.905% versus60.65875%; -6.75375 percentage points. Brief read exploration did not improve on trial07. The inherited marginal balance loss cannot detect dependence between hash coordinates, motivating a joint dependence penalty next.

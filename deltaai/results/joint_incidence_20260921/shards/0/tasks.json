@@ -1,0 +1,54 @@
+[
+  {
+    "name": "geometry-s123",
+    "variant": "geometry",
+    "topology": 0,
+    "seed": 123,
+    "root": "/u/archerdw/smat_attention/deltaai/results/joint_incidence_20260921/geometry",
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_incidence_20260921/geometry/shared-gdn_current-d3-w64-s123/result.json",
+    "script": "/u/archerdw/smat_attention/deltaai/incidence_ablation/run.py",
+    "args": [
+      "--index",
+      "0"
+    ]
+  },
+  {
+    "name": "random-t29-s123",
+    "variant": "random",
+    "topology": 29,
+    "seed": 123,
+    "root": "/u/archerdw/smat_attention/deltaai/results/joint_incidence_20260921/random-t29",
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_incidence_20260921/random-t29/shared-gdn_current-d3-w64-s123/result.json",
+    "script": "/u/archerdw/smat_attention/deltaai/incidence_ablation/run.py",
+    "args": [
+      "--index",
+      "4"
+    ]
+  },
+  {
+    "name": "buckets_bytes-s456",
+    "variant": "buckets_bytes",
+    "topology": 0,
+    "seed": 456,
+    "root": "/u/archerdw/smat_attention/deltaai/results/joint_incidence_20260921/buckets_bytes",
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_incidence_20260921/buckets_bytes/shared-gdn_current-d3-w64-s456/result.json",
+    "script": "/u/archerdw/smat_attention/deltaai/incidence_ablation/run.py",
+    "args": [
+      "--index",
+      "8"
+    ]
+  },
+  {
+    "name": "buckets_profiles-s789",
+    "variant": "buckets_profiles",
+    "topology": 0,
+    "seed": 789,
+    "root": "/u/archerdw/smat_attention/deltaai/results/joint_incidence_20260921/buckets_profiles",
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_incidence_20260921/buckets_profiles/shared-gdn_current-d3-w64-s789/result.json",
+    "script": "/u/archerdw/smat_attention/deltaai/incidence_ablation/run.py",
+    "args": [
+      "--index",
+      "12"
+    ]
+  }
+]

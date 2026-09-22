@@ -1,0 +1,8 @@
+{
+  "app_id": "ap-q0XZKzTUemQmrdE6QRN2pu",
+  "decoder": "cached recurrent",
+  "samples": 500,
+  "arms": 6,
+  "mamba2_smat_d3_app": "ap-R3QklB1SdwIR6hoaeMjldT",
+  "additional_correctness_checks": false
+}

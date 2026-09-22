@@ -1,0 +1,21 @@
+{
+  "task": "variable",
+  "load": 32,
+  "family": "gdn",
+  "d": 1,
+  "width": 32,
+  "seed": 123,
+  "parameters": 28392,
+  "trainable_parameters": 28392,
+  "validation_sha256": "0bc0223aa0dcc9b56c820e8a3f76a2cfae826c14f8aec35f8486c7d1c3831eed",
+  "sequence_length": 256,
+  "steps": 1000,
+  "complete": true,
+  "elapsed_seconds": 17.42279313300969,
+  "test_sha256": "ea987d25c93f6a1badae9e89f6a436582c022fb18967b946ebba6f8482da9fd0",
+  "accuracy": 0.0595703125,
+  "exact_accuracy": 0.0595703125,
+  "eval_loss": 2.780079983174801,
+  "majority_value_accuracy": 0.1552734375,
+  "last_value_accuracy": 0.091796875
+}

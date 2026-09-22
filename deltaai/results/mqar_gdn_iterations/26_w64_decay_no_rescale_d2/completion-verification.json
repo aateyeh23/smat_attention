@@ -1,0 +1,10 @@
+{
+  "width": 64,
+  "d": 2,
+  "epoch": 32,
+  "complete": true,
+  "accuracy": 0.689503125,
+  "baseline": 0.433846875,
+  "checkpoint_sha256": "40ceabb217c58d1bb8182ea7d62660b97c3b462e03c8b30d64d6fadc251f0505",
+  "source_verified": true
+}

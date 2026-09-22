@@ -1,0 +1,19 @@
+\begin{table*}[t]
+\centering
+\small
+\caption{Final MQAR accuracy (percent), 32 epochs, seed 123. All head and state dimensions are 16. GDN uses two heads; Mamba2 retains its native twofold expansion. SMAT uses one learned write and four distinct weighted reads per head.}
+\label{tab:mqar-four-reads-widths}
+\begin{tabular}{llrrrrrrrr}
+\toprule
+ & & \multicolumn{4}{c}{Overall accuracy} & \multicolumn{4}{c}{64-pair accuracy} \\
+\cmidrule(lr){3-6}\cmidrule(lr){7-10}
+Backbone & Width & Base & $d=2$ & $d=3$ & $d=4$ & Base & $d=2$ & $d=3$ & $d=4$ \\
+\midrule
+GDN & 32 & \textbf{69.86} & 59.79 & 43.57 & 68.07 & 10.22 & 10.70 & 5.14 & \textbf{15.99} \\
+GDN & 64 & 43.38 & \textbf{43.96} & 40.50 & 0.03 & 1.16 & \textbf{7.82} & 5.30 & 0.03 \\
+Mamba2 & 16 & 42.03 & 43.12 & \textbf{59.47} & 44.67 & 3.35 & 3.42 & \textbf{28.20} & 3.94 \\
+Mamba2 & 32 & 77.24 & 75.68 & 83.99 & \textbf{84.22} & 25.99 & 39.60 & \textbf{68.11} & 56.33 \\
+Mamba2 & 64 & 83.92 & 90.51 & 90.10 & \textbf{93.02} & 44.38 & 80.73 & 74.43 & \textbf{85.41} \\
+\bottomrule
+\end{tabular}
+\end{table*}

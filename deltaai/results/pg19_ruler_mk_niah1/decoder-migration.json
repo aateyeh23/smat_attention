@@ -1,0 +1,14 @@
+{
+  "time": 1789691340.5433645,
+  "reason": "Replace full-window one-token decoding with verified speculative greedy decoding",
+  "stopped_calls": {
+    "gdn-baseline": "fc-01M2RY522K40JHF1MAX992QYPG",
+    "gdn-smat-d2": "fc-01M2RY526WXQ9TM1N1ME26NN2W",
+    "gdn-smat-d3": "fc-01M2RY52B095K3M2ZV0SY8FGR1",
+    "mamba2-baseline": "fc-01M2RY52F82Q0GPY3E6CMHXB7C",
+    "mamba2-smat-d2": "fc-01M2RY52KM2C6KEAH4QZA5AAVZ",
+    "mamba2-smat-d3": "fc-01M2RY52QJM9ZNWDJ3MK7NGWR8"
+  },
+  "mamba2_d3_equivalence_examples": 4,
+  "mamba2_d3_equivalence_tokens": 512
+}

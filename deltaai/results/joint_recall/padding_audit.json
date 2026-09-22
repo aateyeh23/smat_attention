@@ -1,0 +1,95 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "cell_split": "c2-k2-test",
+      "old_length": 22,
+      "new_length": 64,
+      "examples": 2000
+    },
+    {
+      "cell_split": "c2-k2-train",
+      "old_length": 22,
+      "new_length": 64,
+      "examples": 100000
+    },
+    {
+      "cell_split": "c2-k2-validation",
+      "old_length": 22,
+      "new_length": 64,
+      "examples": 1000
+    },
+    {
+      "cell_split": "c2-k4-test",
+      "old_length": 38,
+      "new_length": 64,
+      "examples": 2000
+    },
+    {
+      "cell_split": "c2-k4-train",
+      "old_length": 38,
+      "new_length": 64,
+      "examples": 20000
+    },
+    {
+      "cell_split": "c2-k4-validation",
+      "old_length": 38,
+      "new_length": 64,
+      "examples": 1000
+    },
+    {
+      "cell_split": "c4-k4-test",
+      "old_length": 74,
+      "new_length": 76,
+      "examples": 2000
+    },
+    {
+      "cell_split": "c4-k4-train",
+      "old_length": 74,
+      "new_length": 76,
+      "examples": 20000
+    },
+    {
+      "cell_split": "c4-k4-validation",
+      "old_length": 74,
+      "new_length": 76,
+      "examples": 1000
+    },
+    {
+      "cell_split": "c4-k8-test",
+      "old_length": 138,
+      "new_length": 140,
+      "examples": 2000
+    },
+    {
+      "cell_split": "c4-k8-train",
+      "old_length": 138,
+      "new_length": 140,
+      "examples": 20000
+    },
+    {
+      "cell_split": "c4-k8-validation",
+      "old_length": 138,
+      "new_length": 140,
+      "examples": 1000
+    },
+    {
+      "cell_split": "c8-k8-test",
+      "old_length": 274,
+      "new_length": 276,
+      "examples": 2000
+    },
+    {
+      "cell_split": "c8-k8-train",
+      "old_length": 274,
+      "new_length": 276,
+      "examples": 20000
+    },
+    {
+      "cell_split": "c8-k8-validation",
+      "old_length": 274,
+      "new_length": 276,
+      "examples": 1000
+    }
+  ]
+}

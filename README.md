@@ -8,8 +8,9 @@ is ordinary causal masking.
 
 This repository holds the construction, the tasks the paper reports, the job
 scripts that produced the numbers, and the analysis that turns them into tables
-and figures. Nothing in it names a machine, a site or an account: cluster
-settings live in `experiments/site.conf`, which is not committed.
+and figures. Current cluster settings live in `experiments/site.conf`, which
+is not committed. The legacy `deltaai/` and `smat/` experiment trees retain
+their original source paths, launch recipes, and result provenance.
 
 ## Layout
 
@@ -38,6 +39,8 @@ results/           every number the paper cites, as CSV or JSON
 figures/           each figure with the CSV of its plotted values
 tests/             correctness; run tests/test_smat.py first
 docs/              construction notes, experiment notes, kernel defects
+deltaai/           legacy experiment runners, frozen sources, and recorded results
+smat/              legacy standalone implementation and supporting experiment files
 paper_drafts/      the manuscript
 ```
 
@@ -75,6 +78,14 @@ python analysis/figures.py results/results_bf16.csv --results-dir results --outd
 python analysis/table_mkar.py                    # multi-key subset recall
 ```
 
+The legacy campaigns also retain results under `deltaai/results/`, including
+the joint-recall, MoM, incidence, repeated-seed, and PG-19 experiments. These
+folders preserve their original layouts because runners and source manifests
+refer to those paths. The current packaged implementation remains in
+`src/smat/`; the legacy trees are separate experiment implementations.
+The MoM appendix snippet is in `docs/mom-comparison.tex`, with its aggregation
+details in `docs/mom-comparison.md`.
+
 ## Reading a result
 
 Every task writes one row per evaluation with the run's full configuration, so
@@ -96,10 +107,11 @@ They are retained as the record of a fixed defect, not as results.
 
 ## Anonymity
 
-Job scripts carry no partition, account, node list or GPU model; `submit.sh`
+Current `experiments/jobs/` scripts carry no partition, account, node list or GPU model; `submit.sh`
 supplies them from an uncommitted `site.conf`. `prelude.sh` records
 `torch`/`triton` versions and the device's compute capability and memory, never
-a hostname or a product name. Result provenance files follow the same rule.
+a hostname or a product name. Legacy `deltaai/` and `smat/` experiments and
+their frozen provenance retain site-specific information and absolute paths.
 
 Git history is **not** anonymous: commits carry author names and institutional
 email addresses. Scrubbing that needs a history rewrite, which changes every

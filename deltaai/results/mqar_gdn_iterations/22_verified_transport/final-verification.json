@@ -1,0 +1,38 @@
+{
+  "epoch": 32,
+  "complete": true,
+  "all_15_gates_passed": true,
+  "accuracy": 0.8177875,
+  "baseline": 0.698621875,
+  "slices": {
+    "4": {
+      "candidate": 0.99725,
+      "gdn": 0.99975,
+      "margin": -0.0025000000000000577
+    },
+    "8": {
+      "candidate": 0.985625,
+      "gdn": 0.997125,
+      "margin": -0.011500000000000066
+    },
+    "16": {
+      "candidate": 0.9085625,
+      "gdn": 0.9290625,
+      "margin": -0.020499999999999963
+    },
+    "32": {
+      "candidate": 0.70665625,
+      "gdn": 0.4649375,
+      "margin": 0.24171874999999998
+    },
+    "64": {
+      "candidate": 0.49084375,
+      "gdn": 0.102234375,
+      "margin": 0.38860937500000003
+    }
+  },
+  "checkpoint_sha256": "32f2625bbac74c2b3ae53b4d9235350e704ac1f2522cf13588fb43afecf015ff",
+  "optimizer_groups": 1,
+  "initial_learning_rate": 0.01,
+  "source_verified": true
+}

@@ -1,0 +1,10 @@
+{
+  "epoch": 32,
+  "accuracy": 0.8177875,
+  "baseline": 0.698621875,
+  "margin": 0.11916562500000005,
+  "required": true,
+  "decision": "pass",
+  "complete": true,
+  "trial": "22_verified_transport"
+}

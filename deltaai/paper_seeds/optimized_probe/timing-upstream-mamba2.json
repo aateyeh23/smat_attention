@@ -1,0 +1,97 @@
+[
+  {
+    "family": "mamba2",
+    "backend": "upstream",
+    "length": 64,
+    "batch_size": 256,
+    "mean_seconds": 0.00932188737206161,
+    "median_seconds": 0.009325836086645722,
+    "samples_seconds": [
+      0.009467848110944033,
+      0.009325836086645722,
+      0.009375946829095483,
+      0.009227950824424624,
+      0.009211855009198189
+    ],
+    "peak_memory_gb": 0.422526464,
+    "parameters": 105984,
+    "loss": 4.523364067077637,
+    "gpu": "NVIDIA GH200 120GB"
+  },
+  {
+    "family": "mamba2",
+    "backend": "upstream",
+    "length": 100,
+    "batch_size": 256,
+    "mean_seconds": 0.010329384868964554,
+    "median_seconds": 0.010345729999244213,
+    "samples_seconds": [
+      0.010345729999244213,
+      0.010216102004051208,
+      0.010342978173866868,
+      0.010364033048972487,
+      0.010378081118687987
+    ],
+    "peak_memory_gb": 0.380401664,
+    "parameters": 105984,
+    "loss": 4.4680986404418945,
+    "gpu": "NVIDIA GH200 120GB"
+  },
+  {
+    "family": "mamba2",
+    "backend": "upstream",
+    "length": 772,
+    "batch_size": 256,
+    "mean_seconds": 0.028035503393039108,
+    "median_seconds": 0.02798989205621183,
+    "samples_seconds": [
+      0.02798989205621183,
+      0.027932869968935847,
+      0.02793683810159564,
+      0.02816294296644628,
+      0.02815497387200594
+    ],
+    "peak_memory_gb": 2.352584704,
+    "parameters": 105984,
+    "loss": 4.399864196777344,
+    "gpu": "NVIDIA GH200 120GB"
+  },
+  {
+    "family": "mamba2",
+    "backend": "upstream",
+    "length": 1540,
+    "batch_size": 256,
+    "mean_seconds": 0.05478109424002468,
+    "median_seconds": 0.05479793203994632,
+    "samples_seconds": [
+      0.05473466985858977,
+      0.05480657215230167,
+      0.05479793203994632,
+      0.054768205154687166,
+      0.05479809199459851
+    ],
+    "peak_memory_gb": 4.601747456,
+    "parameters": 105984,
+    "loss": 4.383195877075195,
+    "gpu": "NVIDIA GH200 120GB"
+  },
+  {
+    "family": "mamba2",
+    "backend": "upstream",
+    "length": 3076,
+    "batch_size": 256,
+    "mean_seconds": 0.11078396858647466,
+    "median_seconds": 0.11079605109989643,
+    "samples_seconds": [
+      0.11068376689217985,
+      0.11079605109989643,
+      0.11083918600343168,
+      0.11083796992897987,
+      0.11076286900788546
+    ],
+    "peak_memory_gb": 9.167935488,
+    "parameters": 105984,
+    "loss": 4.375788688659668,
+    "gpu": "NVIDIA GH200 120GB"
+  }
+]

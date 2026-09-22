@@ -1,0 +1,22 @@
+{
+  "task": "state",
+  "load": 16,
+  "family": "gdn",
+  "d": 1,
+  "width": 32,
+  "seed": 123,
+  "parameters": 20200,
+  "trainable_parameters": 20200,
+  "validation_sha256": "8bee7624dd29ea06a7745e87e4c1b645a05948dddca6c1ec9eedb2b2d73c55b3",
+  "sequence_length": 192,
+  "steps": 500,
+  "complete": true,
+  "elapsed_seconds": 27.746086481027305,
+  "test_sha256": "189aca8b5ecd4a3cb904edc9edee3472e6bc94b96fb9ea6c87819de60199c6fc",
+  "accuracy": 0.06512451171875,
+  "exact_accuracy": 0.0,
+  "eval_loss": 2.77692805044353,
+  "query_blind_oracle_accuracy": 0.19189453125,
+  "majority_value_accuracy": 0.1298828125,
+  "last_value_accuracy": 0.12225341796875
+}

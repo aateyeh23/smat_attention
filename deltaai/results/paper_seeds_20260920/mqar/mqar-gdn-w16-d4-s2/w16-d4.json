@@ -1,0 +1,13 @@
+{
+  "next_epoch": 32,
+  "complete": true,
+  "metrics": {
+    "valid/loss": 3.925858497619629,
+    "valid/accuracy": 0.4509375,
+    "valid/num_kv_pairs/accuracy-4": 0.95025,
+    "valid/num_kv_pairs/accuracy-8": 0.804,
+    "valid/num_kv_pairs/accuracy-16": 0.3771875,
+    "valid/num_kv_pairs/accuracy-32": 0.10096875,
+    "valid/num_kv_pairs/accuracy-64": 0.02228125
+  }
+}

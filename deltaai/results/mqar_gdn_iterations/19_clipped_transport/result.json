@@ -1,0 +1,10 @@
+{
+  "epoch": 4,
+  "accuracy": 0.56510625,
+  "baseline": 0.6065875,
+  "margin": -0.041481249999999914,
+  "required": true,
+  "decision": "reject",
+  "complete": true,
+  "trial": "19_clipped_transport"
+}

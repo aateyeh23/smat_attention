@@ -1,0 +1,78 @@
+{
+  "condition": "shared",
+  "family": "gdn_current",
+  "d": 4,
+  "width": 64,
+  "seed": 1,
+  "parameters": 378756,
+  "trainable_parameters": 330884,
+  "complete": true,
+  "epochs": 32,
+  "steps": 22560,
+  "examples_seen": 5760000,
+  "elapsed_seconds": 2562.4649084501434,
+  "final_test": {
+    "accuracy": 0.49124121093749995,
+    "exact_accuracy": 0.20665,
+    "cells": {
+      "c1-k4": {
+        "accuracy": 0.995125,
+        "exact_accuracy": 0.9815,
+        "eval_loss": 0.01633064642548561
+      },
+      "c2-k8": {
+        "accuracy": 0.806859375,
+        "exact_accuracy": 0.05175,
+        "eval_loss": 0.5268695449829102
+      },
+      "c8-k16": {
+        "accuracy": 0.30365625,
+        "exact_accuracy": 0.0,
+        "eval_loss": 2.124559783935547
+      },
+      "c16-k16": {
+        "accuracy": 0.1992333984375,
+        "exact_accuracy": 0.0,
+        "eval_loss": 2.471151290893555
+      },
+      "c32-k16": {
+        "accuracy": 0.15133203125,
+        "exact_accuracy": 0.0,
+        "eval_loss": 2.6121217651367186
+      }
+    }
+  },
+  "best_validation_epoch": 32,
+  "best_validation_accuracy": 0.49111699218750005,
+  "best_test": {
+    "accuracy": 0.49123994140624994,
+    "exact_accuracy": 0.20665,
+    "cells": {
+      "c1-k4": {
+        "accuracy": 0.995125,
+        "exact_accuracy": 0.9815,
+        "eval_loss": 0.01633064642548561
+      },
+      "c2-k8": {
+        "accuracy": 0.806859375,
+        "exact_accuracy": 0.05175,
+        "eval_loss": 0.5268695449829102
+      },
+      "c8-k16": {
+        "accuracy": 0.30365234375,
+        "exact_accuracy": 0.0,
+        "eval_loss": 2.124558853149414
+      },
+      "c16-k16": {
+        "accuracy": 0.1992314453125,
+        "exact_accuracy": 0.0,
+        "eval_loss": 2.471149505615234
+      },
+      "c32-k16": {
+        "accuracy": 0.15133154296875,
+        "exact_accuracy": 0.0,
+        "eval_loss": 2.6121210250854494
+      }
+    }
+  }
+}

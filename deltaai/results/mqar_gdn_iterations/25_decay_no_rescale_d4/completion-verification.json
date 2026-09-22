@@ -1,0 +1,27 @@
+{
+  "width": 32,
+  "d": 4,
+  "epoch": 32,
+  "complete": true,
+  "accuracy": 0.8254875,
+  "baseline": 0.698621875,
+  "checkpoint_sha256": "a4b43baafe31ffe712810a1c4e46ed9de9f3aa88c0b50f541a1e8b9836744f69",
+  "source_verified": true,
+  "passed_gates": [
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    28,
+    30,
+    32
+  ]
+}

@@ -1,0 +1,132 @@
+{
+  "passed": true,
+  "train_examples_per_condition": 180000,
+  "validation_examples_per_condition": 5000,
+  "test_examples_per_condition": 10000,
+  "steps_per_epoch": 707,
+  "epochs": 32,
+  "total_steps": 22624,
+  "manifest_sha256": "ee2cd66454492c6f9f5583f32cc39f71b9dd7af8e2541dd05a56a7df0459f04f",
+  "checks": [
+    {
+      "cell": "c2-k2",
+      "split": "train",
+      "examples": 100000,
+      "paired": true,
+      "decoded": true,
+      "disjoint": true
+    },
+    {
+      "cell": "c2-k2",
+      "split": "validation",
+      "examples": 1000,
+      "paired": true,
+      "decoded": true,
+      "disjoint": true
+    },
+    {
+      "cell": "c2-k2",
+      "split": "test",
+      "examples": 2000,
+      "paired": true,
+      "decoded": true,
+      "disjoint": true
+    },
+    {
+      "cell": "c2-k4",
+      "split": "train",
+      "examples": 20000,
+      "paired": true,
+      "decoded": true,
+      "disjoint": true
+    },
+    {
+      "cell": "c2-k4",
+      "split": "validation",
+      "examples": 1000,
+      "paired": true,
+      "decoded": true,
+      "disjoint": true
+    },
+    {
+      "cell": "c2-k4",
+      "split": "test",
+      "examples": 2000,
+      "paired": true,
+      "decoded": true,
+      "disjoint": true
+    },
+    {
+      "cell": "c4-k4",
+      "split": "train",
+      "examples": 20000,
+      "paired": true,
+      "decoded": true,
+      "disjoint": true
+    },
+    {
+      "cell": "c4-k4",
+      "split": "validation",
+      "examples": 1000,
+      "paired": true,
+      "decoded": true,
+      "disjoint": true
+    },
+    {
+      "cell": "c4-k4",
+      "split": "test",
+      "examples": 2000,
+      "paired": true,
+      "decoded": true,
+      "disjoint": true
+    },
+    {
+      "cell": "c4-k8",
+      "split": "train",
+      "examples": 20000,
+      "paired": true,
+      "decoded": true,
+      "disjoint": true
+    },
+    {
+      "cell": "c4-k8",
+      "split": "validation",
+      "examples": 1000,
+      "paired": true,
+      "decoded": true,
+      "disjoint": true
+    },
+    {
+      "cell": "c4-k8",
+      "split": "test",
+      "examples": 2000,
+      "paired": true,
+      "decoded": true,
+      "disjoint": true
+    },
+    {
+      "cell": "c8-k8",
+      "split": "train",
+      "examples": 20000,
+      "paired": true,
+      "decoded": true,
+      "disjoint": true
+    },
+    {
+      "cell": "c8-k8",
+      "split": "validation",
+      "examples": 1000,
+      "paired": true,
+      "decoded": true,
+      "disjoint": true
+    },
+    {
+      "cell": "c8-k8",
+      "split": "test",
+      "examples": 2000,
+      "paired": true,
+      "decoded": true,
+      "disjoint": true
+    }
+  ]
+}

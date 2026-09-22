@@ -1,0 +1,11 @@
+T,d,k,n,T_R,B,I_prof,draft_condition_T_R_ge_2B,needed_condition_T_R_ge_B,witness_ok,witness_cols,power_of_two,vc,vc_exact,vc_seconds
+64,6,5,32,32,32,528,False,True,True,6,True,6,True,0.0233762264251709
+100,6,5,32,68,32,528,True,True,True,6,False,6,True,0.03219914436340332
+128,7,6,64,64,64,2080,False,True,True,7,True,7,True,0.06616854667663574
+200,7,6,64,136,64,2080,True,True,True,7,False,7,True,0.06742191314697266
+255,7,6,64,191,64,2080,True,True,True,7,False,7,True,0.09812569618225098
+256,8,7,128,128,128,8256,False,True,True,8,True,8,True,0.1061849594116211
+300,8,7,128,172,128,8256,False,True,True,8,False,8,True,0.17534947395324707
+511,8,7,128,383,128,8256,True,True,True,8,False,,,
+512,9,8,256,256,256,32896,False,True,True,9,True,,,
+600,9,8,256,344,256,32896,False,True,True,9,False,,,

@@ -1,0 +1,16 @@
+{
+  "site": "SCF Slurm (Modal campaign in campaign.json was paused_by_user and never produced a completed arm)",
+  "seed": 123,
+  "source_sha256": "dab3543712bef0f5a9b2ed1d8260e02e4f0184a62ae74270a29c95dcd12d127e",
+  "validation_job": 3580151,
+  "upstream_commit": "7f8644159c1406fae1ad863829a5b3a4fbf63022",
+  "zoology_commit": "1ad20d193b6113cae1e8f3c655c300d7b4b3f4bb",
+  "runs": [
+    {"family": "gdn",    "width": 16, "lr": 0.01,  "job": 3580187, "epochs": 32, "mean_accuracy": 0.527909375},
+    {"family": "gdn",    "width": 32, "lr": 0.01,  "job": 3580188, "epochs": 32, "mean_accuracy": 0.577971875},
+    {"family": "gdn",    "width": 64, "lr": 0.003, "job": 3580189, "epochs": 32, "mean_accuracy": 0.765521875},
+    {"family": "mamba2", "width": 16, "lr": 0.01,  "job": 3580190, "epochs": 32, "mean_accuracy": 0.422225},
+    {"family": "mamba2", "width": 32, "lr": 0.01,  "job": 3580191, "epochs": 32, "mean_accuracy": 0.8092375},
+    {"family": "mamba2", "width": 64, "lr": 0.01,  "job": 3580192, "epochs": 32, "mean_accuracy": 0.84934375}
+  ]
+}

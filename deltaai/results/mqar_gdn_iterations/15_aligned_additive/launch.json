@@ -1,0 +1,19 @@
+{
+  "trial": "15_aligned_additive",
+  "created_at": "2026-09-17T07:14:35.494462+00:00",
+  "hypothesis": "From trial14: derive query hyperplane scores from the shared writer address map rather than an independent categorical read projection. This combines tied causal retrieval features, which train the writer context through the task loss, with address-aligned reading and simple additive profiles. Earlier shared-address trials did not use tied causal memory features without transport. Geometry and hash remain length-specific. Exactly one hard write and four distinct weighted reads.",
+  "sources": {
+    "zoo_gdn_transport.py": "4ce277aae64d75c79a01fbf897a7a4eb311967514263f6900caa0bb0a001bdeb",
+    "content_addr.py": "d33144343da0c4215f630d48ffc3d631d47e5341e6232e4a977d4e96e2066ef5",
+    "smat_gdn_transport.py": "1c40aeaab63fe89e1bb83c6cae2e0990ac1b2427c71bfd52326722d871bc30d4",
+    "smat_address_reads.py": "4bce3957b84e7dba015555645871b9f76181da582dbfb6037498ae5e2756b7b6",
+    "smat_write_hash_grad.py": "92a3f81025cf5c0bf89956f3b97573bd74aff55d94f91c873d884ef417e3135e",
+    "zoo_gdn_gated_trainer.py": "2f8d28a9da90e21a08df9064df948472575879ba2144a368556faa6c259a340e",
+    "zoo_gdn_iteration_configs.py": "cac3e40aa6c719b102a4cf8cebeca81b2c8afffc1691937431f043951b9bc02e",
+    "test_gdn_iteration_gpu.py": "26074cfa28588aa4be80aaad988ea218ab3786333d7a6255e87f1cd4f9d4fdbc",
+    "test_gdn_transport_gpu.py": "ee0843e68d4dfee9b9d772de888af0c0be492f37177597f038d0862d551a26cc",
+    "modal_gdn_iteration.py": "a0d70e2f370ccff7de4fe1147e78e252053076d0629a67b3540d01e78fe79794",
+    "modal_gdn_transport.py": "a7607e97b22c153f95a8d2b7c091974fd653befbc9326cbf563054edb5c8722c"
+  },
+  "app": "ap-p5NhewiqSwyU0MOSEhOA5B"
+}

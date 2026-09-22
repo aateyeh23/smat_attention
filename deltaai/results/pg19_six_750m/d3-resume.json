@@ -1,0 +1,10 @@
+{
+  "app": "ap-rg88r0B8TyyP4mlZOl7UBS",
+  "target_tokens": 750000000,
+  "learning_rate": 3e-05,
+  "arms": [
+    "gdn-smat-d3",
+    "mamba2-smat-d3"
+  ],
+  "continue_to_1b": false
+}

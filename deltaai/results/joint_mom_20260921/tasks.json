@@ -1,0 +1,44 @@
+[
+  {
+    "name": "mom_profiles-s123",
+    "variant": "mom_profiles",
+    "seed": 123,
+    "root": "/u/archerdw/smat_attention/deltaai/results/joint_mom_20260921/mom_profiles",
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_mom_20260921/mom_profiles/shared-gdn_current-d3-w64-s123/result.json"
+  },
+  {
+    "name": "mom_profiles-s456",
+    "variant": "mom_profiles",
+    "seed": 456,
+    "root": "/u/archerdw/smat_attention/deltaai/results/joint_mom_20260921/mom_profiles",
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_mom_20260921/mom_profiles/shared-gdn_current-d3-w64-s456/result.json"
+  },
+  {
+    "name": "mom_profiles-s789",
+    "variant": "mom_profiles",
+    "seed": 789,
+    "root": "/u/archerdw/smat_attention/deltaai/results/joint_mom_20260921/mom_profiles",
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_mom_20260921/mom_profiles/shared-gdn_current-d3-w64-s789/result.json"
+  },
+  {
+    "name": "mom_bytes-s123",
+    "variant": "mom_bytes",
+    "seed": 123,
+    "root": "/u/archerdw/smat_attention/deltaai/results/joint_mom_20260921/mom_bytes",
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_mom_20260921/mom_bytes/shared-gdn_current-d3-w64-s123/result.json"
+  },
+  {
+    "name": "mom_bytes-s456",
+    "variant": "mom_bytes",
+    "seed": 456,
+    "root": "/u/archerdw/smat_attention/deltaai/results/joint_mom_20260921/mom_bytes",
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_mom_20260921/mom_bytes/shared-gdn_current-d3-w64-s456/result.json"
+  },
+  {
+    "name": "mom_bytes-s789",
+    "variant": "mom_bytes",
+    "seed": 789,
+    "root": "/u/archerdw/smat_attention/deltaai/results/joint_mom_20260921/mom_bytes",
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_mom_20260921/mom_bytes/shared-gdn_current-d3-w64-s789/result.json"
+  }
+]

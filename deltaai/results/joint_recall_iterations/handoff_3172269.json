@@ -1,0 +1,20 @@
+[
+  {
+    "folder": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512/shared-mamba2-d3-w64-s123",
+    "epoch": 21,
+    "cursor": 127,
+    "steps": 14932
+  },
+  {
+    "folder": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512/shared-gdn_current-d3-w64-s123",
+    "epoch": 21,
+    "cursor": 198,
+    "steps": 15003
+  },
+  {
+    "folder": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512_lr01/shared-mamba2-d3-w64-s123",
+    "epoch": 4,
+    "cursor": 303,
+    "steps": 3123
+  }
+]

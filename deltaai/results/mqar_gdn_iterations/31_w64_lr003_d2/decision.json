@@ -1,0 +1,8 @@
+{
+  "epoch": 32,
+  "accuracy": 0.896834375,
+  "baseline": 0.433846875,
+  "margin": 0.46298749999999994,
+  "required": true,
+  "decision": "pass"
+}

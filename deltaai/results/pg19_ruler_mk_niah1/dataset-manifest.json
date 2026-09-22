@@ -1,0 +1,29 @@
+{
+  "task": "niah_multikey_1",
+  "ruler_commit": "c3f5e3b4f87f97e048793bb510a3a6b19a46bf3a",
+  "samples": 500,
+  "seed": 42,
+  "tokenizer": "gpt2",
+  "max_seq_length": 16384,
+  "max_new_tokens": 128,
+  "template": "base",
+  "task_args": {
+    "type_haystack": "essay",
+    "type_needle_k": "words",
+    "type_needle_v": "numbers",
+    "num_needle_k": 4,
+    "num_needle_v": 1,
+    "num_needle_q": 1
+  },
+  "input_length_min": 15662,
+  "input_length_max": 16256,
+  "dataset_sha256": "a539fc772eae7302edefe92ebd6ba51ad9bdb30943930a17d41fc714f0587570",
+  "encoded_sha256": "00e93e36b502ca0a74dc6c1dd460e4ae6dd32d74bb35535bce61c7bc90076877",
+  "essay_sha256": "58e352531a80cef2d22c205dbebfbfd64a8afe55a32434de845f200718756c65",
+  "source_sha256": {
+    "scripts/data/synthetic/niah.py": "e9cada0a7660d274fe73a1338a90a7087e17b630169f1aaf14a8d3221c6805b5",
+    "scripts/data/synthetic/constants.py": "6296e901d495ec6200dc3f68993ea13d8282e3c0dbe1a8c47967f111105d1fde",
+    "scripts/synthetic.yaml": "34bc71dcacdc41a829a170f04b528fbf48d62c616338005ab4991680fbf8cb0b",
+    "scripts/eval/synthetic/constants.py": "6740467c17b8dc06b6b30f4f97e54ce8de81db0dd879f1538d0b6b5727f4bd5f"
+  }
+}

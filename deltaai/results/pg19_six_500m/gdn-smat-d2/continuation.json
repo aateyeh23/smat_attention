@@ -1,0 +1,7 @@
+{
+  "campaign": "six-500m-20260917-opt-v1",
+  "arm": "gdn-smat-d2",
+  "optimization": "tiled_fp32_v1",
+  "checkpoint_sha256": "9ed70840f3da84ab016b67f029f9c9e6d3cdeb4ac1414c76b002196c1e9a1633",
+  "created": 1789679043.4516525
+}

@@ -1,0 +1,34 @@
+{
+  "split_code": 9001,
+  "examples_per_cell": 10000,
+  "training_manifest_sha256": "c493864e586b38c7758d6d13f89ea4e19abd0de54393c896707476352f3ace56",
+  "evaluation_source_sha256": {
+    "confirm_joint_recall.py": "52296dda0811000ce1630af1bb2869a220c327ab13d42e5095eaa7567b187238",
+    "joint_recall_controls.py": "e37e8f32b326df3cd3b1578352e2c49ab88ea51ff812b9183246c2c461d0f1e8",
+    "audit_joint_recall_confirmation.py": "610d32ac6c5fa1feb1f3bddfda376796b871d7f5c8425da492f87f838cbf7f77",
+    "collect_joint_recall_confirmation.py": "1d3d1823bf5366113c5bc8b9dcd7b8310cfbbd1aa86b65aa4ad861e5813ee434",
+    "run_joint_recall_confirmation_when_ready.py": "de1744923038aac3df9694723d415810a77da84eef8d1dbedf9b7416301ddaf5"
+  },
+  "files": {
+    "fresh-c1-k4-inputs.npy": "1ba0ce34c2ba8cf4d76b95899271c9fa7922d0441ae0f5d4ec8017b2ec2f999a",
+    "fresh-c1-k4-positions.npy": "41305b524599f9760b3c48a40f5827e213782ba4a9972c759a4e12e27e0b602f",
+    "fresh-c1-k4-targets.npy": "2c1d84ad2f04ff756fdc80051343a124ff374d628bcf99d6b7a966887f5eaf9e",
+    "oracles-c1-k4.npz": "79fbbc91ba568087811c4be0646aad1c5a9fd56a786249fcde1957061ab73dae",
+    "fresh-c2-k8-inputs.npy": "52112396754e1df8919af11bd5570a539ddf1829398cd80afca104ce6a604032",
+    "fresh-c2-k8-positions.npy": "d969f0bde533e84fc902a538ee624c99241371c5f1cb96df89b76516fec4fb07",
+    "fresh-c2-k8-targets.npy": "64e683e5b4f75cd6dc992b69aaeafcb9a212034d194f59797c21df02d97d899d",
+    "oracles-c2-k8.npz": "f6767f571bc0ee5c2d99da453f6bf6fe684e4cc0dca0a8c4ebc0fa7a0db7f318",
+    "fresh-c8-k16-inputs.npy": "cf80a8910614832914dad629ee3c205f942bdab39c3f6d1189ca8b3c707923f7",
+    "fresh-c8-k16-positions.npy": "5bb672ae72e09a3ce7368d130fa1feac4d5cdcd2a573af168b6b802caba44cfe",
+    "fresh-c8-k16-targets.npy": "3da61a7e18a4d72fed21adabf6efd0a9c2183cf7417a1fd2b4c164d45cbd5ae6",
+    "oracles-c8-k16.npz": "46de305a33f28b16985f7286d18fc7f7d78af837134e95a44baf7690035e99d3",
+    "fresh-c16-k16-inputs.npy": "e77ca47774df09542ba6b75aa8f2190094f8859f200bd22326332a8c6cfc7a63",
+    "fresh-c16-k16-positions.npy": "46da2b422781c9711028fe1f7bc6cb96926255c222496c7713b753840f9299ae",
+    "fresh-c16-k16-targets.npy": "134817fa7be590c729da0e27966b0f424d14cd5833926580d71e9b7d2b3170c2",
+    "oracles-c16-k16.npz": "f20cf4821577150f512f5d36d7689d83b6384de33a42d52939b42ad130ec11a0",
+    "fresh-c32-k16-inputs.npy": "11d5babf1effec2748a7a71c532c9ed78456028812cf47a42883972f3d103a1f",
+    "fresh-c32-k16-positions.npy": "c5f19b4c2378763b7dc47f5612d6f2117c0fa4e83e147a844654fba3d24eb994",
+    "fresh-c32-k16-targets.npy": "a8703ba1b3060372092aa3148a36d0cc20662f8507454bb17cd12b10ce731eef",
+    "oracles-c32-k16.npz": "0ddc11dd4c9e3a6cf495a432f269cab377e56fd1d2ad6feaebb02aea333a8c7a"
+  }
+}

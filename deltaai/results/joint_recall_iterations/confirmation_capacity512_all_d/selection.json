@@ -1,0 +1,85 @@
+{
+  "source": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source_v5",
+  "dataset_root": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512",
+  "dataset_manifest_sha256": "c493864e586b38c7758d6d13f89ea4e19abd0de54393c896707476352f3ace56",
+  "models": [
+    {
+      "family": "mamba2",
+      "d": 1,
+      "folder": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512/shared-mamba2-d1-w64-s123",
+      "checkpoint_sha256": "3ade77d64a3660509a8236b0b0d8d5f0212c82ed6fd9abf8148a5f7ff0907a04",
+      "recipe_sha256": "afc04629db1cc4e7d9c7a85cf09c003a297bb90865dbb9bc4674b56a847766d5",
+      "training_result_sha256": "fc104a68974fc6944d208614db4c9552c0b6f6d3b79d8759b9cd379a09889376"
+    },
+    {
+      "family": "mamba2",
+      "d": 2,
+      "folder": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512/shared-mamba2-d2-w64-s123",
+      "checkpoint_sha256": "25a0a50cb6885a1eaf5186fef8b3271456fc6ad00cc7fd5244a93083ac37da31",
+      "recipe_sha256": "1edfec4e6b9c2d73e4d749adcec4648724bb4eb0c0bea1b3e16fb5f354f30c4c",
+      "training_result_sha256": "cfa11d16c4b49d356e7cb7d079430019bc875d7654811e26d7a071dccf17a1a4"
+    },
+    {
+      "family": "mamba2",
+      "d": 3,
+      "folder": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512/shared-mamba2-d3-w64-s123",
+      "checkpoint_sha256": "a24b9f06232fb1876a0c53e2ee7ac19c064f77a4120d2a7a44fe2696b3b8d3be",
+      "recipe_sha256": "3e9ddd583c429f53148d01f34c08ad3d7679032522e923b1c31826d5f5c7ecf6",
+      "training_result_sha256": "839f5e45c16ec3405dbb47c3a1010b4acf61f191cb5ed2fc4a6ccc6e30e4e8e3"
+    },
+    {
+      "family": "mamba2",
+      "d": 4,
+      "folder": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512/shared-mamba2-d4-w64-s123",
+      "checkpoint_sha256": "c8c0be153491f87af61e9d3e626d4604ab2dc47c9d03cf8915d18aa05431d7f6",
+      "recipe_sha256": "a65fef1e3c83637c10a5f07f0556fec9eefc5a7f7c2afdbb3bf89a2b021057af",
+      "training_result_sha256": "f52655c3d08f5a6963c44674f587de8efdea180be6d2f86fafb8ca6360b98b46"
+    },
+    {
+      "family": "gdn_current",
+      "d": 1,
+      "folder": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512/shared-gdn_current-d1-w64-s123",
+      "checkpoint_sha256": "63375148a6ac1ce997d5769a82f6d136900f6f8a85362e85d0c2b04e85fc5cf1",
+      "recipe_sha256": "cac5b510ebb81a95b4121f806b59986c30d010bba8dff30c5cc863a3f4403e06",
+      "training_result_sha256": "a7b314312fd52cf4c02a5add0d88745cdfddd46ff38a19a6f96fe33bd1a08597"
+    },
+    {
+      "family": "gdn_current",
+      "d": 2,
+      "folder": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512/shared-gdn_current-d2-w64-s123",
+      "checkpoint_sha256": "9fd725a314d2177a0cc07a384d3c5ae527fa7b2403fcafe18f9c10471e27cb3d",
+      "recipe_sha256": "c0695fed26b02b9e15c57bd5f28ec4ebd82de0973b34565d265d847a19a2a292",
+      "training_result_sha256": "6d582492295a97a9879323f19bf3f410d68d4d4083e5b977ad83802ad5372304"
+    },
+    {
+      "family": "gdn_current",
+      "d": 3,
+      "folder": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512/shared-gdn_current-d3-w64-s123",
+      "checkpoint_sha256": "1494d6ebd9798084b7b213efe315dba46459fa78e1695884508e3f387b02b9f5",
+      "recipe_sha256": "521388679ed52fb5e84130cf871185756dcaf485de392abe0d799b8298645cbb",
+      "training_result_sha256": "5658c19828f5213ec32c3435498e0229db1fe7ad6f1b23ee55ec83e315caee9e"
+    },
+    {
+      "family": "gdn_current",
+      "d": 4,
+      "folder": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512/shared-gdn_current-d4-w64-s123",
+      "checkpoint_sha256": "285ac25a72587d9b8b0b6225d2c5ba447136951dd2552efe09ee4c1e816bd0d4",
+      "recipe_sha256": "987209f606c20561db27c2bafa4745691776137243407a57e1bd8290fa5c78b1",
+      "training_result_sha256": "04f5ee3ccca63df068ec3b178b3ae973660aa31e2d0959b6401fd60fc259cd02"
+    }
+  ],
+  "additional_models": [
+    {
+      "family": "gdn_current",
+      "d": 1,
+      "label": "gdn_current-d1-lr01",
+      "folder": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512_lr01/shared-gdn_current-d1-w64-s123",
+      "checkpoint_sha256": "1c48d594df6310afb8472b0b2974efb9e87e0c9bcf7959ceb1713a9b49ffc81f",
+      "recipe_sha256": "89b2add37ad502ca4ee6611230f718b9e1f60c85aa81420fd5bcafa9d267c521",
+      "training_result_sha256": "091ea047ef17ec4d998d26e6b30a4b8a5a69fdb6feb54146c6119e92709bd205"
+    }
+  ],
+  "selection_rule": "Primary native and all SMat dimensions use LR0.003; also include native GDN LR0.01 because it is stronger at high load. Final-epoch checkpoints, seed123. All dimensions are included regardless of their validation scores. Checkpoint hashes will be locked after all selected runs complete and before any fresh evaluation.",
+  "selection_plan_sha256": "dbc5bc2438f1601ca8a687bd301de5449a85a0bfb79152891672bea023b4028c",
+  "selection_script_sha256": "de1744923038aac3df9694723d415810a77da84eef8d1dbedf9b7416301ddaf5"
+}

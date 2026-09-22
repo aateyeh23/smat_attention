@@ -1,0 +1,26 @@
+{
+  "3": {
+    "status": {
+      "tokens": 17694720,
+      "target_tokens": 2000000000,
+      "step": 135,
+      "elapsed_seconds": 602.70336202,
+      "validation": null,
+      "complete": false,
+      "checkpoint": "latest.pt"
+    },
+    "checkpoint_bytes": 2657455933
+  },
+  "4": {
+    "status": {
+      "tokens": 10747904,
+      "target_tokens": 2000000000,
+      "step": 82,
+      "elapsed_seconds": 605.000391583,
+      "validation": null,
+      "complete": false,
+      "checkpoint": "latest.pt"
+    },
+    "checkpoint_bytes": 3157672189
+  }
+}

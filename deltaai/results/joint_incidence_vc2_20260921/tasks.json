@@ -1,0 +1,41 @@
+[
+  {
+    "name": "random_vc2-t17-s123",
+    "variant": "random_vc2",
+    "topology": 17,
+    "seed": 123,
+    "root": "/u/archerdw/smat_attention/deltaai/results/joint_incidence_vc2_20260921/random_vc2-t17",
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_incidence_vc2_20260921/random_vc2-t17/shared-gdn_current-d3-w64-s123/result.json",
+    "script": "/u/archerdw/smat_attention/deltaai/incidence_vc2/run.py",
+    "args": [
+      "--index",
+      "0"
+    ]
+  },
+  {
+    "name": "random_vc2-t17-s456",
+    "variant": "random_vc2",
+    "topology": 17,
+    "seed": 456,
+    "root": "/u/archerdw/smat_attention/deltaai/results/joint_incidence_vc2_20260921/random_vc2-t17",
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_incidence_vc2_20260921/random_vc2-t17/shared-gdn_current-d3-w64-s456/result.json",
+    "script": "/u/archerdw/smat_attention/deltaai/incidence_vc2/run.py",
+    "args": [
+      "--index",
+      "1"
+    ]
+  },
+  {
+    "name": "random_vc2-t17-s789",
+    "variant": "random_vc2",
+    "topology": 17,
+    "seed": 789,
+    "root": "/u/archerdw/smat_attention/deltaai/results/joint_incidence_vc2_20260921/random_vc2-t17",
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_incidence_vc2_20260921/random_vc2-t17/shared-gdn_current-d3-w64-s789/result.json",
+    "script": "/u/archerdw/smat_attention/deltaai/incidence_vc2/run.py",
+    "args": [
+      "--index",
+      "2"
+    ]
+  }
+]

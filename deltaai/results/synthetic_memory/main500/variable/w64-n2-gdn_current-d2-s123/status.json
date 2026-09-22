@@ -1,0 +1,20 @@
+{
+  "task": "variable",
+  "load": 2,
+  "family": "gdn_current",
+  "d": 2,
+  "width": 64,
+  "seed": 123,
+  "parameters": 62932,
+  "trainable_parameters": 58836,
+  "validation_sha256": "a4d804234a611d42451a70be0188faf78eee502630f2b30503513b8a0db77da7",
+  "sequence_length": 64,
+  "step": 500,
+  "train_loss": 2.407256841659546,
+  "grad_norm": 1.3619589805603027,
+  "lr": 0.0,
+  "elapsed_seconds": 31.260057132225484,
+  "accuracy": 0.142578125,
+  "exact_accuracy": 0.142578125,
+  "eval_loss": 2.527752749621868
+}

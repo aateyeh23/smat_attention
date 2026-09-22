@@ -1,0 +1,52 @@
+[
+  {
+    "family": "mamba2",
+    "backend": "upstream",
+    "checkpoint_steps": 15510,
+    "length": 64,
+    "logit_error": 0.00619294261559844,
+    "gradient_error": 0.013610207475721836,
+    "dense_loss": 0.0019089283887296915,
+    "optimized_loss": 0.0018949314253404737
+  },
+  {
+    "family": "mamba2",
+    "backend": "upstream",
+    "checkpoint_steps": 15510,
+    "length": 100,
+    "logit_error": 0.004023428540676832,
+    "gradient_error": 0.026196248829364777,
+    "dense_loss": 0.05900483950972557,
+    "optimized_loss": 0.05855381488800049
+  },
+  {
+    "family": "mamba2",
+    "backend": "upstream",
+    "checkpoint_steps": 15510,
+    "length": 772,
+    "logit_error": 0.002801144728437066,
+    "gradient_error": 0.024883557111024857,
+    "dense_loss": 1.8543047904968262,
+    "optimized_loss": 1.8545609712600708
+  },
+  {
+    "family": "mamba2",
+    "backend": "upstream",
+    "checkpoint_steps": 15510,
+    "length": 1540,
+    "logit_error": 0.0023462676908820868,
+    "gradient_error": 0.019155513495206833,
+    "dense_loss": 2.295543909072876,
+    "optimized_loss": 2.295546531677246
+  },
+  {
+    "family": "mamba2",
+    "backend": "upstream",
+    "checkpoint_steps": 15510,
+    "length": 3076,
+    "logit_error": 0.002191532403230667,
+    "gradient_error": 0.022441118955612183,
+    "dense_loss": 2.538064479827881,
+    "optimized_loss": 2.538058280944824
+  }
+]

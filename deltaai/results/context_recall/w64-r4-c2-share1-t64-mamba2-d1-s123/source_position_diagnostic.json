@@ -1,0 +1,14 @@
+{
+  "first_half": {
+    "queries": 9641,
+    "accuracy": 0.2556788714863603
+  },
+  "second_half": {
+    "queries": 5810,
+    "accuracy": 0.27917383820998276
+  },
+  "cross_boundary": {
+    "queries": 933,
+    "accuracy": 0.2658092175777063
+  }
+}

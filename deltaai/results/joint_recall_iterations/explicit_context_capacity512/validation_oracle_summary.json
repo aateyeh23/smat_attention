@@ -1,0 +1,38 @@
+{
+  "split": "validation",
+  "dataset_manifest_sha256": "c493864e586b38c7758d6d13f89ea4e19abd0de54393c896707476352f3ace56",
+  "method": "Majority prediction by key alone or context alone; best_single_field chooses the better rule for each entire table.",
+  "independent_counter_checks_passed": true,
+  "cells": [
+    {
+      "cell": "c1-k4",
+      "key_only": 1.0,
+      "context_only": 0.339375,
+      "best_single_field": 1.0
+    },
+    {
+      "cell": "c2-k8",
+      "key_only": 0.53121875,
+      "context_only": 0.25784375,
+      "best_single_field": 0.53121875
+    },
+    {
+      "cell": "c8-k16",
+      "key_only": 0.25835546875,
+      "context_only": 0.192046875,
+      "best_single_field": 0.25838671875
+    },
+    {
+      "cell": "c16-k16",
+      "key_only": 0.191998046875,
+      "context_only": 0.192,
+      "best_single_field": 0.1984140625
+    },
+    {
+      "cell": "c32-k16",
+      "key_only": 0.1507626953125,
+      "context_only": 0.192248046875,
+      "best_single_field": 0.1922490234375
+    }
+  ]
+}

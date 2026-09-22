@@ -1,0 +1,4 @@
+{"epoch": 1, "accuracy": 0.000621875, "baseline": 0.008209375, "margin": -0.0075875, "required": false, "decision": "observe"}
+{"epoch": 2, "accuracy": 0.466690625, "baseline": 0.42054375, "margin": 0.04614687500000003, "required": false, "decision": "observe"}
+{"epoch": 3, "accuracy": 0.561553125, "baseline": 0.572734375, "margin": -0.011181250000000031, "required": false, "decision": "observe"}
+{"epoch": 4, "accuracy": 0.5252, "baseline": 0.6065875, "margin": -0.08138749999999995, "required": true, "decision": "reject"}

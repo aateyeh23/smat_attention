@@ -1,0 +1,17 @@
+{
+  "trial": "08_orthogonal_hash",
+  "created_at": "2026-09-17T06:40:18.094219+00:00",
+  "hypothesis": "Retain trial07 incidence scaling and impose orthogonal hash projection rows with a differentiable Householder parametrization. This prevents coordinate-direction collapse; it does not assume data whitening or promise uniform occupancy.",
+  "sources": {
+    "zoo_gdn_transport.py": "13288359776dbfbfdc142f548e84d1802b4f27fd37a7943f2cacfafccb264199",
+    "content_addr.py": "2d0609e46b5fa8528b165b7a563e8f349bbeb4319c80d32b2ce79459fca2df64",
+    "smat_gdn_transport.py": "1c40aeaab63fe89e1bb83c6cae2e0990ac1b2427c71bfd52326722d871bc30d4",
+    "smat_address_reads.py": "470bae644dc54d94accb9870737a8536eae522d4721581d2881524a3dc40e199",
+    "smat_write_hash_grad.py": "92a3f81025cf5c0bf89956f3b97573bd74aff55d94f91c873d884ef417e3135e",
+    "zoo_gdn_gated_trainer.py": "2f8d28a9da90e21a08df9064df948472575879ba2144a368556faa6c259a340e",
+    "zoo_gdn_iteration_configs.py": "cac3e40aa6c719b102a4cf8cebeca81b2c8afffc1691937431f043951b9bc02e",
+    "test_gdn_iteration_gpu.py": "2741554ca93a8c7d11b1915a76b8c76782ed314d34c90ff836f0abd0a5034164",
+    "modal_gdn_iteration.py": "dbb0b80bf25cc0bfc71da611289cb2a70e1379164c187b83af156ba557e8fbcc",
+    "modal_gdn_transport.py": "a7607e97b22c153f95a8d2b7c091974fd653befbc9326cbf563054edb5c8722c"
+  }
+}

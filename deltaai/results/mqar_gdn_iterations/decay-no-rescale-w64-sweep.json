@@ -1,0 +1,74 @@
+{
+  "status": "complete",
+  "width": 64,
+  "selected_config": "decay_no_rescale",
+  "stop_on_failed_gate": false,
+  "trials": [
+    {
+      "trial": "26_w64_decay_no_rescale_d2",
+      "d": 2,
+      "width": 64,
+      "status": "complete",
+      "launch_dir": "/u/archerdw/smat_attention/deltaai/results/mqar_gdn_iterations/26_w64_decay_no_rescale_d2",
+      "stop_on_failed_gate": false,
+      "app": "ap-TjL2KGt113knGNHidDmg4d",
+      "source_verified": true,
+      "latest_observation": {
+        "epoch": 32,
+        "accuracy": 0.689503125,
+        "baseline": 0.433846875,
+        "margin": 0.25565625,
+        "required": true,
+        "decision": "pass",
+        "complete": true,
+        "trial": "26_w64_decay_no_rescale_d2"
+      },
+      "checkpoint": "/u/archerdw/smat_attention/deltaai/results/mqar_gdn_iterations/26_w64_decay_no_rescale_d2/w64-d2.pt",
+      "app_stopped": true
+    },
+    {
+      "trial": "27_w64_decay_no_rescale_d3",
+      "d": 3,
+      "width": 64,
+      "status": "complete",
+      "launch_dir": "/u/archerdw/smat_attention/deltaai/results/mqar_gdn_iterations/27_w64_decay_no_rescale_d3",
+      "stop_on_failed_gate": false,
+      "app": "ap-2TpkRVg5HzTvwGOpaGj55h",
+      "source_verified": true,
+      "latest_observation": {
+        "epoch": 32,
+        "accuracy": 0.649221875,
+        "baseline": 0.433846875,
+        "margin": 0.21537499999999993,
+        "required": true,
+        "decision": "pass",
+        "complete": true,
+        "trial": "27_w64_decay_no_rescale_d3"
+      },
+      "checkpoint": "/u/archerdw/smat_attention/deltaai/results/mqar_gdn_iterations/27_w64_decay_no_rescale_d3/w64-d3.pt",
+      "app_stopped": true
+    },
+    {
+      "trial": "28_w64_decay_no_rescale_d4",
+      "d": 4,
+      "width": 64,
+      "status": "complete",
+      "launch_dir": "/u/archerdw/smat_attention/deltaai/results/mqar_gdn_iterations/28_w64_decay_no_rescale_d4",
+      "stop_on_failed_gate": false,
+      "app": "ap-YLT4skIzYUwjtJ7JQCa51b",
+      "source_verified": true,
+      "latest_observation": {
+        "epoch": 32,
+        "accuracy": 0.32865,
+        "baseline": 0.433846875,
+        "margin": -0.10519687500000002,
+        "required": true,
+        "decision": "below_baseline",
+        "complete": true,
+        "trial": "28_w64_decay_no_rescale_d4"
+      },
+      "app_stopped": true,
+      "checkpoint": "/u/archerdw/smat_attention/deltaai/results/mqar_gdn_iterations/28_w64_decay_no_rescale_d4/w64-d4.pt"
+    }
+  ]
+}

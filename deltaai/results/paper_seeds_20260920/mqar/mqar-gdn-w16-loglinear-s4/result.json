@@ -1,0 +1,22 @@
+{
+  "name": "mqar-gdn-w16-loglinear-s4",
+  "task": "mqar",
+  "family": "gdn",
+  "width": 16,
+  "d": 0,
+  "seed": 4,
+  "lr": 0.01,
+  "result": "/u/archerdw/smat_attention/deltaai/results/paper_seeds_20260920/mqar/mqar-gdn-w16-loglinear-s4/result.json",
+  "gate": "mqar_loglinear_recipe_verified.json",
+  "next_epoch": 32,
+  "complete": true,
+  "metrics": {
+    "valid/loss": 2.9476258754730225,
+    "valid/accuracy": 0.52751875,
+    "valid/num_kv_pairs/accuracy-4": 0.99475,
+    "valid/num_kv_pairs/accuracy-8": 0.943125,
+    "valid/num_kv_pairs/accuracy-16": 0.567625,
+    "valid/num_kv_pairs/accuracy-32": 0.11121875,
+    "valid/num_kv_pairs/accuracy-64": 0.020875
+  }
+}

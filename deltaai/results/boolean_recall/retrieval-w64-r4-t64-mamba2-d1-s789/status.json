@@ -1,0 +1,20 @@
+{
+  "task": "boolean",
+  "load": 4,
+  "family": "mamba2",
+  "d": 1,
+  "width": 64,
+  "seed": 789,
+  "parameters": 58352,
+  "trainable_parameters": 58352,
+  "validation_sha256": "bdbfebc5c5d9988475f3c51ae533fc54868a3b77d3b6f9e3c0862a167c61bb54",
+  "sequence_length": 64,
+  "step": 500,
+  "train_loss": 0.09806813299655914,
+  "grad_norm": 0.11036616563796997,
+  "lr": 0.0,
+  "elapsed_seconds": 6.322360845049843,
+  "accuracy": 0.86669921875,
+  "exact_accuracy": 0.7412109375,
+  "eval_loss": 0.20607433980330825
+}

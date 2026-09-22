@@ -1,0 +1,20 @@
+{
+  "time": 1789336626.151457,
+  "heads": {
+    "16": 1,
+    "32": 2,
+    "64": 2
+  },
+  "head_dim": 16,
+  "old_jobs": [
+    3144545,
+    3144575,
+    3144734
+  ],
+  "old_results_preserved": true,
+  "first_task": [
+    "interleaved",
+    32,
+    1
+  ]
+}

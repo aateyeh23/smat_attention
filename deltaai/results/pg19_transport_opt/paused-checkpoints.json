@@ -1,0 +1,44 @@
+{
+  "2": {
+    "state": {
+      "state": "paused",
+      "updated": 1789677403.6276643,
+      "arm": "gdn-smat-d2",
+      "tokens": 39452672
+    },
+    "status": {
+      "tokens": 39452672,
+      "target_tokens": 500000000,
+      "step": 301,
+      "elapsed_seconds": 1899.4736453020005,
+      "validation": null,
+      "complete": false,
+      "checkpoint": "latest.pt"
+    },
+    "checkpoint": {
+      "path": "seed123/six-500m-20260917/gdn-smat-d2/latest.pt",
+      "size": 1996593373
+    }
+  },
+  "3": {
+    "state": {
+      "state": "paused",
+      "updated": 1789677388.0644348,
+      "arm": "gdn-smat-d3",
+      "tokens": 34603008
+    },
+    "status": {
+      "tokens": 34603008,
+      "target_tokens": 500000000,
+      "step": 264,
+      "elapsed_seconds": 1923.914567448,
+      "validation": null,
+      "complete": false,
+      "checkpoint": "latest.pt"
+    },
+    "checkpoint": {
+      "path": "seed123/six-500m-20260917/gdn-smat-d3/latest.pt",
+      "size": 2058956477
+    }
+  }
+}

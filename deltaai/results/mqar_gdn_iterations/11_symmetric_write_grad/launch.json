@@ -1,0 +1,19 @@
+{
+  "trial": "11_symmetric_write_grad",
+  "created_at": "2026-09-17T06:54:30.443527+00:00",
+  "hypothesis": "From trial07: preserve the hard forward routing but replace one-sided floor/upper-neighbor write gradients with a symmetric Gaussian surrogate around the current bin center and both neighboring bins. One actual write and four read matrices; extra neighboring bucket-gradient work occurs only in backward. Occupancy loss unchanged.",
+  "sources": {
+    "zoo_gdn_transport.py": "e61a77faa8cc203349c854097dc5cf0d34e9d2b1760a6eb153401c35902f0058",
+    "content_addr.py": "ce7ff86b9951341eb0b07727487301d4e82c0ec8b23a9667ccc90157c73d20a2",
+    "smat_gdn_transport.py": "1c40aeaab63fe89e1bb83c6cae2e0990ac1b2427c71bfd52326722d871bc30d4",
+    "smat_address_reads.py": "c9ddd48140589066e8ce5554dca0629f509c91ae9231f498bc4987f1a7723fd4",
+    "smat_write_hash_grad.py": "92a3f81025cf5c0bf89956f3b97573bd74aff55d94f91c873d884ef417e3135e",
+    "zoo_gdn_gated_trainer.py": "2f8d28a9da90e21a08df9064df948472575879ba2144a368556faa6c259a340e",
+    "zoo_gdn_iteration_configs.py": "cac3e40aa6c719b102a4cf8cebeca81b2c8afffc1691937431f043951b9bc02e",
+    "test_gdn_iteration_gpu.py": "46bad57e941850b210b940eddf6f6c2547cca90e4bbfce0d4c671cf4020ef45a",
+    "test_gdn_transport_gpu.py": "ee0843e68d4dfee9b9d772de888af0c0be492f37177597f038d0862d551a26cc",
+    "modal_gdn_iteration.py": "06e09f9eff4fca5ccb988d8f7ac5e3b36df3787d36b87f3726bc760cb84d6846",
+    "modal_gdn_transport.py": "a7607e97b22c153f95a8d2b7c091974fd653befbc9326cbf563054edb5c8722c"
+  },
+  "app": "ap-qkfsYqYeZRM1bmU9sus5km"
+}

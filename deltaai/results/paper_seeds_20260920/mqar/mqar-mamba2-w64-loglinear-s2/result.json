@@ -1,0 +1,22 @@
+{
+  "name": "mqar-mamba2-w64-loglinear-s2",
+  "task": "mqar",
+  "family": "mamba2",
+  "width": 64,
+  "d": 0,
+  "seed": 2,
+  "lr": 0.01,
+  "result": "/u/archerdw/smat_attention/deltaai/results/paper_seeds_20260920/mqar/mqar-mamba2-w64-loglinear-s2/result.json",
+  "gate": "mqar_loglinear_recipe_verified.json",
+  "next_epoch": 32,
+  "complete": true,
+  "metrics": {
+    "valid/loss": 0.5211735963821411,
+    "valid/accuracy": 0.884021875,
+    "valid/num_kv_pairs/accuracy-4": 0.9985,
+    "valid/num_kv_pairs/accuracy-8": 0.995625,
+    "valid/num_kv_pairs/accuracy-16": 0.9823125,
+    "valid/num_kv_pairs/accuracy-32": 0.89075,
+    "valid/num_kv_pairs/accuracy-64": 0.552921875
+  }
+}

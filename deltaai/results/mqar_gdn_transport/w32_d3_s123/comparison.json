@@ -1,0 +1,35 @@
+[
+  {
+    "model": "GDN",
+    "epoch": 23,
+    "valid/loss": 1.7149654626846313,
+    "valid/accuracy": 0.687109375,
+    "valid/num_kv_pairs/accuracy-4": 1.0,
+    "valid/num_kv_pairs/accuracy-8": 0.99425,
+    "valid/num_kv_pairs/accuracy-16": 0.904,
+    "valid/num_kv_pairs/accuracy-32": 0.4386875,
+    "valid/num_kv_pairs/accuracy-64": 0.098609375
+  },
+  {
+    "model": "Original SMAT d=3",
+    "epoch": 23,
+    "valid/loss": 5.971920013427734,
+    "valid/accuracy": 0.44050625,
+    "valid/num_kv_pairs/accuracy-4": 0.95475,
+    "valid/num_kv_pairs/accuracy-8": 0.738375,
+    "valid/num_kv_pairs/accuracy-16": 0.2900625,
+    "valid/num_kv_pairs/accuracy-32": 0.15915625,
+    "valid/num_kv_pairs/accuracy-64": 0.0601875
+  },
+  {
+    "model": "Transport SMAT d=3",
+    "epoch": 23,
+    "valid/loss": 3.293553352355957,
+    "valid/accuracy": 0.54806875,
+    "valid/num_kv_pairs/accuracy-4": 0.94775,
+    "valid/num_kv_pairs/accuracy-8": 0.9015,
+    "valid/num_kv_pairs/accuracy-16": 0.6548125,
+    "valid/num_kv_pairs/accuracy-32": 0.198875,
+    "valid/num_kv_pairs/accuracy-64": 0.03740625
+  }
+]

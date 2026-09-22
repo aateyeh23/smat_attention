@@ -1,0 +1,78 @@
+[
+  {
+    "name": "explicit_context_capacity512-shared-mamba2-d2-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source_v5/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "mamba2",
+      "--ds",
+      "2",
+      "--lr",
+      "0.003"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512/shared-mamba2-d2-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_capacity512-shared-gdn_current-d2-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source_v5/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "gdn_current",
+      "--ds",
+      "2",
+      "--lr",
+      "0.003"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512/shared-gdn_current-d2-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_capacity512-shared-mamba2-d4-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source_v5/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "mamba2",
+      "--ds",
+      "4",
+      "--lr",
+      "0.003"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512/shared-mamba2-d4-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_capacity512-shared-gdn_current-d4-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source_v5/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "gdn_current",
+      "--ds",
+      "4",
+      "--lr",
+      "0.003"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512/shared-gdn_current-d4-w64-s123/result.json"
+  }
+]

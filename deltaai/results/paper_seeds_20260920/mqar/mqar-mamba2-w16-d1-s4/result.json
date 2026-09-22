@@ -1,0 +1,21 @@
+{
+  "name": "mqar-mamba2-w16-d1-s4",
+  "task": "mqar",
+  "family": "mamba2",
+  "width": 16,
+  "d": 1,
+  "seed": 4,
+  "lr": 0.01,
+  "result": "/u/archerdw/smat_attention/deltaai/results/paper_seeds_20260920/mqar/mqar-mamba2-w16-d1-s4/result.json",
+  "next_epoch": 32,
+  "complete": true,
+  "metrics": {
+    "valid/loss": 3.3136637210845947,
+    "valid/accuracy": 0.447421875,
+    "valid/num_kv_pairs/accuracy-4": 0.84475,
+    "valid/num_kv_pairs/accuracy-8": 0.682,
+    "valid/num_kv_pairs/accuracy-16": 0.45775,
+    "valid/num_kv_pairs/accuracy-32": 0.20075,
+    "valid/num_kv_pairs/accuracy-64": 0.051859375
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "last_check": "2026-09-20T21:41:30.492219+00:00",
+  "interval_minutes": 5,
+  "completed_runs": 10,
+  "requested_runs": 10,
+  "live_jobs": [],
+  "progress": {},
+  "current_failures": [],
+  "status": "stopped_by_user",
+  "stopped_at": "2026-09-20T22:22:11.025688+00:00",
+  "active_workers": 0,
+  "monitor_running": false
+}

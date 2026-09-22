@@ -1,0 +1,14 @@
+{"epoch": 1, "accuracy": 0.00086875, "baseline": 0.008209375, "margin": -0.007340625, "required": false, "decision": "observe"}
+{"epoch": 2, "accuracy": 0.3879375, "baseline": 0.42054375, "margin": -0.03260625, "required": false, "decision": "observe"}
+{"epoch": 3, "accuracy": 0.516478125, "baseline": 0.572734375, "margin": -0.05625625000000001, "required": false, "decision": "observe"}
+{"epoch": 4, "accuracy": 0.640246875, "baseline": 0.6065875, "margin": 0.03365937500000005, "required": true, "decision": "pass"}
+{"epoch": 5, "accuracy": 0.55796875, "baseline": 0.595878125, "margin": -0.03790937500000002, "required": false, "decision": "observe"}
+{"epoch": 6, "accuracy": 0.74135625, "baseline": 0.644825, "margin": 0.09653125000000007, "required": true, "decision": "pass"}
+{"epoch": 7, "accuracy": 0.71334375, "baseline": 0.628634375, "margin": 0.08470937500000009, "required": false, "decision": "observe"}
+{"epoch": 8, "accuracy": 0.748565625, "baseline": 0.6550375, "margin": 0.09352812499999996, "required": true, "decision": "pass"}
+{"epoch": 9, "accuracy": 0.69995, "baseline": 0.64853125, "margin": 0.05141874999999996, "required": false, "decision": "observe"}
+{"epoch": 10, "accuracy": 0.770725, "baseline": 0.661196875, "margin": 0.10952812499999998, "required": true, "decision": "pass"}
+{"epoch": 11, "accuracy": 0.776128125, "baseline": 0.64928125, "margin": 0.12684687499999991, "required": false, "decision": "observe"}
+{"epoch": 12, "accuracy": 0.798996875, "baseline": 0.649225, "margin": 0.149771875, "required": true, "decision": "pass"}
+{"epoch": 13, "accuracy": 0.77891875, "baseline": 0.66449375, "margin": 0.114425, "required": false, "decision": "observe"}
+{"epoch": 14, "accuracy": 0.759159375, "baseline": 0.656484375, "margin": 0.10267499999999996, "required": true, "decision": "pass"}

@@ -1,0 +1,9 @@
+{
+  "stopped_apps": [
+    "ap-pbkOxoqw8yoDSbqg8gmjrf",
+    "ap-viWqCz14SMMTXEBrkPJKZS",
+    "ap-Oiwojk6v4i3gEs9S3e2L7x",
+    "ap-pEYYQpjYfAdLL52lfb5r30"
+  ],
+  "reason": "Implement cached recurrent inference at user request"
+}

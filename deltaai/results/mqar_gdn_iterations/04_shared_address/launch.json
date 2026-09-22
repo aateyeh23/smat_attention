@@ -1,0 +1,18 @@
+{
+  "trial": "04_shared_address",
+  "created_at": "2026-09-17T06:23:42.066876+00:00",
+  "hypothesis": "Score four planes from shared writer/query continuous hash; share hash parameters across lengths. No fixed anchor writes, no scalar transport decay, isolated writer input gradients.",
+  "sources": {
+    "zoo_gdn_transport.py": "d07b0d15ac8dca5691bf8cae8da6187d9d6d51b4c6b91e90dff6a745cfd45fa9",
+    "content_addr.py": "2d0609e46b5fa8528b165b7a563e8f349bbeb4319c80d32b2ce79459fca2df64",
+    "smat_gdn_transport.py": "1c40aeaab63fe89e1bb83c6cae2e0990ac1b2427c71bfd52326722d871bc30d4",
+    "smat_address_reads.py": "470bae644dc54d94accb9870737a8536eae522d4721581d2881524a3dc40e199",
+    "smat_write_hash_grad.py": "92a3f81025cf5c0bf89956f3b97573bd74aff55d94f91c873d884ef417e3135e",
+    "zoo_gdn_gated_trainer.py": "2f8d28a9da90e21a08df9064df948472575879ba2144a368556faa6c259a340e",
+    "zoo_gdn_iteration_configs.py": "cac3e40aa6c719b102a4cf8cebeca81b2c8afffc1691937431f043951b9bc02e",
+    "test_gdn_iteration_gpu.py": "c2a59a20f737949862d9664bc82cd2996b33764a27dc85f5f0e0e6849963603d",
+    "modal_gdn_iteration.py": "99a3ed9d31a084b628928c80282ed52fb59a9f71cceed6c4e5efcb54bc3083e7",
+    "modal_gdn_transport.py": "a7607e97b22c153f95a8d2b7c091974fd653befbc9326cbf563054edb5c8722c"
+  },
+  "app": "ap-y43kd1tjNZiVHUW1bqDN5f"
+}

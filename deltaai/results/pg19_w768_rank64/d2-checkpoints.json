@@ -1,0 +1,16 @@
+[
+  {
+    "family": "gdn",
+    "checkpoint_path": "/seed123/fusedwrite-b2-ac0/gdn-d2/latest.pt",
+    "bytes": 1996593373,
+    "validated": true,
+    "tokens": 524288
+  },
+  {
+    "family": "mamba2",
+    "checkpoint_path": "/seed123/fusedwrite-b2-ac0/mamba2-d2/latest.pt",
+    "bytes": 2123426877,
+    "validated": true,
+    "tokens": 524288
+  }
+]

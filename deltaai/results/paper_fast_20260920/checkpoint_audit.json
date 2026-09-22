@@ -1,0 +1,76 @@
+{
+  "checked_at": "2026-09-20T21:40:28.664588+00:00",
+  "all_passed": true,
+  "checks": [
+    {
+      "name": "joint-fast-loglinear-mamba2-s123",
+      "checkpoint_epoch": 32,
+      "checkpoint_steps": 22560,
+      "checkpoint_cursor": 0,
+      "all_optimizer_steps": 22560
+    },
+    {
+      "name": "joint-fast-loglinear-gdn-s123",
+      "checkpoint_epoch": 32,
+      "checkpoint_steps": 22560,
+      "checkpoint_cursor": 0,
+      "all_optimizer_steps": 22560
+    },
+    {
+      "name": "joint-fast-loglinear-mamba2-s1",
+      "checkpoint_epoch": 32,
+      "checkpoint_steps": 22560,
+      "checkpoint_cursor": 0,
+      "all_optimizer_steps": 22560
+    },
+    {
+      "name": "joint-fast-loglinear-gdn-s1",
+      "checkpoint_epoch": 32,
+      "checkpoint_steps": 22560,
+      "checkpoint_cursor": 0,
+      "all_optimizer_steps": 22560
+    },
+    {
+      "name": "joint-fast-loglinear-mamba2-s2",
+      "checkpoint_epoch": 32,
+      "checkpoint_steps": 22560,
+      "checkpoint_cursor": 0,
+      "all_optimizer_steps": 22560
+    },
+    {
+      "name": "joint-fast-loglinear-gdn-s2",
+      "checkpoint_epoch": 32,
+      "checkpoint_steps": 22560,
+      "checkpoint_cursor": 0,
+      "all_optimizer_steps": 22560
+    },
+    {
+      "name": "joint-fast-loglinear-mamba2-s3",
+      "checkpoint_epoch": 32,
+      "checkpoint_steps": 22560,
+      "checkpoint_cursor": 0,
+      "all_optimizer_steps": 22560
+    },
+    {
+      "name": "joint-fast-loglinear-gdn-s3",
+      "checkpoint_epoch": 32,
+      "checkpoint_steps": 22560,
+      "checkpoint_cursor": 0,
+      "all_optimizer_steps": 22560
+    },
+    {
+      "name": "joint-fast-loglinear-mamba2-s4",
+      "checkpoint_epoch": 32,
+      "checkpoint_steps": 22560,
+      "checkpoint_cursor": 0,
+      "all_optimizer_steps": 22560
+    },
+    {
+      "name": "joint-fast-loglinear-gdn-s4",
+      "checkpoint_epoch": 32,
+      "checkpoint_steps": 22560,
+      "checkpoint_cursor": 0,
+      "all_optimizer_steps": 22560
+    }
+  ]
+}

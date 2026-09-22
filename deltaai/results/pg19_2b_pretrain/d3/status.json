@@ -1,0 +1,14 @@
+{
+  "tokens": 500039680,
+  "target_tokens": 2000000000,
+  "step": 3815,
+  "elapsed_seconds": 8218.491609140001,
+  "validation": {
+    "loss": 3.2691640853881836,
+    "perplexity": 26.289354500258316,
+    "rows": 64,
+    "full": false
+  },
+  "complete": false,
+  "checkpoint": "latest.pt"
+}

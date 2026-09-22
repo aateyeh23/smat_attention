@@ -1,0 +1,64 @@
+{
+  "dense": {
+    "accuracy": 0.0791255859375,
+    "exact_accuracy": 0.0,
+    "cells": {
+      "c1-k4": {
+        "accuracy": 0.11,
+        "exact_accuracy": 0.0,
+        "eval_loss": 2.6451076049804687
+      },
+      "c2-k8": {
+        "accuracy": 0.09,
+        "exact_accuracy": 0.0,
+        "eval_loss": 2.738380401611328
+      },
+      "c8-k16": {
+        "accuracy": 0.06720703125,
+        "exact_accuracy": 0.0,
+        "eval_loss": 2.771493377685547
+      },
+      "c16-k16": {
+        "accuracy": 0.06534375,
+        "exact_accuracy": 0.0,
+        "eval_loss": 2.7727706604003908
+      },
+      "c32-k16": {
+        "accuracy": 0.0630771484375,
+        "exact_accuracy": 0.0,
+        "eval_loss": 2.7732223510742187
+      }
+    }
+  },
+  "tree64": {
+    "accuracy": 0.07916308593750002,
+    "exact_accuracy": 0.0,
+    "cells": {
+      "c1-k4": {
+        "accuracy": 0.11,
+        "exact_accuracy": 0.0,
+        "eval_loss": 2.6451047668457033
+      },
+      "c2-k8": {
+        "accuracy": 0.0900625,
+        "exact_accuracy": 0.0,
+        "eval_loss": 2.7383794860839843
+      },
+      "c8-k16": {
+        "accuracy": 0.067265625,
+        "exact_accuracy": 0.0,
+        "eval_loss": 2.7714964904785155
+      },
+      "c16-k16": {
+        "accuracy": 0.06538671875,
+        "exact_accuracy": 0.0,
+        "eval_loss": 2.7727720642089846
+      },
+      "c32-k16": {
+        "accuracy": 0.0631005859375,
+        "exact_accuracy": 0.0,
+        "eval_loss": 2.7732200622558594
+      }
+    }
+  }
+}

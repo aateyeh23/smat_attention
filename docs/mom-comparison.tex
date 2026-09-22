@@ -1,0 +1,30 @@
+\begin{table}[t]
+\centering
+\begin{tabular}{lc}
+\hline
+Model & Macro accuracy (\%) \\
+\hline
+Plain GDN & $53.80\ (2.86)$ \\
+GDN + SMat ($d=3$) & $\mathbf{58.92\ (4.22)}$ \\
+MoM-derived, profile-count matched & $43.73\ (1.48)$ \\
+MoM-derived, matrix-storage matched & $35.10\ (3.82)$ \\
+\hline
+\end{tabular}
+\caption{Shared-key joint recall: final-test accuracy averaged
+equally over the five evaluated binding loads. Values report
+mean (sample standard deviation). Plain GDN summarizes the
+middle three of five runs ranked by final-test macro accuracy,
+excluding the highest and lowest scores; the remaining models
+summarize all three runs.}
+\label{tab:mom_macro}
+\end{table}
+
+Furthermore, we compare GDN + SMat ($d=3$) with two variants derived
+from Mixture-of-Memories (MoM)~\cite{du2026mom}, both using Gated
+DeltaNet updates, top-4 routing, and no shared memory. At each
+sequence length, the profile-count variant has one independent
+memory matrix per SMat profile, while the matrix-storage variant
+matches the combined FP32 storage of SMat's profile and derived
+summary matrices. All memory matrices are $16 \times 16$.
+We retain the same data splits, model width, layer and head counts,
+and 32-epoch training recipe.

@@ -1,0 +1,205 @@
+{
+  "updated": "2026-09-17T00:08:58.096825+00:00",
+  "runs": [
+    {
+      "family": "gdn",
+      "width": 32,
+      "d": 1,
+      "epoch": 32,
+      "complete": true,
+      "accuracy": 69.86218749999999,
+      "accuracy_64_pairs": 10.223437500000001,
+      "loss": 1.6356865167617798
+    },
+    {
+      "family": "gdn",
+      "width": 32,
+      "d": 2,
+      "epoch": 32,
+      "complete": true,
+      "accuracy": 59.785312499999996,
+      "accuracy_64_pairs": 10.6984375,
+      "loss": 3.6453182697296143
+    },
+    {
+      "family": "gdn",
+      "width": 32,
+      "d": 3,
+      "epoch": 32,
+      "complete": true,
+      "accuracy": 43.566874999999996,
+      "accuracy_64_pairs": 5.137499999999999,
+      "loss": 6.311948299407959
+    },
+    {
+      "family": "gdn",
+      "width": 32,
+      "d": 4,
+      "epoch": 32,
+      "complete": true,
+      "accuracy": 68.0740625,
+      "accuracy_64_pairs": 15.9921875,
+      "loss": 2.098217248916626
+    },
+    {
+      "family": "gdn",
+      "width": 64,
+      "d": 1,
+      "epoch": 32,
+      "complete": true,
+      "accuracy": 43.384687500000005,
+      "accuracy_64_pairs": 1.1609375,
+      "loss": 3.527224063873291
+    },
+    {
+      "family": "gdn",
+      "width": 64,
+      "d": 2,
+      "epoch": 32,
+      "complete": true,
+      "accuracy": 43.9584375,
+      "accuracy_64_pairs": 7.8171875,
+      "loss": 5.187170028686523
+    },
+    {
+      "family": "gdn",
+      "width": 64,
+      "d": 3,
+      "epoch": 32,
+      "complete": true,
+      "accuracy": 40.5021875,
+      "accuracy_64_pairs": 5.301562499999999,
+      "loss": 6.3319292068481445
+    },
+    {
+      "family": "gdn",
+      "width": 64,
+      "d": 4,
+      "epoch": 32,
+      "complete": true,
+      "accuracy": 0.033125,
+      "accuracy_64_pairs": 0.03125,
+      "loss": 8.72161865234375
+    },
+    {
+      "family": "mamba2",
+      "width": 16,
+      "d": 1,
+      "epoch": 32,
+      "complete": true,
+      "accuracy": 42.0275,
+      "accuracy_64_pairs": 3.35,
+      "loss": 3.6362407207489014
+    },
+    {
+      "family": "mamba2",
+      "width": 16,
+      "d": 2,
+      "epoch": 32,
+      "complete": true,
+      "accuracy": 43.116875,
+      "accuracy_64_pairs": 3.41875,
+      "loss": 3.8560774326324463
+    },
+    {
+      "family": "mamba2",
+      "width": 16,
+      "d": 3,
+      "epoch": 32,
+      "complete": true,
+      "accuracy": 59.4746875,
+      "accuracy_64_pairs": 28.1984375,
+      "loss": 2.9542741775512695
+    },
+    {
+      "family": "mamba2",
+      "width": 16,
+      "d": 4,
+      "epoch": 32,
+      "complete": true,
+      "accuracy": 44.666250000000005,
+      "accuracy_64_pairs": 3.94375,
+      "loss": 4.046037197113037
+    },
+    {
+      "family": "mamba2",
+      "width": 32,
+      "d": 1,
+      "epoch": 32,
+      "complete": true,
+      "accuracy": 77.243125,
+      "accuracy_64_pairs": 25.99375,
+      "loss": 1.186577320098877
+    },
+    {
+      "family": "mamba2",
+      "width": 32,
+      "d": 2,
+      "epoch": 32,
+      "complete": true,
+      "accuracy": 75.68468750000001,
+      "accuracy_64_pairs": 39.5984375,
+      "loss": 1.3138456344604492
+    },
+    {
+      "family": "mamba2",
+      "width": 32,
+      "d": 3,
+      "epoch": 32,
+      "complete": true,
+      "accuracy": 83.9890625,
+      "accuracy_64_pairs": 68.1078125,
+      "loss": 1.0876166820526123
+    },
+    {
+      "family": "mamba2",
+      "width": 32,
+      "d": 4,
+      "epoch": 32,
+      "complete": true,
+      "accuracy": 84.218125,
+      "accuracy_64_pairs": 56.32812499999999,
+      "loss": 1.0437532663345337
+    },
+    {
+      "family": "mamba2",
+      "width": 64,
+      "d": 1,
+      "epoch": 32,
+      "complete": true,
+      "accuracy": 83.91999999999999,
+      "accuracy_64_pairs": 44.38125,
+      "loss": 0.7666246891021729
+    },
+    {
+      "family": "mamba2",
+      "width": 64,
+      "d": 2,
+      "epoch": 32,
+      "complete": true,
+      "accuracy": 90.51375,
+      "accuracy_64_pairs": 80.72500000000001,
+      "loss": 0.7203100323677063
+    },
+    {
+      "family": "mamba2",
+      "width": 64,
+      "d": 3,
+      "epoch": 32,
+      "complete": true,
+      "accuracy": 90.0965625,
+      "accuracy_64_pairs": 74.4296875,
+      "loss": 0.7363554239273071
+    },
+    {
+      "family": "mamba2",
+      "width": 64,
+      "d": 4,
+      "epoch": 32,
+      "complete": true,
+      "accuracy": 93.0165625,
+      "accuracy_64_pairs": 85.41093749999999,
+      "loss": 0.6070644855499268
+    }
+  ]
+}

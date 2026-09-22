@@ -1,0 +1,10 @@
+{
+  "epoch": 4,
+  "accuracy": 0.3700125,
+  "baseline": 0.6065875,
+  "margin": -0.23657499999999992,
+  "required": true,
+  "decision": "reject",
+  "complete": true,
+  "trial": "10_address_reader"
+}

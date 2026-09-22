@@ -1,0 +1,25 @@
+{
+  "trial": "18_aligned_profile_delta",
+  "name": "aligned_profile_delta",
+  "kwargs": {
+    "write_hash_neighbor_grad": true,
+    "transport_scalar_decay": false,
+    "detach_write_hash_input": true,
+    "memory_plant": false,
+    "memory_incidence_rescale": true,
+    "transport_tied_features": true,
+    "transport_enabled": false,
+    "profile_delta": true,
+    "memory_read_address": true
+  },
+  "width": 32,
+  "d": 3,
+  "heads": 2,
+  "head_dim": 16,
+  "state_dim": 16,
+  "layers": 2,
+  "seed": 123,
+  "epochs": 32,
+  "learning_rate": 0.01,
+  "gate": "strictly beat baseline at epochs 4,6,8,...,32"
+}

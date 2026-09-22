@@ -1,0 +1,28 @@
+{
+  "trial": "23_decay_no_rescale",
+  "d": 3,
+  "width": 32,
+  "resume_epoch": 14,
+  "created_at": "2026-09-17T16:17:33.618389+00:00",
+  "sources": {
+    "zoo_gdn_transport.py": "cac9f8badc5ac2b1c321572c9e250a4398284fa1a5269442b1b68eb4b65a01ac",
+    "content_addr.py": "4484f8ac62aded52195a05d9f9b3a6a292731749c409806ccd57d95e2b74482f",
+    "smat_gdn_transport.py": "1c40aeaab63fe89e1bb83c6cae2e0990ac1b2427c71bfd52326722d871bc30d4",
+    "smat_address_reads.py": "d05e0138da9c599aafe81fc286962a7dda89eadf4473d4236eb9a3726b1ad0df",
+    "smat_write_hash_grad.py": "44f98f32e6f293fc5f644e37de9441803161644081144d040e82c3f7dd526278",
+    "smat_delta_pool.py": "39dc75d8293117b5b697f81ad9112ab809065a678c0c8f37ec44c6efe7ff605c",
+    "zoo_gdn_gated_trainer.py": "6c65b92165bf07029343f9b0db96d5b82313bb1ec626168affbc6accc44040d3",
+    "zoo_gdn_iteration_configs.py": "12328b1e068a790ce037273e9bbbd110460c1a7e490c017c0e75d892325d89da",
+    "zoo_mqar_resume.py": "85554737b8e00e78b14307b3ca19eb1b4aba8f486609db5f1f8286a8f5ef5079",
+    "audit_gdn_sources.py": "1d1fdb3c0d2fd89ea4c6d7e9ff20382c30b1a977eb097e1a89a8168dca83d12d",
+    "test_gdn_iteration_gpu.py": "6a09de2da169050e3d46c2e6b89bca52c75030c07197920e95d002b70fccac82",
+    "test_gdn_transport_gpu.py": "802fd3803d57b7a2e6553b3eb652900202c411e90f52dee91472f370ceaf7357",
+    "modal_gdn_iteration.py": "47b74fa6c27f1d972736d0cfb7447444b23f806001cc15e6f87d074b748a5e76",
+    "modal_gdn_transport.py": "0d4400ab0ae929c12d45dbb3f5cc2ac79ffd871c3d4b223676594e6f3468f496",
+    "collect_gdn_iteration.py": "036957a8c8b3884b1aafc661687ebfa8a8194f64ff1ac6f62a32cd8d7a5f949d",
+    "zoo_gdn_transport_configs.py": "f77d71650a9afdda4c5fc0112a0c643d4a857d6667a166dae09955bc6ef10a7d",
+    "zoo_gdn_transport_neighbor_configs.py": "155b7495d03a9bf3cccae466e2c12c8a1d0ed946ef5fe5d978b5b09ff81aab88"
+  },
+  "description": "User-requested width32 MQAR sweep: d3 resumes epoch14, d2/d4 train from scratch. Scalar decay enabled, incidence rescaling disabled, neighboring write gradients enabled, detached hash inputs, content-only one write/four weighted reads. Original optimizer and strict baseline gates.",
+  "app": "ap-BXceKBFFvv65yFNxYjR1Ia"
+}

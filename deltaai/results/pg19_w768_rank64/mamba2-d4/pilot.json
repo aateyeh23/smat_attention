@@ -1,0 +1,15 @@
+{
+  "family": "mamba2",
+  "d": 4,
+  "mean_tokens_per_second": 5848.371724751073,
+  "status": {
+    "tokens": 524288,
+    "target_tokens": 2000000000,
+    "step": 4,
+    "elapsed_seconds": 151.507033374,
+    "validation": null,
+    "complete": false,
+    "checkpoint": "latest.pt"
+  },
+  "hours_for_2b": 94.99320181793026
+}

@@ -1,0 +1,10 @@
+{
+  "epoch": 32,
+  "accuracy": 0.649221875,
+  "baseline": 0.433846875,
+  "margin": 0.21537499999999993,
+  "required": true,
+  "decision": "pass",
+  "complete": true,
+  "trial": "27_w64_decay_no_rescale_d3"
+}

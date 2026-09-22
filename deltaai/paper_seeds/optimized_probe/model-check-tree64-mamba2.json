@@ -1,0 +1,52 @@
+[
+  {
+    "family": "mamba2",
+    "backend": "tree64",
+    "checkpoint_steps": 15510,
+    "length": 64,
+    "logit_error": 0.00019542327208910137,
+    "gradient_error": 0.0002462466072756797,
+    "dense_loss": 0.0019089283887296915,
+    "optimized_loss": 0.0019089283887296915
+  },
+  {
+    "family": "mamba2",
+    "backend": "tree64",
+    "checkpoint_steps": 15510,
+    "length": 100,
+    "logit_error": 0.0,
+    "gradient_error": 6.974487041588873e-05,
+    "dense_loss": 0.05900483950972557,
+    "optimized_loss": 0.05900483950972557
+  },
+  {
+    "family": "mamba2",
+    "backend": "tree64",
+    "checkpoint_steps": 15510,
+    "length": 772,
+    "logit_error": 0.0007508358685299754,
+    "gradient_error": 0.008647073060274124,
+    "dense_loss": 1.8543047904968262,
+    "optimized_loss": 1.8542914390563965
+  },
+  {
+    "family": "mamba2",
+    "backend": "tree64",
+    "checkpoint_steps": 15510,
+    "length": 1540,
+    "logit_error": 0.0007005708175711334,
+    "gradient_error": 0.008480452932417393,
+    "dense_loss": 2.295543909072876,
+    "optimized_loss": 2.2955715656280518
+  },
+  {
+    "family": "mamba2",
+    "backend": "tree64",
+    "checkpoint_steps": 15510,
+    "length": 3076,
+    "logit_error": 0.0007082966039888561,
+    "gradient_error": 0.010472806170582771,
+    "dense_loss": 2.538064479827881,
+    "optimized_loss": 2.538245677947998
+  }
+]

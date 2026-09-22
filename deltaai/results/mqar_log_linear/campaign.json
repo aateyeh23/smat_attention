@@ -1,0 +1,45 @@
+{
+  "seed": 123,
+  "runs": [
+    {
+      "family": "gdn",
+      "width": 16,
+      "call_id": "fc-01M2R835WCNCR4S0V6DAVZ5ZS6",
+      "lr": 0.01
+    },
+    {
+      "family": "gdn",
+      "width": 32,
+      "call_id": "fc-01M2R835YMWZNN8HF6E09J6X4T",
+      "lr": 0.01
+    },
+    {
+      "family": "gdn",
+      "width": 64,
+      "call_id": "fc-01M2R8360SKC14CGZYQ793JMFH",
+      "lr": 0.003
+    },
+    {
+      "family": "mamba2",
+      "width": 16,
+      "call_id": "fc-01M2R8363AY9Y5H6N6BGMNTBDQ",
+      "lr": 0.01
+    },
+    {
+      "family": "mamba2",
+      "width": 32,
+      "call_id": "fc-01M2R8365W9VT618FYAZWKM8HW",
+      "lr": 0.01
+    },
+    {
+      "family": "mamba2",
+      "width": 64,
+      "call_id": "fc-01M2R83683EK7Q4Z9956B9DRJK",
+      "lr": 0.01
+    }
+  ],
+  "validation": {
+    "sha256": "dab3543712bef0f5a9b2ed1d8260e02e4f0184a62ae74270a29c95dcd12d127e",
+    "passed": true
+  }
+}

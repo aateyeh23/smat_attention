@@ -1,0 +1,17 @@
+{
+  "app": "ap-7jAvEHP8xk621Fpq5THJSI",
+  "campaign": "six-750m-constant3e-5-20260917",
+  "learning_rate": 3e-05,
+  "lr_schedule": "constant",
+  "starting_tokens": 500006912,
+  "target_tokens": 750000000,
+  "actual_target_tokens": 750010368,
+  "calls": {
+    "gdn-baseline": "fc-01M2S132NAXS6C0EAY8SKPJ5HE",
+    "gdn-smat-d2": "fc-01M2S132YMRYHEG9TFCXAVYFJX",
+    "gdn-smat-d3": "fc-01M2S1337W8KY9K3PRPK2XAH5E",
+    "mamba2-baseline": "fc-01M2S133HA302Q55J2GESE56WH",
+    "mamba2-smat-d2": "fc-01M2S133T8SHV4NB1YAP31JS83",
+    "mamba2-smat-d3": "fc-01M2S134383DB21DTV3367Y6J0"
+  }
+}

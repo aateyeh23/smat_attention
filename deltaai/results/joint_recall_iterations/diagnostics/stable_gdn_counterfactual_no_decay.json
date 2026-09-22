@@ -1,0 +1,121 @@
+{
+  "folder": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_c8_k16_stableinit/shared-gdn_current-d3-w64-s123",
+  "epoch": 32,
+  "steps": 22528,
+  "cell": "c8-k16",
+  "examples": 32,
+  "initialization": false,
+  "counterfactual_disable_scalar_decay": true,
+  "accuracy": 0.055419921875,
+  "method": "GPU diagnostic of stored-value visibility, transport and memory gates.\n\nValue-position scores omit payload information carried at neighboring positions;\nthese are mechanism diagnostics, not a decomposition of prediction accuracy.\n",
+  "rows": [
+    {
+      "module": "backbone.layers.0.mixer",
+      "kind": "gates",
+      "mean_alpha": [
+        0.41949960589408875,
+        0.8341987729072571
+      ],
+      "median_log_scalar_retention": [
+        -19468.412109375,
+        -634.29248046875
+      ],
+      "beta_information_values": [
+        0.921875,
+        0.007781982421875
+      ],
+      "beta_queries": [
+        0.47265625,
+        0.44921875
+      ],
+      "memory_gate": [
+        0.0014760373160243034,
+        0.014191283844411373
+      ],
+      "extra_memory_scalar_decay": false
+    },
+    {
+      "module": "backbone.layers.0.mixer.ca.772.1",
+      "kind": "memory",
+      "heads": 2,
+      "buckets": 121,
+      "q": 11,
+      "mode": "plane",
+      "target_coverage": 0.1929931640625,
+      "uniform_value_coverage": 0.19646453857421875,
+      "target_geometric_share": 0.007720055058598518,
+      "uniform_share": 0.0078125,
+      "target_content_top1": 0.006591796875,
+      "target_absolute_content_top1": 0.007568359375,
+      "target_absolute_combined_top1": 0.0076904296875,
+      "median_absolute_target_score": 0.00021479057613760233,
+      "median_query_norm_by_quartile": [
+        0.14621587097644806,
+        0.12848195433616638,
+        0.11575309187173843,
+        0.10680359601974487
+      ],
+      "median_key_norm_by_quartile": [
+        0.005336854141205549,
+        0.005958030000329018,
+        0.007061546202749014,
+        0.008577484637498856
+      ],
+      "memory_output_rms": 0.14659039676189423
+    },
+    {
+      "module": "backbone.layers.1.mixer",
+      "kind": "gates",
+      "mean_alpha": [
+        0.20500467717647552,
+        0.6310248374938965
+      ],
+      "median_log_scalar_retention": [
+        -5393.306640625,
+        -2094.586181640625
+      ],
+      "beta_information_values": [
+        0.0087890625,
+        0.08154296875
+      ],
+      "beta_queries": [
+        0.8046875,
+        0.1806640625
+      ],
+      "memory_gate": [
+        8.42233348521404e-05,
+        4.392034679767676e-05
+      ],
+      "extra_memory_scalar_decay": false
+    },
+    {
+      "module": "backbone.layers.1.mixer.ca.772.1",
+      "kind": "memory",
+      "heads": 2,
+      "buckets": 121,
+      "q": 11,
+      "mode": "plane",
+      "target_coverage": 0.308837890625,
+      "uniform_value_coverage": 0.3143301010131836,
+      "target_geometric_share": 0.007812207564711571,
+      "uniform_share": 0.0078125,
+      "target_content_top1": 0.0074462890625,
+      "target_absolute_content_top1": 0.007568359375,
+      "target_absolute_combined_top1": 0.0081787109375,
+      "median_absolute_target_score": 2.1928124624537304e-05,
+      "median_query_norm_by_quartile": [
+        0.15865515172481537,
+        0.14669357240200043,
+        0.14306455850601196,
+        0.13990400731563568
+      ],
+      "median_key_norm_by_quartile": [
+        0.0010430606780573726,
+        0.0010445956140756607,
+        0.0014967735623940825,
+        0.0018057810375466943
+      ],
+      "memory_output_rms": 0.1203126385807991
+    }
+  ]
+}

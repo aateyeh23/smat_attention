@@ -1,0 +1,61 @@
+{
+  "complete": false,
+  "jobs": {
+    "single": "3162888",
+    "reserved": [
+      "fourreads",
+      16,
+      2
+    ],
+    "bulk": "3162889",
+    "bulk_tasks": [
+      [
+        "fourreads",
+        16,
+        3
+      ],
+      [
+        "fourreads",
+        16,
+        4
+      ]
+    ],
+    "next_single": "3163054",
+    "next_reserved": [
+      "fourreads",
+      16,
+      2
+    ]
+  },
+  "active_claims": {
+    "fourreads-16-2": {
+      "task": [
+        "fourreads",
+        16,
+        2
+      ],
+      "job": "3162888",
+      "pid": 1960373,
+      "host": "gh036.hsn.cm.delta.internal.ncsa.edu"
+    }
+  },
+  "unfinished": [
+    [
+      "fourreads",
+      16,
+      2
+    ],
+    [
+      "fourreads",
+      16,
+      3
+    ],
+    [
+      "fourreads",
+      16,
+      4
+    ]
+  ],
+  "errors": [],
+  "updated": 1789596964.7229578
+}

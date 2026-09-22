@@ -1,0 +1,24 @@
+/u/archerdw/triton371/triton/language/core.py:2284: UserWarning: tl.make_block_ptr is deprecated. Use TensorDescriptor or tl.make_tensor_descriptor instead.
+  warn("tl.make_block_ptr is deprecated. Use TensorDescriptor or tl.make_tensor_descriptor instead.")
+FORWARD mamba2 64 0.002599234925583005
+CHECK {"family": "mamba2", "length": 64, "forward_error": 0.002599234925583005, "gradient_errors": [0.002668810775503516, 0.0026098687667399645, 0.00312818237580359, 3.4517006497480907e-07, 0.0]}
+FORWARD mamba2 100 0.002937665209174156
+CHECK {"family": "mamba2", "length": 100, "forward_error": 0.002937665209174156, "gradient_errors": [0.0028942504432052374, 0.003089059377089143, 0.00348498928360641, 0.0009029758512042463, 0.000959679193329066]}
+FORWARD mamba2 256 0.0032026281114667654
+CHECK {"family": "mamba2", "length": 256, "forward_error": 0.0032026281114667654, "gradient_errors": [0.003231867915019393, 0.0031986997928470373, 0.0035919100046157837, 0.0010818991577252746, 0.0009481757297180593]}
+FORWARD mamba2 772 0.003369021462276578
+CHECK {"family": "mamba2", "length": 772, "forward_error": 0.003369021462276578, "gradient_errors": [0.003404805902391672, 0.003528342815116048, 0.0038036340847611427, 0.0012928778305649757, 0.001281891716644168]}
+FORWARD mamba2 1540 0.0034522716887295246
+CHECK {"family": "mamba2", "length": 1540, "forward_error": 0.0034522716887295246, "gradient_errors": [0.0034240165259689093, 0.0034903748892247677, 0.0037937078159302473, 0.0013312624068930745, 0.0011768662370741367]}
+FORWARD mamba2 3076 0.0034568868577480316
+CHECK {"family": "mamba2", "length": 3076, "forward_error": 0.0034568868577480316, "gradient_errors": [0.003449474461376667, 0.003496699035167694, 0.003806646913290024, 0.0012944755144417286, 0.001230045803822577]}
+ALL_OPERATOR_CHECKS_PASSED mamba2
+/u/archerdw/triton371/triton/language/core.py:2284: UserWarning: tl.make_block_ptr is deprecated. Use TensorDescriptor or tl.make_tensor_descriptor instead.
+  warn("tl.make_block_ptr is deprecated. Use TensorDescriptor or tl.make_tensor_descriptor instead.")
+FORWARD gdn 64 0.0038672348018735647
+CHECK {"family": "gdn", "length": 64, "forward_error": 0.0038672348018735647, "gradient_errors": [0.004246963188052177, 0.323516845703125, 0.003914451226592064, 0.0023505312856286764, 0.0035344373900443316, 0.4723896086215973]}
+Traceback (most recent call last):
+  File "/u/archerdw/smat_attention/deltaai/paper_seeds/optimized_probe/probe.py", line 37, in <module>
+    assert err < .025 and max(errs) < .06, record
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'family': 'gdn', 'length': 64, 'forward_error': 0.0038672348018735647, 'gradient_errors': [0.004246963188052177, 0.323516845703125, 0.003914451226592064, 0.0023505312856286764, 0.0035344373900443316, 0.4723896086215973]}

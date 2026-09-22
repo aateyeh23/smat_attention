@@ -1,0 +1,6 @@
+{
+  "commit": "3265a5df793e2275ec56bbd9977b4be7993eb5ef",
+  "operator_sha256": "dab3543712bef0f5a9b2ed1d8260e02e4f0184a62ae74270a29c95dcd12d127e",
+  "passed": true,
+  "note": "SCF completed seed-123 artifacts and byte-identical operator/data/interleaving sources"
+}

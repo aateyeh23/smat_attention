@@ -42,3 +42,55 @@ results/**/*.log
 results/**/*.out
 results/**/check_cache/
 results/**/cache-*/
+
+# Legacy experiment folders retained for reproducible source snapshots.
+# The paper itself lives elsewhere; this repo is the code and the numbers.
+paper_drafts/
+
+# Job output.  Machine-generated and regenerated on every run -- but keep
+# logs/README.md, which is the write-up of the three kernel defects the smoke
+# runs caught and is not recoverable from a rerun.
+smat/logs/*.out
+smat/logs/*.log
+slurm-*.out
+smoke-*.out
+
+# The dark-mode rendering of the tracked figures: same panels, same CSVs,
+# regenerated with `plot_smat.py --dark`.
+smat/figs_dark/
+
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# Editor / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# DeltaAI/SCF job logs: verbose per-step output, regenerable; the CSVs in
+# deltaai/results are the record.
+deltaai/logs/**/*.out
+/logs/*.out
+
+# Modal staging bundle duplicates source/dependencies and the cached MQAR data.
+/deltaai/results/mqar_gdn_four_reads/modal_bundle/
+/deltaai/results/pg19_scale_pilot/*.bin
+/deltaai/results/mqar_width_sweeps/**/*.pt
+/deltaai/results/pg19_2b_pretrain/**/*.pt
+/deltaai/results/pg19_2b_pretrain/**/*.partial
+/deltaai/results/mqar_gdn_transport/**/*.pt
+/deltaai/results/mqar_gdn_transport/**/*.partial
+
+# Experiment checkpoints and copied upstream sources stay outside Git.
+/deltaai/results/**/*.pt
+/deltaai/results/**/*.partial
+/deltaai/results/**/*.tar.gz
+/deltaai/results/mqar_log_linear/upstream/
+/deltaai/results/pg19_updated_transport/**/sources/
+
+# Generated compiler caches and per-run synchronization files.
+triton_cache/
+/deltaai/results/**/*.lock

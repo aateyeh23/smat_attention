@@ -1,0 +1,800 @@
+[
+  {
+    "name": "explicit_context_capacity512-shared-mamba2-d3-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source_v5/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "mamba2",
+      "--ds",
+      "3",
+      "--lr",
+      "0.003"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512/shared-mamba2-d3-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_capacity512-shared-gdn_current-d3-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source_v5/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "gdn_current",
+      "--ds",
+      "3",
+      "--lr",
+      "0.003"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512/shared-gdn_current-d3-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_capacity512-shared-mamba2-d1-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source_v5/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "mamba2",
+      "--ds",
+      "1",
+      "--lr",
+      "0.003"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512/shared-mamba2-d1-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_capacity512-shared-gdn_current-d1-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source_v5/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "gdn_current",
+      "--ds",
+      "1",
+      "--lr",
+      "0.003"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512/shared-gdn_current-d1-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_capacity512_lr01-shared-mamba2-d3-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source_v5/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512_lr01",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "mamba2",
+      "--ds",
+      "3",
+      "--lr",
+      "0.01"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512_lr01/shared-mamba2-d3-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_capacity512_lr01-shared-mamba2-d1-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source_v5/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512_lr01",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "mamba2",
+      "--ds",
+      "1",
+      "--lr",
+      "0.01"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512_lr01/shared-mamba2-d1-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_capacity512_lr01-shared-gdn_current-d1-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source_v5/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512_lr01",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "gdn_current",
+      "--ds",
+      "1",
+      "--lr",
+      "0.01"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512_lr01/shared-gdn_current-d1-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_mixed-shared-mamba2-d1-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_mixed",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "mamba2",
+      "--ds",
+      "1"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_mixed/shared-mamba2-d1-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_mixed-shared-mamba2-d3-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_mixed",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "mamba2",
+      "--ds",
+      "3"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_mixed/shared-mamba2-d3-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_mixed_lr003-shared-mamba2-d3-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source_v2/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_mixed_lr003",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "mamba2",
+      "--ds",
+      "3",
+      "--lr",
+      "0.003"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_mixed_lr003/shared-mamba2-d3-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_mixed_lr003-shared-mamba2-d1-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source_v2/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_mixed_lr003",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "mamba2",
+      "--ds",
+      "1",
+      "--lr",
+      "0.003"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_mixed_lr003/shared-mamba2-d1-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_c8_k16_no_scalar_decay-shared-gdn_current-d3-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source_v4/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_c8_k16_no_scalar_decay",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "gdn_current",
+      "--ds",
+      "3",
+      "--gdn-memory-no-scalar-decay"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_c8_k16_no_scalar_decay/shared-gdn_current-d3-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_mixed_no_scalar_decay-shared-gdn_current-d3-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source_v4/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_mixed_no_scalar_decay",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "gdn_current",
+      "--ds",
+      "3",
+      "--gdn-memory-no-scalar-decay"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_mixed_no_scalar_decay/shared-gdn_current-d3-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_c8_k16_stableinit-shared-mamba2-d3-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source_v3/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_c8_k16_stableinit",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "mamba2",
+      "--ds",
+      "3",
+      "--weight-decay",
+      "0"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_c8_k16_stableinit/shared-mamba2-d3-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_c8_k16_stableinit-shared-mamba2-d1-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source_v3/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_c8_k16_stableinit",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "mamba2",
+      "--ds",
+      "1",
+      "--weight-decay",
+      "0"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_c8_k16_stableinit/shared-mamba2-d1-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_mixed_stableinit-shared-gdn_current-d3-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source_v3/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_mixed_stableinit",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "gdn_current",
+      "--ds",
+      "3",
+      "--weight-decay",
+      "0",
+      "--memory-timescale",
+      "3088"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_mixed_stableinit/shared-gdn_current-d3-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_mixed_stableinit-shared-gdn_current-d1-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source_v3/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_mixed_stableinit",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "gdn_current",
+      "--ds",
+      "1",
+      "--weight-decay",
+      "0",
+      "--memory-timescale",
+      "3088"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_mixed_stableinit/shared-gdn_current-d1-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_mixed_lr003-shared-gdn_current-d3-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source_v2/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_mixed_lr003",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "gdn_current",
+      "--ds",
+      "3",
+      "--lr",
+      "0.003"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_mixed_lr003/shared-gdn_current-d3-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_mixed_lr003-shared-gdn_current-d1-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source_v2/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_mixed_lr003",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "gdn_current",
+      "--ds",
+      "1",
+      "--lr",
+      "0.003"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_mixed_lr003/shared-gdn_current-d1-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_c8_k16_stableinit-shared-gdn_current-d3-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source_v3/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_c8_k16_stableinit",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "gdn_current",
+      "--ds",
+      "3",
+      "--weight-decay",
+      "0",
+      "--memory-timescale",
+      "3088"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_c8_k16_stableinit/shared-gdn_current-d3-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_c8_k16_stableinit-shared-gdn_current-d1-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source_v3/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_c8_k16_stableinit",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "gdn_current",
+      "--ds",
+      "1",
+      "--weight-decay",
+      "0",
+      "--memory-timescale",
+      "3088"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_c8_k16_stableinit/shared-gdn_current-d1-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_c8_k16_longinit-shared-gdn_current-d1-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source_v2/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_c8_k16_longinit",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "gdn_current",
+      "--ds",
+      "1",
+      "--memory-timescale",
+      "3088"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_c8_k16_longinit/shared-gdn_current-d1-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_c8_k16_longinit-shared-gdn_current-d3-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source_v2/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_c8_k16_longinit",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "gdn_current",
+      "--ds",
+      "3",
+      "--memory-timescale",
+      "3088"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_c8_k16_longinit/shared-gdn_current-d3-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_mixed-shared-gdn_current-d1-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_mixed",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "gdn_current",
+      "--ds",
+      "1"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_mixed/shared-gdn_current-d1-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_c8_k16-shared-mamba2-d1-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_c8_k16",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "mamba2",
+      "--ds",
+      "1"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_c8_k16/shared-mamba2-d1-w64-s123/result.json"
+  },
+  {
+    "name": "joint_recall-shared-gdn_current-d3-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall/source/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "gdn_current",
+      "--ds",
+      "3"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall/shared-gdn_current-d3-w64-s123/result.json"
+  },
+  {
+    "name": "joint_recall-shared-gdn_current-d1-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall/source/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "gdn_current",
+      "--ds",
+      "1"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall/shared-gdn_current-d1-w64-s123/result.json"
+  },
+  {
+    "name": "joint_recall-shared-mamba2-d3-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall/source/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "mamba2",
+      "--ds",
+      "3"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall/shared-mamba2-d3-w64-s123/result.json"
+  },
+  {
+    "name": "joint_recall-shared-mamba2-d1-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall/source/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "mamba2",
+      "--ds",
+      "1"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall/shared-mamba2-d1-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_c8_k16-shared-gdn_current-d3-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_c8_k16",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "gdn_current",
+      "--ds",
+      "3"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_c8_k16/shared-gdn_current-d3-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_c8_k16-shared-gdn_current-d1-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_c8_k16",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "gdn_current",
+      "--ds",
+      "1"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_c8_k16/shared-gdn_current-d1-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_c8_k16-shared-mamba2-d3-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_c8_k16",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "mamba2",
+      "--ds",
+      "3"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_c8_k16/shared-mamba2-d3-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_mixed-shared-gdn_current-d3-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_mixed",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "gdn_current",
+      "--ds",
+      "3"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_mixed/shared-gdn_current-d3-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_capacity512-shared-mamba2-d2-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source_v5/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "mamba2",
+      "--ds",
+      "2",
+      "--lr",
+      "0.003"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512/shared-mamba2-d2-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_capacity512-shared-gdn_current-d2-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source_v5/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "gdn_current",
+      "--ds",
+      "2",
+      "--lr",
+      "0.003"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512/shared-gdn_current-d2-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_capacity512-shared-mamba2-d4-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source_v5/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "mamba2",
+      "--ds",
+      "4",
+      "--lr",
+      "0.003"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512/shared-mamba2-d4-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_capacity512-shared-gdn_current-d4-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source_v5/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "gdn_current",
+      "--ds",
+      "4",
+      "--lr",
+      "0.003"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512/shared-gdn_current-d4-w64-s123/result.json"
+  },
+  {
+    "name": "joint_recall-unique-gdn_current-d3-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall/source/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall",
+      "--seeds",
+      "123",
+      "--conditions",
+      "unique",
+      "--families",
+      "gdn_current",
+      "--ds",
+      "3"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall/unique-gdn_current-d3-w64-s123/result.json"
+  },
+  {
+    "name": "joint_recall-unique-gdn_current-d1-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall/source/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall",
+      "--seeds",
+      "123",
+      "--conditions",
+      "unique",
+      "--families",
+      "gdn_current",
+      "--ds",
+      "1"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall/unique-gdn_current-d1-w64-s123/result.json"
+  },
+  {
+    "name": "joint_recall-unique-mamba2-d3-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall/source/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall",
+      "--seeds",
+      "123",
+      "--conditions",
+      "unique",
+      "--families",
+      "mamba2",
+      "--ds",
+      "3"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall/unique-mamba2-d3-w64-s123/result.json"
+  },
+  {
+    "name": "joint_recall-unique-mamba2-d1-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall/source/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall",
+      "--seeds",
+      "123",
+      "--conditions",
+      "unique",
+      "--families",
+      "mamba2",
+      "--ds",
+      "1"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall/unique-mamba2-d1-w64-s123/result.json"
+  },
+  {
+    "name": "confirmation_capacity512_all_d",
+    "kind": "confirmation",
+    "script": "/u/archerdw/smat_attention/deltaai/run_joint_recall_confirmation_when_ready.py",
+    "args": [],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/confirmation_capacity512_all_d/result.json"
+  },
+  {
+    "name": "explicit_context_capacity512_lr004-shared-gdn_current-d1-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source_v5/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512_lr004",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "gdn_current",
+      "--ds",
+      "1",
+      "--lr",
+      "0.004"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512_lr004/shared-gdn_current-d1-w64-s123/result.json"
+  },
+  {
+    "name": "explicit_context_capacity512_lr004-shared-gdn_current-d2-w64-s123",
+    "script": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/source_v5/deltaai/joint_recall.py",
+    "args": [
+      "--root",
+      "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512_lr004",
+      "--seeds",
+      "123",
+      "--conditions",
+      "shared",
+      "--families",
+      "gdn_current",
+      "--ds",
+      "2",
+      "--lr",
+      "0.004"
+    ],
+    "result": "/u/archerdw/smat_attention/deltaai/results/joint_recall_iterations/explicit_context_capacity512_lr004/shared-gdn_current-d2-w64-s123/result.json"
+  }
+]

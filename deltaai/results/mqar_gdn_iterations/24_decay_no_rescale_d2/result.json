@@ -1,0 +1,10 @@
+{
+  "epoch": 32,
+  "accuracy": 0.702603125,
+  "baseline": 0.698621875,
+  "margin": 0.003981250000000047,
+  "required": true,
+  "decision": "pass",
+  "complete": true,
+  "trial": "24_decay_no_rescale_d2"
+}

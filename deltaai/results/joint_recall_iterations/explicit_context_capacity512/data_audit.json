@@ -1,0 +1,125 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "cell": "c1-k4",
+      "split": "train",
+      "examples": 36000,
+      "decoded": true,
+      "paired": true,
+      "disjoint": true
+    },
+    {
+      "cell": "c1-k4",
+      "split": "validation",
+      "examples": 2000,
+      "decoded": true,
+      "paired": true,
+      "disjoint": true
+    },
+    {
+      "cell": "c1-k4",
+      "split": "test",
+      "examples": 4000,
+      "decoded": true,
+      "paired": true,
+      "disjoint": true
+    },
+    {
+      "cell": "c2-k8",
+      "split": "train",
+      "examples": 36000,
+      "decoded": true,
+      "paired": true,
+      "disjoint": true
+    },
+    {
+      "cell": "c2-k8",
+      "split": "validation",
+      "examples": 2000,
+      "decoded": true,
+      "paired": true,
+      "disjoint": true
+    },
+    {
+      "cell": "c2-k8",
+      "split": "test",
+      "examples": 4000,
+      "decoded": true,
+      "paired": true,
+      "disjoint": true
+    },
+    {
+      "cell": "c8-k16",
+      "split": "train",
+      "examples": 36000,
+      "decoded": true,
+      "paired": true,
+      "disjoint": true
+    },
+    {
+      "cell": "c8-k16",
+      "split": "validation",
+      "examples": 2000,
+      "decoded": true,
+      "paired": true,
+      "disjoint": true
+    },
+    {
+      "cell": "c8-k16",
+      "split": "test",
+      "examples": 4000,
+      "decoded": true,
+      "paired": true,
+      "disjoint": true
+    },
+    {
+      "cell": "c16-k16",
+      "split": "train",
+      "examples": 36000,
+      "decoded": true,
+      "paired": true,
+      "disjoint": true
+    },
+    {
+      "cell": "c16-k16",
+      "split": "validation",
+      "examples": 2000,
+      "decoded": true,
+      "paired": true,
+      "disjoint": true
+    },
+    {
+      "cell": "c16-k16",
+      "split": "test",
+      "examples": 4000,
+      "decoded": true,
+      "paired": true,
+      "disjoint": true
+    },
+    {
+      "cell": "c32-k16",
+      "split": "train",
+      "examples": 36000,
+      "decoded": true,
+      "paired": true,
+      "disjoint": true
+    },
+    {
+      "cell": "c32-k16",
+      "split": "validation",
+      "examples": 2000,
+      "decoded": true,
+      "paired": true,
+      "disjoint": true
+    },
+    {
+      "cell": "c32-k16",
+      "split": "test",
+      "examples": 4000,
+      "decoded": true,
+      "paired": true,
+      "disjoint": true
+    }
+  ]
+}

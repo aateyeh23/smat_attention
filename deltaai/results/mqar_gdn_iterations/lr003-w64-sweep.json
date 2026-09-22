@@ -1,0 +1,88 @@
+{
+  "status": "running",
+  "width": 64,
+  "learning_rate": 0.003,
+  "epochs": 32,
+  "stop_on_failed_gate": false,
+  "trials": [
+    {
+      "trial": "29_w64_lr003_d4",
+      "width": 64,
+      "d": 4,
+      "baseline": false,
+      "status": "complete",
+      "launch_dir": "/u/archerdw/smat_attention/deltaai/results/mqar_gdn_iterations/29_w64_lr003_d4",
+      "app": "ap-5c0WgR61HftrYTPHPS2sNE",
+      "optimizer_verified": true,
+      "source_verified": true,
+      "latest_observation": {
+        "epoch": 32,
+        "accuracy": 0.8809625,
+        "baseline": 0.433846875,
+        "margin": 0.44711562499999996,
+        "required": true,
+        "decision": "pass"
+      },
+      "checkpoint": "/u/archerdw/smat_attention/deltaai/results/mqar_gdn_iterations/29_w64_lr003_d4/w64-d4.pt"
+    },
+    {
+      "trial": "30_w64_lr003_gdn",
+      "width": 64,
+      "d": 1,
+      "baseline": true,
+      "status": "complete",
+      "launch_dir": "/u/archerdw/smat_attention/deltaai/results/mqar_gdn_iterations/30_w64_lr003_gdn",
+      "app": "ap-XCDedTGY6ZJWn2L8PwQWCU",
+      "optimizer_verified": true,
+      "source_verified": true,
+      "checkpoint": "/u/archerdw/smat_attention/deltaai/results/mqar_gdn_iterations/30_w64_lr003_gdn/w64-d1.pt",
+      "latest_observation": {
+        "epoch": 32,
+        "accuracy": 0.770459375,
+        "baseline": 0.433846875,
+        "margin": 0.3366124999999999,
+        "required": true,
+        "decision": "pass"
+      }
+    },
+    {
+      "trial": "31_w64_lr003_d2",
+      "width": 64,
+      "d": 2,
+      "baseline": false,
+      "status": "running",
+      "launch_dir": "/u/archerdw/smat_attention/deltaai/results/mqar_gdn_iterations/31_w64_lr003_d2",
+      "app": "ap-5YQCgSpyMjnl8APLtPUlIu",
+      "source_verified": true,
+      "optimizer_verified": true,
+      "latest_observation": {
+        "epoch": 31,
+        "accuracy": 0.897128125,
+        "baseline": 0.43310625,
+        "margin": 0.46402187500000003,
+        "required": false,
+        "decision": "observe"
+      }
+    },
+    {
+      "trial": "32_w64_lr003_d3",
+      "width": 64,
+      "d": 3,
+      "baseline": false,
+      "status": "complete",
+      "launch_dir": "/u/archerdw/smat_attention/deltaai/results/mqar_gdn_iterations/32_w64_lr003_d3",
+      "app": "ap-WflCgC20LU2N4dYgrvDOzc",
+      "source_verified": true,
+      "optimizer_verified": true,
+      "latest_observation": {
+        "epoch": 32,
+        "accuracy": 0.826784375,
+        "baseline": 0.433846875,
+        "margin": 0.3929375,
+        "required": true,
+        "decision": "pass"
+      },
+      "checkpoint": "/u/archerdw/smat_attention/deltaai/results/mqar_gdn_iterations/32_w64_lr003_d3/w64-d3.pt"
+    }
+  ]
+}

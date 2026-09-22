@@ -1,0 +1,3 @@
+From trial17: replace categorical read scores with query hyperplane mass under the shared learned writer address map. Keep bucket-local delta updates and their full hard-STE backward, tied causal memory features, separate hashes per length, and incidence scaling. One physical write and four distinct weighted reads. Motivated by the21.84-point epoch4 improvement of profile delta over additive memory, and by the previously untested combination of corrected profile dynamics with aligned reading.
+
+Rejected at epoch4:47.774375% versus60.65875%; -9.515625 percentage points versus trial17. Address-derived reading also regresses with corrected profile-delta writes. Return to the strongest transported architecture and test a standard optimization stabilizer next.

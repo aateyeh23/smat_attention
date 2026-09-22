@@ -1,0 +1,171 @@
+{
+  "operator_checks": [
+    {
+      "family": "mamba2",
+      "length": 64,
+      "relative_forward_error": 0.0016042059287428856,
+      "relative_gradient_errors": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "family": "mamba2",
+      "length": 100,
+      "relative_forward_error": 0.0016897129826247692,
+      "relative_gradient_errors": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "family": "mamba2",
+      "length": 256,
+      "relative_forward_error": 0.0016438415041193366,
+      "relative_gradient_errors": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "family": "mamba2",
+      "length": 772,
+      "relative_forward_error": 0.0016480085905641317,
+      "relative_gradient_errors": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        8.261072714788043e-09
+      ]
+    },
+    {
+      "family": "mamba2",
+      "length": 1540,
+      "relative_forward_error": 0.001652020146138966,
+      "relative_gradient_errors": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "family": "mamba2",
+      "length": 3076,
+      "relative_forward_error": 0.001666059484705329,
+      "relative_gradient_errors": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        5.130206259806869e-10
+      ]
+    },
+    {
+      "family": "gdn",
+      "length": 64,
+      "relative_forward_error": 0.0016547490376979113,
+      "relative_gradient_errors": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "family": "gdn",
+      "length": 100,
+      "relative_forward_error": 0.0016767332563176751,
+      "relative_gradient_errors": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "family": "gdn",
+      "length": 256,
+      "relative_forward_error": 0.001664527808316052,
+      "relative_gradient_errors": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "family": "gdn",
+      "length": 772,
+      "relative_forward_error": 0.0016671629855409265,
+      "relative_gradient_errors": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "family": "gdn",
+      "length": 1540,
+      "relative_forward_error": 0.0016549908323213458,
+      "relative_gradient_errors": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        6.18708142496871e-08,
+        0.0
+      ]
+    },
+    {
+      "family": "gdn",
+      "length": 3076,
+      "relative_forward_error": 0.0016636281507089734,
+      "relative_gradient_errors": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        7.001189032962429e-07,
+        0.0
+      ]
+    }
+  ],
+  "model_checks": [
+    {
+      "family": "mamba2",
+      "seconds_per_step": 6.776985811069608,
+      "peak_memory_gb": 14.805659136,
+      "parameters": 105984,
+      "loss": 6.173842430114746
+    },
+    {
+      "family": "gdn",
+      "seconds_per_step": 14.175286539946683,
+      "peak_memory_gb": 13.817268224,
+      "parameters": 61468,
+      "loss": 6.285238265991211
+    }
+  ],
+  "sha256": "1153102edb21f477673bd66c4cf36a7dcd797d527bb8a82007f282901687346b"
+}

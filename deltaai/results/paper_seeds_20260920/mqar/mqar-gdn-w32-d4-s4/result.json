@@ -1,0 +1,21 @@
+{
+  "name": "mqar-gdn-w32-d4-s4",
+  "task": "mqar",
+  "family": "gdn",
+  "width": 32,
+  "d": 4,
+  "seed": 4,
+  "lr": 0.01,
+  "result": "/u/archerdw/smat_attention/deltaai/results/paper_seeds_20260920/mqar/mqar-gdn-w32-d4-s4/result.json",
+  "next_epoch": 32,
+  "complete": true,
+  "metrics": {
+    "valid/loss": 0.707363486289978,
+    "valid/accuracy": 0.877084375,
+    "valid/num_kv_pairs/accuracy-4": 0.99975,
+    "valid/num_kv_pairs/accuracy-8": 0.99425,
+    "valid/num_kv_pairs/accuracy-16": 0.9060625,
+    "valid/num_kv_pairs/accuracy-32": 0.83390625,
+    "valid/num_kv_pairs/accuracy-64": 0.651453125
+  }
+}
