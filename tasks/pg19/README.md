@@ -10,6 +10,8 @@ Entry points for the `src/smat_lm` models, unchanged from the runs:
   -- the GPU gates each campaign passed before training: kernel outputs and
   gradients against references, causal inference, cached vs full decoding
 - `bench_pg19_{reader,write,transport}.py` -- kernel timing
+- `bench_e2e.py`, `bench_e2e.sbatch` -- end-to-end train / prefill / decode cost of
+  the PG-19 models as configured in the campaign; rows in `results/pg19_e2e_efficiency/`
 
 Configurations of the reported runs are in `results/pg19_six_500m/campaign.json`.
 Some checks assert source hashes under the campaign's container path

@@ -9,3 +9,6 @@ SMAT_CPUS=8
 SMAT_MEM=64G
 SMAT_ENV=                  # command to activate your environment, e.g.
                            # "source ~/venv/bin/activate" or "module load ..."
+SMAT_BENCH_ENV=            # environment for tasks/routing_bench.sbatch and
+                           # tasks/pg19/bench_e2e.sbatch: torch, fla, causal_conv1d
+                           # and mamba_ssm as in the PG-19 campaign image
