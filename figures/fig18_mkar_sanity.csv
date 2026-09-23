@@ -1,0 +1,433 @@
+arm,run,k,seed,step,loss,exact_support
+Softmax,mkar_softmax_d2_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,2000,0.377749502658844,0.0
+Softmax,mkar_softmax_d2_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,4000,0.3776021599769592,0.0
+Softmax,mkar_softmax_d2_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,6000,0.3775261044502258,0.0
+Softmax,mkar_softmax_d2_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,8000,0.0008100389968603,0.99951171875
+Softmax,mkar_softmax_d2_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,10000,9.337742812931538e-05,1.0
+Softmax,mkar_softmax_d2_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,12000,2.810015030263457e-05,1.0
+Softmax,mkar_softmax_d2_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,2000,0.3792934119701385,0.0
+Softmax,mkar_softmax_d2_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,4000,0.3772459626197815,0.0
+Softmax,mkar_softmax_d2_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,6000,0.3759913444519043,0.0
+Softmax,mkar_softmax_d2_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,8000,0.3770982027053833,0.0
+Softmax,mkar_softmax_d2_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,10000,0.376492440700531,0.0
+Softmax,mkar_softmax_d2_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,12000,0.2855938971042633,0.07861328125
+Softmax,mkar_softmax_d2_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,2000,0.3767522871494293,0.0
+Softmax,mkar_softmax_d2_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,4000,0.3767057657241821,0.0
+Softmax,mkar_softmax_d2_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,6000,0.3772432506084442,0.0
+Softmax,mkar_softmax_d2_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,8000,0.3766493201255798,0.0
+Softmax,mkar_softmax_d2_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,10000,0.3768934905529022,0.0
+Softmax,mkar_softmax_d2_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,12000,0.2049009799957275,0.25
+Linear baselines (6 models),mkar_deltanet_d2_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,2000,0.37773597240448,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,4000,0.3775779008865356,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,6000,0.3774935007095337,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,8000,0.3764289021492004,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,10000,0.3767728209495544,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,12000,0.3767124712467193,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,2000,0.3789822161197662,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,4000,0.3773000836372375,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,6000,0.3760860860347748,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,8000,0.3770712018013,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,10000,0.3764244616031647,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,12000,0.3777193427085876,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,2000,0.3768536150455475,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,4000,0.3765008449554443,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,6000,0.3772252798080444,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,8000,0.3764877021312713,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,10000,0.376833438873291,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,12000,0.377204030752182,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,2000,0.378062754869461,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,4000,0.3777293562889099,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,6000,0.3777184784412384,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,8000,0.3763805627822876,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,10000,0.3767646849155426,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,12000,0.3766988515853882,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,2000,0.3790100216865539,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,4000,0.3771837949752807,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,6000,0.3760747015476227,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,8000,0.3769605159759521,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,10000,0.3764284253120422,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,12000,0.3777700662612915,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,2000,0.3768059611320495,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,4000,0.3764732480049133,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,6000,0.3771207332611084,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,8000,0.3765385448932647,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,10000,0.3768771290779114,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,12000,0.3771750330924988,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,2000,0.3778084218502044,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,4000,0.3775591254234314,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,6000,0.3775140643119812,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,8000,0.376424103975296,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,10000,0.376751184463501,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,12000,0.3767191469669342,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,2000,0.3786514103412628,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,4000,0.377204418182373,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,6000,0.3760133385658264,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,8000,0.3770823776721954,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,10000,0.3764978945255279,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,12000,0.3776655495166778,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,2000,0.3769861161708832,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,4000,0.3765051960945129,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,6000,0.3772664070129394,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,8000,0.3764786124229431,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,10000,0.3768796324729919,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,12000,0.3771587312221527,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,2000,0.37774658203125,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,4000,0.3775786161422729,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,6000,0.3776508569717407,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,8000,0.3764370679855346,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,10000,0.3767488896846771,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,12000,0.3767005205154419,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,2000,0.3794432580471039,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,4000,0.3771253228187561,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,6000,0.3759443759918213,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,8000,0.3771748542785644,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,10000,0.3764727711677551,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,12000,0.3778688907623291,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,2000,0.3768038153648376,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,4000,0.3764680624008178,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,6000,0.3771930932998657,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,8000,0.3765571415424347,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,10000,0.3768685460090637,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,12000,0.3771899938583374,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,2000,0.3777587413787842,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,4000,0.3776093423366546,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,6000,0.3775298595428467,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,8000,0.3765512406826019,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,10000,0.3768128454685211,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,12000,0.3766842484474182,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s0_sc3_id_fair2_mem1472,1,0,2000,0.3777608275413513,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s0_sc3_id_fair2_mem1472,1,0,4000,0.3776103258132934,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s0_sc3_id_fair2_mem1472,1,0,6000,0.3775305151939392,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s0_sc3_id_fair2_mem1472,1,0,8000,0.3765512108802795,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s0_sc3_id_fair2_mem1472,1,0,10000,0.3768126368522644,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s0_sc3_id_fair2_mem1472,1,0,12000,0.376684308052063,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,2000,0.379283994436264,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,4000,0.3772439956665039,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,6000,0.375994473695755,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,8000,0.3770932555198669,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,10000,0.3764882087707519,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,12000,0.3778363466262817,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s1_sc3_id_fair2_mem1472,1,1,2000,0.3792836666107178,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s1_sc3_id_fair2_mem1472,1,1,4000,0.3772453367710113,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s1_sc3_id_fair2_mem1472,1,1,6000,0.3759949207305908,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s1_sc3_id_fair2_mem1472,1,1,8000,0.377092957496643,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s1_sc3_id_fair2_mem1472,1,1,10000,0.3764887750148773,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s1_sc3_id_fair2_mem1472,1,1,12000,0.3778360486030578,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,2000,0.3767520785331726,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,4000,0.3767000436782837,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,6000,0.3772378265857696,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,8000,0.3766535520553589,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,10000,0.376899242401123,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,12000,0.3771767020225525,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s2_sc3_id_fair2_mem1472,1,2,2000,0.3767526149749756,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s2_sc3_id_fair2_mem1472,1,2,4000,0.3767001926898956,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s2_sc3_id_fair2_mem1472,1,2,6000,0.3772382736206054,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s2_sc3_id_fair2_mem1472,1,2,8000,0.3766541182994842,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s2_sc3_id_fair2_mem1472,1,2,10000,0.3768998980522156,0.0
+Linear baselines (6 models),mkar_smat_d1_k1_plane_oracle_T1024_s2_sc3_id_fair2_mem1472,1,2,12000,0.3771765828132629,0.0
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,2000,0.0009578720782883,0.99951171875
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,4000,0.0001525269617559,1.0
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,6000,5.931618215981871e-05,1.0
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,8000,2.3143682483350855e-05,1.0
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,10000,2.6102750780410133e-05,1.0
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k1_plane_oracle_T1024_s0_sc3_id_fair2,1,0,12000,7.924802048364654e-05,0.99951171875
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,2000,0.0008978457190096,0.9990234375
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,4000,0.0005965157761238,0.9990234375
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,6000,0.0001326522033195,1.0
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,8000,3.0372926630661823e-05,1.0
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,10000,1.5715686458861455e-05,1.0
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k1_plane_oracle_T1024_s1_sc3_id_fair2,1,1,12000,1.5661786164855585e-05,1.0
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,2000,0.0012548615923151,0.99951171875
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,4000,0.0001918479829328,1.0
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,6000,4.994495611754246e-05,1.0
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,8000,2.9822833312209696e-05,1.0
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,10000,3.242629099986516e-05,1.0
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k1_plane_oracle_T1024_s2_sc3_id_fair2,1,2,12000,2.099400808219798e-05,1.0
+Softmax,mkar_softmax_d2_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,2000,0.5632805228233337,0.0
+Softmax,mkar_softmax_d2_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,4000,0.5629310011863708,0.0
+Softmax,mkar_softmax_d2_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,6000,0.5615707039833069,0.0
+Softmax,mkar_softmax_d2_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,8000,0.0011918547097593,0.9990234375
+Softmax,mkar_softmax_d2_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,10000,0.0002893717610277,0.99951171875
+Softmax,mkar_softmax_d2_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,12000,9.190222044708209e-05,0.99853515625
+Softmax,mkar_softmax_d2_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,2000,0.5628821849822998,0.0
+Softmax,mkar_softmax_d2_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,4000,0.5634922981262207,0.0
+Softmax,mkar_softmax_d2_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,6000,0.5628397464752197,0.0
+Softmax,mkar_softmax_d2_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,8000,0.5620547533035278,0.0
+Softmax,mkar_softmax_d2_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,10000,0.5621724128723145,0.0
+Softmax,mkar_softmax_d2_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,12000,0.5625507235527039,0.0
+Softmax,mkar_softmax_d2_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,2000,0.5631585121154785,0.0
+Softmax,mkar_softmax_d2_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,4000,0.5621819496154785,0.0
+Softmax,mkar_softmax_d2_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,6000,0.4023072421550751,0.00048828125
+Softmax,mkar_softmax_d2_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,8000,0.000542679335922,0.9990234375
+Softmax,mkar_softmax_d2_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,10000,0.0005740897613577,0.99658203125
+Softmax,mkar_softmax_d2_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,12000,0.000650065136142,0.99951171875
+Linear baselines (6 models),mkar_deltanet_d2_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,2000,0.5629777312278748,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,4000,0.562942624092102,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,6000,0.5615565776824951,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,8000,0.5627539753913879,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,10000,0.5626125335693359,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,12000,0.561190128326416,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,2000,0.5631099939346313,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,4000,0.5634893774986267,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,6000,0.563056230545044,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,8000,0.561800479888916,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,10000,0.5621867179870605,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,12000,0.5624884366989136,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,2000,0.5628626346588135,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,4000,0.5618672370910645,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,6000,0.5629870891571045,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,8000,0.5624077916145325,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,10000,0.5618113875389099,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,12000,0.5625811815261841,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,2000,0.5632038712501526,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,4000,0.5628604888916016,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,6000,0.5614961385726929,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,8000,0.5627386569976807,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,10000,0.562437891960144,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,12000,0.5612505674362183,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,2000,0.5632343888282776,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,4000,0.563515841960907,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,6000,0.5631533861160278,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,8000,0.5620088577270508,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,10000,0.562213122844696,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,12000,0.5625476837158203,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,2000,0.5632420778274536,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,4000,0.562049150466919,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,6000,0.562783420085907,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,8000,0.5624271631240845,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,10000,0.5618300437927246,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,12000,0.5626243352890015,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,2000,0.5631942749023438,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,4000,0.5629500150680542,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,6000,0.5615434646606445,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,8000,0.5628220438957214,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,10000,0.562545895576477,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,12000,0.5612179636955261,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,2000,0.5635717511177063,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,4000,0.563424825668335,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,6000,0.5630947351455688,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,8000,0.5618575811386108,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,10000,0.5623457431793213,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,12000,0.5625908374786377,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,2000,0.5628582835197449,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,4000,0.5619287490844727,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,6000,0.5630342364311218,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,8000,0.5625669956207275,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,10000,0.5617130398750305,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,12000,0.5626376867294312,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,2000,0.563301682472229,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,4000,0.5633015036582947,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,6000,0.5615580081939697,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,8000,0.5627262592315674,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,10000,0.5625965595245361,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,12000,0.5611398220062256,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,2000,0.5629663467407227,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,4000,0.5633504390716553,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,6000,0.5630297660827637,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,8000,0.5619382858276367,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,10000,0.5621967315673828,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,12000,0.5625929832458496,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,2000,0.5627570748329163,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,4000,0.5620396137237549,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,6000,0.5628368854522705,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,8000,0.5624203681945801,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,10000,0.5618051290512085,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,12000,0.5625782012939453,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,2000,0.5632867217063904,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,4000,0.5629431009292603,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,6000,0.5615718364715576,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,8000,0.56263267993927,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,10000,0.5624905228614807,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,12000,0.5612084865570068,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s0_sc3_id_fair2_mem1472,2,0,2000,0.5632879137992859,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s0_sc3_id_fair2_mem1472,2,0,4000,0.5629469156265259,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s0_sc3_id_fair2_mem1472,2,0,6000,0.5615718364715576,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s0_sc3_id_fair2_mem1472,2,0,8000,0.5626316070556641,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s0_sc3_id_fair2_mem1472,2,0,10000,0.5624925494194031,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s0_sc3_id_fair2_mem1472,2,0,12000,0.5612070560455322,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,2000,0.5628600120544434,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,4000,0.5634914636611938,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,6000,0.5628509521484375,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,8000,0.5620594620704651,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,10000,0.5621740818023682,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,12000,0.562552809715271,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s1_sc3_id_fair2_mem1472,2,1,2000,0.5628553032875061,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s1_sc3_id_fair2_mem1472,2,1,4000,0.5634907484054565,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s1_sc3_id_fair2_mem1472,2,1,6000,0.562850832939148,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s1_sc3_id_fair2_mem1472,2,1,8000,0.5620602369308472,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s1_sc3_id_fair2_mem1472,2,1,10000,0.5621751546859741,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s1_sc3_id_fair2_mem1472,2,1,12000,0.5625542402267456,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,2000,0.5631566643714905,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,4000,0.5621828436851501,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,6000,0.5628966689109802,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,8000,0.5625234842300415,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,10000,0.5617557764053345,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,12000,0.5625825524330139,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s2_sc3_id_fair2_mem1472,2,2,2000,0.5631552934646606,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s2_sc3_id_fair2_mem1472,2,2,4000,0.5621862411499023,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s2_sc3_id_fair2_mem1472,2,2,6000,0.562894344329834,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s2_sc3_id_fair2_mem1472,2,2,8000,0.562522292137146,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s2_sc3_id_fair2_mem1472,2,2,10000,0.561755895614624,0.0
+Linear baselines (6 models),mkar_smat_d1_k2_plane_oracle_T1024_s2_sc3_id_fair2_mem1472,2,2,12000,0.5625845193862915,0.0
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,2000,0.0103766852989792,0.9765625
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,4000,0.0066827335394918,0.98974609375
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,6000,0.0032945191487669,0.994140625
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,8000,0.0014292107662186,0.99609375
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,10000,0.0008524932200089,0.99365234375
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k2_plane_oracle_T1024_s0_sc3_id_fair2,2,0,12000,0.0002829009899869,0.99951171875
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,2000,0.0114498492330312,0.98193359375
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,4000,0.0115238716825842,0.986328125
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,6000,0.0035403687506914,0.99267578125
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,8000,0.0004699576238635,0.9990234375
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,10000,0.0003129674005322,0.9970703125
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k2_plane_oracle_T1024_s1_sc3_id_fair2,2,1,12000,0.0003824442974291,0.9990234375
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,2000,0.0052552106790244,0.990234375
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,4000,0.0018324584234505,0.99365234375
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,6000,0.0051039280369877,0.99267578125
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,8000,0.0002661190810613,0.99853515625
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,10000,0.0016436412697657,0.99658203125
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k2_plane_oracle_T1024_s2_sc3_id_fair2,2,2,12000,0.0005951960920356,0.9990234375
+Softmax,mkar_softmax_d2_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,2000,0.6616235971450806,0.0
+Softmax,mkar_softmax_d2_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,4000,0.6620879173278809,0.0
+Softmax,mkar_softmax_d2_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,6000,0.6616240739822388,0.0
+Softmax,mkar_softmax_d2_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,8000,0.643584132194519,0.0
+Softmax,mkar_softmax_d2_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,10000,0.0040347124449908,0.99755859375
+Softmax,mkar_softmax_d2_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,12000,0.0003630368446465,0.9990234375
+Softmax,mkar_softmax_d2_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,2000,0.6630085706710815,0.0
+Softmax,mkar_softmax_d2_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,4000,0.6612451076507568,0.0
+Softmax,mkar_softmax_d2_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,6000,0.6610982418060303,0.0
+Softmax,mkar_softmax_d2_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,8000,0.6620622873306274,0.0
+Softmax,mkar_softmax_d2_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,10000,0.6613602042198181,0.0
+Softmax,mkar_softmax_d2_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,12000,0.6617175340652466,0.0
+Softmax,mkar_softmax_d2_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,2000,0.662788987159729,0.0
+Softmax,mkar_softmax_d2_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,4000,0.6617171764373779,0.0
+Softmax,mkar_softmax_d2_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,6000,0.6621207594871521,0.0
+Softmax,mkar_softmax_d2_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,8000,0.0033346135169267,0.99462890625
+Softmax,mkar_softmax_d2_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,10000,0.0007080000359565,0.9990234375
+Softmax,mkar_softmax_d2_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,12000,0.0013907643733546,0.99462890625
+Linear baselines (6 models),mkar_deltanet_d2_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,2000,0.6620468497276306,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,4000,0.6620495915412903,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,6000,0.6617172956466675,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,8000,0.6618963479995728,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,10000,0.66175776720047,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,12000,0.661273181438446,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,2000,0.6624142527580261,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,4000,0.6614307165145874,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,6000,0.661024808883667,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,8000,0.6620957851409912,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,10000,0.6613736152648926,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,12000,0.6616556644439697,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,2000,0.6623440980911255,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,4000,0.6612805724143982,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,6000,0.662034273147583,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,8000,0.6624953746795654,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,10000,0.6623064279556274,0.0
+Linear baselines (6 models),mkar_deltanet_d2_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,12000,0.6613166928291321,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,2000,0.6619881391525269,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,4000,0.6624337434768677,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,6000,0.6618769764900208,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,8000,0.6617941856384277,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,10000,0.6618042588233948,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,12000,0.6612581610679626,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,2000,0.6643664836883545,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,4000,0.6601091623306274,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,6000,0.6607569456100464,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,8000,0.662193775177002,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,10000,0.6613794565200806,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,12000,0.6616348028182983,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,2000,0.6652098894119263,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,4000,0.6625093817710876,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,6000,0.6620869636535645,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,8000,0.6625509262084961,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,10000,0.662300705909729,0.0
+Linear baselines (6 models),mkar_gated_deltanet_d2_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,12000,0.6613184213638306,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,2000,0.6621670722961426,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,4000,0.661996603012085,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,6000,0.6617065072059631,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,8000,0.661888599395752,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,10000,0.6617063283920288,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,12000,0.6612862944602966,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,2000,0.6626894474029541,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,4000,0.6612721681594849,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,6000,0.6609326004981995,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,8000,0.6621079444885254,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,10000,0.6613627672195435,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,12000,0.6617497205734253,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,2000,0.6622439026832581,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,4000,0.6612858176231384,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,6000,0.6620215177536011,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,8000,0.6626929044723511,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,10000,0.6623879075050354,0.0
+Linear baselines (6 models),mkar_loglinear_d2_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,12000,0.6612224578857422,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,2000,0.6618639230728149,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,4000,0.6626884937286377,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,6000,0.6617940664291382,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,8000,0.6618094444274902,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,10000,0.6618211269378662,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,12000,0.6612934470176697,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,2000,0.6649271249771118,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,4000,0.6603307127952576,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,6000,0.6609083414077759,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,8000,0.662171483039856,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,10000,0.6613892316818237,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,12000,0.6616599559783936,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,2000,0.6635748744010925,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,4000,0.661594033241272,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,6000,0.6620532870292664,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,8000,0.6625162363052368,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,10000,0.6621936559677124,0.0
+Linear baselines (6 models),mkar_mamba2_d2_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,12000,0.6613028049468994,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,2000,0.661612868309021,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,4000,0.6620898246765137,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,6000,0.6616067290306091,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,8000,0.6618382334709167,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,10000,0.661773145198822,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,12000,0.6612951159477234,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s0_sc3_id_fair2_mem1472,3,0,2000,0.6616072058677673,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s0_sc3_id_fair2_mem1472,3,0,4000,0.662095308303833,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s0_sc3_id_fair2_mem1472,3,0,6000,0.6616055965423584,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s0_sc3_id_fair2_mem1472,3,0,8000,0.6618355512619019,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s0_sc3_id_fair2_mem1472,3,0,10000,0.6617742776870728,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s0_sc3_id_fair2_mem1472,3,0,12000,0.6612941026687622,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,2000,0.6629997491836548,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,4000,0.6612384915351868,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,6000,0.6610945463180542,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,8000,0.662078857421875,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,10000,0.6613679528236389,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,12000,0.6617124080657959,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s1_sc3_id_fair2_mem1472,3,1,2000,0.6630136370658875,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s1_sc3_id_fair2_mem1472,3,1,4000,0.6612336039543152,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s1_sc3_id_fair2_mem1472,3,1,6000,0.6610954999923706,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s1_sc3_id_fair2_mem1472,3,1,8000,0.6620821952819824,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s1_sc3_id_fair2_mem1472,3,1,10000,0.6613684296607971,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s1_sc3_id_fair2_mem1472,3,1,12000,0.661712646484375,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,2000,0.6628293395042419,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,4000,0.661756157875061,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,6000,0.662136435508728,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,8000,0.6626042723655701,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,10000,0.6624118089675903,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,12000,0.6611579060554504,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s2_sc3_id_fair2_mem1472,3,2,2000,0.6628445386886597,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s2_sc3_id_fair2_mem1472,3,2,4000,0.6617627739906311,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s2_sc3_id_fair2_mem1472,3,2,6000,0.662141740322113,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s2_sc3_id_fair2_mem1472,3,2,8000,0.6626037359237671,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s2_sc3_id_fair2_mem1472,3,2,10000,0.6624135971069336,0.0
+Linear baselines (6 models),mkar_smat_d1_k3_plane_oracle_T1024_s2_sc3_id_fair2_mem1472,3,2,12000,0.6611559391021729,0.0
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,2000,0.0057682022452354,0.98193359375
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,4000,0.0070698894560337,0.990234375
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,6000,0.0070057399570941,0.99560546875
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,8000,0.0057503534480929,0.9912109375
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,10000,0.0081895049661397,0.99072265625
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k3_plane_oracle_T1024_s0_sc3_id_fair2,3,0,12000,0.0030662065837532,0.98974609375
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,2000,0.0187855903059244,0.98193359375
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,4000,0.0054420325905084,0.98291015625
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,6000,0.005774101242423,0.98681640625
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,8000,0.0035090383607894,0.9912109375
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,10000,0.0017419620417058,0.99609375
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k3_plane_oracle_T1024_s1_sc3_id_fair2,3,1,12000,0.0133412694558501,0.990234375
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,2000,0.0085887368768453,0.9892578125
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,4000,0.0028957580216228,0.9892578125
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,6000,0.0089376075193285,0.9951171875
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,8000,0.0015248160343617,0.9921875
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,10000,0.0016972138546407,0.99267578125
+SMat $d=4$ (rule-chosen directions),mkar_smat_d4_k3_plane_oracle_T1024_s2_sc3_id_fair2,3,2,12000,0.0021184764336794,0.98974609375
