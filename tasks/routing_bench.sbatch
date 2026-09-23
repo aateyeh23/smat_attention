@@ -6,7 +6,7 @@
 #SBATCH -o logs/smat-routing-bench-%j.out
 # End-to-end cost of the d-Subset Routing models (tasks/routing_bench.py).
 #
-#   sbatch ... tasks/routing_bench.sbatch smoke|train|prefill|decode|all [rows.jsonl]
+#   sbatch ... tasks/routing_bench.sbatch smoke|train|prefill|decode|all|extra-smoke|extra [rows.jsonl]
 set -uo pipefail
 cd "${SLURM_SUBMIT_DIR:-.}"
 [ -f experiments/site.conf ] && . experiments/site.conf
@@ -29,6 +29,16 @@ case "$MODE" in
            run --mode train   --T 1024 4096 16384 65536
            run --mode prefill --T 1024 4096 16384 65536 262144
            run --mode decode  --T 1024 4096 16384 65536 262144 --nb 1 64 ;;
+  extra-smoke|extra)
+           # arms added after the first sweep: gated SMat, optimized-kernel baselines, upstream Log-Linear
+           NEW="smat-gated mamba2-fast deltanet-fast gated_deltanet-fast loglinear-upstream"
+           if [ "$MODE" = extra-smoke ]; then
+             for m in train prefill decode; do run --mode $m --arms $NEW --T 1024 4096 --warmup 1 --steps 2 --decode-steps 8; done
+           else
+             run --mode train   --arms $NEW --T 1024 4096 16384 65536
+             run --mode prefill --arms $NEW --T 1024 4096 16384 65536 262144
+             run --mode decode  --arms $NEW --T 1024 4096 16384 65536 262144 --nb 1 64
+           fi ;;
   *) echo "unknown mode $MODE" >&2; exit 2 ;;
 esac
 echo "BENCH $MODE DONE"

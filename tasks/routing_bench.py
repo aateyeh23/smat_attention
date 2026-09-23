@@ -44,29 +44,167 @@ from torch.nn.attention import SDPBackend, sdpa_kernel
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
-for p in (ROOT / 'src', HERE):
+for p in (ROOT / 'src', HERE, ROOT / 'src' / 'smat_lm', ROOT / 'third_party' / 'log_linear'):
     if str(p) not in sys.path:
         sys.path.insert(0, str(p))
 
 from smat.mask import build_mask, d_max_geometric                     # noqa: E402
-from smat.attention import featurise, smat_attention, to_device, SmatDecoder  # noqa: E402
-from smat.mixers.recurrent import mamba2_loop, delta_loop, gated_delta_loop  # noqa: E402
+from smat.attention import (featurise, smat_attention, to_device, SmatDecoder,  # noqa: E402
+                            pool_profiles, apply_incidence, query_by_type)
+from smat.model import decayed_segmented_scan                          # noqa: E402
+from smat.mixers.recurrent import (mamba2_loop, delta_loop, gated_delta_loop,  # noqa: E402
+                                   mamba2_chunked, delta_chunked, gated_delta_chunked,
+                                   LogLinearGate, Mamba2Gate)
 from routing_ceiling import row_support_size                           # noqa: E402
 from routing_train import Router                                       # noqa: E402
 
 BASELINES = ('softmax', 'mamba2', 'deltanet', 'gated_deltanet', 'loglinear')
+# The same models with their recurrence on an optimized kernel: the reference
+# forms above are what trained the table, not what a practitioner would run.
+FAST = ('mamba2-fast', 'deltanet-fast', 'gated_deltanet-fast', 'loglinear-upstream')
 K = 4                                   # marked positions; cost does not depend on it
 
 
 def arms_for(T, chunk, ds):
     dmax = d_max_geometric(T, chunk=chunk)
-    return [('smat', d) for d in ds if d <= dmax] + [(a, 0) for a in BASELINES]
+    smat = [(a, d) for d in ds if d <= dmax for a in ('smat', 'smat-gated')]
+    return smat + [(a, 0) for a in BASELINES + FAST]
+
+
+def loglinear_kernel(q, k, v, g, lam):
+    """Upstream WEAK Log-Linear, Mamba-2 structure (third_party/log_linear).  Inputs
+    B,T,H,D; g B,T,H; lam B,T,H,L.  Pads the length to a multiple of 64 (causal,
+    so harmless) and never touches the feature width."""
+    import upstream_adapter as ua
+    length, dtype = v.shape[1], v.dtype
+    v = v.to(q.dtype)
+    pad = (-length) % 64
+    lam = lam[..., :((length + pad - 1).bit_length() + 1)]
+    q, k, v = (F.pad(x, (0, 0, 0, 0, 0, pad)) for x in (q, k, v))
+    g, lam = F.pad(g, (0, 0, 0, pad)), F.pad(lam, (0, 0, 0, 0, 0, pad))
+    out = ua.hattention_kernel(q=q.contiguous(), k=k.contiguous(), v=v.contiguous(), b=None,
+                               g=g.contiguous().float(), l=lam.to(q.dtype).contiguous(), scale=None,
+                               head_first=False, level_base=2, htype=ua.HType.WEAK,
+                               hstruct=ua.HStruct.MAMBA2, use_qk_l2norm_in_kernel=False)
+    return out[:, :length].to(dtype).contiguous()
+
+
+class FastRouter(Router):
+    """The table's Router with its recurrence on an optimized kernel.  Weights,
+    gates and readout are the reference arm's; ``Router.forward`` on the same
+    object is the reference computation, which ``ref_rel_err`` compares against.
+    ``loglinear-upstream`` keeps the per-level lambda gate but uses the upstream
+    WEAK levels (bit_length(t xor s)), which split the diagonal block of the
+    repo's Fenwick levels; it is compared with the dense WEAK reference instead."""
+
+    def __init__(self, T, k, *, kind, **kw):
+        base = 'softmax' if kind == 'loglinear-upstream' else kind.removesuffix('-fast')
+        super().__init__(T, k, arm=base, **kw)
+        self.kind, self.kdtype = kind, None
+        if kind == 'loglinear-upstream':
+            self.gate = LogLinearGate(self.pos.embedding_dim, T)
+
+    def mix(self, X, Q, K, V):
+        cast = (lambda t: t.to(self.kdtype)) if self.kdtype else (lambda t: t)
+        if self.kind == 'mamba2-fast':
+            from mamba_ssm.ops.triton.ssd_combined import mamba_chunk_scan_combined
+            _, dt = self.gate(X)
+            A = -self.gate.A_log.exp()
+            o = mamba_chunk_scan_combined(cast(V).unsqueeze(2), dt.unsqueeze(-1), A,
+                                          cast(K).unsqueeze(2), cast(Q).unsqueeze(2), chunk_size=128)
+        elif self.kind == 'deltanet-fast':
+            from fla.ops.delta_rule import chunk_delta_rule
+            o, _ = chunk_delta_rule(cast(Q).unsqueeze(2), cast(F.normalize(K, dim=-1)).unsqueeze(2),
+                                    cast(V).unsqueeze(2), self.gate(X).unsqueeze(2), scale=1.0)
+        elif self.kind == 'gated_deltanet-fast':
+            from fla.ops.gated_delta_rule import chunk_gated_delta_rule
+            logA, beta = self.gate(X)
+            o, _ = chunk_gated_delta_rule(cast(Q).unsqueeze(2), cast(F.normalize(K, dim=-1)).unsqueeze(2),
+                                          cast(V).unsqueeze(2), g=logA.unsqueeze(2),
+                                          beta=beta.unsqueeze(2), scale=1.0)
+        else:
+            nb, T = X.shape[:2]
+            o = loglinear_kernel(cast(Q).unsqueeze(2), cast(K).unsqueeze(2), cast(V).unsqueeze(2),
+                                 torch.zeros(nb, T, 1, device=X.device), self.gate(X).unsqueeze(2))
+        return o.squeeze(2).float()
+
+    def forward(self, pay, rows, bits, nu):
+        nb, T, _ = pay.shape
+        X = self.pos(torch.arange(T, device=pay.device)).unsqueeze(0) + self.pay_in(pay)
+        o = self.mix(X, self.Wq(X), self.Wk(X), self.Wv(X))
+        return self.Wo(o[torch.arange(nb, device=pay.device), rows])
+
+
+def check_fast(model, device):
+    """Relative error of the optimized kernel against the reference computation."""
+    torch.manual_seed(1)
+    with torch.no_grad():
+        if model.kind == 'loglinear-upstream':
+            from zoo_log_linear import log_linear as dense_weak
+            b, t, dk = 2, 256, model.Wq.out_features
+            q, k, v = (torch.randn(b, t, 1, dk, device=device) * .3 for _ in range(3))
+            lam = torch.rand(b, t, 1, (t - 1).bit_length() + 1, device=device)
+            g = torch.zeros(b, t, 1, device=device)
+            ref = dense_weak(q, k, v, g, lam)
+            got = loglinear_kernel(q.to(model.kdtype or q.dtype), k.to(model.kdtype or k.dtype),
+                                   v.to(model.kdtype or v.dtype), g, lam).float()
+        else:
+            T = 1024
+            X = torch.randn(2, T, model.pos.embedding_dim, device=device) * .5
+            Q, K, V = model.Wq(X), model.Wk(X), model.Wv(X)
+            got = model.mix(X, Q, K, V)
+            if model.kind == 'mamba2-fast':
+                ref = mamba2_chunked(Q, K, V, *model.gate(X), chunk=128)
+            elif model.kind == 'deltanet-fast':
+                ref = delta_chunked(Q, K, V, model.gate(X), chunk=128)
+            else:
+                ref = gated_delta_chunked(Q, K, V, *model.gate(X), chunk=128)
+        return float(((got - ref).norm() / ref.norm().clamp_min(1e-30)).item())
+
+
+class GatedSmatRouter(Router):
+    """Section 3's gated mask, as src/smat/model.py's Attention(decay="mamba2")
+    computes it and the multi-key recall table ran it: the causal blocks decay
+    with a Mamba-2 gate (a_t = exp(-dt_t A), writes scaled by dt_t, reset at n),
+    the long-range incidence block is ungated, and one division normalises both.
+    The routing table trained ungated SMat, so this arm measures cost only."""
+
+    def __init__(self, T, k, **kw):
+        super().__init__(T, k, arm='smat', **kw)
+        self.arm = 'smat-gated'
+        self.gate = Mamba2Gate(self.pos.embedding_dim)
+
+    def outputs(self, X, nu):
+        Phi, Psi, Vb = featurise(self.Wq(X), self.Wk(X), self.Wv(X), self.phi)
+        logA, dt = self.gate(X)
+        n, T = self.spec.n, X.shape[1]
+        H = decayed_segmented_scan(Phi, Psi * dt.unsqueeze(-1), Vb, logA, n=n, chunk=self.chunk)
+        if n < T:
+            U = apply_incidence(pool_profiles(Psi, Vb, self.spec, acc_dtype=torch.float32, backend='torch'),
+                                self.spec, backend='torch')
+            H = torch.cat([H[:, :n], H[:, n:] + query_by_type(Phi[:, n:], U, self.spec)], dim=1)
+        return H[..., :-1] / H[..., -1:].clamp_min(1e-6) * nu.view(1, T, 1)
+
+    def forward(self, pay, rows, bits, nu):
+        nb, T, _ = pay.shape
+        X = self.pos(torch.arange(T, device=pay.device)).unsqueeze(0) + self.pay_in(pay)
+        return self.Wo(self.outputs(X, nu)[torch.arange(nb, device=pay.device), rows])
 
 
 def make(arm, d, T, nb, chunk, device):
-    spec = to_device(build_mask(T, d, chunk=chunk), device) if arm == 'smat' else None
+    spec = to_device(build_mask(T, d, chunk=chunk), device) if arm.startswith('smat') else None
     torch.manual_seed(0)
-    model = Router(T, K, arm=arm, spec=spec, device=device, seed=0).to(device)
+    if arm == 'smat-gated':
+        model = GatedSmatRouter(T, K, spec=spec, device=device, seed=0).to(device)
+    elif arm in FAST:
+        model = FastRouter(T, K, kind=arm, spec=spec, device=device, seed=0).to(device)
+        try:                                    # fp32 as trained, if the kernel takes it
+            model.ref_rel_err = check_fast(model, device)
+        except Exception as e:
+            model.kdtype, model.fp32_error = torch.bfloat16, f'{type(e).__name__}: {e}'[:200]
+            model.ref_rel_err = check_fast(model, device)
+    else:
+        model = Router(T, K, arm=arm, spec=spec, device=device, seed=0).to(device)
     nu = (torch.as_tensor(row_support_size(spec), device=device, dtype=torch.float32)
           if spec is not None else torch.ones(T, device=device))
     lo = spec.n if spec is not None else 0
@@ -139,7 +277,7 @@ class Stepper:
         nb, T, _ = pay.shape
         dev = pay.device
         dq, dv = model.Wq.out_features, model.Wv.out_features
-        if model.arm == 'smat':
+        if model.arm in ('smat', 'smat-gated'):
             X = model.pos(torch.arange(n, device=dev)).unsqueeze(0) + model.pay_in(pay[:, :n])
             _, Psi, Vb = featurise(model.Wq(X), model.Wk(X), model.Wv(X), model.phi)
             self.dec = SmatDecoder(Psi, Vb, spec, acc_dtype=torch.float32)
@@ -163,6 +301,16 @@ class Stepper:
         if m.arm == 'smat':
             Phi, Psi, Vb = featurise(q, k, v, m.phi)
             o = self.dec.step(Phi, Psi, Vb) * self.nu[t]
+        elif m.arm == 'smat-gated':
+            # S_t = a_t S_{t-1} + dt_t psi_t vb_t^T in the recent segment; the
+            # distant block reaches the query ungated, through its type summary
+            Phi, Psi, Vb = featurise(q, k, v, m.phi)
+            logA, dt = m.gate(x)
+            d = self.dec
+            d.S.mul_(logA.exp()[:, None, None]).add_((dt[:, None] * Psi).unsqueeze(-1) * Vb.unsqueeze(-2))
+            h = (Phi.unsqueeze(-2) @ (d.S + d.U[:, d.i % self.spec.B])).squeeze(-2)
+            d.i += 1
+            o = h[..., :-1] / h[..., -1:].clamp_min(1e-6) * self.nu[t]
         elif m.arm == 'softmax':
             self.K[:, 0, t], self.V[:, 0, t] = k, v
             with sdpa_kernel([SDPBackend.EFFICIENT_ATTENTION, SDPBackend.MATH]):
@@ -196,7 +344,10 @@ def check_stepper(model, spec, nu, pay):
     m, nb, T = model, pay.shape[0], pay.shape[1]
     X = m.pos(torch.arange(T, device=pay.device)).unsqueeze(0) + m.pay_in(pay)
     Q, Kk, V = m.Wq(X), m.Wk(X), m.Wv(X)
-    if m.arm == 'smat':
+    if m.arm == 'smat-gated':
+        n, steps = spec.n, min(64, T - spec.n)
+        ref = m.outputs(X, nu)[:, n:n + steps]
+    elif m.arm == 'smat':
         n, steps = spec.n, min(64, T - spec.n)
         Phi, Psi, Vb = featurise(Q, Kk, V, m.phi)
         ref = smat_attention(Phi, Psi, Vb, spec, chunk=128, acc_dtype=torch.float32,
@@ -272,8 +423,8 @@ def main():
         for arm, d in arms_for(T, args.chunk, args.d):
             if args.arms and arm not in args.arms:
                 continue
-            if args.mode == 'decode' and arm == 'loglinear':
-                continue
+            if args.mode == 'decode' and (arm == 'loglinear' or arm in FAST):
+                continue        # fast arms decode with the same one-step recurrences
             if arm == 'loglinear' and T > 16384:
                 # fenwick_levels materialises a (T, T) int64 table in a python loop
                 row = dict(arm=arm, d=0, T=T, nb=args.nb[0], mode=args.mode, fp='fp32', **prov,
@@ -291,6 +442,10 @@ def main():
                     try:
                         model, spec, nu, batch = make(arm, d, T, nb, args.chunk, dev)
                         row['params'] = sum(p.numel() for p in model.parameters())
+                        if arm in FAST:
+                            row.update(ref_rel_err=model.ref_rel_err,
+                                       kernel_dtype=str(model.kdtype or torch.float32).replace('torch.', ''),
+                                       fp32_error=getattr(model, 'fp32_error', None))
                         if spec is not None:
                             row.update(q=int(spec.q), B=int(spec.B), N0=int(spec.N0), n=int(spec.n))
                         if args.mode == 'train':
