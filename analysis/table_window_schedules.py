@@ -1,68 +1,81 @@
-"""Tables for the boundary-schedule study (tasks/window_schedules.py).
+"""Tables of the stepped-window appendix (tasks/window_schedules.py), as the paper prints them.
 
   python analysis/table_window_schedules.py [results/window_schedules]
+
+  tab:mqar-uniform  MQAR accuracy (%) by evaluation length, uniform layout
+  tab:mqar-placed   MQAR accuracy (%) by gap D at evaluation length 8192, placed
+                    layout, and the share of query rows whose pair region is
+                    read through G
+  tab:pg19          PG-19 bits per byte by position within a 16384-byte window
+
+MQAR is the hard variant (64 pairs over a noise vocabulary, every key twice):
+mqar_hard.csv holds seeds 0 and 1, mqar_hard_s2.csv seed 2.  PG-19 seed 0 is in
+pg19.csv and seeds 1 and 2 in pg19_s{1,2}*.csv, one file per schedule.  Every
+cell is mean (sample std) over the three seeds.
 """
+import glob
 import os
 import sys
 
 import pandas as pd
 
 root = sys.argv[1] if len(sys.argv) > 1 else "results/window_schedules"
-ORDER = ["none", "half", "half_oracle", "win4", "win8", "dbl"]
-
-
 KEYS = ["task", "sched", "trained", "seed", "T_eval", "layout", "D", "pos_lo"]
+ROWS = [("none", "No long-range branch"),
+        ("half", "Boundary kept, current"),
+        ("half_oracle", "Rebuilt, current"),
+        ("dbl", "Doubling"),
+        ("win8", r"Window, $c_{dc}=T_{\max}/8$"),
+        ("win4", r"Window, $c_{dc}=T_{\max}/4$")]
 
 
-def order(df, col="sched"):
-    df = df.copy()
-    keys = [k for k in KEYS if k in df.columns]
-    df = df.drop_duplicates(subset=keys, keep="last")      # preempted jobs restart and re-append
-    df[col] = pd.Categorical(df[col], ORDER, ordered=True)
-    return df
+def load(*patterns):
+    fs = [f for p in patterns for f in sorted(glob.glob(os.path.join(root, p)))]
+    d = pd.concat([pd.read_csv(f) for f in fs])
+    # preempted jobs restart and re-append, so the last row of a key is the final one
+    return d.drop_duplicates(subset=[k for k in KEYS if k in d.columns], keep="last")
 
 
-mq = os.path.join(root, "mqar.csv")
-if os.path.exists(mq):
-    d = order(pd.read_csv(mq))
-    d["acc"] *= 100
-    print("\n## MQAR, uniform layout: accuracy (%) by evaluation length, mean (sd) over seeds")
-    u = d[d.layout == "uniform"].groupby(["sched", "T_eval"], observed=True)["acc"].agg(["mean", "std", "count"])
-    print(u.apply(lambda r: f"{r['mean']:.1f} ({0 if pd.isna(r['std']) else r['std']:.1f}) n={int(r['count'])}", axis=1)
-          .unstack("T_eval").to_string())
-    print("\n## MQAR, placed layout: accuracy (%) by evaluation length and pair distance D (mean over seeds)")
-    p = d[d.layout == "placed"].groupby(["T_eval", "D", "sched"], observed=True)["acc"].mean().unstack("sched")
-    print(p.round(1).to_string())
-    print("\n## share of query rows for which the whole pair region is behind the boundary (read through G)")
-    g = d[d.layout == "placed"].groupby(["T_eval", "D", "sched"], observed=True)["pairs_in_G"].mean().unstack("sched")
-    print(g.round(2).to_string())
-    print("\ntraining:", d.groupby("trained", observed=False)[["steps", "train_sec"]].mean().round(0).to_string())
+def cell(v, fmt):
+    return f"{v.mean():{fmt}} ({v.std():{fmt}})"
 
-pg = os.path.join(root, "pg19.csv")
-if os.path.exists(pg):
-    d = order(pd.read_csv(pg))
-    T = int(d.T_train.iloc[0])
-    ranges = [(0, T // 2), (T // 2, T), (T, 2 * T), (2 * T, 4 * T), (4 * T, 8 * T)]
-    rows = []
-    for (sc, Te, seed), g in d.groupby(["sched", "T_eval", "seed"], observed=True):
-        r = {"sched": sc, "T_eval": Te, "seed": seed}
-        for a, b in ranges:
-            s = g[(g.pos_lo >= a) & (g.pos_hi <= b)]
-            if len(s):
-                r[f"[{a},{b})"] = (s.bpb * (s.pos_hi - s.pos_lo)).sum() / (s.pos_hi - s.pos_lo).sum()
-        rows.append(r)
-    t = pd.DataFrame(rows)
-    print("\n## PG-19 bytes: bits per byte by position range")
-    print(t.round(4).to_string(index=False))
-    # the bins just before and after each block boundary show the cost of a reset
-    print("\n## PG-19 bytes: bits per byte in the bin before vs after each multiple of T/8 (reset bumps)")
-    bw = int(d.pos_hi.iloc[0] - d.pos_lo.iloc[0])
-    for (sc, Te), g in d.groupby(["sched", "T_eval"], observed=True):
-        g = g.groupby("pos_lo")["bpb"].mean()
-        step = T // 8
-        diffs = []
-        for x in range(2 * step, int(Te), step):
-            if x - bw in g.index and x in g.index:
-                diffs.append(g[x] - g[x - bw])
-        if diffs:
-            print(f"{sc:12s} T_eval={Te}: mean jump {sum(diffs) / len(diffs):+.4f} bpb over {len(diffs)} boundaries")
+
+def table(header, lines):
+    print(" & ".join(header) + r" \\")
+    for name, cells in lines:
+        print(name + " & " + " & ".join(cells) + r" \\")
+    print()
+
+
+mq = load("mqar_hard*.csv")
+mq["acc"] *= 100
+
+print("% tab:mqar-uniform")
+u = mq[mq.layout == "uniform"]
+Ts = (1024, 2048, 4096, 8192)
+table(["Schedule", *map(str, Ts)],
+      [(n, [cell(u[(u.sched == s) & (u.T_eval == T)].acc, ".1f") for T in Ts]) for s, n in ROWS])
+
+print("% tab:mqar-placed")
+p = mq[(mq.layout == "placed") & (mq.T_eval == 8192)]
+Ds = (0, 256, 1024, 3072, 7678)
+table(["Schedule", *(f"$D={D}$" for D in Ds)],
+      [(n, [cell(p[(p.sched == s) & (p.D == D)].acc, ".1f") for D in Ds]) for s, n in ROWS])
+table(["Share read through $G$", *(f"$D={D}$" for D in Ds)],
+      [(n, [f"{p[(p.sched == s) & (p.D == D)].pairs_in_G.mean():.2f}" for D in Ds])
+       for s, n in (("half", "Fixed boundary / doubling"), ("win4", r"Window, $c_{dc}=T_{\max}/4$"))])
+
+print("% tab:pg19")
+pg = load("pg19.csv", "pg19_s*.csv")
+pg = pg[pg.T_eval == 16384]
+bins = [(0, 1024), (2048, 4096), (4096, 8192), (8192, 16384)]
+rows = []
+for (s, seed), g in pg.groupby(["sched", "seed"]):
+    r = {"sched": s, "seed": seed}
+    for a, b in bins:
+        x = g[(g.pos_lo >= a) & (g.pos_hi <= b)]
+        r[(a, b)] = (x.bpb * (x.pos_hi - x.pos_lo)).sum() / (x.pos_hi - x.pos_lo).sum()
+    rows.append(r)
+t = pd.DataFrame(rows)
+table(["Schedule", *(f"$[{a},{b})$" for a, b in bins)],
+      [(n, [cell(t[t.sched == s][c], ".3f") for c in bins]) for s, n in ROWS])

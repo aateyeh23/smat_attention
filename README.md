@@ -20,34 +20,34 @@ src/smat/          the library
   assign.py        how tokens map to profiles and types -- positional, content
                    hashed, or a closed-form rule
   vc.py            exact VC / pseudo-dimension by branch and bound
-  model.py         the byte-level LM the synthetic tasks train inside
-  kernels/         fused Triton paths (tile, incidence, pool); torch fallbacks
-  mixers/          SMat as a Zoology / GDN sequence mixer, and the recurrent
-                   baselines it is compared against
-src/smat_lm/       the learned-routing models behind the recall and PG-19 results:
+  model.py         the model the subset-routing and multi-key tasks train
+  kernels/         fused Triton forward/backward paths; torch fallbacks
+  mixers/          SMat as a Zoology mixer (PG-19 300M) and the recurrent baselines
+src/smat_lm/       the learned-routing models behind the PG-19 500M/750M runs:
                    GDN / Mamba-2 + SMat with hashed writes and four-read selection,
                    their Triton kernels, the PG-19 LMs and the cached decoder.
                    Flat modules, byte-identical to what the campaigns ran
-tasks/             one entry point per experiment, all writing results/*.csv
-  routing_ceiling.py  what a mask permits, counted without training
-  routing_train.py    the same landmark sets, trained
-  mqar.py  mkar.py  counting.py  needle.py  streaming.py  copying.py  lm.py
-  pg19/            PG-19 LM training, data prep, GPU checks and kernel benchmarks
-                   for the src/smat_lm models
-analysis/          figures.py, table_*.py, verify_theory.py, bench_*.py
+tasks/             one entry point per experiment
+  routing_train.py    subset routing (Table routing, Figure routing-pattern)
+  routing_ceiling.py  the landmark sets and pattern counts routing_train uses
+  routing_bench.py    end-to-end cost of the routing models (Table e2e-routing)
+  mkar.py             multi-key subset recall (Table mkar and its appendix)
+  window_schedules.py stepped-window decoding (the horizon-free appendix)
+  lm.py               PG-19, 300M tokens (Table pg19-300m)
+  pg19/               PG-19 500M/750M training, data prep, GPU checks, benchmarks
+  data/               PG-19 tokenisation (GPT-2 BPE) and raw-byte preparation
+analysis/          the scripts that turn results/ into the paper's tables and figures
 experiments/
-  jobs/            job scripts, one per sweep; no site details inside
-  zoology/         Zoology sweep configs
+  jobs/            the job scripts behind every kept result; no site details inside
   submit.sh        supplies partition/account/walltime from site.conf
   prelude.sh       records library versions and device capability, not identity
 results/           every number the paper cites, as CSV or JSON
-figures/           each figure with the CSV of its plotted values
+figures/           each data figure in the paper with the CSV of its plotted values
 tests/             correctness; run tests/test_smat.py first
-docs/              construction notes, experiment notes, kernel defects, the
-                   learned-routing model definition (practical_model_revision.md)
+docs/              construction notes, the learned-routing model definition
+                   (practical_model_revision.md), the MoM appendix snippet
 third_party/       zoology (the frozen copy the runs used) and the upstream
                    Log-Linear kernels, each with its provenance
-paper_drafts/      the manuscript
 ```
 
 ## Quick start
@@ -56,7 +56,6 @@ paper_drafts/      the manuscript
 pip install -e .                       # torch + numpy; extras: [kernels] [zoology] [figures]
 python tests/test_smat.py --skip-vc    # ~1 min, CPU, fp64
 python analysis/verify_theory.py       # VC, counting and density claims
-python tasks/routing_ceiling.py --T 4096 --d 1 2 3 4 5 --kmax 6
 ```
 
 The learned-routing models import each other by flat module name, as they did
@@ -78,42 +77,56 @@ To run a sweep on a cluster:
 ```bash
 cp experiments/site.conf.example experiments/site.conf   # fill in partition etc.
 experiments/submit.sh experiments/jobs/run_mkar_fair2.sbatch base
+experiments/submit.sh experiments/jobs/run_prefill_512k.sbatch results_bf16_512k_h200
 ```
 
 ## Where the paper's numbers come from
 
-| paper section | task | results |
-|---|---|---|
-| d-Subset Routing | `tasks/routing_ceiling.py`, `tasks/routing_train.py` | `results/routing_*.csv` |
-| Multi-query associative recall | `experiments/zoology/*.py` via Zoology | `results/mqar_*.csv`, `results/gdn_smat_summary/` |
-| Multi-key subset recall | `tasks/mkar.py` | `results/mkar_*.csv` |
-| MQAR, learned routing, repeated seeds (Table 2) | frozen in `results/paper_seeds_20260920/source/` | `results/paper_seeds_20260920/per_seed.csv` |
-| Joint context-key recall (Table 3) | frozen in `results/paper_seeds_20260920/source/joint/` | same `per_seed.csv`; Log-Linear rows in `results/paper_fast_20260920/` |
-| MoM memory-budget comparison | frozen in `results/joint_mom_20260921/source/` | `results/joint_mom_20260921/` |
-| Selective copying | `tasks/copying.py`, `tasks/copying_gdn.py` | `results/sc_*/` |
-| Language modelling, byte level | `tasks/lm.py` | `results/lm/` |
-| PG-19, 300M tokens | `tasks/lm.py` | `results/pg19_300m/` |
-| PG-19, 500M/750M tokens | `tasks/pg19/train_pg19_scale.py` + `src/smat_lm/` | `results/pg19_six_500m/`, `results/pg19_six_750m/` (launch record only) |
-| Prefill and decode cost | `analysis/bench_prefill.py` | `results/results_*.csv` |
-| Training throughput of the learned models | `tasks/pg19/bench_pg19_*.py` | `results/pg19_scale_pilot/`, `results/pg19_transport_opt/`, `results/loglinear_backend_timing/` |
+Every table and data figure of `paper_drafts/iclr_submission.tex`, the script
+that prints it, and the results it reads.
 
-Tables and figures are regenerated from those files alone:
+| paper | produced by | results |
+|---|---|---|
+| Fig. `prefill` (prefill cost) | `analysis/fig_prefill.py` -> `figures/prefill_cost.*` | `results/results_bf16_512k_h200.csv` (`experiments/jobs/run_prefill_512k.sbatch`) |
+| Fig. `routing-pattern`, Table `routing` | `analysis/fig_routing.py` -> `figures/fig17_routing.*`; `analysis/table_meanstd.py` | `results/routing_learned*.csv` (`run_routing*.sbatch`) |
+| Table `mkar`, `mkar-seeds`, `mkar-softmax-sweep`, `mkar-posctrl`, Fig. `mkar-sanity` | `analysis/table_meanstd.py`, `analysis/mkar_sanity.py` -> `figures/fig18_mkar_sanity.*` | `results/mkar_fair2_*.csv`, `mkar_posctrl.csv`, `mkar_softsweep_*.csv` (`run_mkar_*.sbatch`, `run_baseline_gaps.sbatch`) |
+| Table `mqar-results` (MQAR, learned routing) | frozen in `results/paper_seeds_20260920/source/` | `results/paper_seeds_20260920/per_seed.csv`, Log-Linear in `original_loglinear/` |
+| Table `joint_recall` (JCKR) | frozen in `results/paper_seeds_20260920/source/joint/` | same `per_seed.csv`; Log-Linear rows in `results/paper_fast_20260920/` |
+| Table `mom_macro` (MoM comparison) | frozen in `results/joint_mom_20260921/source/` | `results/joint_mom_20260921/`; snippet in `docs/mom-comparison.tex` |
+| Table `pg19-300m` | `tasks/lm.py`, `analysis/eval_pos_loss.py` (`run_pg19.sbatch`) | `results/pg19_300m/` |
+| Table `pg19-750m` | `tasks/pg19/train_pg19_scale.py` + `src/smat_lm/` | configuration in `results/pg19_six_500m/campaign.json`; 500M record in `results/pg19_six_500m/`, 750M launch record in `results/pg19_six_750m/`; kernel validation in `results/pg19_transport_opt/` |
+| Table `e2e-routing` | `tasks/routing_bench.py` (`tasks/routing_bench.sbatch`) | `results/routing_bench/rows*.jsonl` |
+| Tables `mqar-uniform`, `mqar-placed`, `pg19` (stepped window) | `analysis/table_window_schedules.py` | `results/window_schedules/` (`run_window_schedules.sbatch` with `winsched_*.txt`) |
+| Theorem 1 (VC, density) and the Section 3 counts | `analysis/verify_theory.py` | `results/theory_*.csv` |
+
+Also kept, as measurements of the paper's models that no table prints yet:
+`results/pg19_e2e_efficiency/` (end-to-end cost of the PG-19 500M models,
+`tasks/pg19/bench_e2e.py`), `results/results_bf16_512k_a100pcie.csv` (the
+prefill sweep repeated on an A100), and `results/loglinear_backend_timing/`
+(why the Log-Linear baselines use the dense reference for GDN).
 
 ```bash
-python analysis/figures.py results/results_bf16.csv --results-dir results --outdir figures
-python analysis/table_mkar.py                    # multi-key subset recall
+python analysis/table_meanstd.py            # Tables routing and mkar
+python analysis/mkar_sanity.py              # MKAR appendix tables and fig18
+python analysis/fig_routing.py              # routing figure
+python analysis/fig_prefill.py              # prefill figure
+python analysis/table_window_schedules.py   # stepped-window appendix tables
 ```
 
-The recall campaigns (Tables 2-3, MoM) ran from source bundles frozen at launch,
-not from the live tree, so each keeps its bundle under `results/<campaign>/source/`
-with a `source_sha256.json` of every file. Third-party copies that were
-byte-identical to `third_party/` or to pip `fla==0.5.2` were removed from the
-bundles; `THIRD_PARTY.md` in each says which. The seed-123 runs those tables
-repeat are copied to `results/paper_seeds_20260920/original_seed123/`.
-Per-example arrays, checkpoints, job logs, launchers and development campaigns
-that no reported number depends on are not in this tree; they remain at the tag
-`archive/pre-cleanup-2026-09-22`. The MoM appendix snippet is in
-`docs/mom-comparison.tex`, with its aggregation details in `docs/mom-comparison.md`.
+The recall campaigns (Tables MQAR, JCKR, MoM) ran from source bundles frozen at
+launch, not from the live tree, so each keeps its bundle under
+`results/<campaign>/source/` with a `source_sha256.json` of every file.
+Third-party copies that were byte-identical to `third_party/` or to pip
+`fla==0.5.2` were removed from the bundles; `THIRD_PARTY.md` in each says which.
+The seed-123 runs those tables repeat are copied to
+`results/paper_seeds_20260920/original_seed123/`.
+
+Development campaigns, ablations and tasks the paper does not report (counting,
+needle, streaming, selective copying, in-tree MQAR, the byte-level LM sweeps,
+chunk and rank sweeps, the earlier figures) are not in this tree. The state
+before this trim is tagged `archive/pre-audit-2026-09-22`, and per-example
+arrays, checkpoints and launchers from before that are at
+`archive/pre-cleanup-2026-09-22`.
 
 ## Reading a result
 
@@ -122,17 +135,12 @@ a CSV is self-describing and rows from different sweeps concatenate. Two habits
 matter when reading them:
 
 - **Check the step count before quoting a number.** Rows are written at every
-  evaluation, not only at the end; `analysis/table_mkar.py` prints the step each
-  row reached and marks the unfinished ones rather than printing them as final.
+  evaluation, not only at the end; `analysis/table_meanstd.py` counts a
+  multi-key run only once it has reached its full step budget.
 - **Do not mix protocols.** Batch size and learning rate decide whether a
   baseline trains at all on some of these tasks -- softmax on multi-key subset
   recall sits at exactly 0.000 through 16k steps at batch 8 and reaches 0.999 at
   batch 32. Rows carry both fields; compare only within one setting.
-
-`results/lm/invalid_frozenhash/` is kept deliberately: those runs were
-invalidated by a lazy-initialisation bug that hid the hash parameters from the
-optimizer, so the "learned hash" they report was a frozen random projection.
-They are retained as the record of a fixed defect, not as results.
 
 ## Anonymity
 

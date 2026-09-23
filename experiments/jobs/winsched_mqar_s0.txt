@@ -1,5 +1,0 @@
-mqar --sched none --seed 0 --steps 7000 --minutes 42 --log-every 500 --eval-T 1024 2048 4096 8192 --D 0 256 1024 3072 --eval-batches 8 --out results/window_schedules/mqar.csv
-mqar --sched half --seed 0 --steps 7000 --minutes 42 --log-every 500 --eval-T 1024 2048 4096 8192 --D 0 256 1024 3072 --eval-batches 8 --out results/window_schedules/mqar.csv
-mqar --sched win4 --seed 0 --steps 7000 --minutes 42 --log-every 500 --eval-T 1024 2048 4096 8192 --D 0 256 1024 3072 --eval-batches 8 --out results/window_schedules/mqar.csv
-mqar --sched win8 --seed 0 --steps 7000 --minutes 42 --log-every 500 --eval-T 1024 2048 4096 8192 --D 0 256 1024 3072 --eval-batches 8 --out results/window_schedules/mqar.csv
-mqar --sched dbl --seed 0 --steps 7000 --minutes 42 --log-every 500 --eval-T 1024 2048 4096 8192 --D 0 256 1024 3072 --eval-batches 8 --out results/window_schedules/mqar.csv

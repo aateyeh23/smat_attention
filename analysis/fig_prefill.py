@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""fig16: prefill against T, the right panel of fig15 on its own, with error bars.
+"""The paper's prefill figure (fig:prefill, figures/prefill_cost.png): prefill against T.
 
     python analysis/fig_prefill.py --results-dir results --outdir figures [--dark]
 
-Same measurement and same arms as fig15's cost panel; the only additions are the
-error bars and the room a single panel gives them.  Bars are the interquartile
+Reads the 4K-512K sweep results/results_bf16_512k_h200.csv, written by
+experiments/jobs/run_prefill_512k.sbatch on one H200.  Bars are the interquartile
 range of the repeats behind each point, drawn from the ``*_p25`` / ``*_p75``
 columns that ``bench_prefill.py`` writes alongside each median.
 
@@ -12,8 +12,7 @@ Those columns are absent from any sweep run before they were added, and this
 script says so and draws the medians alone rather than inventing a spread.  To
 get the bars, rerun the sweep:
 
-    python analysis/bench_prefill.py --device cuda --dtype bf16 \
-        --out results/results_bf16.csv
+    experiments/submit.sh experiments/jobs/run_prefill_512k.sbatch results_bf16_512k_h200
 
 An interquartile range, not a standard deviation: GPU timings have a long right
 tail, and a symmetric bar around a median would misreport it.  The bars are
@@ -94,11 +93,10 @@ def draw(ax, rows, P):
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--results-dir", default="results")
-    ap.add_argument("--timing", default="results_bf16.csv")
+    ap.add_argument("--timing", default="results_bf16_512k_h200.csv")
     ap.add_argument("--outdir", default="figures")
     ap.add_argument("--dark", action="store_true")
-    ap.add_argument("--name", default="fig16_prefill",
-                    help="output basename, e.g. prefill_cost for the paper's file")
+    ap.add_argument("--name", default="prefill_cost", help="output basename")
     a = ap.parse_args(argv)
 
     path = os.path.join(a.results_dir, a.timing)

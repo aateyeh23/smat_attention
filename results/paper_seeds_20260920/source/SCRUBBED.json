@@ -551,6 +551,7 @@
    "path_renamed": true
   },
   "joint/code/zoo_smat_mixer.py": {
+   "contents_scrubbed": true,
    "sha256": "ed8c39210eb4e845a6ed60f9447564563f722f991eaa6cc6f3f9ee7f1226605f",
    "path_renamed": true
   },
@@ -811,6 +812,7 @@
    "path_renamed": true
   },
   "mqar/code/zoo_smat_mixer.py": {
+   "contents_scrubbed": true,
    "sha256": "7f6f9edc1627e88f35245fbf54af364132e23dbda082a4d16e57e737f357dda2",
    "path_renamed": true
   },

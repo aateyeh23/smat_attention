@@ -24,7 +24,7 @@
 # Every config runs all three seeds at every k, the passing ones included, so a
 # config is judged on how many of 9 it solves rather than on the four it fixes.
 # The rest of the protocol is fair2 verbatim.  Output goes to mkar_softsweep_*,
-# outside the mkar_fair2_* glob that table_mkar.py reads: these are a baseline
+# outside the mkar_fair2_* glob that table_meanstd.py and mkar_sanity.py read: these are a baseline
 # check, and a config chosen from them would be rerun, not quoted from here.
 set -uo pipefail
 source experiments/prelude.sh

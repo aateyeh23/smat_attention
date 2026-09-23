@@ -270,7 +270,7 @@ class SmatMamba2MR(nn.Module):
                  hash_mode="point", hash_shift=1, hash_conv=False, hash_freeze=False, anneal_steps=0, balance_coef=0.01, hash_codim=None, hash_src="hidden", hash_freeze_after=0, hash_lr_scale=1.0, balance_gated=False, hash_conv_width=4, hash_ckpt=False, sparse_ops=False, g_bf16=False,
                  g_write_mode="shared", g_write_init=0.1, mamba_heads=None, **_):
         super().__init__()
-        # read == "chash": Abdullah's content-addressed assignment (content_addr.ContentAssign): profile = hash(key-side
+        # read == "chash": the content-addressed assignment (content_addr.ContentAssign): profile = hash(key-side
         # source), row type = hash(query input), same C / pooling / decode as the paper.  hash_conv replaces the fixed
         # key-side shift by a learned depthwise causal conv (width 4) on u; anneal_steps anneals soft->hard read;
         # balance_coef * load-balance KL is returned through Zoology's get_auxiliary_loss hook.

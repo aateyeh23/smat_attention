@@ -4,11 +4,12 @@ Model: token embedding (tied head) -> n_layers x [RMSNorm -> mixer] -> RMSNorm -
 Mixer: zoo_smat_mixer.SmatMamba2MR for every arm, so the arms differ only in G:
     --arm mamba2       d=1, lambda off              (plain Mamba-2)
     --arm smat         content-hashed SMAT G on top (paper mask, reset at T/2, v10 recipe by default)
-Data: uint16 GPT-2 token memmaps (lm/prep_pg19.py); random windows of --seq_len+1 tokens.
+Data: uint16 GPT-2 token memmaps (tasks/data/prep_pg19.py); random windows of --seq_len+1 tokens.
 Checkpoints every --ckpt_every steps to --ckpt (resumable: the job limit is 2 h)."""
 import argparse, math, os, sys, time, json
 import numpy as np, torch, torch.nn as nn, torch.nn.functional as F
-sys.path.insert(0, "/u/an author/smat_attention/the GPU cluster")
+_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path[:0] = [os.path.join(_ROOT, "src"), os.path.join(_ROOT, "src", "smat_lm")]   # smat, and the flat kernel modules
 from smat.mixers import zoology as z
 zoo_smat_mixer = z                                   # the pre-reorg name, still used
 

@@ -16,7 +16,7 @@
 # k = 1, 2, 3 -- under seeds 1 and 2.  The protocol is copied verbatim from
 # run_mkar_fair2.sbatch (batch 32, lr 3e-4, 12000 steps, T = 1024, 8 pairs,
 # one layer, id hash, short conv 3); only --seed and --out differ, and the run
-# name carries the seed, so analysis/table_mkar.py averages them by label.
+# name carries the seed, so analysis/table_meanstd.py averages them by label.
 #
 #   sbatch run_mkar_seeds.sbatch 1 base     # softmax and d=1, k = 1,2,3
 #   sbatch run_mkar_seeds.sbatch 1 smat23   # d = 2, 3 plane oracle
@@ -26,7 +26,7 @@
 #
 # "finish" re-runs the three fair2 runs that stopped before 12000 steps: the
 # d=3 k=3 oracle cell, which the main table prints, and two diagnostic heads.
-# Their rows carry the same run names as the truncated ones, and table_mkar.py
+# Their rows carry the same run names as the truncated ones, and table_meanstd.py
 # keeps the largest step per run, so the short rows are superseded rather than
 # averaged in.
 set -uo pipefail

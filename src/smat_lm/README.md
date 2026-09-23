@@ -7,7 +7,9 @@ models behind the PG-19 results and the current recall configurations.
 
 The modules import each other by flat name, as they did when they ran, and are
 byte-identical to the files the PG-19 six-run campaign recorded:
-`results/pg19_six_500m/<arm>/manifest.json` lists their SHA-256.  Put this
+`results/pg19_six_500m/<arm>/manifest.json` lists their SHA-256.  The one
+exception is a comment in `zoo_smat_mixer.py` that named an author; its
+original SHA-256 is in `SCRUBBED.json`.  Put this
 directory, `tasks/pg19` and `third_party` on `PYTHONPATH` (see the top-level
 README) instead of importing them as a package.
 

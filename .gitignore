@@ -1,15 +1,13 @@
 # The paper itself lives elsewhere; this repo is the code and the numbers.
 paper_drafts/
 
-# Job output.  Machine-generated and regenerated on every run -- but keep
-# logs/README.md, which is the write-up of the three kernel defects the smoke
-# runs caught and is not recoverable from a rerun.
+# Job output.  Machine-generated and regenerated on every run.
 
 slurm-*.out
 smoke-*.out
 
 # The dark-mode rendering of the tracked figures: same panels, same CSVs,
-# regenerated with `plot_smat.py --dark`.
+# regenerated with `--dark` on the analysis/fig_*.py scripts.
 figures_dark/
 
 # Python
@@ -23,16 +21,14 @@ __pycache__/
 *.swp
 .DS_Store
 
-# Cluster job logs: verbose per-step output, regenerable; the CSVs in
-# the GPU cluster/results are the record.
-the GPU cluster/logs/**/*.out
-/logs/*.out
+# Cluster job logs: verbose per-step output, regenerable; the CSVs are the record.
+/logs/
 
 # Local cluster settings: partition, account, module loads.  Never committed.
 site.conf
 
-# Datasets and caches
-data/
+# Datasets and caches (the top-level data directory only: tasks/data/ holds prep scripts)
+/data/
 zoology_cache/
 
 # Checkpoints and per-run scratch under results/: the CSV and JSON are the record

@@ -1,7 +1,9 @@
 """Per-position loss (Lin et al. 2025 style): mean NLL at each token position over --n_tokens of held-out
 text in sequences of --seq_len, running average with window --window.  Writes <out>.csv and <out>.png."""
 import argparse, os, sys, json, math, numpy as np, torch, torch.nn.functional as F
-sys.path.insert(0, "/u/an author/smat_attention/the GPU cluster")
+_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path[:0] = [os.path.join(_ROOT, "src"), os.path.join(_ROOT, "src", "smat_lm")]
+LM_PY = os.path.join(_ROOT, "tasks", "lm.py")                       # the trainer the checkpoints came from
 ap = argparse.ArgumentParser()
 ap.add_argument("--ckpt", required=True); ap.add_argument("--out", required=True)
 ap.add_argument("--data", default=os.path.join(os.environ.get("SMAT_WORK", "data"), "pg19")); ap.add_argument("--n_tokens", type=float, default=3.9e7)
@@ -11,9 +13,9 @@ a = ap.parse_args()
 ck = torch.load(a.ckpt, map_location="cuda"); targs = ck["args"]
 sys.argv = ["train_lm2.py", "--ckpt", "/dev/null"] + [f"--{k}={v}" for k, v in targs.items() if k not in ("ckpt", "synthetic") and v is not None and not isinstance(v, bool)]
 import importlib.util
-spec = importlib.util.spec_from_file_location("tl", "/u/an author/smat_attention/the GPU cluster/lm/train_lm2.py")
+spec = importlib.util.spec_from_file_location("tl", LM_PY)
 # build the model exactly as trained without running the training loop
-src = open("/u/an author/smat_attention/the GPU cluster/lm/train_lm2.py").read().split("model = LM().to(dev)")[0]
+src = open(LM_PY).read().split("model = LM().to(dev)")[0]
 ns = {}; exec(compile(src, "train_lm2_defs", "exec"), ns)
 model = ns["LM"]().cuda(); model.eval()
 with torch.no_grad(), torch.autocast("cuda", dtype=torch.bfloat16):      # build the per-length hash modules before loading

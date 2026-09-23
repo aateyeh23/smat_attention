@@ -7,7 +7,7 @@ them cheap.
                   content hashed, or a closed-form rule)
     vc.py         exact VC / pseudo-dimension of a 0/1 matrix, by branch and bound
     model.py      the byte-level LM the synthetic tasks are trained in
-    kernels/      fused Triton paths for the tile, the incidence and the pool
-    mixers/       SMat as a drop-in sequence mixer (Zoology, GDN) and the
+    kernels/      fused Triton forward and backward paths for the chunkwise schedule
+    mixers/       SMat as a Zoology sequence mixer (the PG-19 300M models) and the
                   recurrent baselines it is compared against
 """

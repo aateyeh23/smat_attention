@@ -1,2 +1,0 @@
-run,arm,d,n_pairs,n_queries,n_keys,step,train_loss,acc,nll,noise_share,ms_per_step,elapsed_s
-softmax_T64_p4_zoo_decaymamba2,softmax,,4,64,2048,2000,0.01805315911769867,0.99853515625,0.006670723453225946,,10.306727647781372,20.816195726394653

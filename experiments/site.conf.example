@@ -12,3 +12,10 @@ SMAT_ENV=                  # command to activate your environment, e.g.
 SMAT_BENCH_ENV=            # environment for tasks/routing_bench.sbatch and
                            # tasks/pg19/bench_e2e.sbatch: torch, fla, causal_conv1d
                            # and mamba_ssm as in the PG-19 campaign image
+SMAT_WORK=                 # scratch for datasets and checkpoints: PG-19 tokens in
+                           # $SMAT_WORK/pg19 (tasks/data/prep_pg19.py), checkpoints in
+                           # $SMAT_WORK/ckpt (experiments/jobs/run_pg19.sbatch)
+SMAT_PG19_BYTES=           # byte-level PG-19 for tasks/window_schedules.py
+                           # (tasks/data/prep_pg19_bytes.py); default data/pg19_bytes
+SMAT_GDN_PYTHONPATH=       # optional: a Triton build to put first for the GDN arm of
+                           # run_pg19.sbatch (the runs used Triton 3.7.1 there)
