@@ -1,0 +1,4 @@
+config,seed,k,exact_support,mse
+mamba2-d4-normalized-route-stop,123,1,1.0,135.1291961669922
+mamba2-d4-normalized-route-stop,123,2,1.0,122.66981601715088
+mamba2-d4-normalized-route-stop,123,3,0.998046875,82.0840654373169

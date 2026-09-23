@@ -1,0 +1,101 @@
+{
+  "job": {
+    "index": 0,
+    "name": "mamba2-d4-normalized-route-stop-s123",
+    "config": {
+      "name": "mamba2-d4-normalized-route-stop",
+      "family": "mamba2",
+      "d": 4,
+      "random_incidence": false,
+      "detach_write_hash_input": true,
+      "memory_boundary_transport": true,
+      "memory_incidence_rescale": true,
+      "detach_write_hash_features": true
+    },
+    "seed": 123,
+    "requested_sizes": [
+      1,
+      2,
+      3
+    ],
+    "independent_models": true
+  },
+  "k": 1,
+  "protocol": {
+    "length": 1024,
+    "boundary": 512,
+    "records": 8,
+    "answers": 8,
+    "vocab": 290,
+    "requested_sizes": [
+      1,
+      2,
+      3
+    ],
+    "width": 256,
+    "layers": 1,
+    "ffn_width": 1024,
+    "head_dim": 64,
+    "state_dim": 64,
+    "gdn_heads": 4,
+    "softmax_heads": 4,
+    "batch": 32,
+    "steps": 12000,
+    "epochs": 32,
+    "steps_per_epoch": 375,
+    "learning_rate": 0.0003,
+    "weight_decay": 0.1,
+    "gradient_clip": 1.0,
+    "optimizer": "AdamW on all parameters, matching original task script",
+    "scheduler": "constant; no warmup",
+    "precision": "FP32, matching original executable task",
+    "eval_every": 2000,
+    "eval_batches": 8,
+    "seed_list": [
+      123
+    ],
+    "scoring": "Original evaluate(): raw output > 0.5; exact binary support and MSE",
+    "data": "Original MKAR.batch unchanged: fresh noisy sequences, separate key/payload tokens, basis-vector payloads, eight serialized queries per sequence; a separate model is trained for each fixed k. Evaluation advances the same generator exactly as in the original script.",
+    "loss": "Original binary_cross_entropy_with_logits on answer rows; learned SMat retains its existing auxiliary routing balance loss (coefficient 0.01).",
+    "model": "Original MKARModel interface and common Block including learned positions, payload injection, LayerNorm, residual conv3 and 4x GELU FFN; only attn mixer replaced for native/learned GDN or Mamba2. Softmax uses original Attention.",
+    "smat": "Learned one-write/four-read routing; no oracle directions or planted addresses; Mamba independent writes with normalized shared query/key projection and causal writer features; neighboring-cell writer gradient retained.",
+    "randomization": "Unrestricted Curveball, 100 times number of summaries, exact margins",
+    "early_stopping": false,
+    "checkpoint_selection": "final step",
+    "tuning": "none"
+  },
+  "source_manifest_sha256": "f8392457be2b7bdba2b8d3635ee3c5cce37d960eed724abf2afdd0b35e295fb8",
+  "model": {
+    "parameters": 1710784,
+    "trainable_parameters": 1647296,
+    "incidence": [
+      {
+        "layer": 0,
+        "heads": 8,
+        "head_dim": 64,
+        "state_dim": 64,
+        "profiles": 125,
+        "reads_per_head": 4,
+        "types": 155,
+        "cells_per_summary": 25,
+        "profile_degree": 31,
+        "profile_bytes_per_example": 16384000,
+        "read_table_bytes_per_example": 20316160
+      }
+    ],
+    "oracle_directions": false,
+    "write_hash_neighbor_grad": true,
+    "memory_tied_features": true,
+    "detach_write_hash_input": true,
+    "memory_boundary_transport": true,
+    "memory_incidence_rescale": true,
+    "detach_write_hash_features": true,
+    "memory_read_normalization": "inverse mean incidence weight",
+    "memory_transition": "GDN key-dependent delta transport; local Mamba unchanged",
+    "shared_shell": "Original MKARModel/Block unchanged",
+    "native_implementation": "FLA GDN / Mamba2 library block, not original custom recurrence",
+    "matched_resources": "Same residual width/common shell/training exposure; not equal state memory or FLOPs"
+  },
+  "gpu": "NVIDIA GH200 120GB",
+  "torch_version": "2.11.0+cu130"
+}

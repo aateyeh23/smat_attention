@@ -1,0 +1,6 @@
+{"step": 2000, "train_bce": 0.6629596948623657, "evaluation": {"exact_support": 0.0, "mse": 1.036890670657158}}
+{"step": 4000, "train_bce": 0.6605532169342041, "evaluation": {"exact_support": 0.0, "mse": 1.0356896817684174}}
+{"step": 6000, "train_bce": 0.6621575355529785, "evaluation": {"exact_support": 0.0, "mse": 1.0230474472045898}}
+{"step": 8000, "train_bce": 0.029938828200101852, "evaluation": {"exact_support": 0.9267578125, "mse": 25.070937395095825}}
+{"step": 10000, "train_bce": 0.002475404180586338, "evaluation": {"exact_support": 0.99267578125, "mse": 74.36331272125244}}
+{"step": 12000, "train_bce": 0.0024208289105445147, "evaluation": {"exact_support": 0.9775390625, "mse": 74.82506370544434}}

@@ -1,0 +1,162 @@
+{
+  "passed": true,
+  "source_manifest_sha256": "f8392457be2b7bdba2b8d3635ee3c5cce37d960eed724abf2afdd0b35e295fb8",
+  "original_data_checks": [
+    {
+      "k": 1,
+      "batch_sha256": "8ccf6a7badfd6fca1dd32c3396a5278fd5eb5924d4cd8e1577c998efd51745b9",
+      "noisy_inputs": true,
+      "separate_key_payload": true,
+      "serialized_requests": true,
+      "oracle_targets_passed": true,
+      "generator_resume_passed": true
+    },
+    {
+      "k": 2,
+      "batch_sha256": "47337bc16fe4f6d8105dafbd2f8d87606aa1f41341aa167a471181d43299c160",
+      "noisy_inputs": true,
+      "separate_key_payload": true,
+      "serialized_requests": true,
+      "oracle_targets_passed": true,
+      "generator_resume_passed": true
+    },
+    {
+      "k": 3,
+      "batch_sha256": "d65524b817695d1742dbc55f7b3eaf333c9cae871a71aa199c3e3b0d907e88ac",
+      "noisy_inputs": true,
+      "separate_key_payload": true,
+      "serialized_requests": true,
+      "oracle_targets_passed": true,
+      "generator_resume_passed": true
+    }
+  ],
+  "configs": [
+    {
+      "config": "mamba2-d4-normalized-route-stop",
+      "passed": true,
+      "steps": [
+        {
+          "k": 1,
+          "bce": 0.7134157419204712,
+          "gradient_norm": 0.9008253216743469,
+          "routing_gradients": [
+            {
+              "writer": 2.0941455659340136e-05,
+              "reader": 2.2311335214908468e-06
+            }
+          ],
+          "seconds": 73.44628043426201
+        },
+        {
+          "k": 2,
+          "bce": 0.6844760179519653,
+          "gradient_norm": 0.5522412061691284,
+          "routing_gradients": [
+            {
+              "writer": 2.1300575099303387e-05,
+              "reader": 1.4056687405172852e-06
+            }
+          ],
+          "seconds": 0.06504639703780413
+        },
+        {
+          "k": 3,
+          "bce": 0.688433825969696,
+          "gradient_norm": 0.25930774211883545,
+          "routing_gradients": [
+            {
+              "writer": 2.1045141693321057e-05,
+              "reader": 1.386514099976921e-06
+            }
+          ],
+          "seconds": 0.0632417481392622
+        }
+      ],
+      "evaluation": {
+        "exact_support": 0.0,
+        "mse": 1.1958398818969727
+      },
+      "audit": {
+        "parameters": 1710784,
+        "trainable_parameters": 1647296,
+        "incidence": [
+          {
+            "layer": 0,
+            "heads": 8,
+            "head_dim": 64,
+            "state_dim": 64,
+            "profiles": 125,
+            "reads_per_head": 4,
+            "types": 155,
+            "cells_per_summary": 25,
+            "profile_degree": 31,
+            "profile_bytes_per_example": 16384000,
+            "read_table_bytes_per_example": 20316160
+          }
+        ],
+        "oracle_directions": false,
+        "write_hash_neighbor_grad": true,
+        "memory_tied_features": true,
+        "detach_write_hash_input": true,
+        "memory_boundary_transport": true,
+        "memory_incidence_rescale": true,
+        "detach_write_hash_features": true,
+        "memory_read_normalization": "inverse mean incidence weight",
+        "memory_transition": "GDN key-dependent delta transport; local Mamba unchanged",
+        "shared_shell": "Original MKARModel/Block unchanged",
+        "native_implementation": "FLA GDN / Mamba2 library block, not original custom recurrence",
+        "matched_resources": "Same residual width/common shell/training exposure; not equal state memory or FLOPs"
+      },
+      "gradient_isolation": [
+        {
+          "k": 1,
+          "model": "detached",
+          "balance_input_gradient_max": 0.0,
+          "balance_conv_gradient_max": 0.0,
+          "balance_hash_gradient_max": 2.1081110389786772e-05
+        },
+        {
+          "k": 1,
+          "model": "parent",
+          "balance_input_gradient_max": 0.0,
+          "balance_conv_gradient_max": 8.079857798293233e-05,
+          "balance_hash_gradient_max": 2.108110857079737e-05
+        },
+        {
+          "k": 2,
+          "model": "detached",
+          "balance_input_gradient_max": 0.0,
+          "balance_conv_gradient_max": 0.0,
+          "balance_hash_gradient_max": 2.1103163817315362e-05
+        },
+        {
+          "k": 2,
+          "model": "parent",
+          "balance_input_gradient_max": 0.0,
+          "balance_conv_gradient_max": 8.274944411823526e-05,
+          "balance_hash_gradient_max": 2.110316199832596e-05
+        },
+        {
+          "k": 3,
+          "model": "detached",
+          "balance_input_gradient_max": 0.0,
+          "balance_conv_gradient_max": 0.0,
+          "balance_hash_gradient_max": 2.115587267326191e-05
+        },
+        {
+          "k": 3,
+          "model": "parent",
+          "balance_input_gradient_max": 0.0,
+          "balance_conv_gradient_max": 8.07692704256624e-05,
+          "balance_hash_gradient_max": 2.115587267326191e-05
+        }
+      ]
+    }
+  ],
+  "identical_state_and_full_forward_passed": true,
+  "balance_input_and_key_conv_gradient_isolation_passed": true,
+  "common_initialization_passed": true,
+  "checkpoint_and_rng_resume_passed": true,
+  "gpu": "NVIDIA GH200 120GB",
+  "torch_version": "2.11.0+cu130"
+}

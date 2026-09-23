@@ -1,0 +1,86 @@
+[
+  {
+    "index": 0,
+    "name": "mamba2-d4-normalized-route-stop-s456",
+    "config": {
+      "name": "mamba2-d4-normalized-route-stop",
+      "family": "mamba2",
+      "d": 4,
+      "random_incidence": false,
+      "detach_write_hash_input": true,
+      "memory_boundary_transport": true,
+      "memory_incidence_rescale": true,
+      "detach_write_hash_features": true
+    },
+    "seed": 456,
+    "requested_sizes": [
+      1,
+      2,
+      3
+    ],
+    "independent_models": true
+  },
+  {
+    "index": 1,
+    "name": "mamba2-d4-normalized-route-stop-s789",
+    "config": {
+      "name": "mamba2-d4-normalized-route-stop",
+      "family": "mamba2",
+      "d": 4,
+      "random_incidence": false,
+      "detach_write_hash_input": true,
+      "memory_boundary_transport": true,
+      "memory_incidence_rescale": true,
+      "detach_write_hash_features": true
+    },
+    "seed": 789,
+    "requested_sizes": [
+      1,
+      2,
+      3
+    ],
+    "independent_models": true
+  },
+  {
+    "index": 2,
+    "name": "mamba2-d4-normalized-route-stop-s2026",
+    "config": {
+      "name": "mamba2-d4-normalized-route-stop",
+      "family": "mamba2",
+      "d": 4,
+      "random_incidence": false,
+      "detach_write_hash_input": true,
+      "memory_boundary_transport": true,
+      "memory_incidence_rescale": true,
+      "detach_write_hash_features": true
+    },
+    "seed": 2026,
+    "requested_sizes": [
+      1,
+      2,
+      3
+    ],
+    "independent_models": true
+  },
+  {
+    "index": 3,
+    "name": "mamba2-d4-normalized-route-stop-s2027",
+    "config": {
+      "name": "mamba2-d4-normalized-route-stop",
+      "family": "mamba2",
+      "d": 4,
+      "random_incidence": false,
+      "detach_write_hash_input": true,
+      "memory_boundary_transport": true,
+      "memory_incidence_rescale": true,
+      "detach_write_hash_features": true
+    },
+    "seed": 2027,
+    "requested_sizes": [
+      1,
+      2,
+      3
+    ],
+    "independent_models": true
+  }
+]

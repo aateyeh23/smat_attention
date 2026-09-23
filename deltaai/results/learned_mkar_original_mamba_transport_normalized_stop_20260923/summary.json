@@ -1,0 +1,27 @@
+{
+  "completed_fits": 3,
+  "completed_jobs": 1,
+  "summary": [
+    {
+      "config": "mamba2-d4-normalized-route-stop",
+      "k": 1,
+      "seeds": 1,
+      "mean": 1.0,
+      "std": null
+    },
+    {
+      "config": "mamba2-d4-normalized-route-stop",
+      "k": 2,
+      "seeds": 1,
+      "mean": 1.0,
+      "std": null
+    },
+    {
+      "config": "mamba2-d4-normalized-route-stop",
+      "k": 3,
+      "seeds": 1,
+      "mean": 0.998046875,
+      "std": null
+    }
+  ]
+}
