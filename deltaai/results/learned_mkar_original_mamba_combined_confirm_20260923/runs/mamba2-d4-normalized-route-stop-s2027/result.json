@@ -1,0 +1,174 @@
+{
+  "name": "mamba2-d4-normalized-route-stop-s2027",
+  "complete": true,
+  "cells": [
+    {
+      "name": "mamba2-d4-normalized-route-stop-s2027",
+      "config": {
+        "name": "mamba2-d4-normalized-route-stop",
+        "family": "mamba2",
+        "d": 4,
+        "random_incidence": false,
+        "detach_write_hash_input": true,
+        "memory_boundary_transport": true,
+        "memory_incidence_rescale": true,
+        "detach_write_hash_features": true
+      },
+      "seed": 2027,
+      "k": 1,
+      "complete": true,
+      "steps": 12000,
+      "epochs": 32,
+      "evaluation": {
+        "exact_support": 1.0,
+        "mse": 137.33229064941406
+      },
+      "selection": "final step",
+      "source_manifest_sha256": "ddf11dae469a61340e67953a7f42787a713e4e88a5eb0200bac56fc88d856116",
+      "model": {
+        "parameters": 1710784,
+        "trainable_parameters": 1647296,
+        "incidence": [
+          {
+            "layer": 0,
+            "heads": 8,
+            "head_dim": 64,
+            "state_dim": 64,
+            "profiles": 125,
+            "reads_per_head": 4,
+            "types": 155,
+            "cells_per_summary": 25,
+            "profile_degree": 31,
+            "profile_bytes_per_example": 16384000,
+            "read_table_bytes_per_example": 20316160
+          }
+        ],
+        "oracle_directions": false,
+        "write_hash_neighbor_grad": true,
+        "memory_tied_features": true,
+        "detach_write_hash_input": true,
+        "memory_boundary_transport": true,
+        "memory_incidence_rescale": true,
+        "detach_write_hash_features": true,
+        "memory_read_normalization": "inverse mean incidence weight",
+        "memory_transition": "GDN key-dependent delta transport; local Mamba unchanged",
+        "shared_shell": "Original MKARModel/Block unchanged",
+        "native_implementation": "FLA GDN / Mamba2 library block, not original custom recurrence",
+        "matched_resources": "Same residual width/common shell/training exposure; not equal state memory or FLOPs"
+      },
+      "elapsed_seconds": 868.4581131069863
+    },
+    {
+      "name": "mamba2-d4-normalized-route-stop-s2027",
+      "config": {
+        "name": "mamba2-d4-normalized-route-stop",
+        "family": "mamba2",
+        "d": 4,
+        "random_incidence": false,
+        "detach_write_hash_input": true,
+        "memory_boundary_transport": true,
+        "memory_incidence_rescale": true,
+        "detach_write_hash_features": true
+      },
+      "seed": 2027,
+      "k": 2,
+      "complete": true,
+      "steps": 12000,
+      "epochs": 32,
+      "evaluation": {
+        "exact_support": 1.0,
+        "mse": 127.4667615890503
+      },
+      "selection": "final step",
+      "source_manifest_sha256": "ddf11dae469a61340e67953a7f42787a713e4e88a5eb0200bac56fc88d856116",
+      "model": {
+        "parameters": 1710784,
+        "trainable_parameters": 1647296,
+        "incidence": [
+          {
+            "layer": 0,
+            "heads": 8,
+            "head_dim": 64,
+            "state_dim": 64,
+            "profiles": 125,
+            "reads_per_head": 4,
+            "types": 155,
+            "cells_per_summary": 25,
+            "profile_degree": 31,
+            "profile_bytes_per_example": 16384000,
+            "read_table_bytes_per_example": 20316160
+          }
+        ],
+        "oracle_directions": false,
+        "write_hash_neighbor_grad": true,
+        "memory_tied_features": true,
+        "detach_write_hash_input": true,
+        "memory_boundary_transport": true,
+        "memory_incidence_rescale": true,
+        "detach_write_hash_features": true,
+        "memory_read_normalization": "inverse mean incidence weight",
+        "memory_transition": "GDN key-dependent delta transport; local Mamba unchanged",
+        "shared_shell": "Original MKARModel/Block unchanged",
+        "native_implementation": "FLA GDN / Mamba2 library block, not original custom recurrence",
+        "matched_resources": "Same residual width/common shell/training exposure; not equal state memory or FLOPs"
+      },
+      "elapsed_seconds": 748.1520596700138
+    },
+    {
+      "name": "mamba2-d4-normalized-route-stop-s2027",
+      "config": {
+        "name": "mamba2-d4-normalized-route-stop",
+        "family": "mamba2",
+        "d": 4,
+        "random_incidence": false,
+        "detach_write_hash_input": true,
+        "memory_boundary_transport": true,
+        "memory_incidence_rescale": true,
+        "detach_write_hash_features": true
+      },
+      "seed": 2027,
+      "k": 3,
+      "complete": true,
+      "steps": 12000,
+      "epochs": 32,
+      "evaluation": {
+        "exact_support": 0.9775390625,
+        "mse": 74.82506370544434
+      },
+      "selection": "final step",
+      "source_manifest_sha256": "ddf11dae469a61340e67953a7f42787a713e4e88a5eb0200bac56fc88d856116",
+      "model": {
+        "parameters": 1710784,
+        "trainable_parameters": 1647296,
+        "incidence": [
+          {
+            "layer": 0,
+            "heads": 8,
+            "head_dim": 64,
+            "state_dim": 64,
+            "profiles": 125,
+            "reads_per_head": 4,
+            "types": 155,
+            "cells_per_summary": 25,
+            "profile_degree": 31,
+            "profile_bytes_per_example": 16384000,
+            "read_table_bytes_per_example": 20316160
+          }
+        ],
+        "oracle_directions": false,
+        "write_hash_neighbor_grad": true,
+        "memory_tied_features": true,
+        "detach_write_hash_input": true,
+        "memory_boundary_transport": true,
+        "memory_incidence_rescale": true,
+        "detach_write_hash_features": true,
+        "memory_read_normalization": "inverse mean incidence weight",
+        "memory_transition": "GDN key-dependent delta transport; local Mamba unchanged",
+        "shared_shell": "Original MKARModel/Block unchanged",
+        "native_implementation": "FLA GDN / Mamba2 library block, not original custom recurrence",
+        "matched_resources": "Same residual width/common shell/training exposure; not equal state memory or FLOPs"
+      },
+      "elapsed_seconds": 751.4760668590025
+    }
+  ]
+}

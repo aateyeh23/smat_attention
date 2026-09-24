@@ -1,0 +1,14 @@
+{
+  "recorded_utc": "2026-09-23T12:22:09.019449+00:00",
+  "candidate": "mamba2-d4-normalized-route-stop",
+  "selection_seed": 123,
+  "selection_rule": "Allk1/2/3 final12000-update exactsupport >=99%",
+  "results_known_at_rule": {},
+  "replication_seeds": [
+    456,
+    789,
+    2026,
+    2027
+  ],
+  "require_matching_gradient_isolated_full_global_control": true
+}

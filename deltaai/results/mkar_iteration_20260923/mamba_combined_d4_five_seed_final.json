@@ -1,0 +1,172 @@
+{
+  "model": "Mamba2 + normalized SMat d4",
+  "rows": [
+    {
+      "seed": 123,
+      "k": 1,
+      "exact_support_percent": 100.0,
+      "source": "/u/archerdw/smat_attention/deltaai/results/learned_mkar_original_mamba_transport_normalized_stop_20260923/runs/mamba2-d4-normalized-route-stop-s123/k1/result.json",
+      "result_sha256": "ee0a93d6b3501122064f960cf7904d223db4bca9e2a4410686cbc2ea482963b6"
+    },
+    {
+      "seed": 123,
+      "k": 2,
+      "exact_support_percent": 100.0,
+      "source": "/u/archerdw/smat_attention/deltaai/results/learned_mkar_original_mamba_transport_normalized_stop_20260923/runs/mamba2-d4-normalized-route-stop-s123/k2/result.json",
+      "result_sha256": "e0cb1e3de5a91c7af09f292c876e88faf4e6241d3ae59299d7fa74d0a82bc565"
+    },
+    {
+      "seed": 123,
+      "k": 3,
+      "exact_support_percent": 99.8046875,
+      "source": "/u/archerdw/smat_attention/deltaai/results/learned_mkar_original_mamba_transport_normalized_stop_20260923/runs/mamba2-d4-normalized-route-stop-s123/k3/result.json",
+      "result_sha256": "e1f6c7109a5f598aed39ecbf11acb40da485b9b382f094722062dc98396da8fb"
+    },
+    {
+      "seed": 456,
+      "k": 1,
+      "exact_support_percent": 100.0,
+      "source": "/u/archerdw/smat_attention/deltaai/results/learned_mkar_original_mamba_combined_confirm_20260923/runs/mamba2-d4-normalized-route-stop-s456/k1/result.json",
+      "result_sha256": "39576d596ad013ca504af1406d1642a41ad99258d9eee7d74702e6603aa9f824"
+    },
+    {
+      "seed": 456,
+      "k": 2,
+      "exact_support_percent": 100.0,
+      "source": "/u/archerdw/smat_attention/deltaai/results/learned_mkar_original_mamba_combined_confirm_20260923/runs/mamba2-d4-normalized-route-stop-s456/k2/result.json",
+      "result_sha256": "e1715d7f1b20af49a509bf9851169b109febe74c978f86aec42c182cf214afba"
+    },
+    {
+      "seed": 456,
+      "k": 3,
+      "exact_support_percent": 99.951171875,
+      "source": "/u/archerdw/smat_attention/deltaai/results/learned_mkar_original_mamba_combined_confirm_20260923/runs/mamba2-d4-normalized-route-stop-s456/k3/result.json",
+      "result_sha256": "f3c9f96b07d3b24d04d2fbba3e17163b031cefca649af0cc92cee1eee696cad5"
+    },
+    {
+      "seed": 789,
+      "k": 1,
+      "exact_support_percent": 100.0,
+      "source": "/u/archerdw/smat_attention/deltaai/results/learned_mkar_original_mamba_combined_confirm_20260923/runs/mamba2-d4-normalized-route-stop-s789/k1/result.json",
+      "result_sha256": "e7682a8846ddaeff97a94d2faa8b0893a53220315c30c6eeeec492a514ff2ae4"
+    },
+    {
+      "seed": 789,
+      "k": 2,
+      "exact_support_percent": 99.755859375,
+      "source": "/u/archerdw/smat_attention/deltaai/results/learned_mkar_original_mamba_combined_confirm_20260923/runs/mamba2-d4-normalized-route-stop-s789/k2/result.json",
+      "result_sha256": "364e445e80a019c1239a457c711a5f24eeb9024dbd011497e56a354f3386f4bc"
+    },
+    {
+      "seed": 789,
+      "k": 3,
+      "exact_support_percent": 98.53515625,
+      "source": "/u/archerdw/smat_attention/deltaai/results/learned_mkar_original_mamba_combined_confirm_20260923/runs/mamba2-d4-normalized-route-stop-s789/k3/result.json",
+      "result_sha256": "9801ba40f218d9f0bce2a16e9bfc74b5fe2546a69bbd0471209739b50e4738f2"
+    },
+    {
+      "seed": 2026,
+      "k": 1,
+      "exact_support_percent": 100.0,
+      "source": "/u/archerdw/smat_attention/deltaai/results/learned_mkar_original_mamba_combined_confirm_20260923/runs/mamba2-d4-normalized-route-stop-s2026/k1/result.json",
+      "result_sha256": "88ba7860d0564ad28d5cd064d6ef2dcc18b58abb6f20ead7494e01d45f12c4b0"
+    },
+    {
+      "seed": 2026,
+      "k": 2,
+      "exact_support_percent": 100.0,
+      "source": "/u/archerdw/smat_attention/deltaai/results/learned_mkar_original_mamba_combined_confirm_20260923/runs/mamba2-d4-normalized-route-stop-s2026/k2/result.json",
+      "result_sha256": "2a1ffc928927c7f354fd962760c7c089f9f068dd1e8e74dd914b562482bf0b5f"
+    },
+    {
+      "seed": 2026,
+      "k": 3,
+      "exact_support_percent": 100.0,
+      "source": "/u/archerdw/smat_attention/deltaai/results/learned_mkar_original_mamba_combined_confirm_20260923/runs/mamba2-d4-normalized-route-stop-s2026/k3/result.json",
+      "result_sha256": "07e7d047e9ace9afb89edd1249c7b03f8ad231aa92bb64edfbdec8662f548058"
+    },
+    {
+      "seed": 2027,
+      "k": 1,
+      "exact_support_percent": 100.0,
+      "source": "/u/archerdw/smat_attention/deltaai/results/learned_mkar_original_mamba_combined_confirm_20260923/runs/mamba2-d4-normalized-route-stop-s2027/k1/result.json",
+      "result_sha256": "e28d7cffe974dda12743821401fc82920d4ffcee5829480ea440394ab64a5d7f"
+    },
+    {
+      "seed": 2027,
+      "k": 2,
+      "exact_support_percent": 100.0,
+      "source": "/u/archerdw/smat_attention/deltaai/results/learned_mkar_original_mamba_combined_confirm_20260923/runs/mamba2-d4-normalized-route-stop-s2027/k2/result.json",
+      "result_sha256": "381e6a0995df893fbc3c340ac410cd718951adc99e9a8b683fe5e288df55c323"
+    },
+    {
+      "seed": 2027,
+      "k": 3,
+      "exact_support_percent": 97.75390625,
+      "source": "/u/archerdw/smat_attention/deltaai/results/learned_mkar_original_mamba_combined_confirm_20260923/runs/mamba2-d4-normalized-route-stop-s2027/k3/result.json",
+      "result_sha256": "54c3cea77bd65efc7d0e35050f2f53069f1d4e560122deef53832f54cc6841e6"
+    }
+  ],
+  "summary": [
+    {
+      "k": 1,
+      "mean_percent": 100.0,
+      "sample_sd_percent": 0.0,
+      "scores_percent": [
+        100.0,
+        100.0,
+        100.0,
+        100.0,
+        100.0
+      ],
+      "seeds": [
+        123,
+        456,
+        789,
+        2026,
+        2027
+      ]
+    },
+    {
+      "k": 2,
+      "mean_percent": 99.951171875,
+      "sample_sd_percent": 0.10918300671385692,
+      "scores_percent": [
+        100.0,
+        100.0,
+        99.755859375,
+        100.0,
+        100.0
+      ],
+      "seeds": [
+        123,
+        456,
+        789,
+        2026,
+        2027
+      ]
+    },
+    {
+      "k": 3,
+      "mean_percent": 99.208984375,
+      "sample_sd_percent": 1.0127569932095861,
+      "scores_percent": [
+        99.8046875,
+        99.951171875,
+        98.53515625,
+        100.0,
+        97.75390625
+      ],
+      "seeds": [
+        123,
+        456,
+        789,
+        2026,
+        2027
+      ]
+    }
+  ],
+  "all_five_seeds_complete": true,
+  "all_k_complete": true,
+  "selection": "All final 12000-update checkpoints; pilot plus four frozen-candidate replications"
+}

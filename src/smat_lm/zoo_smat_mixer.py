@@ -444,6 +444,12 @@ class SmatMamba2MR(nn.Module):
             with torch.autocast(device_type=u.device.type, enabled=False):
                 Bg, Cg, xg, dtg = (B, C, x, dt) if not self.detach_g else (B.detach(), C.detach(), x.detach(), dt.detach())
                 Bf, Cf = Bg.float().reshape(b, l, self.N), Cg.float().reshape(b, l, self.N)
+                if getattr(self, 'memory_tied_features', False):
+                    # Same generic causal source for stored keys and writer addresses.
+                    shared_memory_source = self.kconv(F_.pad(
+                        u.float().transpose(1, 2), (self.hash_conv_width - 1, 0))).transpose(1, 2)
+                    Cf = F_.normalize(self.memory_qk(u.float()), dim=-1, eps=1e-6) * self.N**-0.5
+                    Bf = F_.normalize(self.memory_qk(shared_memory_source), dim=-1, eps=1e-6)
                 if self.kernel == "id":
                     Phi_s, Psi_s = Cf, Bf                                                  # (b, l, N)
                 else:
@@ -472,6 +478,22 @@ class SmatMamba2MR(nn.Module):
                     wfull[:, :, :n] = key_w.to(Psi.dtype)
                     Psi = (Psi.view(b, self.h, l, rk) * wfull.unsqueeze(-1)).reshape(b * self.h, l, rk)   # one multiply, no cat/clone
                 Vb = rearrange(xv, "b l h p -> (b h) l p")
+                if getattr(self, 'memory_boundary_transport', False):
+                    assert getattr(self, 'memory_tied_features', False)
+                    assert self.kernel == 'id' and not self.g_decay
+                    assert self.g_write_mode == 'independent' and self.write_gate
+                    from smat_gdn_transport import boundary_transport
+                    memory_q = Phi.reshape(b, self.h, l, rk).permute(0, 2, 1, 3) * rk**.5
+                    memory_k = Psi.reshape(b, self.h, l, rk).permute(0, 2, 1, 3)
+                    far_keys, recent_queries = boundary_transport(
+                        memory_q, memory_k, write_weights, torch.zeros_like(write_weights), n)
+                    Phi = rearrange(torch.cat((torch.zeros_like(memory_q[:, :n]),
+                        recent_queries * rk**-.5), dim=1), 'b l h r -> (b h) l r')
+                    Psi = rearrange(torch.cat((far_keys, torch.zeros_like(memory_k[:, n:])),
+                        dim=1), 'b l h r -> (b h) l r')
+                    # Transported prefix keys already include the write gate once.
+                    # Use the raw native value stream, avoiding a second beta factor.
+                    Vb = rearrange(xg.float(), 'b l (h p) -> (b h) l p', p=self.p)
                 if self.kernel != "id":
                     Vb = torch.cat([Vb, torch.ones_like(Vb[..., :1])], dim=-1)
                 if self.read == "chash":
@@ -500,7 +522,12 @@ class SmatMamba2MR(nn.Module):
                         Phi, Psi, Vb = Phi.to(torch.bfloat16), Psi.to(torch.bfloat16), Vb.to(torch.bfloat16)
                     if self.hash_conv:
                         write_src = hsrc.detach() if getattr(self, 'detach_write_hash_input', False) else hsrc
-                        ksrc = self.kconv(F_.pad(write_src.transpose(1, 2), (self.hash_conv_width - 1, 0))).transpose(1, 2)   # causal, (b, l, C)
+                        ksrc = (shared_memory_source if (getattr(self, 'memory_tied_features', False)
+                                and not getattr(self, 'detach_write_hash_input', False)) else
+                                self.kconv(F_.pad(write_src.transpose(1, 2), (self.hash_conv_width - 1, 0))).transpose(1, 2))   # causal, (b, l, C)
+                    if getattr(self, 'detach_write_hash_features', False):
+                        assert ksrc is not None
+                        ksrc = ksrc.detach()
                     mods = self.ca[str(l)]
                     emb = _EMB.get("x").float() if self.hash_src == "embed" else None
                     kw_all = write_weights.permute(0, 2, 1).reshape(b * self.h, l)[:, :n] if self.balance_gated else None   # actual G write strength per landmark token
@@ -542,6 +569,12 @@ class SmatMamba2MR(nn.Module):
                 if self.kernel != "id":
                     Ylr = Ylr[..., :-1] / Ylr[..., -1:].clamp_min(1e-6)
                 Ylr = Ylr.view(b, self.h, l - n, self.p).permute(0, 2, 1, 3)                 # (b, l-n, h, p)
+                if getattr(self, 'memory_incidence_rescale', False):
+                    assert self.read == 'chash' and len(self.ca[str(l)]) == 1
+                    memory_ca = next(iter(self.ca[str(l)].values()))
+                    read_scale = (memory_ca.M.mean().reciprocal()
+                                  if memory_ca.mode == 'plane' else memory_ca.N0)
+                    Ylr = Ylr * read_scale
                 if self.g_decay:
                     Ylr = Ylr * qry_w.unsqueeze(-1)
                 rho = (torch.arange(l - n, device=u.device) % Bn)                            # row type of each recent query

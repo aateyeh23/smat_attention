@@ -1,0 +1,23 @@
+[
+  {
+    "index": 0,
+    "name": "mamba2-d4-normalized-route-stop-s123",
+    "config": {
+      "name": "mamba2-d4-normalized-route-stop",
+      "family": "mamba2",
+      "d": 4,
+      "random_incidence": false,
+      "detach_write_hash_input": true,
+      "memory_boundary_transport": true,
+      "memory_incidence_rescale": true,
+      "detach_write_hash_features": true
+    },
+    "seed": 123,
+    "requested_sizes": [
+      1,
+      2,
+      3
+    ],
+    "independent_models": true
+  }
+]

@@ -1,0 +1,13 @@
+config,seed,k,exact_support,mse
+mamba2-d4-normalized-route-stop,456,1,1.0,133.0520362854004
+mamba2-d4-normalized-route-stop,456,2,1.0,107.04279232025146
+mamba2-d4-normalized-route-stop,456,3,0.99951171875,68.5026159286499
+mamba2-d4-normalized-route-stop,789,1,1.0,141.87681198120117
+mamba2-d4-normalized-route-stop,789,2,0.99755859375,66.95495796203613
+mamba2-d4-normalized-route-stop,789,3,0.9853515625,50.939777851104736
+mamba2-d4-normalized-route-stop,2026,1,1.0,146.8714771270752
+mamba2-d4-normalized-route-stop,2026,2,1.0,123.60727882385254
+mamba2-d4-normalized-route-stop,2026,3,1.0,96.29812049865723
+mamba2-d4-normalized-route-stop,2027,1,1.0,137.33229064941406
+mamba2-d4-normalized-route-stop,2027,2,1.0,127.4667615890503
+mamba2-d4-normalized-route-stop,2027,3,0.9775390625,74.82506370544434
