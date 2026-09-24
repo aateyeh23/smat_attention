@@ -1,0 +1,7 @@
+{
+  "failed_job": "3188884",
+  "reason": "Historical model snapshot did not include campaign launcher",
+  "training_started": false,
+  "change": "Include unchanged joint_recall_campaign.py in source bundle; update prepare.py to copy it",
+  "model_changes": false
+}

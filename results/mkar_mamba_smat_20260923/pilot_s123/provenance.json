@@ -1,0 +1,30 @@
+{
+  "parent_campaign": "code/results/learned_mkar_original_mamba_transport_normalized_20260923",
+  "parent_source_manifest_sha256": "72fd5a5255d554666589bae1bb529bc24bc372572ee9cf63a00245101866174f",
+  "parent_final_results": {
+    "1": {
+      "source": "code/results/learned_mkar_original_mamba_transport_normalized_20260923/runs/mamba2-d4-transport-normalized-s123/k1/result.json",
+      "result_sha256": "ba3e342d7661c67afa90ce986ef0b01ee19b6f518591f5c3c21ce8b7350d2540",
+      "exact_support": 1.0
+    },
+    "2": {
+      "source": "code/results/learned_mkar_original_mamba_transport_normalized_20260923/runs/mamba2-d4-transport-normalized-s123/k2/result.json",
+      "result_sha256": "add0fc91730bfd9e6cca67df23309ed20572b4ee1e72fa170c0c0bfb806e8233",
+      "exact_support": 1.0
+    },
+    "3": {
+      "source": "code/results/learned_mkar_original_mamba_transport_normalized_20260923/runs/mamba2-d4-transport-normalized-s123/k3/result.json",
+      "result_sha256": "250e1745c43e2586010bd73be07c09a575977c9bf2706e71e6a58ef4d0d496b2",
+      "exact_support": 0.1884765625
+    }
+  },
+  "change": "Stop-gradient at writer-address features in the incidence-normalized hybrid.",
+  "extra_parameters": 0,
+  "initial_forward_changed": false,
+  "gradient_flow_changed": true,
+  "numerical_loss_data_budget_evaluator_unchanged": true,
+  "exploratory": true,
+  "motivation": "Complete the two-factor pilot: normalization alone final100/100/18.8477; gradient isolation alone99.8047/99.8535/0 and improved k3 noise/requested diagnostic21.9 to1.5. Test their combination without additional changes.",
+  "independent_confirmations_required": true,
+  "native_backbone_unchanged": true
+}

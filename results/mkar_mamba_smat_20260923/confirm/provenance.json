@@ -1,0 +1,55 @@
+{
+  "parent_campaign": "results/mkar_mamba_smat_20260923/pilot_s123",
+  "parent_source_manifest_sha256": "f8392457be2b7bdba2b8d3635ee3c5cce37d960eed724abf2afdd0b35e295fb8",
+  "selection_rule": {
+    "recorded_utc": "2026-09-23T12:22:09.019449+00:00",
+    "candidate": "mamba2-d4-normalized-route-stop",
+    "selection_seed": 123,
+    "selection_rule": "Allk1/2/3 final12000-update exactsupport >=99%",
+    "results_known_at_rule": {},
+    "replication_seeds": [
+      456,
+      789,
+      2026,
+      2027
+    ],
+    "require_matching_gradient_isolated_full_global_control": true
+  },
+  "selection_rule_sha256": "2474314eb35c6362cb3c6f310713d5bac4fc95c5b4a5e4d9a70213e6b3d290e9",
+  "selection_evidence": {
+    "1": {
+      "exact_support": 1.0,
+      "source": "results/mkar_mamba_smat_20260923/pilot_s123/runs/mamba2-d4-normalized-route-stop-s123/k1/result.json",
+      "result_sha256": "ee0a93d6b3501122064f960cf7904d223db4bca9e2a4410686cbc2ea482963b6"
+    },
+    "2": {
+      "exact_support": 1.0,
+      "source": "results/mkar_mamba_smat_20260923/pilot_s123/runs/mamba2-d4-normalized-route-stop-s123/k2/result.json",
+      "result_sha256": "e0cb1e3de5a91c7af09f292c876e88faf4e6241d3ae59299d7fa74d0a82bc565"
+    },
+    "3": {
+      "exact_support": 0.998046875,
+      "source": "results/mkar_mamba_smat_20260923/pilot_s123/runs/mamba2-d4-normalized-route-stop-s123/k3/result.json",
+      "result_sha256": "e1f6c7109a5f598aed39ecbf11acb40da485b9b382f094722062dc98396da8fb"
+    }
+  },
+  "exploratory_seed": 123,
+  "replication_seeds": [
+    456,
+    789,
+    2026,
+    2027
+  ],
+  "all_reported_seeds": [
+    123,
+    456,
+    789,
+    2026,
+    2027
+  ],
+  "only_change": "Four additional seeds; frozen model, trainer, validation, data, loss and evaluator unchanged.",
+  "read_normalization": "inverse incidence density before the learned memory gate",
+  "writer_feature_gradient_isolation": true,
+  "hybrid_memory_update": true,
+  "not_routing_only": true
+}

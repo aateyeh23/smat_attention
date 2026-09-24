@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=joint-incidence
 #SBATCH --account=<account>
-#SBATCH --partition=ghx4
+#SBATCH --partition=<partition>
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=16
@@ -10,7 +10,7 @@
 #SBATCH --time=06:00:00
 #SBATCH --output=results/joint_incidence_20260921/logs/train-%j.out
 set -eo pipefail
-module load python/miniforge3_pytorch/2.11.0 >/dev/null 2>&1
+module load <pytorch-2.11-module> >/dev/null 2>&1
 cd .
 export PYTHONSAFEPATH=1
 export FLA_TILELANG=0 WANDB_MODE=disabled OMP_NUM_THREADS=2 MKL_NUM_THREADS=2

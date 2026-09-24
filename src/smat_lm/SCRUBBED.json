@@ -2,7 +2,9 @@
  "files": {
   "zoo_smat_mixer.py": {
    "contents_scrubbed": true,
-   "sha256": "ed8c39210eb4e845a6ed60f9447564563f722f991eaa6cc6f3f9ee7f1226605f"
+   "sha256": "5cd2997bb8861fa423481cb1bab83dbba6d376dc044f87e5408735d1bc1c6cae",
+   "sha256_pg19": "ed8c39210eb4e845a6ed60f9447564563f722f991eaa6cc6f3f9ee7f1226605f"
   }
- }
+ },
+ "note": "zoo_smat_mixer.py: one comment named an author. sha256 is the file as the learned multi-key recall campaign ran it (results/mkar_mamba_smat_20260923); sha256_pg19 is the earlier version the PG-19 manifests list, which lacks the memory_tied_features, memory_boundary_transport, memory_incidence_rescale and detach_write_hash_features switches (all off by default)."
 }

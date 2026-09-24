@@ -23,15 +23,17 @@ src/smat/          the library
   model.py         the model the subset-routing and multi-key tasks train
   kernels/         fused Triton forward/backward paths; torch fallbacks
   mixers/          SMat as a Zoology mixer (PG-19 300M) and the recurrent baselines
-src/smat_lm/       the learned-routing models behind the PG-19 500M/750M runs:
-                   GDN / Mamba-2 + SMat with hashed writes and four-read selection,
-                   their Triton kernels, the PG-19 LMs and the cached decoder.
-                   Flat modules, byte-identical to what the campaigns ran
+src/smat_lm/       the learned-routing models behind the PG-19 500M/750M runs and
+                   the learned multi-key recall runs: GDN / Mamba-2 + SMat with
+                   hashed writes and four-read selection, their Triton kernels,
+                   the PG-19 LMs and the cached decoder.  Flat modules,
+                   byte-identical to what the campaigns ran (see its README)
 tasks/             one entry point per experiment
   routing_train.py    subset routing (Table routing, Figure routing-pattern)
   routing_ceiling.py  the landmark sets and pattern counts routing_train uses
   routing_bench.py    end-to-end cost of the routing models (Table e2e-routing)
   mkar.py             multi-key subset recall (Table mkar and its appendix)
+  mkar_mamba_smat/    the same task with learned Mamba-2 + SMat routing (appendix)
   window_schedules.py stepped-window decoding (the horizon-free appendix)
   lm.py               PG-19, 300M tokens (Table pg19-300m)
   pg19/               PG-19 500M/750M training, data prep, GPU checks, benchmarks
@@ -92,7 +94,8 @@ that prints it, and the results it reads.
 | Table `mkar`, `mkar-seeds`, `mkar-softmax-sweep`, `mkar-posctrl`, Fig. `mkar-sanity` | `analysis/table_meanstd.py`, `analysis/mkar_sanity.py` -> `figures/fig18_mkar_sanity.*` | `results/mkar_fair2_*.csv`, `mkar_posctrl.csv`, `mkar_softsweep_*.csv` (`run_mkar_*.sbatch`, `run_baseline_gaps.sbatch`) |
 | Table `mqar-results` (MQAR, learned routing) | frozen in `results/paper_seeds_20260920/source/` | `results/paper_seeds_20260920/per_seed.csv`, Log-Linear in `original_loglinear/` |
 | Table `joint_recall` (JCKR) | frozen in `results/paper_seeds_20260920/source/joint/` | same `per_seed.csv`; Log-Linear rows in `results/paper_fast_20260920/` |
-| Table `mom_macro` (MoM comparison) | frozen in `results/joint_mom_20260921/source/` | `results/joint_mom_20260921/`; snippet in `docs/mom-comparison.tex` |
+| Table `mamba-smat-3seeds-pop` (learned Mamba-2 + SMat on multi-key recall) | `tasks/mkar_mamba_smat/` (`run_mkar_mamba_smat.sbatch`) | `results/mkar_mamba_smat_20260923/`: d=4, selection seed 123 and four confirmation seeds |
+| Table `mom_macro` (MoM comparison) | frozen in `results/joint_mom_20260921/source/` | MoM rows `results/joint_mom_20260921/`, GDN + SMat row `results/joint_incidence_20260921/geometry/`, plain GDN `results/paper_seeds_20260920/per_seed.csv`; derivation in `docs/mom-comparison.md` |
 | Table `pg19-300m` | `tasks/lm.py`, `analysis/eval_pos_loss.py` (`run_pg19.sbatch`) | `results/pg19_300m/` |
 | Table `pg19-750m` | `tasks/pg19/train_pg19_scale.py` + `src/smat_lm/` | configuration in `results/pg19_six_500m/campaign.json`; 500M record in `results/pg19_six_500m/`, 750M launch record in `results/pg19_six_750m/`; kernel validation in `results/pg19_transport_opt/` |
 | Table `e2e-routing` | `tasks/routing_bench.py` (`tasks/routing_bench.sbatch`) | `results/routing_bench/rows*.jsonl` |
@@ -119,7 +122,10 @@ launch, not from the live tree, so each keeps its bundle under
 Third-party copies that were byte-identical to `third_party/` or to pip
 `fla==0.5.2` were removed from the bundles; `THIRD_PARTY.md` in each says which.
 The seed-123 runs those tables repeat are copied to
-`results/paper_seeds_20260920/original_seed123/`.
+`results/paper_seeds_20260920/original_seed123/`.  The learned multi-key recall
+runs also ran from a frozen bundle, but every module it held is in the live
+tree, so `tasks/mkar_mamba_smat/` reruns them from the repository and checks
+each module against the recorded manifest.
 
 Development campaigns, ablations and tasks the paper does not report (counting,
 needle, streaming, selective copying, in-tree MQAR, the byte-level LM sweeps,
@@ -148,9 +154,10 @@ Job scripts carry no partition, account, node list or GPU model; `submit.sh`
 supplies them from an uncommitted `site.conf`. `prelude.sh` records
 `torch`/`triton` versions and the device's compute capability and memory, never
 a hostname or a product name. Recorded results and frozen bundles had names,
-home paths, accounts, cluster names and service URLs replaced; every frozen file
-this changed is listed with its original SHA-256 in that bundle's `SCRUBBED.json`,
-so it still verifies against `source_sha256.json` at the archive tag.
+home paths, accounts, partitions, cluster names and environment modules, and
+service URLs replaced; every frozen file this changed is listed with its
+original SHA-256 in that bundle's `SCRUBBED.json`, so it still verifies against
+`source_sha256.json` at the archive tag or commit that `SCRUBBED.json` names.
 
 Git history is **not** anonymous: commits carry author names and institutional
 email addresses. Scrubbing that needs a history rewrite, which changes every

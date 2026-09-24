@@ -1,0 +1,2031 @@
+{
+  "completed": 15,
+  "total": 15,
+  "runs": [
+    {
+      "task": {
+        "name": "geometry-s123",
+        "variant": "geometry",
+        "topology": 0,
+        "seed": 123,
+        "root": "results/joint_incidence_20260921/geometry",
+        "result": "results/joint_incidence_20260921/geometry/shared-gdn_current-d3-w64-s123/result.json",
+        "script": "code/incidence_ablation/run.py",
+        "args": [
+          "--index",
+          "0"
+        ]
+      },
+      "status": {
+        "condition": "shared",
+        "family": "gdn_current",
+        "d": 3,
+        "width": 64,
+        "seed": 123,
+        "parameters": 209960,
+        "trainable_parameters": 193064,
+        "epoch": 32,
+        "steps": 22560,
+        "lr": 0.0,
+        "elapsed_seconds": 1600.2250037491322,
+        "accuracy": 0.5396488281249999,
+        "exact_accuracy": 0.23879999999999998,
+        "cells": {
+          "c1-k4": {
+            "accuracy": 0.98825,
+            "exact_accuracy": 0.955,
+            "eval_loss": 0.03730959010124207
+          },
+          "c2-k8": {
+            "accuracy": 0.8960625,
+            "exact_accuracy": 0.239,
+            "eval_loss": 0.3027375602722168
+          },
+          "c8-k16": {
+            "accuracy": 0.37061328125,
+            "exact_accuracy": 0.0,
+            "eval_loss": 1.9106745910644531
+          },
+          "c16-k16": {
+            "accuracy": 0.2763359375,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.2202620239257813
+          },
+          "c32-k16": {
+            "accuracy": 0.166982421875,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.545601837158203
+          }
+        }
+      },
+      "result": {
+        "condition": "shared",
+        "family": "gdn_current",
+        "d": 3,
+        "width": 64,
+        "seed": 123,
+        "parameters": 209960,
+        "trainable_parameters": 193064,
+        "complete": true,
+        "epochs": 32,
+        "steps": 22560,
+        "examples_seen": 5760000,
+        "elapsed_seconds": 1606.69241729239,
+        "final_test": {
+          "accuracy": 0.5404835937500001,
+          "exact_accuracy": 0.23900000000000002,
+          "cells": {
+            "c1-k4": {
+              "accuracy": 0.9903125,
+              "exact_accuracy": 0.9615,
+              "eval_loss": 0.030766771018505095
+            },
+            "c2-k8": {
+              "accuracy": 0.89625,
+              "exact_accuracy": 0.2335,
+              "eval_loss": 0.30636375427246093
+            },
+            "c8-k16": {
+              "accuracy": 0.372150390625,
+              "exact_accuracy": 0.0,
+              "eval_loss": 1.9070007095336914
+            },
+            "c16-k16": {
+              "accuracy": 0.2763984375,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.21924462890625
+            },
+            "c32-k16": {
+              "accuracy": 0.167306640625,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.5455142669677735
+            }
+          }
+        },
+        "best_validation_epoch": 32,
+        "best_validation_accuracy": 0.5396488281249999,
+        "best_test": {
+          "accuracy": 0.540485546875,
+          "exact_accuracy": 0.23900000000000002,
+          "cells": {
+            "c1-k4": {
+              "accuracy": 0.9903125,
+              "exact_accuracy": 0.9615,
+              "eval_loss": 0.030766771018505095
+            },
+            "c2-k8": {
+              "accuracy": 0.89625,
+              "exact_accuracy": 0.2335,
+              "eval_loss": 0.30636375427246093
+            },
+            "c8-k16": {
+              "accuracy": 0.37215234375,
+              "exact_accuracy": 0.0,
+              "eval_loss": 1.907000617980957
+            },
+            "c16-k16": {
+              "accuracy": 0.2764052734375,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.219243377685547
+            },
+            "c32-k16": {
+              "accuracy": 0.1673076171875,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.545514190673828
+            }
+          }
+        }
+      }
+    },
+    {
+      "task": {
+        "name": "random-t17-s123",
+        "variant": "random",
+        "topology": 17,
+        "seed": 123,
+        "root": "results/joint_incidence_20260921/random-t17",
+        "result": "results/joint_incidence_20260921/random-t17/shared-gdn_current-d3-w64-s123/result.json",
+        "script": "code/incidence_ablation/run.py",
+        "args": [
+          "--index",
+          "1"
+        ]
+      },
+      "status": {
+        "condition": "shared",
+        "family": "gdn_current",
+        "d": 3,
+        "width": 64,
+        "seed": 123,
+        "parameters": 209960,
+        "trainable_parameters": 193064,
+        "epoch": 32,
+        "steps": 22560,
+        "lr": 0.0,
+        "elapsed_seconds": 1598.8179377340712,
+        "accuracy": 0.579181640625,
+        "exact_accuracy": 0.271,
+        "cells": {
+          "c1-k4": {
+            "accuracy": 1.0,
+            "exact_accuracy": 1.0,
+            "eval_loss": 0.0006378924958407878
+          },
+          "c2-k8": {
+            "accuracy": 0.92371875,
+            "exact_accuracy": 0.355,
+            "eval_loss": 0.2259818344116211
+          },
+          "c8-k16": {
+            "accuracy": 0.53581640625,
+            "exact_accuracy": 0.0,
+            "eval_loss": 1.434289031982422
+          },
+          "c16-k16": {
+            "accuracy": 0.237359375,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.426940658569336
+          },
+          "c32-k16": {
+            "accuracy": 0.199013671875,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.4816443786621094
+          }
+        }
+      },
+      "result": {
+        "condition": "shared",
+        "family": "gdn_current",
+        "d": 3,
+        "width": 64,
+        "seed": 123,
+        "parameters": 209960,
+        "trainable_parameters": 193064,
+        "complete": true,
+        "epochs": 32,
+        "steps": 22560,
+        "examples_seen": 5760000,
+        "elapsed_seconds": 1605.5464386031963,
+        "final_test": {
+          "accuracy": 0.5792088867187499,
+          "exact_accuracy": 0.26715,
+          "cells": {
+            "c1-k4": {
+              "accuracy": 0.9998125,
+              "exact_accuracy": 0.99925,
+              "eval_loss": 0.0010456665344536304
+            },
+            "c2-k8": {
+              "accuracy": 0.922296875,
+              "exact_accuracy": 0.3365,
+              "eval_loss": 0.23148780345916747
+            },
+            "c8-k16": {
+              "accuracy": 0.53530078125,
+              "exact_accuracy": 0.0,
+              "eval_loss": 1.4335893859863282
+            },
+            "c16-k16": {
+              "accuracy": 0.238943359375,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.424592254638672
+            },
+            "c32-k16": {
+              "accuracy": 0.19969091796875,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.4807393341064454
+            }
+          }
+        },
+        "best_validation_epoch": 31,
+        "best_validation_accuracy": 0.579254296875,
+        "best_test": {
+          "accuracy": 0.5791548828125,
+          "exact_accuracy": 0.2676,
+          "cells": {
+            "c1-k4": {
+              "accuracy": 0.9998125,
+              "exact_accuracy": 0.99925,
+              "eval_loss": 0.0010421221032738686
+            },
+            "c2-k8": {
+              "accuracy": 0.922328125,
+              "exact_accuracy": 0.33875,
+              "eval_loss": 0.23072536849975586
+            },
+            "c8-k16": {
+              "accuracy": 0.534984375,
+              "exact_accuracy": 0.0,
+              "eval_loss": 1.4348060722351075
+            },
+            "c16-k16": {
+              "accuracy": 0.2388134765625,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.42394010925293
+            },
+            "c32-k16": {
+              "accuracy": 0.1998359375,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.4801354751586913
+            }
+          }
+        }
+      }
+    },
+    {
+      "task": {
+        "name": "buckets_profiles-s123",
+        "variant": "buckets_profiles",
+        "topology": 0,
+        "seed": 123,
+        "root": "results/joint_incidence_20260921/buckets_profiles",
+        "result": "results/joint_incidence_20260921/buckets_profiles/shared-gdn_current-d3-w64-s123/result.json",
+        "script": "code/incidence_ablation/run.py",
+        "args": [
+          "--index",
+          "2"
+        ]
+      },
+      "status": {
+        "condition": "shared",
+        "family": "gdn_current",
+        "d": 3,
+        "width": 64,
+        "seed": 123,
+        "parameters": 198260,
+        "trainable_parameters": 181364,
+        "epoch": 32,
+        "steps": 22560,
+        "lr": 0.0,
+        "elapsed_seconds": 1655.43872673437,
+        "accuracy": 0.4410490234375001,
+        "exact_accuracy": 0.2117,
+        "cells": {
+          "c1-k4": {
+            "accuracy": 0.994,
+            "exact_accuracy": 0.976,
+            "eval_loss": 0.019890869557857512
+          },
+          "c2-k8": {
+            "accuracy": 0.8373125,
+            "exact_accuracy": 0.0825,
+            "eval_loss": 0.4596258735656738
+          },
+          "c8-k16": {
+            "accuracy": 0.13229296875,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.678823028564453
+          },
+          "c16-k16": {
+            "accuracy": 0.106083984375,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.7050753173828124
+          },
+          "c32-k16": {
+            "accuracy": 0.1355556640625,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.651760711669922
+          }
+        }
+      },
+      "result": {
+        "condition": "shared",
+        "family": "gdn_current",
+        "d": 3,
+        "width": 64,
+        "seed": 123,
+        "parameters": 198260,
+        "trainable_parameters": 181364,
+        "complete": true,
+        "epochs": 32,
+        "steps": 22560,
+        "examples_seen": 5760000,
+        "elapsed_seconds": 1662.2750035943463,
+        "final_test": {
+          "accuracy": 0.440026953125,
+          "exact_accuracy": 0.2101,
+          "cells": {
+            "c1-k4": {
+              "accuracy": 0.9935625,
+              "exact_accuracy": 0.975,
+              "eval_loss": 0.021599921345710753
+            },
+            "c2-k8": {
+              "accuracy": 0.83284375,
+              "exact_accuracy": 0.0755,
+              "eval_loss": 0.4674397201538086
+            },
+            "c8-k16": {
+              "accuracy": 0.13196875,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.680299736022949
+            },
+            "c16-k16": {
+              "accuracy": 0.1061376953125,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.703871192932129
+            },
+            "c32-k16": {
+              "accuracy": 0.1356220703125,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.6512451171875
+            }
+          }
+        },
+        "best_validation_epoch": 16,
+        "best_validation_accuracy": 0.4415814453125,
+        "best_test": {
+          "accuracy": 0.43999853515625,
+          "exact_accuracy": 0.20354999999999998,
+          "cells": {
+            "c1-k4": {
+              "accuracy": 0.9900625,
+              "exact_accuracy": 0.9605,
+              "eval_loss": 0.031103283166885376
+            },
+            "c2-k8": {
+              "accuracy": 0.822265625,
+              "exact_accuracy": 0.05725,
+              "eval_loss": 0.48403229904174805
+            },
+            "c8-k16": {
+              "accuracy": 0.237509765625,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.3713154220581054
+            },
+            "c16-k16": {
+              "accuracy": 0.064041015625,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.775967887878418
+            },
+            "c32-k16": {
+              "accuracy": 0.08611376953125,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.750400032043457
+            }
+          }
+        }
+      }
+    },
+    {
+      "task": {
+        "name": "buckets_bytes-s123",
+        "variant": "buckets_bytes",
+        "topology": 0,
+        "seed": 123,
+        "root": "results/joint_incidence_20260921/buckets_bytes",
+        "result": "results/joint_incidence_20260921/buckets_bytes/shared-gdn_current-d3-w64-s123/result.json",
+        "script": "code/incidence_ablation/run.py",
+        "args": [
+          "--index",
+          "3"
+        ]
+      },
+      "status": {
+        "condition": "shared",
+        "family": "gdn_current",
+        "d": 3,
+        "width": 64,
+        "seed": 123,
+        "parameters": 329820,
+        "trainable_parameters": 312924,
+        "epoch": 32,
+        "steps": 22560,
+        "lr": 0.0,
+        "elapsed_seconds": 1835.012049881043,
+        "accuracy": 0.36941503906250006,
+        "exact_accuracy": 0.196,
+        "cells": {
+          "c1-k4": {
+            "accuracy": 0.99475,
+            "exact_accuracy": 0.979,
+            "eval_loss": 0.02136503028869629
+          },
+          "c2-k8": {
+            "accuracy": 0.59790625,
+            "exact_accuracy": 0.001,
+            "eval_loss": 1.232625930786133
+          },
+          "c8-k16": {
+            "accuracy": 0.1248828125,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.723738800048828
+          },
+          "c16-k16": {
+            "accuracy": 0.06667578125,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.7742387084960938
+          },
+          "c32-k16": {
+            "accuracy": 0.0628603515625,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.775042785644531
+          }
+        }
+      },
+      "result": {
+        "condition": "shared",
+        "family": "gdn_current",
+        "d": 3,
+        "width": 64,
+        "seed": 123,
+        "parameters": 329820,
+        "trainable_parameters": 312924,
+        "complete": true,
+        "epochs": 32,
+        "steps": 22560,
+        "examples_seen": 5760000,
+        "elapsed_seconds": 1842.960287180962,
+        "final_test": {
+          "accuracy": 0.37118212890625,
+          "exact_accuracy": 0.19529999999999997,
+          "cells": {
+            "c1-k4": {
+              "accuracy": 0.9938125,
+              "exact_accuracy": 0.976,
+              "eval_loss": 0.022747919142246248
+            },
+            "c2-k8": {
+              "accuracy": 0.60721875,
+              "exact_accuracy": 0.0005,
+              "eval_loss": 1.2066133918762207
+            },
+            "c8-k16": {
+              "accuracy": 0.1241328125,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.7248470764160158
+            },
+            "c16-k16": {
+              "accuracy": 0.067517578125,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.7738554611206054
+            },
+            "c32-k16": {
+              "accuracy": 0.06322900390625,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.774996887207031
+            }
+          }
+        },
+        "best_validation_epoch": 31,
+        "best_validation_accuracy": 0.3695478515625,
+        "best_test": {
+          "accuracy": 0.37114160156250003,
+          "exact_accuracy": 0.19524999999999998,
+          "cells": {
+            "c1-k4": {
+              "accuracy": 0.99375,
+              "exact_accuracy": 0.97575,
+              "eval_loss": 0.022680698454380036
+            },
+            "c2-k8": {
+              "accuracy": 0.607703125,
+              "exact_accuracy": 0.0005,
+              "eval_loss": 1.2081183013916015
+            },
+            "c8-k16": {
+              "accuracy": 0.123599609375,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.7250543365478515
+            },
+            "c16-k16": {
+              "accuracy": 0.067548828125,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.7740657806396483
+            },
+            "c32-k16": {
+              "accuracy": 0.0631064453125,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.775118896484375
+            }
+          }
+        }
+      }
+    },
+    {
+      "task": {
+        "name": "random-t29-s123",
+        "variant": "random",
+        "topology": 29,
+        "seed": 123,
+        "root": "results/joint_incidence_20260921/random-t29",
+        "result": "results/joint_incidence_20260921/random-t29/shared-gdn_current-d3-w64-s123/result.json",
+        "script": "code/incidence_ablation/run.py",
+        "args": [
+          "--index",
+          "4"
+        ]
+      },
+      "status": {
+        "condition": "shared",
+        "family": "gdn_current",
+        "d": 3,
+        "width": 64,
+        "seed": 123,
+        "parameters": 209960,
+        "trainable_parameters": 193064,
+        "epoch": 32,
+        "steps": 22560,
+        "lr": 0.0,
+        "elapsed_seconds": 1631.3802214888856,
+        "accuracy": 0.49591171875000006,
+        "exact_accuracy": 0.23200000000000004,
+        "cells": {
+          "c1-k4": {
+            "accuracy": 0.998125,
+            "exact_accuracy": 0.9925,
+            "eval_loss": 0.004943386107683182
+          },
+          "c2-k8": {
+            "accuracy": 0.87290625,
+            "exact_accuracy": 0.1675,
+            "eval_loss": 0.34979901123046875
+          },
+          "c8-k16": {
+            "accuracy": 0.28058984375,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.0973826599121095
+          },
+          "c16-k16": {
+            "accuracy": 0.195330078125,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.437933578491211
+          },
+          "c32-k16": {
+            "accuracy": 0.132607421875,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.638002746582031
+          }
+        }
+      },
+      "result": {
+        "condition": "shared",
+        "family": "gdn_current",
+        "d": 3,
+        "width": 64,
+        "seed": 123,
+        "parameters": 209960,
+        "trainable_parameters": 193064,
+        "complete": true,
+        "epochs": 32,
+        "steps": 22560,
+        "examples_seen": 5760000,
+        "elapsed_seconds": 1637.986736210063,
+        "final_test": {
+          "accuracy": 0.49660664062500004,
+          "exact_accuracy": 0.23235,
+          "cells": {
+            "c1-k4": {
+              "accuracy": 0.9988125,
+              "exact_accuracy": 0.99525,
+              "eval_loss": 0.004217927865684032
+            },
+            "c2-k8": {
+              "accuracy": 0.874828125,
+              "exact_accuracy": 0.1665,
+              "eval_loss": 0.3416571159362793
+            },
+            "c8-k16": {
+              "accuracy": 0.2802578125,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.1018204345703126
+            },
+            "c16-k16": {
+              "accuracy": 0.1959052734375,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.437244323730469
+            },
+            "c32-k16": {
+              "accuracy": 0.1332294921875,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.6378372650146487
+            }
+          }
+        },
+        "best_validation_epoch": 32,
+        "best_validation_accuracy": 0.49591171875000006,
+        "best_test": {
+          "accuracy": 0.4966060546875,
+          "exact_accuracy": 0.23235,
+          "cells": {
+            "c1-k4": {
+              "accuracy": 0.9988125,
+              "exact_accuracy": 0.99525,
+              "eval_loss": 0.004217927865684032
+            },
+            "c2-k8": {
+              "accuracy": 0.874828125,
+              "exact_accuracy": 0.1665,
+              "eval_loss": 0.3416571159362793
+            },
+            "c8-k16": {
+              "accuracy": 0.2802578125,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.1018197631835935
+            },
+            "c16-k16": {
+              "accuracy": 0.195896484375,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.43724365234375
+            },
+            "c32-k16": {
+              "accuracy": 0.1332353515625,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.6378373413085936
+            }
+          }
+        }
+      }
+    },
+    {
+      "task": {
+        "name": "geometry-s456",
+        "variant": "geometry",
+        "topology": 0,
+        "seed": 456,
+        "root": "results/joint_incidence_20260921/geometry",
+        "result": "results/joint_incidence_20260921/geometry/shared-gdn_current-d3-w64-s456/result.json",
+        "script": "code/incidence_ablation/run.py",
+        "args": [
+          "--index",
+          "5"
+        ]
+      },
+      "status": {
+        "condition": "shared",
+        "family": "gdn_current",
+        "d": 3,
+        "width": 64,
+        "seed": 456,
+        "parameters": 209960,
+        "trainable_parameters": 193064,
+        "epoch": 32,
+        "steps": 22560,
+        "lr": 0.0,
+        "elapsed_seconds": 1584.8027285067365,
+        "accuracy": 0.6142679687499999,
+        "exact_accuracy": 0.3115,
+        "cells": {
+          "c1-k4": {
+            "accuracy": 0.999875,
+            "exact_accuracy": 0.9995,
+            "eval_loss": 0.0006448465771973133
+          },
+          "c2-k8": {
+            "accuracy": 0.95728125,
+            "exact_accuracy": 0.558,
+            "eval_loss": 0.13451082992553712
+          },
+          "c8-k16": {
+            "accuracy": 0.33040625,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.0175874938964844
+          },
+          "c16-k16": {
+            "accuracy": 0.428716796875,
+            "exact_accuracy": 0.0,
+            "eval_loss": 1.7120529022216797
+          },
+          "c32-k16": {
+            "accuracy": 0.355060546875,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.0199788513183594
+          }
+        }
+      },
+      "result": {
+        "condition": "shared",
+        "family": "gdn_current",
+        "d": 3,
+        "width": 64,
+        "seed": 456,
+        "parameters": 209960,
+        "trainable_parameters": 193064,
+        "complete": true,
+        "epochs": 32,
+        "steps": 22560,
+        "examples_seen": 5760000,
+        "elapsed_seconds": 1591.2878865087405,
+        "final_test": {
+          "accuracy": 0.61403203125,
+          "exact_accuracy": 0.3083,
+          "cells": {
+            "c1-k4": {
+              "accuracy": 0.9996875,
+              "exact_accuracy": 0.99875,
+              "eval_loss": 0.000988209703937173
+            },
+            "c2-k8": {
+              "accuracy": 0.956328125,
+              "exact_accuracy": 0.54275,
+              "eval_loss": 0.13394682741165162
+            },
+            "c8-k16": {
+              "accuracy": 0.331373046875,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.017821502685547
+            },
+            "c16-k16": {
+              "accuracy": 0.42877734375,
+              "exact_accuracy": 0.0,
+              "eval_loss": 1.7121830215454101
+            },
+            "c32-k16": {
+              "accuracy": 0.353994140625,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.0220915145874025
+            }
+          }
+        },
+        "best_validation_epoch": 31,
+        "best_validation_accuracy": 0.614290625,
+        "best_test": {
+          "accuracy": 0.6139361328124999,
+          "exact_accuracy": 0.30695,
+          "cells": {
+            "c1-k4": {
+              "accuracy": 0.9996875,
+              "exact_accuracy": 0.99875,
+              "eval_loss": 0.0010075456891208887
+            },
+            "c2-k8": {
+              "accuracy": 0.95590625,
+              "exact_accuracy": 0.536,
+              "eval_loss": 0.13376505899429322
+            },
+            "c8-k16": {
+              "accuracy": 0.331474609375,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.017914276123047
+            },
+            "c16-k16": {
+              "accuracy": 0.4291455078125,
+              "exact_accuracy": 0.0,
+              "eval_loss": 1.7105685729980469
+            },
+            "c32-k16": {
+              "accuracy": 0.353466796875,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.024617431640625
+            }
+          }
+        }
+      }
+    },
+    {
+      "task": {
+        "name": "random-t17-s456",
+        "variant": "random",
+        "topology": 17,
+        "seed": 456,
+        "root": "results/joint_incidence_20260921/random-t17",
+        "result": "results/joint_incidence_20260921/random-t17/shared-gdn_current-d3-w64-s456/result.json",
+        "script": "code/incidence_ablation/run.py",
+        "args": [
+          "--index",
+          "6"
+        ]
+      },
+      "status": {
+        "condition": "shared",
+        "family": "gdn_current",
+        "d": 3,
+        "width": 64,
+        "seed": 456,
+        "parameters": 209960,
+        "trainable_parameters": 193064,
+        "epoch": 32,
+        "steps": 22560,
+        "lr": 0.0,
+        "elapsed_seconds": 1672.3769728653133,
+        "accuracy": 0.5155181640625,
+        "exact_accuracy": 0.2318,
+        "cells": {
+          "c1-k4": {
+            "accuracy": 0.998875,
+            "exact_accuracy": 0.9955,
+            "eval_loss": 0.004236947447061538
+          },
+          "c2-k8": {
+            "accuracy": 0.87640625,
+            "exact_accuracy": 0.1635,
+            "eval_loss": 0.3398675346374512
+          },
+          "c8-k16": {
+            "accuracy": 0.31484765625,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.0498956451416017
+          },
+          "c16-k16": {
+            "accuracy": 0.223505859375,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.379739028930664
+          },
+          "c32-k16": {
+            "accuracy": 0.1639560546875,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.5739112243652342
+          }
+        }
+      },
+      "result": {
+        "condition": "shared",
+        "family": "gdn_current",
+        "d": 3,
+        "width": 64,
+        "seed": 456,
+        "parameters": 209960,
+        "trainable_parameters": 193064,
+        "complete": true,
+        "epochs": 32,
+        "steps": 22560,
+        "examples_seen": 5760000,
+        "elapsed_seconds": 1678.9945722501725,
+        "final_test": {
+          "accuracy": 0.51566123046875,
+          "exact_accuracy": 0.22959999999999997,
+          "cells": {
+            "c1-k4": {
+              "accuracy": 0.9988125,
+              "exact_accuracy": 0.99525,
+              "eval_loss": 0.003747984424233437
+            },
+            "c2-k8": {
+              "accuracy": 0.875390625,
+              "exact_accuracy": 0.15275,
+              "eval_loss": 0.3444407444000244
+            },
+            "c8-k16": {
+              "accuracy": 0.316244140625,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.0469893646240234
+            },
+            "c16-k16": {
+              "accuracy": 0.223408203125,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.3784884643554687
+            },
+            "c32-k16": {
+              "accuracy": 0.16445068359375,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.5732223205566407
+            }
+          }
+        },
+        "best_validation_epoch": 31,
+        "best_validation_accuracy": 0.5155376953125,
+        "best_test": {
+          "accuracy": 0.5156317382812501,
+          "exact_accuracy": 0.22945000000000002,
+          "cells": {
+            "c1-k4": {
+              "accuracy": 0.998875,
+              "exact_accuracy": 0.9955,
+              "eval_loss": 0.003652083605527878
+            },
+            "c2-k8": {
+              "accuracy": 0.87528125,
+              "exact_accuracy": 0.15175,
+              "eval_loss": 0.3448412094116211
+            },
+            "c8-k16": {
+              "accuracy": 0.316330078125,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.0471133880615233
+            },
+            "c16-k16": {
+              "accuracy": 0.2233955078125,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.3787841033935546
+            },
+            "c32-k16": {
+              "accuracy": 0.16427685546875,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.573471878051758
+            }
+          }
+        }
+      }
+    },
+    {
+      "task": {
+        "name": "buckets_profiles-s456",
+        "variant": "buckets_profiles",
+        "topology": 0,
+        "seed": 456,
+        "root": "results/joint_incidence_20260921/buckets_profiles",
+        "result": "results/joint_incidence_20260921/buckets_profiles/shared-gdn_current-d3-w64-s456/result.json",
+        "script": "code/incidence_ablation/run.py",
+        "args": [
+          "--index",
+          "7"
+        ]
+      },
+      "status": {
+        "condition": "shared",
+        "family": "gdn_current",
+        "d": 3,
+        "width": 64,
+        "seed": 456,
+        "parameters": 198260,
+        "trainable_parameters": 181364,
+        "epoch": 32,
+        "steps": 22560,
+        "lr": 0.0,
+        "elapsed_seconds": 1599.9639951640274,
+        "accuracy": 0.45609765625,
+        "exact_accuracy": 0.2827,
+        "cells": {
+          "c1-k4": {
+            "accuracy": 0.99975,
+            "exact_accuracy": 0.999,
+            "eval_loss": 0.0018388817682862281
+          },
+          "c2-k8": {
+            "accuracy": 0.94146875,
+            "exact_accuracy": 0.4145,
+            "eval_loss": 0.188071081161499
+          },
+          "c8-k16": {
+            "accuracy": 0.11366015625,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.7202344970703125
+          },
+          "c16-k16": {
+            "accuracy": 0.1429140625,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.648134216308594
+          },
+          "c32-k16": {
+            "accuracy": 0.0826953125,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.7631768798828125
+          }
+        }
+      },
+      "result": {
+        "condition": "shared",
+        "family": "gdn_current",
+        "d": 3,
+        "width": 64,
+        "seed": 456,
+        "parameters": 198260,
+        "trainable_parameters": 181364,
+        "complete": true,
+        "epochs": 32,
+        "steps": 22560,
+        "examples_seen": 5760000,
+        "elapsed_seconds": 1606.4318281179294,
+        "final_test": {
+          "accuracy": 0.4558322265625,
+          "exact_accuracy": 0.2813,
+          "cells": {
+            "c1-k4": {
+              "accuracy": 0.999375,
+              "exact_accuracy": 0.9975,
+              "eval_loss": 0.0029805804789066314
+            },
+            "c2-k8": {
+              "accuracy": 0.94078125,
+              "exact_accuracy": 0.409,
+              "eval_loss": 0.1859553747177124
+            },
+            "c8-k16": {
+              "accuracy": 0.113166015625,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.721353439331055
+            },
+            "c16-k16": {
+              "accuracy": 0.143041015625,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.6484390563964846
+            },
+            "c32-k16": {
+              "accuracy": 0.0827978515625,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.7634142837524416
+            }
+          }
+        },
+        "best_validation_epoch": 22,
+        "best_validation_accuracy": 0.4901628906249999,
+        "best_test": {
+          "accuracy": 0.4902615234375,
+          "exact_accuracy": 0.25434999999999997,
+          "cells": {
+            "c1-k4": {
+              "accuracy": 0.998625,
+              "exact_accuracy": 0.9945,
+              "eval_loss": 0.005382747575640679
+            },
+            "c2-k8": {
+              "accuracy": 0.914796875,
+              "exact_accuracy": 0.27725,
+              "eval_loss": 0.2618165292739868
+            },
+            "c8-k16": {
+              "accuracy": 0.17518359375,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.5989020080566405
+            },
+            "c16-k16": {
+              "accuracy": 0.262806640625,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.347423957824707
+            },
+            "c32-k16": {
+              "accuracy": 0.0998955078125,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.7354657135009766
+            }
+          }
+        }
+      }
+    },
+    {
+      "task": {
+        "name": "buckets_bytes-s456",
+        "variant": "buckets_bytes",
+        "topology": 0,
+        "seed": 456,
+        "root": "results/joint_incidence_20260921/buckets_bytes",
+        "result": "results/joint_incidence_20260921/buckets_bytes/shared-gdn_current-d3-w64-s456/result.json",
+        "script": "code/incidence_ablation/run.py",
+        "args": [
+          "--index",
+          "8"
+        ]
+      },
+      "status": {
+        "condition": "shared",
+        "family": "gdn_current",
+        "d": 3,
+        "width": 64,
+        "seed": 456,
+        "parameters": 329820,
+        "trainable_parameters": 312924,
+        "epoch": 32,
+        "steps": 22560,
+        "lr": 0.0,
+        "elapsed_seconds": 1784.3154597850516,
+        "accuracy": 0.3786837890625,
+        "exact_accuracy": 0.1966,
+        "cells": {
+          "c1-k4": {
+            "accuracy": 0.99575,
+            "exact_accuracy": 0.983,
+            "eval_loss": 0.013108295917510986
+          },
+          "c2-k8": {
+            "accuracy": 0.51921875,
+            "exact_accuracy": 0.0,
+            "eval_loss": 0.9374490356445313
+          },
+          "c8-k16": {
+            "accuracy": 0.2196171875,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.2862807312011717
+          },
+          "c16-k16": {
+            "accuracy": 0.084970703125,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.766579833984375
+          },
+          "c32-k16": {
+            "accuracy": 0.0738623046875,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.771034210205078
+          }
+        }
+      },
+      "result": {
+        "condition": "shared",
+        "family": "gdn_current",
+        "d": 3,
+        "width": 64,
+        "seed": 456,
+        "parameters": 329820,
+        "trainable_parameters": 312924,
+        "complete": true,
+        "epochs": 32,
+        "steps": 22560,
+        "examples_seen": 5760000,
+        "elapsed_seconds": 1791.6695701600984,
+        "final_test": {
+          "accuracy": 0.3780646484375,
+          "exact_accuracy": 0.19765,
+          "cells": {
+            "c1-k4": {
+              "accuracy": 0.9970625,
+              "exact_accuracy": 0.98825,
+              "eval_loss": 0.00991043570637703
+            },
+            "c2-k8": {
+              "accuracy": 0.516140625,
+              "exact_accuracy": 0.0,
+              "eval_loss": 0.9413597946166992
+            },
+            "c8-k16": {
+              "accuracy": 0.218626953125,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.285787338256836
+            },
+            "c16-k16": {
+              "accuracy": 0.08476953125,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.7666296081542967
+            },
+            "c32-k16": {
+              "accuracy": 0.0737236328125,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.7709621124267576
+            }
+          }
+        },
+        "best_validation_epoch": 32,
+        "best_validation_accuracy": 0.3786837890625,
+        "best_test": {
+          "accuracy": 0.3780650390625,
+          "exact_accuracy": 0.19765,
+          "cells": {
+            "c1-k4": {
+              "accuracy": 0.9970625,
+              "exact_accuracy": 0.98825,
+              "eval_loss": 0.00991043570637703
+            },
+            "c2-k8": {
+              "accuracy": 0.516140625,
+              "exact_accuracy": 0.0,
+              "eval_loss": 0.9413597946166992
+            },
+            "c8-k16": {
+              "accuracy": 0.21862890625,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.2857871551513673
+            },
+            "c16-k16": {
+              "accuracy": 0.08476953125,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.7666296081542967
+            },
+            "c32-k16": {
+              "accuracy": 0.0737236328125,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.7709621124267576
+            }
+          }
+        }
+      }
+    },
+    {
+      "task": {
+        "name": "random-t29-s456",
+        "variant": "random",
+        "topology": 29,
+        "seed": 456,
+        "root": "results/joint_incidence_20260921/random-t29",
+        "result": "results/joint_incidence_20260921/random-t29/shared-gdn_current-d3-w64-s456/result.json",
+        "script": "code/incidence_ablation/run.py",
+        "args": [
+          "--index",
+          "9"
+        ]
+      },
+      "status": {
+        "condition": "shared",
+        "family": "gdn_current",
+        "d": 3,
+        "width": 64,
+        "seed": 456,
+        "parameters": 209960,
+        "trainable_parameters": 193064,
+        "epoch": 32,
+        "steps": 22560,
+        "lr": 0.0,
+        "elapsed_seconds": 1591.93151565874,
+        "accuracy": 0.6320218750000001,
+        "exact_accuracy": 0.3653,
+        "cells": {
+          "c1-k4": {
+            "accuracy": 0.998875,
+            "exact_accuracy": 0.9955,
+            "eval_loss": 0.004705146372318268
+          },
+          "c2-k8": {
+            "accuracy": 0.98778125,
+            "exact_accuracy": 0.831,
+            "eval_loss": 0.03945691585540771
+          },
+          "c8-k16": {
+            "accuracy": 0.68803515625,
+            "exact_accuracy": 0.0,
+            "eval_loss": 0.971317626953125
+          },
+          "c16-k16": {
+            "accuracy": 0.25375,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.316676971435547
+          },
+          "c32-k16": {
+            "accuracy": 0.23166796875,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.3991843872070313
+          }
+        }
+      },
+      "result": {
+        "condition": "shared",
+        "family": "gdn_current",
+        "d": 3,
+        "width": 64,
+        "seed": 456,
+        "parameters": 209960,
+        "trainable_parameters": 193064,
+        "complete": true,
+        "epochs": 32,
+        "steps": 22560,
+        "examples_seen": 5760000,
+        "elapsed_seconds": 1598.445882414002,
+        "final_test": {
+          "accuracy": 0.6320572265625,
+          "exact_accuracy": 0.36555,
+          "cells": {
+            "c1-k4": {
+              "accuracy": 0.9986875,
+              "exact_accuracy": 0.99475,
+              "eval_loss": 0.0044566323831677435
+            },
+            "c2-k8": {
+              "accuracy": 0.987765625,
+              "exact_accuracy": 0.833,
+              "eval_loss": 0.03913107025623321
+            },
+            "c8-k16": {
+              "accuracy": 0.688001953125,
+              "exact_accuracy": 0.0,
+              "eval_loss": 0.974579532623291
+            },
+            "c16-k16": {
+              "accuracy": 0.25401953125,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.3175737762451174
+            },
+            "c32-k16": {
+              "accuracy": 0.2318115234375,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.398970779418945
+            }
+          }
+        },
+        "best_validation_epoch": 17,
+        "best_validation_accuracy": 0.6456500000000001,
+        "best_test": {
+          "accuracy": 0.64579990234375,
+          "exact_accuracy": 0.34525,
+          "cells": {
+            "c1-k4": {
+              "accuracy": 0.997625,
+              "exact_accuracy": 0.9905,
+              "eval_loss": 0.01147229301929474
+            },
+            "c2-k8": {
+              "accuracy": 0.97975,
+              "exact_accuracy": 0.73575,
+              "eval_loss": 0.06705788111686707
+            },
+            "c8-k16": {
+              "accuracy": 0.69308984375,
+              "exact_accuracy": 0.0,
+              "eval_loss": 0.9566993103027344
+            },
+            "c16-k16": {
+              "accuracy": 0.3359580078125,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.0648398895263673
+            },
+            "c32-k16": {
+              "accuracy": 0.22257666015625,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.4107214279174807
+            }
+          }
+        }
+      }
+    },
+    {
+      "task": {
+        "name": "geometry-s789",
+        "variant": "geometry",
+        "topology": 0,
+        "seed": 789,
+        "root": "results/joint_incidence_20260921/geometry",
+        "result": "results/joint_incidence_20260921/geometry/shared-gdn_current-d3-w64-s789/result.json",
+        "script": "code/incidence_ablation/run.py",
+        "args": [
+          "--index",
+          "10"
+        ]
+      },
+      "status": {
+        "condition": "shared",
+        "family": "gdn_current",
+        "d": 3,
+        "width": 64,
+        "seed": 789,
+        "parameters": 209960,
+        "trainable_parameters": 193064,
+        "epoch": 32,
+        "steps": 22560,
+        "lr": 0.0,
+        "elapsed_seconds": 1612.9293759372085,
+        "accuracy": 0.61323203125,
+        "exact_accuracy": 0.3257,
+        "cells": {
+          "c1-k4": {
+            "accuracy": 0.999,
+            "exact_accuracy": 0.996,
+            "eval_loss": 0.003096134066581726
+          },
+          "c2-k8": {
+            "accuracy": 0.96765625,
+            "exact_accuracy": 0.6325,
+            "eval_loss": 0.10299926662445068
+          },
+          "c8-k16": {
+            "accuracy": 0.60376171875,
+            "exact_accuracy": 0.0,
+            "eval_loss": 1.252463638305664
+          },
+          "c16-k16": {
+            "accuracy": 0.31404296875,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.135262405395508
+          },
+          "c32-k16": {
+            "accuracy": 0.18169921875,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.5219564208984373
+          }
+        }
+      },
+      "result": {
+        "condition": "shared",
+        "family": "gdn_current",
+        "d": 3,
+        "width": 64,
+        "seed": 789,
+        "parameters": 209960,
+        "trainable_parameters": 193064,
+        "complete": true,
+        "epochs": 32,
+        "steps": 22560,
+        "examples_seen": 5760000,
+        "elapsed_seconds": 1619.7761478368193,
+        "final_test": {
+          "accuracy": 0.61323251953125,
+          "exact_accuracy": 0.3287,
+          "cells": {
+            "c1-k4": {
+              "accuracy": 0.9996875,
+              "exact_accuracy": 0.99875,
+              "eval_loss": 0.0017149855010211467
+            },
+            "c2-k8": {
+              "accuracy": 0.96815625,
+              "exact_accuracy": 0.64475,
+              "eval_loss": 0.1016253046989441
+            },
+            "c8-k16": {
+              "accuracy": 0.602427734375,
+              "exact_accuracy": 0.0,
+              "eval_loss": 1.2599877471923828
+            },
+            "c16-k16": {
+              "accuracy": 0.3138720703125,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.1347981567382814
+            },
+            "c32-k16": {
+              "accuracy": 0.18201904296875,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.5210265350341796
+            }
+          }
+        },
+        "best_validation_epoch": 27,
+        "best_validation_accuracy": 0.6145060546875001,
+        "best_test": {
+          "accuracy": 0.6143135742187501,
+          "exact_accuracy": 0.3249,
+          "cells": {
+            "c1-k4": {
+              "accuracy": 0.9999375,
+              "exact_accuracy": 0.99975,
+              "eval_loss": 0.0016694789305329322
+            },
+            "c2-k8": {
+              "accuracy": 0.965546875,
+              "exact_accuracy": 0.62475,
+              "eval_loss": 0.10976718091964721
+            },
+            "c8-k16": {
+              "accuracy": 0.602828125,
+              "exact_accuracy": 0.0,
+              "eval_loss": 1.2625722122192382
+            },
+            "c16-k16": {
+              "accuracy": 0.320142578125,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.113147750854492
+            },
+            "c32-k16": {
+              "accuracy": 0.18311279296875,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.5186658630371093
+            }
+          }
+        }
+      }
+    },
+    {
+      "task": {
+        "name": "random-t17-s789",
+        "variant": "random",
+        "topology": 17,
+        "seed": 789,
+        "root": "results/joint_incidence_20260921/random-t17",
+        "result": "results/joint_incidence_20260921/random-t17/shared-gdn_current-d3-w64-s789/result.json",
+        "script": "code/incidence_ablation/run.py",
+        "args": [
+          "--index",
+          "11"
+        ]
+      },
+      "status": {
+        "condition": "shared",
+        "family": "gdn_current",
+        "d": 3,
+        "width": 64,
+        "seed": 789,
+        "parameters": 209960,
+        "trainable_parameters": 193064,
+        "epoch": 32,
+        "steps": 22560,
+        "lr": 0.0,
+        "elapsed_seconds": 1637.4670186510775,
+        "accuracy": 0.514350390625,
+        "exact_accuracy": 0.24300000000000002,
+        "cells": {
+          "c1-k4": {
+            "accuracy": 1.0,
+            "exact_accuracy": 1.0,
+            "eval_loss": 0.00013452505599707365
+          },
+          "c2-k8": {
+            "accuracy": 0.89053125,
+            "exact_accuracy": 0.215,
+            "eval_loss": 0.3023002815246582
+          },
+          "c8-k16": {
+            "accuracy": 0.30709765625,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.092830276489258
+          },
+          "c16-k16": {
+            "accuracy": 0.21469140625,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.4147342529296876
+          },
+          "c32-k16": {
+            "accuracy": 0.159431640625,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.5897908325195313
+          }
+        }
+      },
+      "result": {
+        "condition": "shared",
+        "family": "gdn_current",
+        "d": 3,
+        "width": 64,
+        "seed": 789,
+        "parameters": 209960,
+        "trainable_parameters": 193064,
+        "complete": true,
+        "epochs": 32,
+        "steps": 22560,
+        "examples_seen": 5760000,
+        "elapsed_seconds": 1644.198158575222,
+        "final_test": {
+          "accuracy": 0.514304296875,
+          "exact_accuracy": 0.24145,
+          "cells": {
+            "c1-k4": {
+              "accuracy": 1.0,
+              "exact_accuracy": 1.0,
+              "eval_loss": 0.00020974597008898855
+            },
+            "c2-k8": {
+              "accuracy": 0.889234375,
+              "exact_accuracy": 0.20725,
+              "eval_loss": 0.30793388175964354
+            },
+            "c8-k16": {
+              "accuracy": 0.307806640625,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.0922208786010743
+            },
+            "c16-k16": {
+              "accuracy": 0.2152490234375,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.413823303222656
+            },
+            "c32-k16": {
+              "accuracy": 0.1592314453125,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.5895151596069335
+            }
+          }
+        },
+        "best_validation_epoch": 23,
+        "best_validation_accuracy": 0.5218339843750001,
+        "best_test": {
+          "accuracy": 0.5217492187499999,
+          "exact_accuracy": 0.23410000000000003,
+          "cells": {
+            "c1-k4": {
+              "accuracy": 0.9999375,
+              "exact_accuracy": 0.99975,
+              "eval_loss": 0.0006412381622940302
+            },
+            "c2-k8": {
+              "accuracy": 0.879046875,
+              "exact_accuracy": 0.17075,
+              "eval_loss": 0.3343125619888306
+            },
+            "c8-k16": {
+              "accuracy": 0.357791015625,
+              "exact_accuracy": 0.0,
+              "eval_loss": 1.928469711303711
+            },
+            "c16-k16": {
+              "accuracy": 0.21330859375,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.4225736236572266
+            },
+            "c32-k16": {
+              "accuracy": 0.158662109375,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.594357849121094
+            }
+          }
+        }
+      }
+    },
+    {
+      "task": {
+        "name": "buckets_profiles-s789",
+        "variant": "buckets_profiles",
+        "topology": 0,
+        "seed": 789,
+        "root": "results/joint_incidence_20260921/buckets_profiles",
+        "result": "results/joint_incidence_20260921/buckets_profiles/shared-gdn_current-d3-w64-s789/result.json",
+        "script": "code/incidence_ablation/run.py",
+        "args": [
+          "--index",
+          "12"
+        ]
+      },
+      "status": {
+        "condition": "shared",
+        "family": "gdn_current",
+        "d": 3,
+        "width": 64,
+        "seed": 789,
+        "parameters": 198260,
+        "trainable_parameters": 181364,
+        "epoch": 32,
+        "steps": 22560,
+        "lr": 0.0,
+        "elapsed_seconds": 1560.0385937578976,
+        "accuracy": 0.44867363281250006,
+        "exact_accuracy": 0.20260000000000003,
+        "cells": {
+          "c1-k4": {
+            "accuracy": 0.997125,
+            "exact_accuracy": 0.9895,
+            "eval_loss": 0.011114871501922608
+          },
+          "c2-k8": {
+            "accuracy": 0.72965625,
+            "exact_accuracy": 0.0235,
+            "eval_loss": 0.706450553894043
+          },
+          "c8-k16": {
+            "accuracy": 0.220625,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.381680603027344
+          },
+          "c16-k16": {
+            "accuracy": 0.191693359375,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.4728389892578124
+          },
+          "c32-k16": {
+            "accuracy": 0.1042685546875,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.723201171875
+          }
+        }
+      },
+      "result": {
+        "condition": "shared",
+        "family": "gdn_current",
+        "d": 3,
+        "width": 64,
+        "seed": 789,
+        "parameters": 198260,
+        "trainable_parameters": 181364,
+        "complete": true,
+        "epochs": 32,
+        "steps": 22560,
+        "examples_seen": 5760000,
+        "elapsed_seconds": 1566.4565613679588,
+        "final_test": {
+          "accuracy": 0.4488146484374999,
+          "exact_accuracy": 0.20145,
+          "cells": {
+            "c1-k4": {
+              "accuracy": 0.9970625,
+              "exact_accuracy": 0.9885,
+              "eval_loss": 0.01174626287817955
+            },
+            "c2-k8": {
+              "accuracy": 0.731359375,
+              "exact_accuracy": 0.01875,
+              "eval_loss": 0.7046266422271729
+            },
+            "c8-k16": {
+              "accuracy": 0.219427734375,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.3831454772949217
+            },
+            "c16-k16": {
+              "accuracy": 0.19162109375,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.472752815246582
+            },
+            "c32-k16": {
+              "accuracy": 0.1046025390625,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.7232074127197268
+            }
+          }
+        },
+        "best_validation_epoch": 32,
+        "best_validation_accuracy": 0.44867363281250006,
+        "best_test": {
+          "accuracy": 0.44881455078125,
+          "exact_accuracy": 0.20145,
+          "cells": {
+            "c1-k4": {
+              "accuracy": 0.9970625,
+              "exact_accuracy": 0.9885,
+              "eval_loss": 0.01174626287817955
+            },
+            "c2-k8": {
+              "accuracy": 0.731359375,
+              "exact_accuracy": 0.01875,
+              "eval_loss": 0.7046266422271729
+            },
+            "c8-k16": {
+              "accuracy": 0.219427734375,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.383145393371582
+            },
+            "c16-k16": {
+              "accuracy": 0.19162109375,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.4727528076171876
+            },
+            "c32-k16": {
+              "accuracy": 0.10460205078125,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.723207389831543
+            }
+          }
+        }
+      }
+    },
+    {
+      "task": {
+        "name": "buckets_bytes-s789",
+        "variant": "buckets_bytes",
+        "topology": 0,
+        "seed": 789,
+        "root": "results/joint_incidence_20260921/buckets_bytes",
+        "result": "results/joint_incidence_20260921/buckets_bytes/shared-gdn_current-d3-w64-s789/result.json",
+        "script": "code/incidence_ablation/run.py",
+        "args": [
+          "--index",
+          "13"
+        ]
+      },
+      "status": {
+        "condition": "shared",
+        "family": "gdn_current",
+        "d": 3,
+        "width": 64,
+        "seed": 789,
+        "parameters": 329820,
+        "trainable_parameters": 312924,
+        "epoch": 32,
+        "steps": 22560,
+        "lr": 0.0,
+        "elapsed_seconds": 1800.7757914597169,
+        "accuracy": 0.3665431640625,
+        "exact_accuracy": 0.19770000000000001,
+        "cells": {
+          "c1-k4": {
+            "accuracy": 0.99675,
+            "exact_accuracy": 0.9885,
+            "eval_loss": 0.018042321562767027
+          },
+          "c2-k8": {
+            "accuracy": 0.50453125,
+            "exact_accuracy": 0.0,
+            "eval_loss": 1.1581506576538085
+          },
+          "c8-k16": {
+            "accuracy": 0.1639140625,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.619973846435547
+          },
+          "c16-k16": {
+            "accuracy": 0.10227734375,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.733008239746094
+          },
+          "c32-k16": {
+            "accuracy": 0.0652431640625,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.7733193054199217
+          }
+        }
+      },
+      "result": {
+        "condition": "shared",
+        "family": "gdn_current",
+        "d": 3,
+        "width": 64,
+        "seed": 789,
+        "parameters": 329820,
+        "trainable_parameters": 312924,
+        "complete": true,
+        "epochs": 32,
+        "steps": 22560,
+        "examples_seen": 5760000,
+        "elapsed_seconds": 1808.2031530840322,
+        "final_test": {
+          "accuracy": 0.36709697265624996,
+          "exact_accuracy": 0.1968,
+          "cells": {
+            "c1-k4": {
+              "accuracy": 0.995875,
+              "exact_accuracy": 0.984,
+              "eval_loss": 0.016041754841804503
+            },
+            "c2-k8": {
+              "accuracy": 0.50740625,
+              "exact_accuracy": 0.0,
+              "eval_loss": 1.1546352005004883
+            },
+            "c8-k16": {
+              "accuracy": 0.164322265625,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.6196110305786133
+            },
+            "c16-k16": {
+              "accuracy": 0.1027763671875,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.7326573257446287
+            },
+            "c32-k16": {
+              "accuracy": 0.06510498046875,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.7732871398925782
+            }
+          }
+        },
+        "best_validation_epoch": 28,
+        "best_validation_accuracy": 0.36940175781250006,
+        "best_test": {
+          "accuracy": 0.3692083984375,
+          "exact_accuracy": 0.1972,
+          "cells": {
+            "c1-k4": {
+              "accuracy": 0.9964375,
+              "exact_accuracy": 0.986,
+              "eval_loss": 0.012617831975221634
+            },
+            "c2-k8": {
+              "accuracy": 0.5135625,
+              "exact_accuracy": 0.0,
+              "eval_loss": 1.0579296073913573
+            },
+            "c8-k16": {
+              "accuracy": 0.166654296875,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.609445037841797
+            },
+            "c16-k16": {
+              "accuracy": 0.1047783203125,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.7250047988891604
+            },
+            "c32-k16": {
+              "accuracy": 0.064609375,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.77354972076416
+            }
+          }
+        }
+      }
+    },
+    {
+      "task": {
+        "name": "random-t29-s789",
+        "variant": "random",
+        "topology": 29,
+        "seed": 789,
+        "root": "results/joint_incidence_20260921/random-t29",
+        "result": "results/joint_incidence_20260921/random-t29/shared-gdn_current-d3-w64-s789/result.json",
+        "script": "code/incidence_ablation/run.py",
+        "args": [
+          "--index",
+          "14"
+        ]
+      },
+      "status": {
+        "condition": "shared",
+        "family": "gdn_current",
+        "d": 3,
+        "width": 64,
+        "seed": 789,
+        "parameters": 209960,
+        "trainable_parameters": 193064,
+        "epoch": 32,
+        "steps": 22560,
+        "lr": 0.0,
+        "elapsed_seconds": 2057.637492276728,
+        "accuracy": 0.562662890625,
+        "exact_accuracy": 0.3372,
+        "cells": {
+          "c1-k4": {
+            "accuracy": 0.99975,
+            "exact_accuracy": 0.999,
+            "eval_loss": 0.0013793345540761947
+          },
+          "c2-k8": {
+            "accuracy": 0.9738125,
+            "exact_accuracy": 0.687,
+            "eval_loss": 0.08363395404815674
+          },
+          "c8-k16": {
+            "accuracy": 0.35214453125,
+            "exact_accuracy": 0.0,
+            "eval_loss": 1.952063232421875
+          },
+          "c16-k16": {
+            "accuracy": 0.331892578125,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.0756402740478515
+          },
+          "c32-k16": {
+            "accuracy": 0.15571484375,
+            "exact_accuracy": 0.0,
+            "eval_loss": 2.5779561157226563
+          }
+        }
+      },
+      "result": {
+        "condition": "shared",
+        "family": "gdn_current",
+        "d": 3,
+        "width": 64,
+        "seed": 789,
+        "parameters": 209960,
+        "trainable_parameters": 193064,
+        "complete": true,
+        "epochs": 32,
+        "steps": 22560,
+        "examples_seen": 5760000,
+        "elapsed_seconds": 2064.166073913686,
+        "final_test": {
+          "accuracy": 0.56251533203125,
+          "exact_accuracy": 0.33195,
+          "cells": {
+            "c1-k4": {
+              "accuracy": 0.999625,
+              "exact_accuracy": 0.9985,
+              "eval_loss": 0.0012022319305688143
+            },
+            "c2-k8": {
+              "accuracy": 0.971453125,
+              "exact_accuracy": 0.66125,
+              "eval_loss": 0.08907166981697083
+            },
+            "c8-k16": {
+              "accuracy": 0.35323828125,
+              "exact_accuracy": 0.0,
+              "eval_loss": 1.9467050094604492
+            },
+            "c16-k16": {
+              "accuracy": 0.3325390625,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.075401741027832
+            },
+            "c32-k16": {
+              "accuracy": 0.15572119140625,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.578001106262207
+            }
+          }
+        },
+        "best_validation_epoch": 29,
+        "best_validation_accuracy": 0.5629044921874999,
+        "best_test": {
+          "accuracy": 0.56292529296875,
+          "exact_accuracy": 0.32895,
+          "cells": {
+            "c1-k4": {
+              "accuracy": 0.99975,
+              "exact_accuracy": 0.999,
+              "eval_loss": 0.0012141038551926613
+            },
+            "c2-k8": {
+              "accuracy": 0.96996875,
+              "exact_accuracy": 0.64575,
+              "eval_loss": 0.09314002084732055
+            },
+            "c8-k16": {
+              "accuracy": 0.3511484375,
+              "exact_accuracy": 0.0,
+              "eval_loss": 1.9525370635986328
+            },
+            "c16-k16": {
+              "accuracy": 0.337435546875,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.0588326263427734
+            },
+            "c32-k16": {
+              "accuracy": 0.15632373046875,
+              "exact_accuracy": 0.0,
+              "eval_loss": 2.578931930541992
+            }
+          }
+        }
+      }
+    }
+  ]
+}

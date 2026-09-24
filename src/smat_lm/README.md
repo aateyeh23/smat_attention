@@ -7,9 +7,13 @@ models behind the PG-19 results and the current recall configurations.
 
 The modules import each other by flat name, as they did when they ran, and are
 byte-identical to the files the PG-19 six-run campaign recorded:
-`results/pg19_six_500m/<arm>/manifest.json` lists their SHA-256.  The one
-exception is a comment in `zoo_smat_mixer.py` that named an author; its
-original SHA-256 is in `SCRUBBED.json`.  Put this
+`results/pg19_six_500m/<arm>/manifest.json` lists their SHA-256.  Two
+exceptions.  `zoo_smat_mixer.py` had a comment that named an author, and it has
+since gained the switches the learned multi-key recall runs use
+(`memory_tied_features`, `memory_boundary_transport`, `memory_incidence_rescale`,
+`detach_write_hash_features`); all default to off, so the PG-19 models compute
+what they did.  `SCRUBBED.json` gives the SHA-256 of both versions as run.
+`zoo_mamba_four_reads.py` was added for those runs.  Put this
 directory, `tasks/pg19` and `third_party` on `PYTHONPATH` (see the top-level
 README) instead of importing them as a package.
 
@@ -17,6 +21,7 @@ README) instead of importing them as a package.
 |---|---|
 | `zoo_smat_gdn.py`, `zoo_gdn_transport.py`, `smat_gdn_transport.py` | GDN + SMat mixer, boundary-transported profile memory |
 | `zoo_smat_mixer.py` | Mamba-2 + SMat mixer |
+| `zoo_mamba_four_reads.py` | the one-write / four-read Mamba-2 + SMat mixer of the learned multi-key recall runs (`tasks/mkar_mamba_smat/`) |
 | `content_addr.py`, `smat_address_reads.py` | write hash and four-read selection |
 | `smat_read_triton.py`, `smat_write_hash_triton.py`, `smat_write_hash_grad.py`, `smat_delta_pool.py`, `smat_pool_ops.py` | fused reads, hashed writes and their gradients |
 | `smat_read_tiled.py`, `smat_write_hash_tiled.py`, `smat_gdn_tiled.py`, `pg19_optimized_kernels.py` | tiled FP32 kernels the GDN + SMat PG-19 arms trained with (`pg19_optimized_kernels.enable()`) |

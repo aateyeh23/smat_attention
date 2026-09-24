@@ -1,0 +1,22 @@
+{
+ "files": {
+  "confirm/provenance.json": {
+   "sha256": "532f0ec5fca41434b820ff360c6ae9d036bb0071d8c018f05a254e579deb079b"
+  },
+  "confirm/source_sha256.json": {
+   "sha256": "ddf11dae469a61340e67953a7f42787a713e4e88a5eb0200bac56fc88d856116",
+   "path_renamed": true
+  },
+  "five_seed_summary.json": {
+   "sha256": "be4f46c3f6cd88f3050fdd201e2f00b42db4b3a5c2596dda906809a81569e15b"
+  },
+  "pilot_s123/provenance.json": {
+   "sha256": "ff68df0434d4964a7e469d4cda740cb4612537cbd99e28789cee03f1a0d669ac"
+  },
+  "pilot_s123/source_sha256.json": {
+   "sha256": "f8392457be2b7bdba2b8d3635ee3c5cce37d960eed724abf2afdd0b35e295fb8",
+   "path_renamed": true
+  }
+ },
+ "note": "Files in this record changed only to replace home paths with repository paths and the cluster-named source directory with code/. sha256 is of the file as written by the campaign; the unmodified files are at commit 6d29b15. The two source_sha256.json manifests are the ones validated.json and every result.json cite as source_manifest_sha256 (by these original digests)."
+}

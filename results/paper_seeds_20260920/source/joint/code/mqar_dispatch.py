@@ -200,7 +200,7 @@ def controller(interval):
                 write(STATE/'status.json',dict(complete=True,unfinished=[]))
                 release_job=getattr(campaign, 'RELEASE_JOB', '3143305')
                 if release_job:
-                    subprocess.run(['scontrol','update','JobId='+release_job,'Partition=ghx4-interactive','Nice=0'])
+                    subprocess.run(['scontrol','update','JobId='+release_job,'Partition=<partition>','Nice=0'])
                     subprocess.run(['scontrol','release',release_job])
                 print('ALL EXPERIMENTS COMPLETE',flush=True);return
             single=state.get('single')
