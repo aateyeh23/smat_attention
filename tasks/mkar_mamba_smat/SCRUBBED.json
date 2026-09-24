@@ -1,0 +1,16 @@
+{
+ "files": {
+  "common.py": {
+   "sha256": "2f4105c38f01cb9b2aa76d9e5c26e3ba310bd52630192ad29c60d212aec64b2a",
+   "sha256_pilot_s123": "c6b735766c47583ccf91fc08dd9f54dd751f45b09a3fb9204ea9c49467765415"
+  },
+  "prepare.py": {
+   "sha256": "527cf15d4fe0af2479bdeba1dc3b84a5d792d3ae01227ea7a8e216fce5bb7dc9",
+   "sha256_pilot_s123": "36e885aa8bd3db23e75988fe293395d7c2ad5d135865200f0b4350d568886513"
+  },
+  "validate.py": {
+   "sha256": "08308605dafd74510cce0aea48b2bb220f3be05abc4b22d4d5943c5751759583"
+  }
+ },
+ "note": "The other scripts here are byte-identical to experiment/ in results/mkar_mamba_smat_20260923/confirm/source_sha256.json. These three differ: home paths became repository paths, common.py resolves the campaign from MKAR_CAMPAIGN/MKAR_ROOT and runs from the repository modules when the frozen source tree is absent, and validate.py rebuilds the parent factory when the parent campaign is absent. sha256 is of the file as the confirmation runs used it, sha256_pilot_s123 as the seed-123 pilot used it; originals at commit 6d29b15."
+}

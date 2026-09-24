@@ -1,0 +1,24 @@
+{
+ "files": {
+  "README.md": {
+   "sha256": "953a57507b7676dfee6fb12957ea035d4dd89ad3c2cb9cbd3ec17267c216c242"
+  },
+  "protocol.json": {
+   "sha256": "50c7cbb2f9d42d5cec0f66d48004f0d61679b529fe185e78c56be85026839e05"
+  },
+  "source_sha256.json": {
+   "sha256": "9cb10517ad8f5503509e7c23e1334196254abb29b4c013a3330843d7656d397b",
+   "path_renamed": true
+  },
+  "summary.json": {
+   "sha256": "7744e22d2c7321401d29c35b73ab5ac02855398b81f907a4f07d57ab77f0607d"
+  },
+  "tasks.json": {
+   "sha256": "91f3b1aa95336a0c31a35c1d771ea59f0fc2fb083986925e3944511b563f5f8d"
+  },
+  "validated.json": {
+   "sha256": "ebc1bf7662895a684b56e9cfe595527ef0a12c66f6a6b895807534dbd039aea5"
+  }
+ },
+ "note": "Files changed only to replace home paths with repository paths and the cluster-named code directory (also inside source/) with code/. sha256 is of the file as written by the campaign; the unmodified files are at tag archive/pre-cleanup-2026-09-22. Only the geometry arm's run records are kept here (the d=3 row of Table mom_macro); the random-incidence and bucket arms, per-example arrays and scheduler files are at that tag."
+}

@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=joint-recall
 #SBATCH --account=<account>
-#SBATCH --partition=ghx4-interactive
+#SBATCH --partition=<partition>
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
@@ -10,7 +10,7 @@
 #SBATCH --time=00:20:00
 #SBATCH --output=logs/joint-recall-%j.out
 set -eo pipefail
-module load python/miniforge3_pytorch/2.11.0 >/dev/null 2>&1
+module load <pytorch-2.11-module> >/dev/null 2>&1
 cd ./the GPU cluster
 export PYTHONPATH="<triton-3.7.1>:$PWD:$PWD/../smat:<site-packages>:~/zoology"
 export FLA_TILELANG=0 WANDB_MODE=disabled OMP_NUM_THREADS=2 MKL_NUM_THREADS=2
